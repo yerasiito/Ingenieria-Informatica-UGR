@@ -1,0 +1,9 @@
+{
+    "files.associations": {
+        "practicasig.h": "c",
+        "file_ply_stl.h": "c",
+        "visual.h": "c",
+        "entradateclado.h": "c",
+        "mouse.h": "c"
+    }
+}
