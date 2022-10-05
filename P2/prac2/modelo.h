@@ -27,6 +27,9 @@
 	 modelo.h
 */
 
+#ifndef MODELO_H
+#define MODELO_H
+
 /**
 	Funcion de redibujado. Se ejecuta con los eventos postRedisplay
 **/
@@ -58,3 +61,5 @@ public:
 
 virtual void draw( ) = 0; // Dibuja el objeto
 } ; 
+
+#endif

@@ -27,7 +27,8 @@
 	visual.h
 */
 
-
+#ifndef VISUAL_H
+#define VISUAL_H
 
 //======================== visual.c
 
@@ -64,3 +65,5 @@ Inicializa el viewport para que ocupe toda la ventana X, y llama a fijaProyeccio
 **/
 
 void inicializaVentana (GLsizei ancho, GLsizei alto);
+
+#endif

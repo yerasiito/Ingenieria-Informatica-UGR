@@ -97,7 +97,6 @@ view_roty;
 void transformacionVisualizacion ()
 {
   glTranslatef (0, 0, -D);
-
   glRotatef (view_rotx, 1.0, 0.0, 0.0);
   glRotatef (view_roty, 0.0, 1.0, 0.0);
 

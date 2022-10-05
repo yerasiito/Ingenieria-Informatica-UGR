@@ -4,7 +4,7 @@
  	
 	Codigo base para la realización de las practicas de IG
 	
-	Estudiante: Yeray Lopez Ramirez 
+	Estudiante: Yeray Lopez Ramirez
 
 =======================================================
 	G. Arroyo, J.C. Torres 
@@ -24,18 +24,29 @@
 
 =======================================================
 
-	practicasIG.h
+	entradaTeclado.h
 */
-#ifndef PRACTICASIG_H
-#define PRACTICASIG_H
 
-#include  "modelo.h"
-#include  "mouse.h"
-#include  "entradaTeclado.h"
-#include  "visual.h"
-#include  "file_ply_stl.h"
-#include  "cubo.h"
-#include  "piramide.h"
-#include  "prismaHexagonal.h"
+#ifndef PIRAMIDE_H
+#define PIRAMIDE_H
+
+#include "modelo.h"
+
+class Piramide:Objeto3D
+{
+private:
+  float lado;
+  float alto;
+  float Nx=0,Ny=0; //Normales de la piramide regular
+  float  color[4] = { 0, 0.5, 0.8, 1 };
+
+public:
+  Piramide(float l = 1, float h = 1);
+
+  //Dados 2 longitudes (vectores) que forman un triangulo rectangulo, calcula la normal
+  void calcularNormal(float base, float altura);
+
+  void draw();
+};
 
 #endif

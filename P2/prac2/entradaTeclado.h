@@ -27,6 +27,8 @@
 	entradaTeclado.h
 */
 
+#ifndef entradaTeclado_H
+#define entradaTeclado_H
 
 /**	
 	Funcion de captura de eventos pulsacion de tecla correspondiente a caracter alfanumerico
@@ -43,3 +45,5 @@ void letra (unsigned char k, int x, int y);
 	y: posicion del cursor en coordenadas de pantalla cuando se pulso la tecla
 **/
 void especial (int k, int x, int y);
+
+ #endif

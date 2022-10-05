@@ -34,9 +34,7 @@ modulo modelo.c
 #include <stdlib.h>
 #include <math.h>
 #include <GL/glut.h>		// Libreria de utilidades de OpenGL
-#include <vector>
 #include "practicasIG.h"
-
 
 //Global variables
 float default_size = 2;
@@ -47,7 +45,8 @@ void setModo(int M){
   modo = M;
 }
 
-void setIluminacion(){
+//Cambia el estado de la iluminacion(si true entonces false y viceversa)
+void setIluminacion(){ 
   luz = !luz;
 }
 
@@ -57,6 +56,7 @@ Inicializa el modelo y de las variables globales
 void
 initModel ()
 {
+
 }
 
 class Ejes:Objeto3D 
@@ -82,135 +82,17 @@ void draw( )
     glVertex3f (0, 0, longitud);
   }
   glEnd ();
-  if(luz)
-    glEnable (GL_LIGHTING);
-
+    if(modo == GL_FILL and luz) {//Modo: Solido con iluminacion
+      glEnable (GL_LIGHTING);
+    }
 }
 } ; 
 
+//Crea los objetos que vamos a dibujar
 Ejes ejesCoordenadas;
-
-class Cubo:Objeto3D
-{
-public:
-  float l = 1;
-
-Cubo(float lado){
-  l = lado;
-}
-// Dibuja el cubo
-void draw( )
-{
-  glBegin (GL_QUAD_STRIP);
-  {				/* Caras transversales */
-    glNormal3f (0.0, 0.0, 1.0);	/*Vertical delantera */
-    glVertex3f (l, l, l);
-    glVertex3f (0, l, l);
-    glVertex3f (l, 0, l);
-    glVertex3f (0, 0, l);
-    glNormal3f (0.0, -1.0, 0.0);	/*Inferior */
-    glVertex3f (l, 0, 0);
-    glVertex3f (0, 0, 0);
-    glNormal3f (0.0, 0.0, -1.0);	/* Vertical hacia atras */
-    glVertex3f (l, l, 0);
-    glVertex3f (0, l, 0);
-    glNormal3f (0.0, 1.0, 0.0);	/* Superior, horizontal */
-    glVertex3f (l, l, l);
-    glVertex3f (0, l, l);
-  }
-  glEnd ();
-  glBegin (GL_QUADS);
-  {				/* Costados */
-    glNormal3f (1.0, 0.0, 0.0);
-    glVertex3f (l, 0, 0);
-    glVertex3f (l, l, 0);
-    glVertex3f (l, l, l);
-    glVertex3f (l, 0, l);
-    glNormal3f (-1.0, 0.0, 0.0);
-    glVertex3f (0, 0, 0);
-    glVertex3f (0, 0, l);
-    glVertex3f (0, l, l);
-    glVertex3f (0, l, 0);
-  }
-  glEnd ();
-}
-} ;
-
 Cubo cubo(default_size);
-
-
-class Piramide:Objeto3D
-{
-public:
-  float lado = 1;
-  float alto = 1;
-  float Nx=0,Ny=0; //Normales de la piramide regular
-
-Piramide(float l, float h){
-  lado = l;
-  alto = h;
-}
-
-//Dados 2 longitudes (vectores) que forman un triangulo rectangulo, calcula la normal
-void calcularNormal(float base, float altura){
-  //1 calcular hipotenusa
-  float hip = sqrt(base*base + altura*altura);
-  
-  //2 calcular angulo del triangulo calculado
-  float ang = altura/hip;
-  
-  //3 calcular el angulo de la normal
-  float angF = M_PI/2 - asin(ang);
-
-  //4 Calcula las dimensiones de la normal
-  Nx = sin(angF);
-  Ny = cos(angF);
-
-  //printf("\nLas dimensiones de la normal es %f y %f \n", Nx,Ny);
-}
-
-void draw( )
-{
-  calcularNormal(lado, alto);
-  glBegin (GL_QUADS);
-  {				//base
-    glNormal3f (0, -1, 0);
-    glVertex3f (0, 0, 0);
-    glVertex3f (lado, 0, 0);
-    glVertex3f (lado, 0, lado);
-    glVertex3f (0, 0, lado);
-  }
-  glEnd ();
-
-  glBegin (GL_TRIANGLE_STRIP);
-  {
-    // Trasera
-    glNormal3f (0, Ny, -Nx);
-    glVertex3f (lado, 0, 0);
-    glVertex3f (0, 0, 0);
-    glVertex3f (lado/2, alto, lado/2);
-
-    //Lateral izquierdo
-    glNormal3f (-Nx, Ny, 0);
-    glVertex3f (0, 0, lado);
-    
-    //Frontal
-    glNormal3f (0, Ny, Nx);
-    glVertex3f (lado, 0, lado);
-
-    //Lateral derecho
-    glNormal3f (Nx, Ny, 0);
-    glVertex3f (lado, 0, 0);
-    glVertex3f (lado, 0, lado);
-    glVertex3f (lado/2, alto, lado/2);
-
-  }
-  glEnd ();
-}
-} ;
-
-Piramide piramide(default_size,default_size);
-
+Piramide piramide(default_size,default_size*2);
+PrismaHexagonal prisma(default_size/2, default_size);
 
 //Malla
 class Malla:Objeto3D{
@@ -226,7 +108,7 @@ class Malla:Objeto3D{
     }
 
     void calcular_normales(){
-      std::cout << "\nCaras: " << caras.size() << "\n";
+      /*std::cout << "\nCaras: " << caras.size() << "\n";
       for(auto it : caras){
         std::cout << it << " ";
       }
@@ -234,43 +116,44 @@ class Malla:Objeto3D{
       for(auto it : vertices){
         std::cout << it << " ";
       }
-      std::cout << "\n";
+      std::cout << "\n";*/
+      for(int i = 0; i < 6; i++)
+      std::cout << caras[i] << "\n";
     }
 
     void draw(){
-        printf("Por implementar\n");
+      glBegin(GL_TRIANGLE_FAN);
+      {
+        for(int i = caras[0]; i < caras.size() - 3; i+=3){
+          glVertex3f(vertices[i],vertices[i+1], vertices[i+2]);
+        }
+      }
+      glEnd();
+
     }
 };
-Malla malla("./plys/perfil");
-
+Malla malla("./plys/big_dodge");
 
 /**	void Dibuja( void )
 Procedimiento de dibujo del modelo. Es llamado por glut cada vez que se debe redibujar.
 **/
+
 void Dibuja (void)
 {
+  glShadeModel(GL_FLAT);
   static GLfloat pos[4] = { 5.0, 5.0, 10.0, 0.0 };	// Posicion de la fuente de luz
 
-  float  color[4] = { 0.5, 0.0, 1, 1 };
-  float  color2[4] = { 0.0, 0.5, 0.8, 1 };
   float  color3[4] = { 1.0, 0.0, 0, 1 };
-  float  color4[4] = { 0.0, 1, 0, 1 };
+  float  color4[4] = { 0.0, 1.0, 0.0, 1 };
 
   glPushMatrix ();		// Apila la transformacion geometrica actual
 
   glClearColor (0.0, 0.0, 0.0, 1.0);	// Fija el color de fondo a negro
 
   glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// Inicializa el buffer de color y el Z-Buffer
-
   transformacionVisualizacion ();	// Carga transformacion de visualizacion
 
   glLightfv (GL_LIGHT0, GL_POSITION, pos);	// Declaracion de luz. Colocada aqui esta fija en la escena
-
-  ejesCoordenadas.draw();			// Dibuja los ejes
-
-  //Cambia el modo de visualizacion
-  glPointSize(3);
-  glPolygonMode(GL_FRONT_AND_BACK, modo);
 
   //Activa o desactiva la iluminacion
   if(luz){
@@ -280,42 +163,47 @@ void Dibuja (void)
     glDisable (GL_LIGHTING);
   }
 
+  ejesCoordenadas.draw();			// Dibuja los ejes
+
+  malla.draw();
+  //Cambia el modo de visualizacion
+  glPointSize(3);
+  glPolygonMode(GL_FRONT_AND_BACK, modo);
+
   // Dibuja el modelo (A rellenar en prácticas 1,2 y 3)          
-  
-  /* //Practica 1
   // Dibuja el cubo
-  glMaterialfv (GL_FRONT, GL_AMBIENT_AND_DIFFUSE, color);  
-  cubo.draw();                
+  //cubo.draw();                
 
   // Dibuja la pirámide
-  glTranslatef(default_size, 0, default_size);
+  glTranslatef(default_size*1.5, 0, 0);
+  //piramide.draw();
 
-  glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, color2);
-  piramide.draw();
-
-  //Figura extra 1
-  glTranslatef(default_size+default_size/1.5, 0, default_size+default_size/1.5);
+  //Figura extra 1 (toroide)
+  glTranslatef(default_size*3, 0, default_size/2);
   glRotatef(90, 1, 0, 0);
 
   glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, color3);
-  glutSolidTorus(0.5, 1, 24, 32);
+  glColor3f (color3[0], color3[1], color3[2]);
+  //glutSolidTorus(default_size/2, default_size, 24, 32);
   glRotatef(-90, 1, 0, 0);
 
-  //Figura extra 2
+  //Figura extra 2 (cono)
+  glTranslatef(-4*default_size, 0, 2*default_size);
+  glRotatef(-90, 1, 0, 0);
+
   glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, color4);
-  glTranslatef(default_size, 0, default_size);
-  glRotatef(-90, 1, 0, 0);
-  glutSolidCone(1,1,24,20);
+  glColor3f (color4[0], color4[1], color4[2]);
+  //glutSolidCone(default_size,default_size,24,20);
 
-  */
-  //Practica 2
+  glRotatef(90, 1, 0, 0);
 
+  //Figura extra 3 (prisma base hexagonal)
+  glTranslatef(default_size*1.5, 0, -default_size/2);
+  //prisma.draw();
 
-  glPopMatrix ();		// Desapila la transformacion geometrica
-
-
+  glPopMatrix();
+  
   glutSwapBuffers ();		// Intercambia el buffer de dibujo y visualizacion
-
 }
 
 
