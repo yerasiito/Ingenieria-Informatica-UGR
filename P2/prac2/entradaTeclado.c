@@ -100,6 +100,14 @@ void letra (unsigned char k, int x, int y)
     case 'F':
       setModo(GL_FILL);
       break;
+    case 'c':
+    case 'C':
+      setDrawModel(GL_FLAT);
+      break;
+    case 'v':
+    case 'V':
+      setDrawModel(GL_SMOOTH);
+      break;  
     case 'i':
     case 'I':
       setIluminacion();

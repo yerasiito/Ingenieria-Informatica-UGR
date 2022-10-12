@@ -51,6 +51,13 @@ void initModel ();
 void setModo (int M);
 
 /**
+ * Funcion para cambiar el modo de sombreado 
+ **/
+void setDrawModel (int M);
+
+int getDrawModel();
+
+/**
  * Funcion para cambiar la variable luz 
  **/
 void setIluminacion();

@@ -37,5 +37,6 @@
 #include  "cubo.h"
 #include  "piramide.h"
 #include  "prismaHexagonal.h"
+#include  "malla.h"
 
 #endif
