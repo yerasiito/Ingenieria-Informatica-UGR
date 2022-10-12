@@ -101,58 +101,104 @@ class Malla:Objeto3D{
   private:
     std::vector <float> vertices;
     std::vector <int> caras;
-    std::vector <float> normal;
+    std::vector <float> normales_c;
+    std::vector <float> normales_v;
 
   public:
     Malla(const char *nombre_archivo){
       ply::read(nombre_archivo, vertices, caras);
+      normales_caras();
+      normales_vertices();
     }
 
-    void calcular_normales(int i){
-      int iv = caras[i]*3;
-      int iv1 = caras[i+1]*3;
-      int iv2 = caras[i+2]*3;
+    void normales_caras(){
+      for(int i = 0; i < caras.size()-3; i+=3){
+        int iv = caras[i]*3;
+        int iv1 = caras[i+1]*3;
+        int iv2 = caras[i+2]*3;
 
-      //Obtenemos los vertices de los 2 vectores
-      std::vector <float> v = {vertices[iv], vertices[iv+1], vertices[iv+2]};
-      std::vector <float> v1 = {vertices[iv1], vertices[iv1+1], vertices[iv1+2]};
-      std::vector <float> v2 = {vertices[iv2], vertices[iv2+1], vertices[iv2+2]};
+        //Obtenemos los vertices de los 2 vectores
+        std::vector <float> v = {vertices[iv], vertices[iv+1], vertices[iv+2]};
+        std::vector <float> v1 = {vertices[iv1], vertices[iv1+1], vertices[iv1+2]};
+        std::vector <float> v2 = {vertices[iv2], vertices[iv2+1], vertices[iv2+2]};
 
-      //Obtenemos los vectores a partir de los vertices
-      std::vector <float> A = {v[0] - v1[0], v[1] - v1[1], v[2] - v1[2]};
-      std::vector <float> B = {v[0] - v2[0], v[1] - v2[1], v[2] - v2[2]};
+        //Obtenemos los vectores a partir de los vertices
+        std::vector <float> A = {v[0] - v1[0], v[1] - v1[1], v[2] - v1[2]};
+        std::vector <float> B = {v[0] - v2[0], v[1] - v2[1], v[2] - v2[2]};
 
-      //Calculamos la normal de los dos vectores
-      float normal_x = A[1]*B[2] - A[2]*B[1];
-      float normal_y = A[2]*B[0] - A[0]*B[2];
-      float normal_z = A[0]*B[1] - A[1]*B[0];
+        //Calculamos la normal de los dos vectores
+        float normal_x = A[1]*B[2] - A[2]*B[1];
+        float normal_y = A[2]*B[0] - A[0]*B[2];
+        float normal_z = A[0]*B[1] - A[1]*B[0];
+        
+        //Calculamos el modulo de la normal
+        float modulo = sqrt(normal_x*normal_x + normal_y*normal_y + normal_z*normal_z);
+
+        std::vector <float> normal = {normal_x/modulo, normal_y/modulo, normal_z/modulo};
+
+        //Volcamos el resultado en el vector de normal
+        normales_c.insert(normales_c.end(), normal.begin(), normal.end());
+      }
+
+    }
+
+    void normales_vertices(){
+      normales_v.resize(vertices.size());
+      fill(normales_v.begin(), normales_v.end(), 0);
       
-      //Calculamos el modulo de la normal
-      float modulo = sqrt(normal_x*normal_x + normal_y*normal_y + normal_z*normal_z);
+      //Sumamos las normales de los vertices
+      for(int i = 0; i < caras.size(); i++){
+        int iv = caras[i]*3;
+        normales_v[iv] += normales_c[i*3]; 
+        normales_v[iv+1] += normales_c[i*3+1]; 
+        normales_v[iv+2] += normales_c[i*3+2]; 
+      }
 
-      //Volcamos el resultado en el vector de normal
-      normal = {normal_x/modulo, normal_y/modulo, normal_z/modulo};
+      //Normalizamos cada vertice
+      float modulo = 0.0;
+      for(int i = 0; i < normales_v.size(); i+=3){
+        modulo = sqrt(normales_v[i]*normales_v[i] + normales_v[i+1]*normales_v[i+1] + normales_v[i+2]*normales_v[i+2]);
+        normales_v[i] /= modulo;
+        normales_v[i+1] /= modulo;
+        normales_v[i+2] /= modulo;
+      }
 
     }
 
     void draw(){
+      
+      /*
       glBegin(GL_TRIANGLES);
       {
-        for(int i = 0; i < caras.size()-3; i+=3){
+        
+        for(int i = 0; i < caras.size(); i+=3){
           int iv = caras[i]*3;
           int iv1 = caras[i+1]*3;
           int iv2 = caras[i+2]*3;
-  
-          calcular_normales(i);
 
-          glNormal3f(normal[0], normal[1], normal[2]);
+          glNormal3f(normales_c[i], normales_c[i+1], normales_c[i+2]); //Cara
+
           glVertex3f(vertices[iv], vertices[iv+1], vertices[iv+2]);
-          glVertex3f(vertices[iv1], vertices[iv1+1], vertices[iv1+2]);
+          glVertex3f(vertices[iv1], vertices[iv1+1], vertices[iv1+2]); 
           glVertex3f(vertices[iv2], vertices[iv2+1], vertices[iv2+2]);
         }
       }
       glEnd();
+      */
+      
+      
+      glBegin(GL_TRIANGLES);
+      {
+        for(int i = 0; i < caras.size(); i++){
+          int iv = caras[i]*3;
+          glNormal3f(normales_v[iv], normales_v[iv+1], normales_v[iv+2]); //Cara
+          glVertex3f(vertices[iv], vertices[iv+1], vertices[iv+2]);
+        }
+      }
+      glEnd();
+      
     }
+
 };
 Malla malla("./plys/beethoven");
 
@@ -163,6 +209,8 @@ Procedimiento de dibujo del modelo. Es llamado por glut cada vez que se debe red
 void Dibuja (void)
 {
   //glShadeModel(GL_FLAT);
+  glShadeModel(GL_SMOOTH);
+  
   static GLfloat pos[4] = { 5.0, 5.0, 10.0, 0.0 };	// Posicion de la fuente de luz
 
   float  color3[4] = { 1.0, 0.0, 0, 1 };
@@ -198,7 +246,7 @@ void Dibuja (void)
 
   // Dibuja la pirámide
   glTranslatef(default_size*1.5, 0, 0);
-  piramide.draw();
+  //piramide.draw();
 
   //Figura extra 1 (toroide)
   glTranslatef(default_size*3, 0, default_size/2);

@@ -62,6 +62,7 @@ void Piramide::draw( )
   calcularNormal(lado, alto);
   glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, color);
   glColor3f (color[0], color[1], color[2]);
+
   glBegin (GL_QUADS);
   {				//base
     glNormal3f (0, -1, 0);

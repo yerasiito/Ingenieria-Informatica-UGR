@@ -38,7 +38,7 @@ private:
   float lado;
   float alto;
   float Nx=0,Ny=0; //Normales de la piramide regular
-  float  color[4] = { 0, 0.5, 0.8, 1 };
+  float color[4] = { 0, 0.5, 0.8, 1 };
 
 public:
   Piramide(float l = 1, float h = 1);
