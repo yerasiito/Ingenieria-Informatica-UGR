@@ -99,16 +99,17 @@ public:
   }
 } ; 
 
-class ObjetoRevolucion
+class ObjetoRevolucion:Malla
 {
   public:
-    std::vector <float> verticesI;
-    std::vector <float> verticesF;
+    std::vector <float> vertices;
     std::vector <int> caras;
+    int m; //Numero de vertices del perfil inicial
 
   ObjetoRevolucion(const char *nombre_archivo){
-    ply::read_vertices(nombre_archivo, verticesI);
-    verticesF = verticesI;
+    
+    ply::read_vertices(nombre_archivo, vertices);
+    m = vertices.size();
     crearRevolucion(100);
 
     //Duplica el vertices
@@ -122,29 +123,35 @@ class ObjetoRevolucion
     //Añade al vertices final todos los vertices rotados
     for(int i = 0; i < n-1; i++){
       float alfa = (2*M_PI*i)/(n-1);
-      for(int j = 0; j < verticesI.size(); j+=3){
-        std::vector<float> vi = {verticesI[j]*cos(alfa), verticesI[j+1], verticesI[j]*sin(alfa)};
-        verticesF.insert(verticesF.end(), vi.begin(), vi.end());
+      for(int j = 0; j < m; j+=3){
+        std::vector<float> vi = {vertices[j]*cos(alfa), vertices[j+1], vertices[j]*sin(alfa)};
+        vertices.insert(vertices.end(), vi.begin(), vi.end());
       }
     }
 
 
     //Crear el vector de caras
-    /*for(int i = 0; i < n-2; i++){
-      for(int j = 0; j < verticesI.size()-1; j+=3){
-        int k = i * verticesI.size()
-    }*/
+    int k = 0;
+    for(int i = 0; i < n-2; i++){
+      for(int j = 0; j < m-2; j++){
+        k = i * m + j;
+        std::vector<int> triangle1 = {k, k+m, k+m+1};
+        std::vector<int> triangle2 = {k, k+m+1, k+1};
+        caras.insert(caras.begin(), triangle1.begin(), triangle1.end());
+        caras.insert(caras.begin(), triangle2.begin(), triangle2.end());
+      }
+    }
 
   }
 
   void draw_lines(){
 
-    int j = 0;
-    while(j < verticesF.size()){
+    size_t j = 0;
+    while(j < vertices.size()){
       glBegin(GL_LINE_STRIP);
       {
-        for(int i = 0; i < verticesI.size(); i+=3){
-          glVertex3f(verticesF[j], verticesF[j+1], verticesF[j+2]);
+        for(int i = 0; i < m; i+=3){
+          glVertex3f(vertices[j], vertices[j+1], vertices[j+2]);
           j+=3;
         }
       }
@@ -155,15 +162,21 @@ class ObjetoRevolucion
   void draw_points(){
     glBegin(GL_POINTS);
     {
-      for(int i = 0; i < verticesF.size(); i+=3){
-        glVertex3f(verticesF[i], verticesF[i+1], verticesF[i+2]);
+      for(size_t i = 0; i < vertices.size(); i+=3){
+        glVertex3f(vertices[i], vertices[i+1], vertices[i+2]);
       }
     }
     glEnd();
   }
 
   void draw(){
-    draw_points();
+    Malla::vertices = vertices;
+    Malla::caras = caras;
+    Malla::normales_caras();
+    Malla::normales_vertices();
+    
+    Malla::draw();
+    //draw_points();
     //draw_lines();
   }
 
@@ -174,7 +187,8 @@ Ejes ejesCoordenadas;
 Cubo cubo(default_size);
 Piramide piramide(default_size,default_size*2);
 PrismaHexagonal prisma(default_size/2, default_size);
-Malla malla("./plys/big_dodge");
+Malla malla1("./plys/beethoven");
+Malla malla2("./plys/big_dodge");
 ObjetoRevolucion perfil("./plys/perfil");
 
 /**	void Dibuja( void )
@@ -187,8 +201,8 @@ void Dibuja (void)
   static GLfloat pos[4] = { 5.0, 5.0, 10.0, 0.0 };	// Posicion de la fuente de luz
   
   float colorMalla[4] = { 1.0, 1.0, 1.0, 1};
-  float  color3[4] = { 1.0, 0.0, 0, 1 };
-  float  color4[4] = { 0.0, 1.0, 0.0, 1 };
+  float color3[4] = { 1.0, 0.0, 0, 1 };
+  float color4[4] = { 0.0, 1.0, 0.0, 1 };
 
   glPushMatrix ();		// Apila la transformacion geometrica actual
 
@@ -210,8 +224,10 @@ void Dibuja (void)
   ejesCoordenadas.draw();			// Dibuja los ejes
 
   //Dibuja la malla
-  //glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, colorMalla);
-  //malla.draw();
+  glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, colorMalla);
+  //malla1.draw();
+  //glTranslatef(10, 0, 0);  
+  //malla2.draw();
 
   //glTranslatef(0, 10, 0);
   perfil.draw();

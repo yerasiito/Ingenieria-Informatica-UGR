@@ -34,14 +34,15 @@
 #include <vector>
 
 class Malla:Objeto3D{
-
-  private:
+  public:
+  //private:
     std::vector <float> vertices;
     std::vector <int> caras;
     std::vector <float> normales_c;
     std::vector <float> normales_v;
 
   public:
+    Malla();
     Malla(const char *nombre_archivo);
 
     void normales_caras();

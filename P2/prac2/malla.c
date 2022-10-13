@@ -33,6 +33,9 @@
 #include <GL/glut.h>		// Libreria de utilidades de OpenGL
 #include "malla.h"
 #include "file_ply_stl.h"
+#include <iostream>
+
+  Malla::Malla(){}
 
   Malla::Malla(const char *nombre_archivo){
     ply::read(nombre_archivo, vertices, caras);
@@ -41,7 +44,8 @@
   }
 
 void Malla::normales_caras(){
-  for(int i = 0; i < caras.size(); i+=3){
+  normales_c.clear();
+  for(size_t i = 0; i < caras.size(); i+=3){
     int iv = caras[i]*3;
     int iv1 = caras[i+1]*3;
     int iv2 = caras[i+2]*3;
@@ -72,12 +76,14 @@ void Malla::normales_caras(){
 }
 
 void Malla::normales_vertices(){
+  normales_v.clear();
+
   normales_v.resize(vertices.size());
   fill(normales_v.begin(), normales_v.end(), 0.0f);
   
   //Sumamos las normales de los vertices
   int j = 0;
-  for(int i = 0; i < caras.size(); i+=3){
+  for(size_t i = 0; i < caras.size(); i+=3){
     int iv = caras[i]*3;
     int iv1 = caras[i+1]*3;
     int iv2 = caras[i+2]*3;
@@ -101,7 +107,7 @@ void Malla::normales_vertices(){
 
   //Normalizamos cada vertice
   float modulo = 0.0;
-  for(int i = 0; i < normales_v.size(); i+=3){
+  for(size_t i = 0; i < normales_v.size(); i+=3){
     modulo = sqrt(normales_v[i]*normales_v[i] + normales_v[i+1]*normales_v[i+1] + normales_v[i+2]*normales_v[i+2]);
     normales_v[i] /= modulo;
     normales_v[i+1] /= modulo;
@@ -114,7 +120,7 @@ void Malla::draw_caras(){
   glBegin(GL_TRIANGLES);
   {
     
-    for(int i = 0; i < caras.size(); i+=3){
+    for(size_t i = 0; i < caras.size(); i+=3){
       int iv = caras[i]*3;
       int iv1 = caras[i+1]*3;
       int iv2 = caras[i+2]*3;
@@ -132,7 +138,7 @@ void Malla::draw_caras(){
 void Malla::draw_vertices(){
   glBegin(GL_TRIANGLES);
   {
-    for(int i = 0; i < caras.size(); i++){
+    for(size_t i = 0; i < caras.size(); i++){
       int iv = caras[i]*3;
       glNormal3f(normales_v[iv], normales_v[iv+1], normales_v[iv+2]);
       glVertex3f(vertices[iv], vertices[iv+1], vertices[iv+2]);

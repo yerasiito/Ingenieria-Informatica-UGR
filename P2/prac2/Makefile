@@ -67,7 +67,7 @@ LIBS=    -lglut -lGLU -lGL -lX11 -lXext  -lc -lm
 #  CC= orden de UNIX que invoca al compilador de C
 #      (en este caso "gcc" llama al compilador de C/C++ de GNU) 
 
-CC=        g++
+CC=        g++ -g -Wall
 
 #   Las siguientes lineas le indican al programa make que
 #   para construir el ejecutable debe compilar primero los 
@@ -78,4 +78,4 @@ $(EJECUTABLE): $(MODULOS)
 	$(CC)  -o$(EJECUTABLE) $(LDFLAGS) $(MODULOS)  $(LIBS)   
 
 clean:
-	rm *.o
+	rm *.o practicasIG
