@@ -56,9 +56,6 @@ int main (int argc, char *argv[])
 
 // Crea una ventana X para la salida grafica en la posicion 0,0 con tamaño 800x800, con colores RGB-alfa, con doble buffer, y 
 // buffer de profundidad
-
-
-
   glutInitWindowPosition (0, 0);
   glutInitWindowSize (800, 800);
   glutInitDisplayMode (GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);

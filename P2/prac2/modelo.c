@@ -75,37 +75,107 @@ class Ejes:Objeto3D
 public: 
     float longitud = 30;
 // Dibuja el objeto
-void draw( )
-{
-  glDisable (GL_LIGHTING);
-  glBegin (GL_LINES);
+  void draw( )
   {
-    glColor3f (0, 1, 0);
-    glVertex3f (0, 0, 0);
-    glVertex3f (0, longitud, 0);
+    glDisable (GL_LIGHTING);
+    glBegin (GL_LINES);
+    {
+      glColor3f (0, 1, 0);
+      glVertex3f (0, 0, 0);
+      glVertex3f (0, longitud, 0);
 
-    glColor3f (1, 0, 0);
-    glVertex3f (0, 0, 0);
-    glVertex3f (longitud, 0, 0);
+      glColor3f (1, 0, 0);
+      glVertex3f (0, 0, 0);
+      glVertex3f (longitud, 0, 0);
 
-    glColor3f (0, 0, 1);
-    glVertex3f (0, 0, 0);
-    glVertex3f (0, 0, longitud);
-  }
-  glEnd ();
-    if(modo == GL_FILL and luz) {//Modo: Solido con iluminacion
-      glEnable (GL_LIGHTING);
+      glColor3f (0, 0, 1);
+      glVertex3f (0, 0, 0);
+      glVertex3f (0, 0, longitud);
     }
-}
+    glEnd ();
+      if(/*modo == GL_FILL and*/ luz) {//Modo: Solido con iluminacion
+        glEnable (GL_LIGHTING);
+      }
+  }
 } ; 
+
+class ObjetoRevolucion
+{
+  public:
+    std::vector <float> verticesI;
+    std::vector <float> verticesF;
+    std::vector <int> caras;
+
+  ObjetoRevolucion(const char *nombre_archivo){
+    ply::read_vertices(nombre_archivo, verticesI);
+    verticesF = verticesI;
+    crearRevolucion(100);
+
+    //Duplica el vertices
+    /*std::vector<float> duplicado = vertices;
+    vertices.insert(vertices.end(), duplicado.begin(), duplicado.end());
+    */
+  }
+
+  void crearRevolucion(int n){
+
+    //Añade al vertices final todos los vertices rotados
+    for(int i = 0; i < n-1; i++){
+      float alfa = (2*M_PI*i)/(n-1);
+      for(int j = 0; j < verticesI.size(); j+=3){
+        std::vector<float> vi = {verticesI[j]*cos(alfa), verticesI[j+1], verticesI[j]*sin(alfa)};
+        verticesF.insert(verticesF.end(), vi.begin(), vi.end());
+      }
+    }
+
+
+    //Crear el vector de caras
+    /*for(int i = 0; i < n-2; i++){
+      for(int j = 0; j < verticesI.size()-1; j+=3){
+        int k = i * verticesI.size()
+    }*/
+
+  }
+
+  void draw_lines(){
+
+    int j = 0;
+    while(j < verticesF.size()){
+      glBegin(GL_LINE_STRIP);
+      {
+        for(int i = 0; i < verticesI.size(); i+=3){
+          glVertex3f(verticesF[j], verticesF[j+1], verticesF[j+2]);
+          j+=3;
+        }
+      }
+      glEnd();
+    }
+  }
+
+  void draw_points(){
+    glBegin(GL_POINTS);
+    {
+      for(int i = 0; i < verticesF.size(); i+=3){
+        glVertex3f(verticesF[i], verticesF[i+1], verticesF[i+2]);
+      }
+    }
+    glEnd();
+  }
+
+  void draw(){
+    draw_points();
+    //draw_lines();
+  }
+
+};
 
 //Crea los objetos que vamos a dibujar
 Ejes ejesCoordenadas;
 Cubo cubo(default_size);
 Piramide piramide(default_size,default_size*2);
 PrismaHexagonal prisma(default_size/2, default_size);
-
 Malla malla("./plys/big_dodge");
+ObjetoRevolucion perfil("./plys/perfil");
 
 /**	void Dibuja( void )
 Procedimiento de dibujo del modelo. Es llamado por glut cada vez que se debe redibujar.
@@ -115,7 +185,8 @@ void Dibuja (void)
 {
   glShadeModel(draw_model);  
   static GLfloat pos[4] = { 5.0, 5.0, 10.0, 0.0 };	// Posicion de la fuente de luz
-
+  
+  float colorMalla[4] = { 1.0, 1.0, 1.0, 1};
   float  color3[4] = { 1.0, 0.0, 0, 1 };
   float  color4[4] = { 0.0, 1.0, 0.0, 1 };
 
@@ -138,7 +209,12 @@ void Dibuja (void)
 
   ejesCoordenadas.draw();			// Dibuja los ejes
 
-  malla.draw();
+  //Dibuja la malla
+  //glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, colorMalla);
+  //malla.draw();
+
+  //glTranslatef(0, 10, 0);
+  perfil.draw();
   //Cambia el modo de visualizacion
   glPointSize(3);
   glPolygonMode(GL_FRONT_AND_BACK, modo);
