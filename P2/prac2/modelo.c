@@ -109,8 +109,8 @@ class ObjetoRevolucion:Malla
   ObjetoRevolucion(const char *nombre_archivo){
     
     ply::read_vertices(nombre_archivo, vertices);
-    m = vertices.size();
-    crearRevolucion(100);
+    m = vertices.size()/3;
+    crearRevolucion(10);
 
     //Duplica el vertices
     /*std::vector<float> duplicado = vertices;
@@ -119,28 +119,29 @@ class ObjetoRevolucion:Malla
   }
 
   void crearRevolucion(int n){
-
+    vertices = {};
     //Añade al vertices final todos los vertices rotados
     for(int i = 0; i < n-1; i++){
       float alfa = (2*M_PI*i)/(n-1);
-      for(int j = 0; j < m; j+=3){
+      for(int j = 0; j <= m*3-1; j+=3){
         std::vector<float> vi = {vertices[j]*cos(alfa), vertices[j+1], vertices[j]*sin(alfa)};
         vertices.insert(vertices.end(), vi.begin(), vi.end());
       }
     }
 
-
     //Crear el vector de caras
+    caras = {};
     int k = 0;
     for(int i = 0; i < n-2; i++){
       for(int j = 0; j < m-2; j++){
         k = i * m + j;
         std::vector<int> triangle1 = {k, k+m, k+m+1};
         std::vector<int> triangle2 = {k, k+m+1, k+1};
-        caras.insert(caras.begin(), triangle1.begin(), triangle1.end());
-        caras.insert(caras.begin(), triangle2.begin(), triangle2.end());
+        caras.insert(caras.end(), triangle1.begin(), triangle1.end());
+        caras.insert(caras.end(), triangle2.begin(), triangle2.end());
       }
     }
+
 
   }
 
@@ -170,14 +171,18 @@ class ObjetoRevolucion:Malla
   }
 
   void draw(){
-    Malla::vertices = vertices;
-    Malla::caras = caras;
-    Malla::normales_caras();
-    Malla::normales_vertices();
-    
-    Malla::draw();
+    glBegin(GL_TRIANGLES);
+    {
+      for(size_t i = 0; i < caras.size(); i++){
+        int iv = caras[i]*3;
+        glVertex3f(vertices[iv], vertices[iv+1], vertices[iv+2]);
+      }
+    }
+    glEnd();
+
+    //Malla::draw();
     //draw_points();
-    //draw_lines();
+    // draw_lines();
   }
 
 };
