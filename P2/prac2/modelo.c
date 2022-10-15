@@ -129,20 +129,33 @@ class ObjetoRevolucion:Malla
       }
     }
 
+      for(int j = 0; j <= m*3-1; j+=3){
+        std::vector<float> vi = {vertices[j]*cos(0), vertices[j+1], vertices[j]*sin(0)};
+        vertices.insert(vertices.end(), vi.begin(), vi.end());
+      }
+
+
     //Crear el vector de caras
     caras = {};
     int k = 0;
-    for(int i = 0; i < n-2; i++){
-      for(int j = 0; j < m-2; j++){
+    for(int i = 0; i <= n-2; i++){
+      for(int j = 0; j <= m-2; j++){
         k = i * m + j;
-        std::vector<int> triangle1 = {k, k+m, k+m+1};
-        std::vector<int> triangle2 = {k, k+m+1, k+1};
+        std::vector<int> triangle1 = {k+m+1, k+m, k};
+        std::vector<int> triangle2 = {k+1, k+m+1, k};
         caras.insert(caras.end(), triangle1.begin(), triangle1.end());
         caras.insert(caras.end(), triangle2.begin(), triangle2.end());
       }
     }
-
-
+      // int i = 0;
+      // for(int j = 0; j < m-2; j++){
+      //   k = i * m + j;
+      //   std::vector<int> triangle1 = {k+m+1, k+m, k};
+      //   k = (n-2)*m + j;
+      //   std::vector<int> triangle2 = {k+1, k+m+1, k};
+      //   caras.insert(caras.end(), triangle1.begin(), triangle1.end());
+      //   caras.insert(caras.end(), triangle2.begin(), triangle2.end());
+      // }
   }
 
   void draw_lines(){
@@ -171,18 +184,7 @@ class ObjetoRevolucion:Malla
   }
 
   void draw(){
-    glBegin(GL_TRIANGLES);
-    {
-      for(size_t i = 0; i < caras.size(); i++){
-        int iv = caras[i]*3;
-        glVertex3f(vertices[iv], vertices[iv+1], vertices[iv+2]);
-      }
-    }
-    glEnd();
-
-    //Malla::draw();
-    //draw_points();
-    // draw_lines();
+    draw_points();
   }
 
 };
