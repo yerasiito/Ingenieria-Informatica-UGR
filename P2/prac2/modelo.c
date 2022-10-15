@@ -99,11 +99,9 @@ public:
   }
 } ; 
 
-class ObjetoRevolucion:Malla
+class ObjetoRevolucion:public Malla
 {
   public:
-    std::vector <float> vertices;
-    std::vector <int> caras;
     int m; //Numero de vertices del perfil inicial
 
   ObjetoRevolucion(const char *nombre_archivo){
@@ -111,7 +109,8 @@ class ObjetoRevolucion:Malla
     ply::read_vertices(nombre_archivo, vertices);
     m = vertices.size()/3;
     crearRevolucion(10);
-
+    normales_caras();
+    normales_vertices();
     //Duplica el vertices
     /*std::vector<float> duplicado = vertices;
     vertices.insert(vertices.end(), duplicado.begin(), duplicado.end());
@@ -181,10 +180,6 @@ class ObjetoRevolucion:Malla
       }
     }
     glEnd();
-  }
-
-  void draw(){
-    draw_points();
   }
 
 };

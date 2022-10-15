@@ -33,7 +33,7 @@
 #include "modelo.h"
 #include <vector>
 
-class Malla:Objeto3D{
+class Malla:public Objeto3D{
   public:
   //private:
     std::vector <float> vertices;
