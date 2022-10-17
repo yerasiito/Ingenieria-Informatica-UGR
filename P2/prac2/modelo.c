@@ -154,10 +154,10 @@ class ObjetoRevolucion:public Malla
 
   void crear_tapas(bool tapa_sup, bool tapa_inf){
     float min = 9999999, max = -999999999;
-    for(int i = 1; i < vertices.size()-3; i+=3){
+    for(int i = 1; i < vertices.size(); i+=3){
       if(vertices[i] < min)
         min = vertices[i];
-      else if(vertices[i] > max)
+      if(vertices[i] > max)
         max = vertices[i];
     }
 
@@ -224,7 +224,7 @@ Piramide piramide(default_size,default_size*2);
 PrismaHexagonal prisma(default_size/2, default_size);
 Malla malla1("./plys/beethoven");
 Malla malla2("./plys/big_dodge");
-ObjetoRevolucion perfil("./plys/miperfil", false, true);
+ObjetoRevolucion perfil("./plys/miperfil", true, true);
 
 /**	void Dibuja( void )
 Procedimiento de dibujo del modelo. Es llamado por glut cada vez que se debe redibujar.
