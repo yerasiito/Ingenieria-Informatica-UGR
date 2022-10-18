@@ -102,7 +102,7 @@ public:
 class ObjetoRevolucion:public Malla
 {
   public:
-    int n = 100; //Numero de revoluciones
+    int n = 1000; //Numero de revoluciones
     int m; //Numero de vertices del perfil inicial
 
   ObjetoRevolucion(const char *nombre_archivo, bool tapa_sup, bool tapa_inf){
@@ -198,23 +198,6 @@ class ObjetoRevolucion:public Malla
     }
     glEnd();
   }
-
-  // void draw(){
-  //   glBegin(GL_POINTS);
-  //   {
-  //     glVertex3f(vertices[caras[2]], vertices[caras[2]+1], vertices[caras[2]+2]);
-  //     int i = 185;
-  //     glVertex3f(vertices[caras[i]], vertices[caras[i]+1], vertices[caras[i]+2]);
-  //     i = 365;
-  //     glVertex3f(vertices[caras[i]], vertices[caras[i]+1], vertices[caras[i]+2]);
-  //   //   for(int i = 0; i < n; i++){
-  //   //     glVertex3f(vertices[i*m*3],vertices[i*m*3+1], vertices[i*m*3+2]);
-  //   //     std::cout << caras[i*m] << "\n";
-  //   //   }
-  //   // }
-  //   glEnd();
-  //   }
-  // }
 };
 
 //Crea los objetos que vamos a dibujar
@@ -224,7 +207,7 @@ Piramide piramide(default_size,default_size*2);
 PrismaHexagonal prisma(default_size/2, default_size);
 Malla malla1("./plys/beethoven");
 Malla malla2("./plys/big_dodge");
-ObjetoRevolucion perfil("./plys/miperfil", true, true);
+ObjetoRevolucion perfil("./plys/miperfil", false, true);
 
 /**	void Dibuja( void )
 Procedimiento de dibujo del modelo. Es llamado por glut cada vez que se debe redibujar.
