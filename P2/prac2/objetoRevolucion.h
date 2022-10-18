@@ -4,7 +4,7 @@
  	
 	Codigo base para la realización de las practicas de IG
 	
-	Estudiante: Yeray Lopez Ramirez 
+	Estudiante: Yeray Lopez Ramirez
 
 =======================================================
 	G. Arroyo, J.C. Torres 
@@ -22,22 +22,30 @@
  GNU General Public License for more details 
  http://www.gnu.org/copyleft/gpl.html
 
-=======================================================
+=======================================================/
+	modulo objetoRevolucion.h
 
-	practicasIG.h
 */
-#ifndef PRACTICASIG_H
-#define PRACTICASIG_H
 
-#include  "modelo.h"
-#include  "mouse.h"
-#include  "entradaTeclado.h"
-#include  "visual.h"
-#include  "file_ply_stl.h"
-#include  "cubo.h"
-#include  "piramide.h"
-#include  "prismaHexagonal.h"
-#include  "malla.h"
-#include  "objetoRevolucion.h"
+#ifndef OBJETOREVOLUCION_H
+#define OBJETOREVOLUCION_H
 
+#include "malla.h"
+
+class ObjetoRevolucion:public Malla
+{
+  public:
+    int n = 1000; //Numero de revoluciones
+    int m; //Numero de vertices del perfil inicial
+
+  ObjetoRevolucion(const char *nombre_archivo, bool tapa_sup, bool tapa_inf);
+
+  void crearRevolucion();
+
+  void crear_tapas(bool tapa_sup, bool tapa_inf);
+
+  void draw_lines();
+
+  void draw_points();
+};
 #endif

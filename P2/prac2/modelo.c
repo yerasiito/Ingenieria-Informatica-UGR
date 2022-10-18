@@ -97,108 +97,7 @@ public:
         glEnable (GL_LIGHTING);
       }
   }
-} ; 
-
-class ObjetoRevolucion:public Malla
-{
-  public:
-    int n = 1000; //Numero de revoluciones
-    int m; //Numero de vertices del perfil inicial
-
-  ObjetoRevolucion(const char *nombre_archivo, bool tapa_sup, bool tapa_inf){
-    
-    ply::read_vertices(nombre_archivo, vertices);
-    m = vertices.size()/3;
-    
-    crear_tapas(tapa_sup, tapa_inf);
-    crearRevolucion();
-
-    normales_caras();
-    normales_vertices();
-  }
-
-  void crearRevolucion(){
-    vertices = {};
-    //Añade al vertices final todos los vertices rotados
-
-
-    for(int i = 0; i < n-1; i++){
-      float alfa = (2*M_PI*i)/(n-1);
-      for(int j = 0; j <= m*3-1; j+=3){
-        std::vector<float> vi = {vertices[j]*cos(alfa), vertices[j+1], vertices[j]*sin(alfa)};
-        vertices.insert(vertices.end(), vi.begin(), vi.end());
-      }
-    }
-
-
-    //Duplica los vertices del perfil al final
-    for(int j = 0; j <= m*3-1; j+=3){
-      std::vector<double> vi = {vertices[j]*cos(0), vertices[j+1], vertices[j]*sin(0)};
-      vertices.insert(vertices.end(), vi.begin(), vi.end());
-    }
-
-    //Crear el vector de caras
-    caras = {};
-    int k = 0;
-    for(int i = 0; i <= n-2; i++){
-      for(int j = 0; j <= m-2; j++){
-        k = i * m + j;
-        std::vector<int> triangle1 = {k+m+1, k+m, k};
-        std::vector<int> triangle2 = {k+1, k+m+1, k};
-        caras.insert(caras.end(), triangle1.begin(), triangle1.end());
-        caras.insert(caras.end(), triangle2.begin(), triangle2.end());
-      }
-    }
-
-  }
-
-  void crear_tapas(bool tapa_sup, bool tapa_inf){
-    float min = 9999999, max = -999999999;
-    for(int i = 1; i < vertices.size(); i+=3){
-      if(vertices[i] < min)
-        min = vertices[i];
-      if(vertices[i] > max)
-        max = vertices[i];
-    }
-
-    if(tapa_inf){
-      std::vector<float> ver_inf = {0, min, 0};
-      vertices.insert(vertices.begin(), ver_inf.begin(), ver_inf.end());
-      m+=1;
-    }
-
-    if(tapa_sup){
-      std::vector<float> ver_sup = {0, max, 0};
-      vertices.insert(vertices.end(), ver_sup.begin(), ver_sup.end());
-      m+=1;
-    }
-  }
-
-  void draw_lines(){
-
-    size_t j = 0;
-    while(j < vertices.size()){
-      glBegin(GL_LINE_STRIP);
-      {
-        for(int i = 0; i < m; i+=3){
-          glVertex3f(vertices[j], vertices[j+1], vertices[j+2]);
-          j+=3;
-        }
-      }
-      glEnd();
-    }
-  }
-
-  void draw_points(){
-    glBegin(GL_POINTS);
-    {
-      for(size_t i = 0; i < vertices.size(); i+=3){
-        glVertex3f(vertices[i], vertices[i+1], vertices[i+2]);
-      }
-    }
-    glEnd();
-  }
-};
+}; 
 
 //Crea los objetos que vamos a dibujar
 Ejes ejesCoordenadas;
@@ -207,7 +106,7 @@ Piramide piramide(default_size,default_size*2);
 PrismaHexagonal prisma(default_size/2, default_size);
 Malla malla1("./plys/beethoven");
 Malla malla2("./plys/big_dodge");
-ObjetoRevolucion perfil("./plys/miperfil", false, true);
+ObjetoRevolucion perfil("./plys/miperfil", true, true);
 
 /**	void Dibuja( void )
 Procedimiento de dibujo del modelo. Es llamado por glut cada vez que se debe redibujar.
@@ -288,7 +187,6 @@ void Dibuja (void)
   
   glutSwapBuffers ();		// Intercambia el buffer de dibujo y visualizacion
 }
-
 
 /**	void idle()
 
