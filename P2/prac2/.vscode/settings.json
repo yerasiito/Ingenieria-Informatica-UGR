@@ -68,5 +68,6 @@
         "typeinfo": "c",
         "valarray": "c",
         "variant": "c"
-    }
+    },
+    "C_Cpp.errorSquiggles": "Enabled"
 }

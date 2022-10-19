@@ -8,7 +8,7 @@
 
 =======================================================
 	G. Arroyo, J.C. Torres 
-	Dpto. Lenguajes y Sistemas Informticos
+	Dpto. Lenguajes y Sistemas Informaticos
 	(Univ. de Granada)
 
  This program is free software; you can redistribute it and/or
@@ -27,9 +27,6 @@
 
 */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
 #include <GL/glut.h>		// Libreria de utilidades de OpenGL
 #include "cubo.h"
 
@@ -37,32 +34,27 @@ Cubo::Cubo(float lado){
   l = lado;
 }
 
-void rand(float color[4]){
-}
-// Dibuja el cubo
 void Cubo::draw( )
 {
   glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, color);
   glColor3f (color[0], color[1], color[2]);
 
-
   glBegin (GL_QUAD_STRIP);
   {				/* Caras transversales */
-    rand(color);
     glNormal3f (0.0, 0.0, 1.0);	/*Vertical delantera */
     glVertex3f (l, l, l);
     glVertex3f (0, l, l);
     glVertex3f (l, 0, l);
     glVertex3f (0, 0, l);
-    rand(color);
+
     glNormal3f (0.0, -1.0, 0.0);	/*Inferior */
     glVertex3f (l, 0, 0);
     glVertex3f (0, 0, 0);
-    rand(color);
+    
     glNormal3f (0.0, 0.0, -1.0);	/* Vertical hacia atras */
     glVertex3f (l, l, 0);
     glVertex3f (0, l, 0);
-    rand(color);
+    
     glNormal3f (0.0, 1.0, 0.0);	/* Superior, horizontal */
     glVertex3f (l, l, l);
     glVertex3f (0, l, l);
@@ -70,13 +62,12 @@ void Cubo::draw( )
   glEnd ();
   glBegin (GL_QUADS);
   {				/* Costados */
-    rand(color);
     glNormal3f (1.0, 0.0, 0.0);
     glVertex3f (l, 0, 0);
     glVertex3f (l, l, 0);
     glVertex3f (l, l, l);
     glVertex3f (l, 0, l);
-    rand(color);
+    
     glNormal3f (-1.0, 0.0, 0.0);
     glVertex3f (0, 0, 0);
     glVertex3f (0, 0, l);

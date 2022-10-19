@@ -9,7 +9,7 @@
 	Programa principal
 =======================================================
 	G. Arroyo, J.C. Torres 
-	Dpto. Lenguajes y Sistemas Informticos
+	Dpto. Lenguajes y Sistemas Informaticos
 	(Univ. de Granada)
 
  This program is free software; you can redistribute it and/or

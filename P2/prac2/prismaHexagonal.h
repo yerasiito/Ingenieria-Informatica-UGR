@@ -37,7 +37,7 @@ class PrismaHexagonal:Objeto3D
 private:
   float lado;
   float altura;
-  float  color[4] = { 1, 1, 0, 1 };
+  float color[4] = { 1, 1, 0, 1 };
 public:
   PrismaHexagonal(float l = 1, float h = 2);
   

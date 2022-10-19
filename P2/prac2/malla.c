@@ -8,7 +8,7 @@
 
 =======================================================
 	G. Arroyo, J.C. Torres 
-	Dpto. Lenguajes y Sistemas Informticos
+	Dpto. Lenguajes y Sistemas Informaticos
 	(Univ. de Granada)
 
  This program is free software; you can redistribute it and/or
@@ -26,14 +26,10 @@
 	modulo malla.c
 
 */
-
-#include <stdio.h>
-#include <stdlib.h>
 #include <math.h>
 #include <GL/glut.h>		// Libreria de utilidades de OpenGL
 #include "malla.h"
 #include "file_ply_stl.h"
-#include <iostream>
 
   Malla::Malla(){}
 
@@ -78,10 +74,11 @@ void Malla::normales_caras(){
 void Malla::normales_vertices(){
   normales_v.clear();
 
+  //Rellenamos el vector de vertices con 0
   normales_v.resize(vertices.size());
   fill(normales_v.begin(), normales_v.end(), 0.0f);
   
-  //Sumamos las normales de los vertices
+  //Sumamos las normales de los 3 vertices de cada cara
   int j = 0;
   for(size_t i = 0; i < caras.size(); i+=3){
     int iv = caras[i]*3;
@@ -125,7 +122,7 @@ void Malla::draw_caras(){
       int iv1 = caras[i+1]*3;
       int iv2 = caras[i+2]*3;
 
-      glNormal3f(normales_c[i], normales_c[i+1], normales_c[i+2]); //Cara
+      glNormal3f(normales_c[i], normales_c[i+1], normales_c[i+2]);
 
       glVertex3f(vertices[iv], vertices[iv+1], vertices[iv+2]);
       glVertex3f(vertices[iv1], vertices[iv1+1], vertices[iv1+2]); 

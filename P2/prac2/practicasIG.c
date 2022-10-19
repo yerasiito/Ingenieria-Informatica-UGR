@@ -28,8 +28,6 @@
 	practicasIG.c
 */
 
-#include <stdio.h>
-#include <stdlib.h>
 #include <math.h>
 #include <GL/glut.h>		// Libreria de utilidades de OpenGL
 #include "practicasIG.h"
@@ -83,7 +81,6 @@ int main (int argc, char *argv[])
   glEnable (GL_CULL_FACE);
   glEnable (GL_LIGHTING);
   glEnable (GL_LIGHT0);
-
 
 // Lanza el gestor de eventos de glut
   glutMainLoop ();

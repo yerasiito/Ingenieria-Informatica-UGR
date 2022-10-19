@@ -30,8 +30,6 @@ modulo modelo.c
 
 */
 #include <iostream>
-#include <stdio.h>
-#include <stdlib.h>
 #include <math.h>
 #include <GL/glut.h>		// Libreria de utilidades de OpenGL
 #include "practicasIG.h"
@@ -107,9 +105,9 @@ public:
 //Crea los objetos que vamos a dibujar
 Ejes ejesCoordenadas;
 /*Practica 1*/
-Cubo cubo(default_size);
-Piramide piramide(default_size,default_size*2);
-PrismaHexagonal prisma(default_size/2, default_size);
+// Cubo cubo(default_size);
+// Piramide piramide(default_size,default_size*2);
+// PrismaHexagonal prisma(default_size/2, default_size);
 
 /*Practica 2*/
 Malla malla1("./plys/beethoven");

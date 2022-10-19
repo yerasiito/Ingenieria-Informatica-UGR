@@ -8,7 +8,7 @@
 
 =======================================================
 	G. Arroyo, J.C. Torres 
-	Dpto. Lenguajes y Sistemas Informticos
+	Dpto. Lenguajes y Sistemas Informaticos
 	(Univ. de Granada)
 
  This program is free software; you can redistribute it and/or
@@ -30,8 +30,8 @@
 #ifndef MALLA_H
 #define MALLA_H
 
-#include "modelo.h"
 #include <vector>
+#include "modelo.h"
 
 class Malla:public Objeto3D{
   public:
@@ -42,6 +42,9 @@ class Malla:public Objeto3D{
     std::vector <float> normales_v;
 
   public:
+    /**
+     * @brief Constructor por defecto, necesario para compilar las clases heredadas 
+    */
     Malla();
     Malla(const char *nombre_archivo);
 
