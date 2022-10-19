@@ -34,10 +34,11 @@
 #include "file_ply_stl.h"
 #include "objetoRevolucion.h"
 
-ObjetoRevolucion::ObjetoRevolucion(const char *nombre_archivo, bool tapa_sup, bool tapa_inf){
+ObjetoRevolucion::ObjetoRevolucion(const char *nombre_archivo, int nrevol, bool tapa_sup, bool tapa_inf){
     
     ply::read_vertices(nombre_archivo, vertices);
     m = vertices.size()/3;
+    n = nrevol+2;
     
     crear_tapas(tapa_sup, tapa_inf);
     crearRevolucion();
@@ -49,8 +50,6 @@ ObjetoRevolucion::ObjetoRevolucion(const char *nombre_archivo, bool tapa_sup, bo
   void ObjetoRevolucion::crearRevolucion(){
     vertices = {};
     //Añade al vertices final todos los vertices rotados
-
-
     for(int i = 0; i < n-1; i++){
       float alfa = (2*M_PI*i)/(n-1);
       for(int j = 0; j <= m*3-1; j+=3){

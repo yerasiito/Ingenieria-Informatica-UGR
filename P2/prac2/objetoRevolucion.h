@@ -35,10 +35,17 @@
 class ObjetoRevolucion:public Malla
 {
   public:
-    int n = 1000; //Numero de revoluciones
+    int n; //Numero de revoluciones
     int m; //Numero de vertices del perfil inicial
 
-  ObjetoRevolucion(const char *nombre_archivo, bool tapa_sup, bool tapa_inf);
+  /**
+   * @brief Constructor con parametros
+   * @param nombre_archivo Lee los vertices del perfil con este nombre
+   * @param nrevol Indica el numero de revoluciones a aplicar, por defecto 10
+   * @param tapa_sup True para crear la tapa superior, false en otro caso. Por defecto false
+   * @param tapa_sup True para crear la tapa inferior, false en otro caso. Por defecto true
+   */
+  ObjetoRevolucion(const char *nombre_archivo, int nrevol = 10, bool tapa_sup = false, bool tapa_inf = true);
 
   void crearRevolucion();
 

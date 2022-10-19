@@ -53,19 +53,17 @@ void setModo (int M);
 /**
  * Funcion para cambiar el modo de sombreado 
  **/
-void setDrawModel (int M);
-
-int getDrawModel();
+void invertirDrawModel ();
 
 /**
  * Funcion para cambiar la variable luz 
  **/
-void setIluminacion();
+void invertirIluminacion();
 
 class Objeto3D { 
 public: 
 
-virtual void draw( ) = 0; // Dibuja el objeto
+virtual void draw(int sombreado) = 0; // Dibuja el objeto
 } ; 
 
 #endif

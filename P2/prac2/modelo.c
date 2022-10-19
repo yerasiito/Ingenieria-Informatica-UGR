@@ -41,23 +41,26 @@ modulo modelo.c
 //Global variables
 float default_size = 2;
 int modo = GL_FILL;
-int draw_model = GL_FLAT;
+int sombreado1 = GL_SMOOTH, sombreado2 = GL_FLAT;
 bool luz = true;
 
 void setModo(int M){
   modo = M;
 }
 
-void setDrawModel(int M){
-  draw_model = M;
-}
-
-int getDrawModel(){
-  return draw_model;
+void invertirDrawModel(){
+  if(sombreado1 == GL_FLAT){
+    sombreado1 = GL_SMOOTH;
+    sombreado2 = GL_FLAT;
+  }
+  else{
+    sombreado1 = GL_FLAT;
+    sombreado2  = GL_SMOOTH;
+  }
 }
 
 //Cambia el estado de la iluminacion(si true entonces false y viceversa)
-void setIluminacion(){ 
+void invertirIluminacion(){ 
   luz = !luz;
 }
 
@@ -75,7 +78,7 @@ class Ejes:Objeto3D
 public: 
     float longitud = 30;
 // Dibuja el objeto
-  void draw( )
+  void draw(int sombreado)
   {
     glDisable (GL_LIGHTING);
     glBegin (GL_LINES);
@@ -101,12 +104,17 @@ public:
 
 //Crea los objetos que vamos a dibujar
 Ejes ejesCoordenadas;
-Cubo cubo(default_size);
-Piramide piramide(default_size,default_size*2);
-PrismaHexagonal prisma(default_size/2, default_size);
+/*Practica 1*/
+// Cubo cubo(default_size);
+// Piramide piramide(default_size,default_size*2);
+// PrismaHexagonal prisma(default_size/2, default_size);
+
+/*Practica 2*/
 Malla malla1("./plys/beethoven");
 Malla malla2("./plys/big_dodge");
-ObjetoRevolucion perfil("./plys/miperfil", true, true);
+ObjetoRevolucion peon("./plys/perfil", 100,true, true);
+ObjetoRevolucion fuente("./plys/miperfil", 100, false, true);
+
 
 /**	void Dibuja( void )
 Procedimiento de dibujo del modelo. Es llamado por glut cada vez que se debe redibujar.
@@ -114,12 +122,7 @@ Procedimiento de dibujo del modelo. Es llamado por glut cada vez que se debe red
 
 void Dibuja (void)
 {
-  glShadeModel(draw_model);  
   static GLfloat pos[4] = { 5.0, 5.0, 10.0, 0.0 };	// Posicion de la fuente de luz
-  
-  float colorMalla[4] = { 1.0, 1.0, 1.0, 1};
-  float color3[4] = { 1.0, 0.0, 0, 1 };
-  float color4[4] = { 0.0, 1.0, 0.0, 1 };
 
   glPushMatrix ();		// Apila la transformacion geometrica actual
 
@@ -138,55 +141,78 @@ void Dibuja (void)
     glDisable (GL_LIGHTING);
   }
 
-  ejesCoordenadas.draw();			// Dibuja los ejes
-
-  //Dibuja la malla
-  glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, colorMalla);
-  //malla1.draw();
-  //glTranslatef(10, 0, 0);  
-  //malla2.draw();
-
-  //glTranslatef(0, 10, 0);
-  perfil.draw();
+  ejesCoordenadas.draw(GL_FLAT);			// Dibuja los ejes
+  
   //Cambia el modo de visualizacion
   glPointSize(3);
   glPolygonMode(GL_FRONT_AND_BACK, modo);
 
   // Dibuja el modelo (A rellenar en prácticas 1,2 y 3)          
+  
+  /*Dibuja objetos de la PRACTICA 1*/
+  /*
+  float p1Color3[4] = { 1.0, 0.0, 0, 1 };
+  float p1Color4[4] = { 0.0, 1.0, 0.0, 1 };
+  
   // Dibuja el cubo
-  //cubo.draw();                
+  cubo.draw();                
 
   // Dibuja la pirámide
   glTranslatef(default_size*1.5, 0, 0);
-  //piramide.draw();
+  piramide.draw();
 
-  //Figura extra 1 (toroide)
+  // Figura extra 1 (toroide)
   glTranslatef(default_size*3, 0, default_size/2);
   glRotatef(90, 1, 0, 0);
 
-  glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, color3);
-  glColor3f (color3[0], color3[1], color3[2]);
-  //glutSolidTorus(default_size/2, default_size, 24, 32);
+  glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, p1Color4);
+  glColor3f (p1Color3[0], p1Color3[1], p1Color3[2]);
+  glutSolidTorus(default_size/2, default_size, 24, 32);
   glRotatef(-90, 1, 0, 0);
 
-  //Figura extra 2 (cono)
+  // Figura extra 2 (cono)
   glTranslatef(-4*default_size, 0, 2*default_size);
   glRotatef(-90, 1, 0, 0);
 
-  glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, color4);
-  glColor3f (color4[0], color4[1], color4[2]);
-  //glutSolidCone(default_size,default_size,24,20);
+  glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, p1Color4);
+  glColor3f (p1Color4[0], p1Color4[1], p1Color4[2]);
+  glutSolidCone(default_size,default_size,24,20);
 
   glRotatef(90, 1, 0, 0);
 
   //Figura extra 3 (prisma base hexagonal)
   glTranslatef(default_size*1.5, 0, -default_size/2);
-  //prisma.draw();
+  prisma.draw();
+  */
+  /*Dibuja objetos de la PRACTICA 2*/
+  float colorMalla1[4] = { 0.0, 1.0, 1.0, 1};
+  float colorMalla2[4] = { 1.0, 0.0, 1.0, 1};
+  float revolucion1[4] = { 1.0, 1.0, 0.0, 1};
+  float revolucion2[4] = { 1.0, 1.0, 1.0, 1};
+
+  //Malla beethoven sombreado suave
+  glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, colorMalla1);
+  glTranslatef(-15, 0, 0);  
+  malla1.draw(sombreado1);
+
+  //Malla coche sombreado plano
+  glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, colorMalla2);
+  glTranslatef(13, 0, 0);  
+  malla2.draw(sombreado2);
+
+  glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, revolucion1);
+  glTranslatef(10, 0, 0);
+  peon.draw(sombreado1);
+  
+  glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, revolucion2);
+  glTranslatef(7, 0, 0);
+  fuente.draw(sombreado2);
 
   glPopMatrix();
   
   glutSwapBuffers ();		// Intercambia el buffer de dibujo y visualizacion
 }
+
 
 /**	void idle()
 
