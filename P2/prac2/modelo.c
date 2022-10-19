@@ -185,14 +185,14 @@ void Dibuja (void)
   prisma.draw();
   */
   /*Dibuja objetos de la PRACTICA 2*/
-  float colorMalla1[4] = { 0.0, 1.0, 1.0, 1};
-  float colorMalla2[4] = { 1.0, 0.0, 1.0, 1};
+  float colorMalla1[4] = { 1.0, 0.0, 0.0, 1};
+  float colorMalla2[4] = { 0.0, 1.0, 0.0, 1};
   float revolucion1[4] = { 1.0, 1.0, 0.0, 1};
   float revolucion2[4] = { 1.0, 1.0, 1.0, 1};
 
   //Malla beethoven sombreado suave
   glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, colorMalla1);
-  glTranslatef(-15, 0, 0);  
+  glTranslatef(-17, 0, 0);  
   malla1.draw(sombreado1);
 
   //Malla coche sombreado plano
@@ -201,11 +201,15 @@ void Dibuja (void)
   malla2.draw(sombreado2);
 
   glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, revolucion1);
-  glTranslatef(10, 0, 0);
+  glTranslatef(11, 0, 0);
+  
+  glScalef(2, 2, 2); //Escalamos el peon
+  glEnable(GL_NORMALIZE); //Al escalar, hay que renormalizar las normales  
   peon.draw(sombreado1);
+  glScalef(0.5, 0.5, 0.5); //Escalamos el peon
   
   glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, revolucion2);
-  glTranslatef(7, 0, 0);
+  glTranslatef(8, 0, 0);
   fuente.draw(sombreado2);
 
   glPopMatrix();
