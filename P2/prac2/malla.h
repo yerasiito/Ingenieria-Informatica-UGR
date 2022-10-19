@@ -50,7 +50,7 @@ class Malla:public Objeto3D{
 
     void draw_caras();
     void draw_vertices();
-    void draw(int sombreado);
+    void draw();
 };
 
 #endif

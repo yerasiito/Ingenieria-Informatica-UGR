@@ -102,7 +102,7 @@ void letra (unsigned char k, int x, int y)
       break;
     case 's':
     case 'S':
-      invertirDrawModel();
+      invertirSombreado();
       break;
     case 'i':
     case 'I':

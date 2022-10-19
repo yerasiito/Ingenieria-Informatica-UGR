@@ -23,8 +23,7 @@
  http://www.gnu.org/copyleft/gpl.html
 
 =======================================================/
-	modulo mouse.c
-	Gestion de eventos de raton
+	modulo cubo.c
 
 */
 

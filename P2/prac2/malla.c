@@ -148,9 +148,9 @@ void Malla::draw_vertices(){
   glEnd();
 }
 
-void Malla::draw(int sombreado){
-  if(sombreado == GL_FLAT)
+void Malla::draw(){
+  if(getSombreado() == GL_FLAT)
     draw_caras();
-  else
+  else if(getSombreado() == GL_SMOOTH)
     draw_vertices();
 }

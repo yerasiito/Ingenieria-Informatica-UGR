@@ -8,7 +8,7 @@
 
 =======================================================
 	G. Arroyo, J.C. Torres 
-	Dpto. Lenguajes y Sistemas Informticos
+	Dpto. Lenguajes y Sistemas Informaticos
 	(Univ. de Granada)
 
  This program is free software; you can redistribute it and/or
@@ -35,8 +35,6 @@ modulo modelo.c
 #include <math.h>
 #include <GL/glut.h>		// Libreria de utilidades de OpenGL
 #include "practicasIG.h"
-#include <vector>
-#include <set>
 
 //Global variables
 float default_size = 2;
@@ -48,7 +46,7 @@ void setModo(int M){
   modo = M;
 }
 
-void invertirDrawModel(){
+void invertirSombreado(){
   if(sombreado1 == GL_FLAT){
     sombreado1 = GL_SMOOTH;
     sombreado2 = GL_FLAT;
@@ -57,6 +55,10 @@ void invertirDrawModel(){
     sombreado1 = GL_FLAT;
     sombreado2  = GL_SMOOTH;
   }
+}
+
+int getSombreado(){
+  return sombreado1;
 }
 
 //Cambia el estado de la iluminacion(si true entonces false y viceversa)
@@ -78,7 +80,7 @@ class Ejes:Objeto3D
 public: 
     float longitud = 30;
 // Dibuja el objeto
-  void draw(int sombreado)
+  void draw()
   {
     glDisable (GL_LIGHTING);
     glBegin (GL_LINES);
@@ -105,9 +107,9 @@ public:
 //Crea los objetos que vamos a dibujar
 Ejes ejesCoordenadas;
 /*Practica 1*/
-// Cubo cubo(default_size);
-// Piramide piramide(default_size,default_size*2);
-// PrismaHexagonal prisma(default_size/2, default_size);
+Cubo cubo(default_size);
+Piramide piramide(default_size,default_size*2);
+PrismaHexagonal prisma(default_size/2, default_size);
 
 /*Practica 2*/
 Malla malla1("./plys/beethoven");
@@ -141,7 +143,7 @@ void Dibuja (void)
     glDisable (GL_LIGHTING);
   }
 
-  ejesCoordenadas.draw(GL_FLAT);			// Dibuja los ejes
+  ejesCoordenadas.draw();			// Dibuja los ejes
   
   //Cambia el modo de visualizacion
   glPointSize(3);
@@ -165,8 +167,7 @@ void Dibuja (void)
   glTranslatef(default_size*3, 0, default_size/2);
   glRotatef(90, 1, 0, 0);
 
-  glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, p1Color4);
-  glColor3f (p1Color3[0], p1Color3[1], p1Color3[2]);
+  glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, p1Color3);
   glutSolidTorus(default_size/2, default_size, 24, 32);
   glRotatef(-90, 1, 0, 0);
 
@@ -175,7 +176,6 @@ void Dibuja (void)
   glRotatef(-90, 1, 0, 0);
 
   glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, p1Color4);
-  glColor3f (p1Color4[0], p1Color4[1], p1Color4[2]);
   glutSolidCone(default_size,default_size,24,20);
 
   glRotatef(90, 1, 0, 0);
@@ -185,6 +185,7 @@ void Dibuja (void)
   prisma.draw();
   */
   /*Dibuja objetos de la PRACTICA 2*/
+  
   float colorMalla1[4] = { 1.0, 0.0, 0.0, 1};
   float colorMalla2[4] = { 0.0, 1.0, 0.0, 1};
   float revolucion1[4] = { 1.0, 1.0, 0.0, 1};
@@ -193,25 +194,25 @@ void Dibuja (void)
   //Malla beethoven sombreado suave
   glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, colorMalla1);
   glTranslatef(-17, 0, 0);  
-  malla1.draw(sombreado1);
+  malla1.draw();
 
   //Malla coche sombreado plano
   glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, colorMalla2);
   glTranslatef(13, 0, 0);  
-  malla2.draw(sombreado2);
+  malla2.draw();
 
   glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, revolucion1);
   glTranslatef(11, 0, 0);
   
   glScalef(2, 2, 2); //Escalamos el peon
   glEnable(GL_NORMALIZE); //Al escalar, hay que renormalizar las normales  
-  peon.draw(sombreado1);
+  peon.draw();
   glScalef(0.5, 0.5, 0.5); //Escalamos el peon
   
   glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, revolucion2);
   glTranslatef(8, 0, 0);
-  fuente.draw(sombreado2);
-
+  fuente.draw();
+  
   glPopMatrix();
   
   glutSwapBuffers ();		// Intercambia el buffer de dibujo y visualizacion

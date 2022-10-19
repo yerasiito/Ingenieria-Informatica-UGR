@@ -17,7 +17,8 @@ EJECUTABLE=  practicasIG
 #
 #
 
-MODULOS=  $(EJECUTABLE).o entradaTeclado.o visual.o mouse.o modelo.o  file_ply_stl.o cubo.o piramide.o prismaHexagonal.o malla.o objetoRevolucion.o
+MODULOS=  $(EJECUTABLE).o entradaTeclado.o visual.o mouse.o modelo.o  file_ply_stl.o \
+cubo.o piramide.o prismaHexagonal.o malla.o objetoRevolucion.o
 
 
 #  INCLUDEDIRS= Lista de caminos a los directorios donde se encuentran
@@ -77,5 +78,6 @@ CC=        g++ -g -Wall
 $(EJECUTABLE): $(MODULOS)	
 	$(CC)  -o$(EJECUTABLE) $(LDFLAGS) $(MODULOS)  $(LIBS)   
 
+#Limpia el directorio de objetos y borra el ejectuable
 clean:
 	rm *.o practicasIG

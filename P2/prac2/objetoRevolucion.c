@@ -31,7 +31,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <GL/glut.h>		// Libreria de utilidades de OpenGL
-#include "file_ply_stl.h"
+#include "file_ply_stl.h" //Para leer los vertices
 #include "objetoRevolucion.h"
 
 ObjetoRevolucion::ObjetoRevolucion(const char *nombre_archivo, int nrevol, bool tapa_sup, bool tapa_inf){
