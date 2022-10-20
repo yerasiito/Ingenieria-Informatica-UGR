@@ -1,6 +1,6 @@
 ply
 format ascii 1.0
-element vertex 200 +11
+element vertex 122
 property float32 x
 property float32 y
 property float32 z
@@ -132,4 +132,3 @@ end_header
 1.2 5.6 0.0
 1.0 5.5 0.0
 0.4 5.4 0.0
-#

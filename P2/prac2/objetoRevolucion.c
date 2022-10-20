@@ -31,12 +31,13 @@
 #include <GL/glut.h>		// Libreria de utilidades de OpenGL
 #include "file_ply_stl.h" //Para leer los vertices
 #include "objetoRevolucion.h"
+#include <iostream>
 
 ObjetoRevolucion::ObjetoRevolucion(const char *nombre_archivo, int nrevol, bool tapa_sup, bool tapa_inf){
     
     ply::read_vertices(nombre_archivo, vertices);
     m = vertices.size()/3;
-    n = nrevol+2;
+    n = nrevol;
     
     crear_tapas(tapa_sup, tapa_inf);
     crearRevolucion();
@@ -45,24 +46,31 @@ ObjetoRevolucion::ObjetoRevolucion(const char *nombre_archivo, int nrevol, bool 
     normales_vertices();
   }
 
+  void ObjetoRevolucion::normales_vertices(){
+    Malla::normales_vertices();
+
+    //Arreglamos la costura de los vertices del perfil
+    for(int i = 0; i < m*3; i++){
+      normales_v[i] = normales_v[normales_v.size()-(m*3)+i];
+    }
+  }
+
   void ObjetoRevolucion::crearRevolucion(){
     vertices = {};
     //Añade al vertices final todos los vertices rotados
     for(int i = 0; i < n-1; i++){
       float alfa = (2*M_PI*i)/(n-1);
       for(int j = 0; j <= m*3-1; j+=3){
-        std::vector<float> vi = {vertices[j]*cos(alfa), vertices[j+1], vertices[j]*sin(alfa)};
+        std::vector<double> vi = {vertices[j]*cos(alfa), vertices[j+1], vertices[j]*sin(alfa)};
         vertices.insert(vertices.end(), vi.begin(), vi.end());
       }
     }
 
-
     //Duplica los vertices del perfil al final
-    for(int j = 0; j <= m*3-1; j+=3){
+    for(int j = 0; j < m*3; j+=3){
       std::vector<double> vi = {vertices[j]*cos(0), vertices[j+1], vertices[j]*sin(0)};
       vertices.insert(vertices.end(), vi.begin(), vi.end());
     }
-
     //Crear el vector de caras
     caras = {};
     int k = 0;
@@ -81,13 +89,13 @@ ObjetoRevolucion::ObjetoRevolucion(const char *nombre_archivo, int nrevol, bool 
     if(tapa_inf){
       std::vector<float> ver_inf = {0, vertices[1], 0};
       vertices.insert(vertices.begin(), ver_inf.begin(), ver_inf.end());
-      m+=1;
+      m++;
     }
 
     if(tapa_sup){
       std::vector<float> ver_sup = {0, vertices[m*3-2], 0};
       vertices.insert(vertices.end(), ver_sup.begin(), ver_sup.end());
-      m+=1;
+      m++;
     }
   }
 

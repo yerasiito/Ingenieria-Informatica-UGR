@@ -51,6 +51,8 @@ class ObjetoRevolucion:public Malla
 
   void crear_tapas(bool tapa_sup, bool tapa_inf);
 
+  void normales_vertices();
+  
   void draw_lines();
 
   void draw_points();
