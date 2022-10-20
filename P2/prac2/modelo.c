@@ -112,8 +112,8 @@ Ejes ejesCoordenadas;
 /*Practica 2*/
 Malla malla1("./plys/beethoven");
 Malla malla2("./plys/big_dodge");
-ObjetoRevolucion peon("./plys/perfil", 100,true, true);
-ObjetoRevolucion fuente("./plys/miperfil", 10, true, true);
+ObjetoRevolucion peon("./plys/perfil", 20,true, true);
+ObjetoRevolucion fuente("./plys/miperfil", 100, true, true);
 
 
 /**	void Dibuja( void )

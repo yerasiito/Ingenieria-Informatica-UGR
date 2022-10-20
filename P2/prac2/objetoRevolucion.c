@@ -50,8 +50,25 @@ ObjetoRevolucion::ObjetoRevolucion(const char *nombre_archivo, int nrevol, bool 
     Malla::normales_vertices();
 
     //Arreglamos la costura de los vertices del perfil
+    float aux = 0.0;
     for(int i = 0; i < m*3; i++){
-      normales_v[i] = normales_v[normales_v.size()-(m*3)+i];
+      aux = normales_v[i];
+      normales_v[i] += normales_v[normales_v.size()-(m*3)+i];
+      normales_v[normales_v.size()-(m*3)+i] += aux;
+    }
+    //Normalizamos cada vertice
+    float modulo = 0.0;
+    int j = normales_v.size();
+    for(size_t i = 0; i < m*3; i+=3){
+      modulo = sqrt(normales_v[i]*normales_v[i] + normales_v[i+1]*normales_v[i+1] + normales_v[i+2]*normales_v[i+2]);
+      normales_v[i] /= modulo;
+      normales_v[i+1] /= modulo;
+      normales_v[i+2] /= modulo;
+
+      modulo = sqrt(normales_v[j-i-2]*normales_v[j-i-2] + normales_v[j-i-1]*normales_v[j-i-1] + normales_v[j-i]*normales_v[j-i]);
+      normales_v[j-2] /= modulo;
+      normales_v[j-1] /= modulo;
+      normales_v[j] /= modulo;
     }
   }
 
