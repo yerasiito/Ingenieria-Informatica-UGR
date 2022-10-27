@@ -272,7 +272,7 @@ void creaEstructura(float x0, float y0, float z0,
 		    float x1, float y1, float z1, float a, float b, int n)
 
 {
-float x, y,z,a2,b2;
+float y,a2,b2;
 int i;
 float m,e;
 
@@ -347,7 +347,7 @@ void creaBrazo(float x0, float y0, float z0,
 		    float x1, float y1, float z1, float a, int n)
 
 {
-float x, y,z,a2,b;
+float y,a2,b;
 int i;
 float m,e;
 
@@ -412,6 +412,22 @@ for(i=1;i<n;++i)
 glPopMatrix();
 }
 
+void creaCuerpoBici(){
+  cilindro(-0.5, 2, 0, 2, 2.5, 0, 0.2); //1
+  cilindro(0, 0, 0, -0.75, 3, 0, 0.19); //2
+  cilindro(0, 0, 0, 2.1, 2.3, 0, 0.22); //3
+  cilindro(-0.5, 2, 0, -2.2, 0.1, 0, 0.19); //4
+  cilindro(-2.2, 0.1, 0, 0, 0, 0, 0.2); //5
+  cilindro(2.7, 0, 0, 1.7, 3.5, 0, 0.21); //6
+}
+
+void creaRuedas(){
+  glTranslatef(-2, 0, 0);
+  glutSolidTorus(0.1, 1.6, 24, 32);
+  glTranslatef(4.5, 0, 0);
+  glutSolidTorus(0.1, 1.6, 24, 32);
+}
+
 /**
 
 Crea un fragmento de la terminacion de la estructura de una grua, 
@@ -428,7 +444,7 @@ void creaTorre(float x0, float y0, float z0,
 		    float x1, float y1, float z1, float a, float b, int n)
 
 {
-float x, y,z,a2,b2;
+float y,a2,b2;
 int i;
 float m,e,da,db; //da es el decremento de seccion
 

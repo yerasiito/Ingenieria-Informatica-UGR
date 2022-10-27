@@ -32,7 +32,7 @@ modulo modelo.c
 #include <iostream>
 #include <math.h>
 #include <GL/glut.h>		// Libreria de utilidades de OpenGL
-#include "estructura.h"
+#include "bici.h"
 #include "practicasIG.h"
 
 //Global variables
@@ -213,21 +213,8 @@ void Dibuja (void)
   fuente.draw();
   */
   /*Dibuja objetos de la PRACTICA 3*/
-
-  //Formas
-  // caja(2,2,2);
-  //cilindro(0,0,0,0,4,0,2);
-  //cono(0,0,0,0,4,0,2);
-  //paralelepipedo(0,0,0,0,2,0,1,2);
-  
-  //Estructura
-  creaEstructura(0, 0, 2, 0, 8, 2, 2, 2, 4);
-  glTranslatef(3, 0, 0);
-  creaTorre(0, 0, 2, 0, 8, 2, 2, 2, 4);
-  glTranslatef(2, 0, 2);
-  creaBrazo(0, 0, 0, 8, 0, 0, 2, 4);
-  glTranslatef(4, 0, 0);
-  creaGancho(6, 5, 0, 6);
+  creaCuerpoBici();
+  creaRuedas();
 
   glPopMatrix();
   

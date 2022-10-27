@@ -58,6 +58,17 @@ void paralelepipedo(float x0, float y0, float z0,
 
 // =========================== creaEstructura ==========================================
 
+/**
+ * Experimental function to create the bike structure
+*/
+void creaCuerpoBici();
+
+/**
+ * Experimental function to create bike wheels
+*/
+void creaRuedas();
+
+
 void creaEstructura(float x0, float y0, float z0, 
 		    float x1, float y1, float z1, float a, float b, int n);
 /*

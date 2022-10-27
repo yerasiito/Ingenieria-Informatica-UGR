@@ -59,7 +59,7 @@ ObjetoRevolucion::ObjetoRevolucion(const char *nombre_archivo, int nrevol, bool 
     //Normalizamos cada vertice
     float modulo = 0.0;
     int j = normales_v.size();
-    for(size_t i = 0; i < m*3; i+=3){
+    for(int i = 0; i < m*3; i+=3){
       modulo = sqrt(normales_v[i]*normales_v[i] + normales_v[i+1]*normales_v[i+1] + normales_v[i+2]*normales_v[i+2]);
       normales_v[i] /= modulo;
       normales_v[i+1] /= modulo;
