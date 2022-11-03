@@ -29,7 +29,7 @@ centro de la base.
 
 void cilindro(float x0, float y0, float z0, 
 		    float x1, float y1, float z1, 
-		    float a);
+		    float a, bool roty);
 /*
 	Crea un cilindro con centro de las bases en
 	x0,y0,z0 y x1,y1,z1, y radio de la base a.

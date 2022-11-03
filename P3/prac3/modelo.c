@@ -40,6 +40,7 @@ float default_size = 2;
 int modo = GL_FILL;
 int sombreado1 = GL_SMOOTH, sombreado2 = GL_FLAT;
 bool luz = true;
+int roty = 0;
 
 void setModo(int M){
   modo = M;
@@ -213,6 +214,7 @@ void Dibuja (void)
   fuente.draw();
   */
   /*Dibuja objetos de la PRACTICA 3*/
+  glRotatef(roty, 0, 1, 0);
   creaCuerpoBici();
   creaRuedas();
 
@@ -229,6 +231,7 @@ Procedimiento de fondo. Es llamado por glut cuando no hay eventos pendientes.
 **/
 void idle (int v)
 {
+  //roty+=5.0;
   glutPostRedisplay ();		// Redibuja
   glutTimerFunc (30, idle, 0);	// Vuelve a activarse dentro de 30 ms
 }

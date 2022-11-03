@@ -31,6 +31,7 @@ modulo entradaTeclado.c
 #include <stdlib.h>
 #include <math.h>
 #include <GL/glut.h>		// Libreria de utilidades de OpenGL
+#include <iostream>
 #include "practicasIG.h"
 
 
@@ -166,10 +167,10 @@ void especial (int k, int x, int y)
 	rotyCamara += 360;
       break;
     case GLUT_KEY_PAGE_DOWN:	// acerca la cámara
-      dCamara -= 5.0;
+      dCamara -= 1;
       break;
     case GLUT_KEY_PAGE_UP:	// aleja la cámara
-      dCamara += 5.0;
+      dCamara += 1;
       break;
     default:
       return;

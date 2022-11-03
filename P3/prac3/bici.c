@@ -112,9 +112,8 @@ float a2,m;
 m= modulo(x1-x0,y1-y0,z1-z0);
 glPushMatrix();
 	glTranslatef(x0,y0,z0);
-	glRotatef(-180.0*atan2((z1-z0),(x1-x0))/M_PI,0.0,1.0,0.0);
-	glRotatef(180.0*atan2((y1-y0),sqrt((x1-x0)*(x1-x0)+(z1-z0)*(z1-z0)))/M_PI-90,0.0,0.0,1.0);
-
+	 glRotatef(-180.0*atan2((z1-z0),(x1-x0))/M_PI,0.0,1.0,0.0);
+	 glRotatef(180.0*atan2((y1-y0),sqrt((x1-x0)*(x1-x0)+(z1-z0)*(z1-z0)))/M_PI-90, 0.0, 0.0, 1.0);
 	a2= a/2.0;
    glShadeModel( GL_SMOOTH );
 
@@ -414,11 +413,35 @@ glPopMatrix();
 
 void creaCuerpoBici(){
   cilindro(-0.5, 2, 0, 2, 2.5, 0, 0.2); //1
-  cilindro(0, 0, 0, -0.75, 3, 0, 0.19); //2
+  cilindro(0, 0, 0, -0.5, 2, 0, 0.21); //2.1
+  cilindro(-0.5, 2, 0, -0.75, 3, 0, 0.19); //2.2
+
   cilindro(0, 0, 0, 2.1, 2.3, 0, 0.22); //3
-  cilindro(-0.5, 2, 0, -2.2, 0.1, 0, 0.19); //4
-  cilindro(-2.2, 0.1, 0, 0, 0, 0, 0.2); //5
-  cilindro(2.7, 0, 0, 1.7, 3.5, 0, 0.21); //6
+  cilindro(-0.8, 1.7, -0.3, -2.15, 0.1, -0.3, 0.14); //4 
+  cilindro(-0.8, 1.7, 0.3, -2.15, 0.1, 0.3, 0.14); //4 paralela
+  cilindro(-0.8, 1.7, -0.3, -0.8, 1.7, 0.3, 0.1); //4 union superior
+  cilindro(-0.8, 1.7, 0.29, -0.5, 2.05, 0, 0.14); //4 extension frontal
+  cilindro(-0.8, 1.7, -0.29, -0.5, 2.05, 0, 0.14); //4 extension trasera
+  
+  cilindro(-2.2, 0.1, -0.3, -0.2, 0.0, -0.3, 0.15); //5
+  cilindro(-2.2, 0.1, 0.3, -0.2, 0.0, 0.3, 0.15); //5 paralela
+  cilindro(-0.26, 0.0, 0.33, 0, 0, 0, 0.14); //5 extension frontal
+  cilindro(-0.26, 0.0, -0.33, 0, 0, 0, 0.14); //5 extension trasera
+
+  cilindro(2.1, 2.2, 0, 1.7, 3.5, 0, 0.21); //6.1
+  cilindro(2.7, 0, -0.3, 2.2, 1.7, -0.3, 0.2); //6.2
+  cilindro(2.7, 0, 0.3, 2.2, 1.7, 0.3, 0.2); //6.2 paralela
+  cilindro(2.2, 1.7, 0.3, 2.1, 2.2, 0, 0.19); //6.2 extension frontal
+  cilindro(2.2, 1.7, -0.3, 2.1, 2.2, 0, 0.19); //6.2 extension trasera
+
+  cilindro(1.7, 3.5, -1, 1.7, 3.5, 1, 0.19); //Barra Manillar
+  cilindro(1.7, 3.5, -1, 2.2, 3.7, -1, 0.19); //Manillar Izquierdo
+  cilindro(1.7, 3.5, 1, 2.2, 3.7, 1, 0.19); //Manillar Derecho
+
+  /*Sustituir por ply de sillin*/
+  cilindro(-1.25, 3, 0, -0.25, 3, 0, 0.25); //Sillin 1 
+  
+
 }
 
 void creaRuedas(){
@@ -429,7 +452,6 @@ void creaRuedas(){
 }
 
 /**
-
 Crea un fragmento de la terminacion de la estructura de una grua, 
 con centro de las bases en
 x0,y0,z0 y x1,y1,z1. Las secciones de las bases tienen tamanyo axb
