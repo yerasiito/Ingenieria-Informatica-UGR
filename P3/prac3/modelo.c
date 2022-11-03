@@ -106,16 +106,19 @@ public:
 
 //Crea los objetos que vamos a dibujar
 Ejes ejesCoordenadas;
+
 /*Practica 1*/
 // Cubo cubo(default_size);
 // Piramide piramide(default_size,default_size*2);
 // PrismaHexagonal prisma(default_size/2, default_size);
 
 /*Practica 2*/
-// Malla malla1("./plys/beethoven");
-// Malla malla2("./plys/big_dodge");
-// ObjetoRevolucion peon("./plys/perfil", 20,true, true);
-// ObjetoRevolucion fuente("./plys/miperfil", 100, true, true);
+Malla malla1("./plys/beethoven");
+Malla malla2("./plys/big_dodge");
+ObjetoRevolucion peon("./plys/perfil", 20,true, true);
+ObjetoRevolucion fuente("./plys/cilindro", 100, true, true);
+ObjetoRevolucion cilindroR("./plys/cilindro", 20, true, true);
+
 
 /*Practica 3*/
 
@@ -211,13 +214,16 @@ void Dibuja (void)
   
   glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, revolucion2);
   glTranslatef(8, 0, 0);
-  fuente.draw();
+  cilindroR.draw();
   */
   /*Dibuja objetos de la PRACTICA 3*/
-  glRotatef(roty, 0, 1, 0);
-  creaCuerpoBici();
-  creaRuedas();
 
+  creaCuerpoBici();
+  float biciC[4] = { 1.0, 1.0, 1.0, 1};
+  // creaRuedas();
+  glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, biciC);
+  glEnable(GL_NORMALIZE);
+  cilindroR.draw();
   glPopMatrix();
   
   glutSwapBuffers ();		// Intercambia el buffer de dibujo y visualizacion

@@ -104,13 +104,13 @@ ObjetoRevolucion::ObjetoRevolucion(const char *nombre_archivo, int nrevol, bool 
 
   void ObjetoRevolucion::crear_tapas(bool tapa_sup, bool tapa_inf){
     if(tapa_inf){
-      std::vector<float> ver_inf = {0, vertices[1], 0};
+      std::vector<float> ver_inf = {0.001, vertices[1], 0};
       vertices.insert(vertices.begin(), ver_inf.begin(), ver_inf.end());
       m++;
     }
 
     if(tapa_sup){
-      std::vector<float> ver_sup = {0, vertices[m*3-2], 0};
+      std::vector<float> ver_sup = {0.001, vertices[m*3-2], 0};
       vertices.insert(vertices.end(), ver_sup.begin(), ver_sup.end());
       m++;
     }

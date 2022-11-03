@@ -1,15 +1,15 @@
 /*
 
 	Informática Gráfica					Curso 2022-23
-	
+
 	Dpto. Lenguajes y Sistemas Informaticos
 	E.T.S.I. Informaica
 	Univ. de Granada
-	
+
 	J.C. Torres
 
         Modulo de creacion de elementos geometricos para gruas. Creado a partir del código de las práacticas de CAD (https://lsi2.ugr.es/~cad/).
-	 
+
 */
 
 // Nota: Los acentos han sido suprimidos en la documentacion por compatibilidad
@@ -19,11 +19,14 @@
 #include <stdlib.h>
 #include <math.h>
 #include <GL/glut.h>
+#include "objetoRevolucion.h"
 
+
+// ObjetoRevolucion cilindroR("./plys/cilindro", 100, true, true);
 /**
  Seccion de los perfiles para la estructura
 **/
-#define seccion 0.1 
+#define seccion 0.1
 
 /**
 Calcula el modulo del vector (x,y,z)
@@ -35,18 +38,18 @@ return sqrt(x*x+y*y+z*z);
 }
 
 
-/** 
+/**
 
 Construye un paralelepipedo alineado con los ejes de
 dimension a x b x m. El objeto se construye en el semiespacio y>=0, con el origen en el
-centro de la base. 
+centro de la base.
 
 **/
 void caja( float a, float b, float m)
 
 {
 	float x,y,z;
-	
+
 	x= a/2;
 	z= m/2;
 	y = b;
@@ -103,8 +106,15 @@ Crea un paralepipedo con sombreado de cilindro con las bases en
 x0,y0,z0 y x1,y1,z1, y radio de la base a.
 
 **/
-void cilindro(float x0, float y0, float z0, 
-		    float x1, float y1, float z1, 
+void miCilindro(float x0, float y0, float z0,
+		    float x1, float y1, float z1,
+		    float a)
+{
+	// cilindroR.draw();
+}
+
+void cilindro(float x0, float y0, float z0,
+		    float x1, float y1, float z1,
 		    float a)
 {
 float a2,m;
@@ -119,27 +129,27 @@ glPushMatrix();
 
    /* Caras transversales */
    glBegin( GL_QUAD_STRIP );{
-      glNormal3f( 1.0, 0.0, -1.0 );  
-      
+      glNormal3f( 1.0, 0.0, -1.0 );
+
       glVertex3f(  a2, m, -a2 );
       glVertex3f(  a2, 0, -a2 );
 
-     glNormal3f( -1.0, 0.0, -1.0 );  
- 
+     glNormal3f( -1.0, 0.0, -1.0 );
+
       glVertex3f( -a2, m, -a2 );
       glVertex3f( -a2, 0, -a2 );
 
-     glNormal3f( -1.0, 0.0, 1.0 );    
+     glNormal3f( -1.0, 0.0, 1.0 );
 
       glVertex3f( -a2, m, a2 );
       glVertex3f( -a2, 0, a2 );
-      
-    glNormal3f( 1.0, 0.0, 1.0 );      
-    
+
+    glNormal3f( 1.0, 0.0, 1.0 );
+
       glVertex3f(  a2, m, a2 );
       glVertex3f(  a2, 0, a2 );
 
-     glNormal3f( 1.0, 0.0, -1.0 );      
+     glNormal3f( 1.0, 0.0, -1.0 );
 
       glVertex3f(  a2, m, -a2 );
       glVertex3f(  a2, 0, -a2 );  }
@@ -162,20 +172,20 @@ glPushMatrix();
       glVertex3f(  a2, 0,  a2 );
       glVertex3f( -a2, 0,  a2 ); }
    glEnd();
-	
+
 glPopMatrix();
 
-}	
+}
 
 
 /**
 
-Crea una  piramide cuadrada con apariencia de cono con 
+Crea una  piramide cuadrada con apariencia de cono con
 x0,y0,z0 y x1,y1,z1, y radio de la base a.
 
 **/
-void cono(float x0, float y0, float z0, 
-          float x1, float y1, float z1, 
+void cono(float x0, float y0, float z0,
+          float x1, float y1, float z1,
           float a)
 {
 float a2,m,norma,n1,n2;
@@ -194,27 +204,27 @@ glPushMatrix();
 
    /* Caras transversales */
    glBegin( GL_QUAD_STRIP );{
-      glNormal3f( n2, n1, -n2 );  
-      
+      glNormal3f( n2, n1, -n2 );
+
       glVertex3f(  0, m, 0 );
       glVertex3f(  a2, 0, -a2 );
 
-     glNormal3f( -n2, n1, -n2 );  
- 
+     glNormal3f( -n2, n1, -n2 );
+
       glVertex3f( 0, m, 0 );
       glVertex3f( -a2, 0, -a2 );
 
-     glNormal3f( -n2, n1, n2 );    
+     glNormal3f( -n2, n1, n2 );
 
       glVertex3f( 0, m,0 );
       glVertex3f( -a2, 0, a2 );
-      
-    glNormal3f( n2, n1, n2 );      
-    
+
+    glNormal3f( n2, n1, n2 );
+
       glVertex3f(  0, m, 0 );
       glVertex3f(  a2, 0, a2 );
 
-     glNormal3f( n2, n1, -n2 );      
+     glNormal3f( n2, n1, -n2 );
 
       glVertex3f(  0, m, 0 );
       glVertex3f(  a2, 0, -a2 );  }
@@ -229,10 +239,10 @@ glPushMatrix();
       glVertex3f(  a2, 0,  a2 );
       glVertex3f( -a2, 0,  a2 ); }
    glEnd();
-	
+
 glPopMatrix();
 
-}	
+}
 
 
 
@@ -242,8 +252,8 @@ Crea un paralelepipedo con centro de las bases en
 x0,y0,z0 y x1,y1,z1, y tamanyo de la base axb.
 
 **/
-void paralelepipedo(float x0, float y0, float z0, 
-		    float x1, float y1, float z1, 
+void paralelepipedo(float x0, float y0, float z0,
+		    float x1, float y1, float z1,
 		    float a, float b)
 {
 float m;
@@ -255,7 +265,7 @@ glPushMatrix();
 	glRotatef(180.0*atan2((y1-y0),sqrt((x1-x0)*(x1-x0)+(z1-z0)*(z1-z0)))/M_PI-90,0.0,0.0,1.0);
 	caja(a,m,b);
 glPopMatrix();
-}	
+}
 
 
 /**
@@ -264,10 +274,10 @@ x0,y0,z0 y x1,y1,z1. Las secciones de las bases tienen tamanyo axb
 n es el numero de niveles que tiene la estructura.
 
 Los perfiles tienen seccion cuadrada, dada por el parametro seccion.
-	
+
 Para crear la estructura se utiliza el procedimiento paralelepipedo.
 **/
-void creaEstructura(float x0, float y0, float z0, 
+void creaEstructura(float x0, float y0, float z0,
 		    float x1, float y1, float z1, float a, float b, int n)
 
 {
@@ -297,7 +307,7 @@ for(i=0;i<n;++i)
 	paralelepipedo( a2,y,-b2, a2,y, b2,seccion,seccion);
 	paralelepipedo( a2,y, b2,-a2,y, b2,seccion,seccion);
 	paralelepipedo(-a2,y, b2,-a2,y,-b2,seccion,seccion);
-	
+
 	// Barras oblicuas
 	if(i%2) {
 		paralelepipedo(-a2,y,-b2, a2,y+e,-b2,seccion,seccion);
@@ -309,19 +319,19 @@ for(i=0;i<n;++i)
 		paralelepipedo( a2,y,-b2,-a2,y+e,-b2,seccion,seccion);
 		paralelepipedo( a2,y, b2, a2,y+e,-b2,seccion,seccion);
 		paralelepipedo(-a2,y, b2, a2,y+e, b2,seccion,seccion);
-		paralelepipedo(-a2,y,-b2,-a2,y+e, b2,seccion,seccion);	
+		paralelepipedo(-a2,y,-b2,-a2,y+e, b2,seccion,seccion);
 	}
-			
+
 	// Barras verticales
 	paralelepipedo(-a2,y,-b2,-a2,y+e,-b2,seccion,seccion);
 	paralelepipedo( a2,y,-b2, a2,y+e,-b2,seccion,seccion);
 	paralelepipedo(-a2,y, b2,-a2,y+e, b2,seccion,seccion);
 	paralelepipedo( a2,y, b2, a2,y+e, b2,seccion,seccion);
-	
+
 	// Siguiente nivel
 	y=y+e;
 	}
-	
+
 // Barras horizontales de terminacion
 paralelepipedo(-a2,y,-b2, a2,y,-b2,seccion,seccion);
 paralelepipedo( a2,y,-b2, a2,y, b2,seccion,seccion);
@@ -332,17 +342,17 @@ glPopMatrix();
 }
 
 /**
-Crea un fragmento del brazo de una grua, con centro una de las aristas 
+Crea un fragmento del brazo de una grua, con centro una de las aristas
 de cada extremos en
 x0,y0,z0 y x1,y1,z1. Los lados de las bases tienen tamanyo a,
 n es el numero de tramos.
 
 Los perfiles tienen seccion triangular
-	
+
 Para crear la estructura se utiliza el procedimiento paralelepipedo.
 **/
 
-void creaBrazo(float x0, float y0, float z0, 
+void creaBrazo(float x0, float y0, float z0,
 		    float x1, float y1, float z1, float a, int n)
 
 {
@@ -382,7 +392,7 @@ for(i=1;i<n;++i)
 	paralelepipedo( 0, y,-a2, 0,y, a2,seccion,seccion);
 	paralelepipedo( 0, y, a2,-b,y, 0,seccion,seccion);
 	paralelepipedo(-b, y, 0,  0,y,-a2,seccion,seccion);
-	
+
 	// Barras oblicuas
 	if(i%2) {
 		paralelepipedo( 0, y,-a2, 0,y+e, a2,seccion,seccion);
@@ -398,11 +408,11 @@ for(i=1;i<n;++i)
 	paralelepipedo(0,y,-a2,0,y+e,-a2,seccion,seccion);
 	paralelepipedo( 0,y,a2, 0,y+e,a2,seccion,seccion);
 	paralelepipedo(  -b,y, 0, -b,y+e,0,seccion,seccion);
-	
+
 	// Siguiente nivel
 	y=y+e;
 	}
-	
+
 	// Barras horizontales
 	paralelepipedo( 0, y,-a2, 0,y, a2,seccion,seccion);
 	paralelepipedo( 0, y, a2,-b,y, 0,seccion,seccion);
@@ -412,35 +422,35 @@ glPopMatrix();
 }
 
 void creaCuerpoBici(){
-  cilindro(-0.5, 2, 0, 2, 2.5, 0, 0.2); //1
-  cilindro(0, 0, 0, -0.5, 2, 0, 0.21); //2.1
-  cilindro(-0.5, 2, 0, -0.75, 3, 0, 0.19); //2.2
+     miCilindro(-0.5, 2, 0, 2, 2.5, 0, 0.2); //1
+//   cilindro(0, 0, 0, -0.5, 2, 0, 0.21); //2.1
+//   cilindro(-0.5, 2, 0, -0.75, 3, 0, 0.19); //2.2
 
-  cilindro(0, 0, 0, 2.1, 2.3, 0, 0.22); //3
-  cilindro(-0.8, 1.7, -0.3, -2.15, 0.1, -0.3, 0.14); //4 
-  cilindro(-0.8, 1.7, 0.3, -2.15, 0.1, 0.3, 0.14); //4 paralela
-  cilindro(-0.8, 1.7, -0.3, -0.8, 1.7, 0.3, 0.1); //4 union superior
-  cilindro(-0.8, 1.7, 0.29, -0.5, 2.05, 0, 0.14); //4 extension frontal
-  cilindro(-0.8, 1.7, -0.29, -0.5, 2.05, 0, 0.14); //4 extension trasera
-  
-  cilindro(-2.2, 0.1, -0.3, -0.2, 0.0, -0.3, 0.15); //5
-  cilindro(-2.2, 0.1, 0.3, -0.2, 0.0, 0.3, 0.15); //5 paralela
-  cilindro(-0.26, 0.0, 0.33, 0, 0, 0, 0.14); //5 extension frontal
-  cilindro(-0.26, 0.0, -0.33, 0, 0, 0, 0.14); //5 extension trasera
+//   cilindro(0, 0, 0, 2.1, 2.3, 0, 0.22); //3
+//   cilindro(-0.8, 1.7, -0.3, -2.15, 0.1, -0.3, 0.14); //4
+//   cilindro(-0.8, 1.7, 0.3, -2.15, 0.1, 0.3, 0.14); //4 paralela
+//   cilindro(-0.8, 1.7, -0.3, -0.8, 1.7, 0.3, 0.1); //4 union superior
+//   cilindro(-0.8, 1.7, 0.29, -0.5, 2.05, 0, 0.14); //4 extension frontal
+//   cilindro(-0.8, 1.7, -0.29, -0.5, 2.05, 0, 0.14); //4 extension trasera
 
-  cilindro(2.1, 2.2, 0, 1.7, 3.5, 0, 0.21); //6.1
-  cilindro(2.7, 0, -0.3, 2.2, 1.7, -0.3, 0.2); //6.2
-  cilindro(2.7, 0, 0.3, 2.2, 1.7, 0.3, 0.2); //6.2 paralela
-  cilindro(2.2, 1.7, 0.3, 2.1, 2.2, 0, 0.19); //6.2 extension frontal
-  cilindro(2.2, 1.7, -0.3, 2.1, 2.2, 0, 0.19); //6.2 extension trasera
+//   cilindro(-2.2, 0.1, -0.3, -0.2, 0.0, -0.3, 0.15); //5
+//   cilindro(-2.2, 0.1, 0.3, -0.2, 0.0, 0.3, 0.15); //5 paralela
+//   cilindro(-0.26, 0.0, 0.33, 0, 0, 0, 0.14); //5 extension frontal
+//   cilindro(-0.26, 0.0, -0.33, 0, 0, 0, 0.14); //5 extension trasera
 
-  cilindro(1.7, 3.5, -1, 1.7, 3.5, 1, 0.19); //Barra Manillar
-  cilindro(1.7, 3.5, -1, 2.2, 3.7, -1, 0.19); //Manillar Izquierdo
-  cilindro(1.7, 3.5, 1, 2.2, 3.7, 1, 0.19); //Manillar Derecho
+//   cilindro(2.1, 2.2, 0, 1.7, 3.5, 0, 0.21); //6.1
+//   cilindro(2.7, 0, -0.3, 2.2, 1.7, -0.3, 0.2); //6.2
+//   cilindro(2.7, 0, 0.3, 2.2, 1.7, 0.3, 0.2); //6.2 paralela
+//   cilindro(2.2, 1.7, 0.3, 2.1, 2.2, 0, 0.19); //6.2 extension frontal
+//   cilindro(2.2, 1.7, -0.3, 2.1, 2.2, 0, 0.19); //6.2 extension trasera
+
+//   cilindro(1.7, 3.5, -1, 1.7, 3.5, 1, 0.19); //Barra Manillar
+//   cilindro(1.7, 3.5, -1, 2.2, 3.7, -1, 0.19); //Manillar Izquierdo
+//   cilindro(1.7, 3.5, 1, 2.2, 3.7, 1, 0.19); //Manillar Derecho
 
   /*Sustituir por ply de sillin*/
-  cilindro(-1.25, 3, 0, -0.25, 3, 0, 0.25); //Sillin 1 
-  
+//   cilindro(-1.25, 3, 0, -0.25, 3, 0, 0.25); //Sillin 1
+
 
 }
 
@@ -452,17 +462,17 @@ void creaRuedas(){
 }
 
 /**
-Crea un fragmento de la terminacion de la estructura de una grua, 
+Crea un fragmento de la terminacion de la estructura de una grua,
 con centro de las bases en
 x0,y0,z0 y x1,y1,z1. Las secciones de las bases tienen tamanyo axb
 n es el numero de niveles que tiene la estructura.
 
 Los perfiles tienen seccion cuadrada, dada por el parametro seccion.
-	
+
 Para crear la estructura se utiliza el procedimiento paralelepipedo.
 
 **/
-void creaTorre(float x0, float y0, float z0, 
+void creaTorre(float x0, float y0, float z0,
 		    float x1, float y1, float z1, float a, float b, int n)
 
 {
@@ -493,7 +503,7 @@ for(i=0;i<n;++i)
 	paralelepipedo( a2,y,-b2, a2,y, b2,seccion,seccion);
 	paralelepipedo( a2,y, b2,-a2,y, b2,seccion,seccion);
 	paralelepipedo(-a2,y, b2,-a2,y,-b2,seccion,seccion);
-	
+
 	// Barras oblicuas
 	if(i%2) {
 		paralelepipedo(-a2,y,-b2, a2-da,y+e,-b2+db,seccion,seccion);
@@ -505,21 +515,21 @@ for(i=0;i<n;++i)
 		paralelepipedo( a2,y,-b2,-a2+da,y+e,-b2+db,seccion,seccion);
 		paralelepipedo( a2,y, b2, a2-da,y+e,-b2+db,seccion,seccion);
 		paralelepipedo(-a2,y, b2, a2-da,y+e, b2-db,seccion,seccion);
-		paralelepipedo(-a2,y,-b2,-a2+da,y+e, b2-db,seccion,seccion);	
+		paralelepipedo(-a2,y,-b2,-a2+da,y+e, b2-db,seccion,seccion);
 	}
-			
+
 	// Barras verticales
 	paralelepipedo(-a2,y,-b2,-a2+da,y+e,-b2+db,seccion,seccion);
 	paralelepipedo( a2,y,-b2, a2-da,y+e,-b2+db,seccion,seccion);
 	paralelepipedo(-a2,y, b2,-a2+da,y+e, b2-db,seccion,seccion);
 	paralelepipedo( a2,y, b2, a2-da,y+e, b2-db,seccion,seccion);
-	
+
 	// Siguiente nivel
 	y=y+e;
 	a2 = a2 - da;
 	b2 = b2 -db;
 	}
-	
+
 // Barras horizontales de terminacion
 paralelepipedo(-a2,y,-b2, a2,y,-b2,seccion,seccion);
 paralelepipedo( a2,y,-b2, a2,y, b2,seccion,seccion);
@@ -547,50 +557,50 @@ glPushMatrix();
 for(i=1;i<N;++i){
 	esqueleto[i][0]*=alto;
 	esqueleto[i][1]*=alto;
-}	
-	
+}
+
 for(i=0;i<N-1;++i) {
 	glShadeModel(GL_SMOOTH);
 	glBegin( GL_QUAD_STRIP );{
-		glNormal3f( normal[i][0],  normal[i][1], 0.0 );   
+		glNormal3f( normal[i][0],  normal[i][1], 0.0 );
 	      	glVertex3f( esqueleto[i][0]+grueso,  esqueleto[i][1], 0 );
-		glNormal3f( normal[i+1][0],  normal[i+1][1], 0.0 );   
+		glNormal3f( normal[i+1][0],  normal[i+1][1], 0.0 );
 	      	glVertex3f( esqueleto[i+1][0]+grueso,  esqueleto[i+1][1], 0 );
 		glNormal3f( 0.0, normal[i][1], -normal[i][0] );
  		glVertex3f(  esqueleto[i][0],  esqueleto[i][1], -grueso);
 		glNormal3f( 0.0, normal[i+1][1], -normal[i+1][0] );
 	      	glVertex3f(  esqueleto[i+1][0],  esqueleto[i+1][1], -grueso );
-		glNormal3f( -normal[i][0], normal[i][1], 0.0 );   
+		glNormal3f( -normal[i][0], normal[i][1], 0.0 );
 	      	glVertex3f( esqueleto[i][0]-grueso,  esqueleto[i][1], 0 );
-		glNormal3f( -normal[i+1][0], normal[i+1][1], 0.0 );   
+		glNormal3f( -normal[i+1][0], normal[i+1][1], 0.0 );
 	      	glVertex3f( esqueleto[i+1][0]-grueso,  esqueleto[i+1][1], 0 );
-		glNormal3f( 0.0, normal[i][1], normal[i][0] );   
+		glNormal3f( 0.0, normal[i][1], normal[i][0] );
  		glVertex3f(  esqueleto[i][0],  esqueleto[i][1], grueso );
-		glNormal3f( 0.0, normal[i+1][1], normal[i+1][0] );   	      	
+		glNormal3f( 0.0, normal[i+1][1], normal[i+1][0] );
 		glVertex3f(  esqueleto[i+1][0],  esqueleto[i+1][1], grueso  );
-		glNormal3f( normal[i][0], normal[i][1], 0.0 );   
+		glNormal3f( normal[i][0], normal[i][1], 0.0 );
 	      	glVertex3f( esqueleto[i][0]+grueso,  esqueleto[i][1], 0 );
-		glNormal3f( normal[i+1][0], normal[i+1][1], 0.0 );   
-	      	glVertex3f( esqueleto[i+1][0]+grueso,  esqueleto[i+1][1], 0 );		
+		glNormal3f( normal[i+1][0], normal[i+1][1], 0.0 );
+	      	glVertex3f( esqueleto[i+1][0]+grueso,  esqueleto[i+1][1], 0 );
 	glEnd();}
 	}
 i=N-1;
 glBegin( GL_TRIANGLE_FAN );{
-		glNormal3f( normal[i][0],  normal[i][1], 0.0 );   
+		glNormal3f( normal[i][0],  normal[i][1], 0.0 );
 	      	glVertex3f( esqueleto[i][0],  esqueleto[i][1], 0 );
-i=N-2;	
+i=N-2;
 		glNormal3f( normal[i][0], normal[i][1], 0 );
 		glVertex3f( esqueleto[i][0]+grueso,  esqueleto[i][1], 0 );
 		glNormal3f( 0.0, normal[i][1], -normal[i][0] );
 		glVertex3f(  esqueleto[i][0],  esqueleto[i][1], -grueso );
-		glNormal3f( -normal[i][0], normal[i][1], 0.0 );   
+		glNormal3f( -normal[i][0], normal[i][1], 0.0 );
 	      	glVertex3f( esqueleto[i][0]-grueso,  esqueleto[i][1], 0 );
-		glNormal3f( 0.0, normal[i][1], normal[i][0] );   
+		glNormal3f( 0.0, normal[i][1], normal[i][0] );
  		glVertex3f(  esqueleto[i][0],  esqueleto[i][1], grueso );
-		glNormal3f( normal[i][0], normal[i][1], 0.0 );   
+		glNormal3f( normal[i][0], normal[i][1], 0.0 );
 	      	glVertex3f( esqueleto[i][0]+grueso,  esqueleto[i][1], 0 );
 	glEnd();}
-	
+
 glPopMatrix();
 glShadeModel(GL_FLAT);
 }
