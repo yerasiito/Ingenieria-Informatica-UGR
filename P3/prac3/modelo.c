@@ -113,12 +113,10 @@ Ejes ejesCoordenadas;
 // PrismaHexagonal prisma(default_size/2, default_size);
 
 /*Practica 2*/
-Malla malla1("./plys/beethoven");
-Malla malla2("./plys/big_dodge");
-ObjetoRevolucion peon("./plys/perfil", 20,true, true);
-ObjetoRevolucion fuente("./plys/cilindro", 100, true, true);
-ObjetoRevolucion cilindroR("./plys/cilindro", 20, true, true);
-
+// Malla malla1("./plys/beethoven");
+// Malla malla2("./plys/big_dodge");
+// ObjetoRevolucion peon("./plys/perfil", 20,true, true);
+// ObjetoRevolucion fuente("./plys/fuente", 100, true, true);
 
 /*Practica 3*/
 
@@ -214,16 +212,15 @@ void Dibuja (void)
   
   glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, revolucion2);
   glTranslatef(8, 0, 0);
-  cilindroR.draw();
+  fuente.draw();
   */
   /*Dibuja objetos de la PRACTICA 3*/
 
-  creaCuerpoBici();
   float biciC[4] = { 1.0, 1.0, 1.0, 1};
-  // creaRuedas();
   glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, biciC);
-  glEnable(GL_NORMALIZE);
-  cilindroR.draw();
+  creaCuerpoBici();
+  // creaRuedas();
+
   glPopMatrix();
   
   glutSwapBuffers ();		// Intercambia el buffer de dibujo y visualizacion
