@@ -24,6 +24,7 @@
 
 
 ObjetoRevolucion pieza("./plys/cilindro", 32, true, true);
+ObjetoRevolucion rueda("./plys/rueda",32, false, false);
 /**
  Seccion de los perfiles para la estructura
 **/
@@ -71,16 +72,16 @@ void creaCuerpoBici(){
   cilindro(-0.5, 2, 0, -0.75, 3, 0, 0.19); //2.2
 
   cilindro(0, 0, 0, 2.1, 2.3, 0, 0.22); //3
-  cilindro(-0.8, 1.7, -0.3, -2.15, 0.1, -0.3, 0.14); //4
-  cilindro(-0.8, 1.7, 0.3, -2.15, 0.1, 0.3, 0.14); //4 paralela
-  cilindro(-0.8, 1.7, -0.3, -0.8, 1.7, 0.3, 0.1); //4 union superior
-  cilindro(-0.8, 1.7, 0.29, -0.5, 2.05, 0, 0.14); //4 extension frontal
-  cilindro(-0.8, 1.7, -0.29, -0.5, 2.05, 0, 0.14); //4 extension trasera
+  cilindro(-2.13, 0.1, -0.3, -0.8, 1.7, -0.3, 0.2, 0.1); //4
+  cilindro(-2.13, 0.1, 0.3, -0.8, 1.7, 0.3, 0.2, 0.1); //4 paralela
+  cilindro(-0.8, 1.7, -0.3, -0.8, 1.7, 0.3, 0.2, 0.1); //4 union superior
+  cilindro(-0.8, 1.7, 0.3, -0.5, 2.05, 0, 0.2, 0.1); //4 extension frontal
+  cilindro(-0.8, 1.7, -0.3, -0.5, 2.05, 0, 0.2, 0.1); //4 extension trasera
 
-  cilindro(-2.2, 0.1, -0.3, -0.2, 0.0, -0.3, 0.15); //5
-  cilindro(-2.2, 0.1, 0.3, -0.2, 0.0, 0.3, 0.15); //5 paralela
-  cilindro(-0.26, 0.0, 0.33, 0, 0, 0, 0.14); //5 extension frontal
-  cilindro(-0.26, 0.0, -0.33, 0, 0, 0, 0.14); //5 extension trasera
+  cilindro(-2.2, 0.1, -0.3, -0.2, 0.0, -0.3, 0.14); //5
+  cilindro(-2.2, 0.1, 0.3, -0.2, 0.0, 0.3, 0.14); //5 paralela
+  cilindro(-0.26, 0.0, 0.3, 0, 0, 0, 0.15); //5 extension frontal
+  cilindro(-0.26, 0.0, -0.3, 0, 0, 0, 0.15); //5 extension trasera
 
   cilindro(2.1, 2.2, 0, 1.7, 3.5, 0, 0.21); //6.1
   cilindro(2.7, 0, -0.3, 2.2, 1.7, -0.3, 0.2); //6.2
@@ -99,8 +100,10 @@ void creaCuerpoBici(){
 }
 
 void creaRuedas(){
-  glTranslatef(-2, 0, 0);
-  glutSolidTorus(0.1, 1.6, 24, 32);
-  glTranslatef(4.5, 0, 0);
-  glutSolidTorus(0.1, 1.6, 24, 32);
+  glEnable(GL_NORMALIZE);
+  rueda.draw();
+  // glTranslatef(-2, 0, 0);
+  // glutSolidTorus(0.1, 1.6, 24, 32);
+  // glTranslatef(4.5, 0, 0);
+  // glutSolidTorus(0.1, 1.6, 24, 32);
 }

@@ -167,10 +167,10 @@ void especial (int k, int x, int y)
 	rotyCamara += 360;
       break;
     case GLUT_KEY_PAGE_DOWN:	// acerca la cámara
-      dCamara -= 1;
+      dCamara -= 0.5;
       break;
     case GLUT_KEY_PAGE_UP:	// aleja la cámara
-      dCamara += 1;
+      dCamara += 0.5;
       break;
     default:
       return;
