@@ -67,48 +67,55 @@ void cilindro(float x0, float y0, float z0,
 }
 
 void creaCuerpoBici(){
-  cilindro(-0.5, 2, 0, 2, 2.5, 0, 0.21); //1
-  cilindro(0, 0, 0, -0.5, 2, 0, 0.21); //2.1
-  cilindro(-0.5, 2, 0, -0.75, 3, 0, 0.19); //2.2
+  cilindro(-0.75, 2, 0, 1.75, 2.5, 0, 0.21); //1
+  cilindro(-0.25, 0, 0, -0.75, 2, 0, 0.21); //2.1
+  cilindro(-0.75, 2, 0, -1.0, 3, 0, 0.19); //2.2
 
-  cilindro(0, 0, 0.0, 2.1, 2.3, 0, 0.22); //3
-  cilindro(-2.13, 0.0, -0.3, -0.8, 1.7, -0.3, 0.2, 0.1); //4
-  cilindro(-2.13, 0.0, 0.3, -0.8, 1.7, 0.3, 0.2, 0.1); //4 paralela
-  cilindro(-0.8, 1.7, -0.3, -0.8, 1.7, 0.3, 0.2, 0.1); //4 union superior
-  cilindro(-0.82, 1.68, 0.3, -0.5, 2.05, 0, 0.2, 0.1); //4 extension frontal
-  cilindro(-0.82, 1.68, -0.3, -0.5, 2.05, 0, 0.2, 0.1); //4 extension trasera
+  cilindro(-0.25, 0.0, 0.0, 1.85, 2.3, 0, 0.22); //3
+  cilindro(-2.45, 0.0, -0.45, -2.45, 0.0, 0.45, 0.2); //4 union rueda izquierda
+  cilindro(-2.45, 0.0, 0.3, -2.45, 0.0, 0.25, 0.5); //4 platillo delantero
+  cilindro(-2.45, 0.0, -0.3, -2.45, 0.0, -0.25, 0.5); //4 platillo delantero
+  cilindro(-2.43, 0.0, -0.3, -1.05, 1.7, -0.3, 0.2, 0.1); //4
+  cilindro(-2.43, 0.0, 0.3, -1.05, 1.7, 0.3, 0.2, 0.1); //4 paralela
+  cilindro(-1.05, 1.7, -0.3, -1.05, 1.7, 0.3, 0.2, 0.1); //4 union superior
+  cilindro(-1.07, 1.68, 0.3, -0.75, 2.05, 0, 0.2, 0.1); //4 extension frontal
+  cilindro(-1.07, 1.68, -0.3, -0.75, 2.05, 0, 0.2, 0.1); //4 extension trasera
 
-  cilindro(-2.2, 0.0, -0.3, -0.2, 0.0, -0.3, 0.14); //5
-  cilindro(-2.2, 0.0, 0.3, -0.2, 0.0, 0.3, 0.14); //5 paralela
-  cilindro(-0.26, 0.0, 0.3, 0, 0, 0, 0.15); //5 extension frontal
-  cilindro(-0.26, 0.0, -0.3, 0, 0, 0, 0.15); //5 extension trasera
+  cilindro(-2.5, 0.0, -0.3, -0.45, 0.0, -0.3, 0.14); //5
+  cilindro(-2.5, 0.0, 0.3, -0.45, 0.0, 0.3, 0.14); //5 paralela
+  cilindro(-0.51, 0.0, 0.3, -0.35, 0, 0, 0.15); //5 extension frontal
+  cilindro(-0.51, 0.0, -0.3, -0.35, 0, 0, 0.15); //5 extension trasera
 
-  cilindro(2.1, 2.2, 0, 1.7, 3.5, 0, 0.21); //6.1
-  cilindro(2.7, 0, -0.3, 2.2, 1.7, -0.3, 0.2); //6.2
-  cilindro(2.7, 0, 0.3, 2.2, 1.7, 0.3, 0.2); //6.2 paralela
-  cilindro(2.7, 0.0, 0.3, 2.7, 0.0, -0.3, 0.2); //6.2 union
+  cilindro(1.85, 2.2, 0, 1.45, 3.5, 0, 0.21); //6.1
+  cilindro(2.45, 0, -0.3, 1.95, 1.7, -0.3, 0.2); //6.2
+  cilindro(2.45, 0, 0.3, 1.95, 1.7, 0.3, 0.2); //6.2 paralela
+  cilindro(2.45, 0.0, 0.45, 2.45, 0.0, -0.45, 0.2); //6.2 union rueda derecha
+    cilindro(2.45, 0.0, 0.3, 2.45, 0.0, 0.25, 0.5); //6 platillo delantero
+  cilindro(2.45, 0.0, -0.3, 2.45, 0.0, -0.25, 0.5); //6 platillo delantero
   
-  cilindro(2.2, 1.7, 0.3, 2.1, 2.2, 0, 0.19); //6.2 extension frontal
-  cilindro(2.2, 1.7, -0.3, 2.1, 2.2, 0, 0.19); //6.2 extension trasera
+  cilindro(1.95, 1.7, 0.3, 1.85, 2.2, 0, 0.19); //6.2 extension frontal
+  cilindro(1.95, 1.7, -0.3, 1.85, 2.2, 0, 0.19); //6.2 extension trasera
 
-  cilindro(1.7, 3.5, -1, 1.7, 3.5, 1, 0.19); //Barra Manillar
-  cilindro(1.7, 3.5, -1, 2.2, 3.7, -1, 0.19); //Manillar Izquierdo
-  cilindro(1.7, 3.5, 1, 2.2, 3.7, 1, 0.19); //Manillar Derecho
+  cilindro(1.45, 3.5, -1.0, 1.45, 3.5, 1, 0.19); //Barra Manillar
+  cilindro(1.45, 3.5, -1.0, 1.95, 3.7, -1, 0.19); //Manillar Izquierdo
+  cilindro(1.45, 3.5, 1.0, 1.95, 3.7, 1, 0.19); //Manillar Derecho
 
   /*Sustituir por ply de sillin*/
-  cilindro(-1.25, 3, 0, -0.25, 3, 0, 0.25); //Sillin 1
+  cilindro(-1.5, 3, 0, -0.5, 3, 0, 0.25); //Sillin 1
 
 
 }
 
-void creaRuedas(float pos_rI, float pos_rD, float escala){
+void creaRuedas(float escala, float grosor){
   glEnable(GL_NORMALIZE);
+  float pos_rI = -escala - escala/2 - 0.2*grosor;
+  float pos_rD = escala + escala/2 + 0.2*grosor;
 
   //Rueda izquierda
   glPushMatrix();
   glRotatef(90, 1, 0, 0);
   glTranslatef(pos_rI, 0, 0);
-  glScalef(escala, escala, escala);
+  glScalef(escala, grosor, escala);
   rueda.draw();
   glPopMatrix();
 
@@ -116,7 +123,7 @@ void creaRuedas(float pos_rI, float pos_rD, float escala){
   glPushMatrix();
   glRotatef(90, 1, 0, 0);
   glTranslatef(pos_rD, 0, 0);
-  glScalef(escala, escala, escala);
+  glScalef(escala, grosor, escala);
   rueda.draw();
   glPopMatrix();
 
@@ -145,4 +152,5 @@ void creaRuedas(float pos_rI, float pos_rD, float escala){
     cilindro(x/7, y/7, 0.3, x, y, 0.0, 0.05);
   }
   glPopMatrix();
+
 }

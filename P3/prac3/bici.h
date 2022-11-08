@@ -38,7 +38,7 @@ void creaCuerpoBici();
 /**
  * Experimental function to create bike wheels
 */
-void creaRuedas(float pos_r1, float pos_r2, float escala);
+void creaRuedas(float escala, float grosor);
 
 #endif
 
