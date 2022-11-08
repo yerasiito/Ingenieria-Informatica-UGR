@@ -218,8 +218,8 @@ void Dibuja (void)
 
   float biciC[4] = { 1.0, 1.0, 1.0, 1};
   glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, biciC);
-  // creaCuerpoBici();
-  creaRuedas();
+  creaCuerpoBici();
+  creaRuedas(-2.2, 2.7, 1.5);
 
   glPopMatrix();
   
