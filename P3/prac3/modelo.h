@@ -30,6 +30,8 @@
 #ifndef MODELO_H
 #define MODELO_H
 
+void entradaTecladoBici(unsigned char letra);
+
 /**
 	Funcion de redibujado. Se ejecuta con los eventos postRedisplay
 **/

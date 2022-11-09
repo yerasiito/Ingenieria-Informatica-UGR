@@ -37,7 +37,12 @@ class ObjetoRevolucion:public Malla
   public:
     int n; //Numero de revoluciones
     int m; //Numero de vertices del perfil inicial
-
+  
+  /**
+   * Constructor vacio
+  */
+  ObjetoRevolucion();
+  
   /**
    * @brief Constructor con parametros
    * @param nombre_archivo Lee los vertices del perfil con este nombre

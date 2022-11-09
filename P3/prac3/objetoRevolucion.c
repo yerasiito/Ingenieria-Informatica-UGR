@@ -33,6 +33,8 @@
 #include "objetoRevolucion.h"
 #include <iostream>
 
+ObjetoRevolucion::ObjetoRevolucion(){};
+
 ObjetoRevolucion::ObjetoRevolucion(const char *nombre_archivo, int nrevol, bool tapa_sup, bool tapa_inf){
     
     ply::read_vertices(nombre_archivo, vertices);

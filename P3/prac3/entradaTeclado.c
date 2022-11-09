@@ -33,8 +33,6 @@ modulo entradaTeclado.c
 #include <GL/glut.h>		// Libreria de utilidades de OpenGL
 #include <iostream>
 #include "practicasIG.h"
-
-
 /** 
 
 Imprime en la consola las instrucciones del programa
@@ -57,8 +55,6 @@ void printHelp ()
   printf ("\n Escape: Salir");
   printf ("\n\n\n");
 }
-
-
 
 
 /* @teclado ---------------------------------------------------------------- */
@@ -86,7 +82,8 @@ float dCamara = 10;
 
 void letra (unsigned char k, int x, int y)
 {
-
+  entradaTecladoBici(k);
+  
   switch (k)
     {
     case 'p':

@@ -67,7 +67,8 @@
         "cinttypes": "c",
         "typeinfo": "c",
         "valarray": "c",
-        "variant": "c"
+        "variant": "c",
+        "bici.h": "c"
     },
     "C_Cpp.errorSquiggles": "Enabled"
 }

@@ -32,8 +32,23 @@ modulo modelo.c
 #include <iostream>
 #include <math.h>
 #include <GL/glut.h>		// Libreria de utilidades de OpenGL
-#include "bici.h"
 #include "practicasIG.h"
+#include "entradaTeclado.h"
+
+Bici bici(1, 1.5, 1.5, 1);
+
+void entradaTecladoBici(unsigned char letra){
+  switch(letra){
+    case 'R':
+      bici.angulo += 5;
+      if ( bici.angulo > 360) bici.angulo -=360;
+      break;
+    case 'r':
+      bici.angulo -= 5;
+      if ( bici.angulo < 0) bici.angulo +=360;
+      break;
+  }
+}
 
 //Global variables
 float default_size = 2;
@@ -119,7 +134,6 @@ Ejes ejesCoordenadas;
 // ObjetoRevolucion fuente("./plys/fuente", 100, true, true);
 
 /*Practica 3*/
-
 /**	void Dibuja( void )
 Procedimiento de dibujo del modelo. Es llamado por glut cada vez que se debe redibujar.
 **/
@@ -218,9 +232,7 @@ void Dibuja (void)
 
   float biciC[4] = { 1.0, 1.0, 1.0, 1};
   glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, biciC);
-  creaCuerpoBici();
-  creaRuedas(1.5, 1);
-  creaSistemaPedales();
+  bici.draw();  
 
   glPopMatrix();
   

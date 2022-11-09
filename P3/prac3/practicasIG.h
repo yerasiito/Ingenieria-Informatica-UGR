@@ -39,5 +39,6 @@
 #include  "prismaHexagonal.h"
 #include  "malla.h"
 #include  "objetoRevolucion.h"
+#include  "bici.h"
 
 #endif
