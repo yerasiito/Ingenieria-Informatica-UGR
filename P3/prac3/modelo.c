@@ -80,19 +80,24 @@ void entradaTecladoBici(unsigned char letra){
       bici.giro_pedales -= 5;
       bici.it--;
       break;
-    case '1':
+    case 'F':
+    case 'f':
       bici.multiplicador = 1;
       break;
-    case '2':
+    case 'G':
+    case 'g':
       bici.multiplicador = 2;
       break;
-    case '3':
+    case 'H':
+    case 'h':
       bici.multiplicador = 2.5;
       break;
-    case '4':
+    case 'J':
+    case 'j':
       bici.multiplicador = 2.75;
       break;
-    case '5':
+    case 'K':
+    case 'k':
       bici.multiplicador = 3;
       break;
   }
