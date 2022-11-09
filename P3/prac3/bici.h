@@ -52,9 +52,12 @@ class Bici:Objeto3D{
 		float llantaColor[4] = {0.69, 0.702, 0.717, 1};
 		float ruedaColor[4] = {0.305, 0.29, 0.278, 1};
 		float pedalColor[4] = {0.3, 0.3, 0.3, 1};
+		 float colorR[4] = { 1.0, 0.55, 0.0, 1};
 	public:
 		/*Parametros animacion*/
+		int multiplicador = 1;
 		float angulo = 0;
+		float avance = 0;
 
 		/**
 		 * Constructor
@@ -67,6 +70,9 @@ class Bici:Objeto3D{
 		 * Crea el cuerpo de la bicicleta: armazon, manillar, uniones de las ruedas
 		*/
 		void creaCuerpoBici();
+
+
+		void Rueda();
 
 		/**
 		 * Crea las ruedas y las llantas

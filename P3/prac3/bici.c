@@ -202,40 +202,26 @@ void Bici::creaCuerpoBici(){
 
 }
 
-void Bici::creaRuedas(){
-  glEnable(GL_NORMALIZE);
-  float pos_rTrasera = -2.45*escale;
-  float pos_rDelantera = +2.45*escale;
-
+void Bici::Rueda(){
   glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, ruedaColor);
-
-  //Rueda trasera
-  glPushMatrix();
-    glRotatef(90, 1, 0, 0);
-    glTranslatef(pos_rTrasera, 0, 0);
-    glScalef(escala_r1, grosor_r, escala_r1);
-    rueda.draw();
-  glPopMatrix();
-
   //Rueda delantera
   glPushMatrix();
     glRotatef(90, 1, 0, 0);
-    glTranslatef(pos_rDelantera, 0, 0);
     glScalef(escala_r2, grosor_r, escala_r2);
     rueda.draw();
   glPopMatrix();
 
-
   glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, llantaColor);
-
   //Llantas delantera
   glPushMatrix();
     float x,y, x1, y1, desfase = 0.15;
     int num_llantas = 24;
     float tamanio_llanta = escala_r2;
-
-    glTranslatef(pos_rDelantera, 0, 0);
+    glRotatef(3*M_PI*avance*multiplicador, 0, 0, -1);
     for(int i = 0; i <= num_llantas; i++){
+      if(i == num_llantas-1) //Resalta una de las llantas para ver que giran
+        glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, colorR);
+
       x = tamanio_llanta*cos((M_PI/(num_llantas/2))*i + desfase);
       y = tamanio_llanta*sin((M_PI/(num_llantas/2))*i + desfase);
 
@@ -245,29 +231,31 @@ void Bici::creaRuedas(){
       cilindro(x1/4.6, y1/4.6, -0.3, x, y, 0.0, 0.05);
       cilindro(x1/4.6, y1/4.6, 0.3, x, y, 0.0, 0.05);
     }
-  glPopMatrix();
 
-  //Llantas traseras
+  glPopMatrix();
+}
+
+void Bici::creaRuedas(){
+  float pos_rTrasera = -2.45*escale;
+  float pos_rDelantera = +2.45*escale;
+  
+  //Rueda trasera
   glPushMatrix();
-    tamanio_llanta = escala_r1;
     glTranslatef(pos_rTrasera, 0, 0);
-    for(int i = 0; i <= num_llantas; i++){
-      x = tamanio_llanta*cos((M_PI/(num_llantas/2))*i + desfase);
-      y = tamanio_llanta*sin((M_PI/(num_llantas/2))*i + desfase);
-
-      x1 = cos((M_PI/(num_llantas/2))*i);
-      y1 = sin((M_PI/(num_llantas/2))*i);
-
-      cilindro(x1/4.6, y1/4.6, -0.3, x, y, 0.0, 0.05);
-      cilindro(x1/4.6, y1/4.6, 0.3, x, y, 0.0, 0.05);
-    }
+    glRotatef(3*M_PI*avance*multiplicador, 0, 0, -1);
+    Rueda();
   glPopMatrix();
 
+  //Rueda delantera
+  glPushMatrix();
+    glTranslatef(pos_rDelantera, 0, 0);
+    glRotatef(3*M_PI*avance*multiplicador, 0, 0, -1);
+    Rueda();
+  glPopMatrix();
 }
 
 void Bici::pedal(float pos_x, float pos_y, float pos_z, float tam_x, float tam_y, float tam_z){
   glPushMatrix();
-    float colorR[4] = { 1.0, 0.55, 0.0, 1};
 
     glTranslatef(pos_x, pos_y, pos_z);
     glScalef(tam_x, tam_y, tam_z);
@@ -442,7 +430,8 @@ void Bici::creaSistemaPedales(){
 
 void Bici::draw(){
   //Animacion
-  glRotatef(angulo, 0, 1, 0);
+  glRotatef(angulo, 0, 1, 0); //Gira sobre si misma
+  glTranslatef(avance, 0, 0); //Se mueve hacia delante y atrás
 
   glPushMatrix();
     glScalef(escale, escale, escale); 
@@ -450,5 +439,7 @@ void Bici::draw(){
     creaSistemaPedales();
   glPopMatrix();
   
-  creaRuedas();
+  glPushMatrix();
+    creaRuedas();
+  glPopMatrix();
 }

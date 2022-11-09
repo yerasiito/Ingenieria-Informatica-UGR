@@ -47,6 +47,27 @@ void entradaTecladoBici(unsigned char letra){
       bici.angulo -= 5;
       if ( bici.angulo < 0) bici.angulo +=360;
       break;
+    case 'W':
+      bici.avance += 0.5*bici.multiplicador;
+      break;
+    case 'w':
+      bici.avance -= 0.5*bici.multiplicador;
+      break;
+    case '1':
+      bici.multiplicador = 1;
+      break;
+    case '2':
+      bici.multiplicador = 2;
+      break;
+    case '3':
+      bici.multiplicador = 3;
+      break;
+    case '4':
+      bici.multiplicador = 4;
+      break;
+    case '5':
+      bici.multiplicador = 5;
+      break;
   }
 }
 
