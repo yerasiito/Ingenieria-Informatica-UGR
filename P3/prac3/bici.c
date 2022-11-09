@@ -32,6 +32,7 @@ float ruedaColor[4] = {0.305, 0.29, 0.278, 1};
 float pedalColor[4] = {0.3, 0.3, 0.3, 1};
 
 Malla sillin("./plys/sillin");
+Malla cierre("./plys/cierre");
 ObjetoRevolucion pieza("./plys/cilindro", 32, true, true);
 ObjetoRevolucion rueda("./plys/rueda",32, false, false);
 /**
@@ -191,6 +192,7 @@ void creaCuerpoBici(){
 
   glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, sillinColor);
   sillin.draw();
+  cierre.draw();
 
   glPopMatrix();
 }
