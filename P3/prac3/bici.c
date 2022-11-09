@@ -308,7 +308,9 @@ void Bici::creaSistemaPedales(){
 
   //Brazos pedales
   glPushMatrix();
-
+    glTranslatef(-0.25,0,0);
+    glRotatef(giro_pedales, 0, 0, 1);
+    glTranslatef(0.25, 0.0, 0.0);
     cilindro(-0.25, 0.0, -0.8, -0.25, 0.0, 0.8, 0.2); //Conexion pedales y cuerpo
 
     cilindro(-0.25, 0.0, 0.75, 0.75, 0.0, 0.75, 0.2, 0.1); //Brazo pedal frontal Izquierda
@@ -322,12 +324,16 @@ void Bici::creaSistemaPedales(){
 
   glPopMatrix();
   
-  //Pedales
-  pedal(0.75, 0, 1.05, 0.5, 0.5, 0.5);
+  // //Pedales
+  glPushMatrix();
+    glTranslatef( sin((M_PI/(180/5))*it + M_PI/2), -cos((M_PI/(180/5))*it + M_PI/2), 0);
+    pedal(-0.25, 0, 1.05, 0.5, 0.5, 0.5);
+  glPopMatrix();
   
   glPushMatrix(); 
     glRotatef(180, 1, 0, 0); 
-    pedal(-1.25, 0, 1.05, 0.5, 0.5, 0.5);
+    glTranslatef( sin(M_PI/(180/5)*it - M_PI/2), cos(M_PI/(180/5)*it - M_PI/2), 0);
+    pedal(-0.25, 0, 1.05, 0.5, 0.5, 0.5);
   glPopMatrix();
 
   //Piñones traseros

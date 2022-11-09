@@ -49,11 +49,17 @@ void entradaTecladoBici(unsigned char letra){
       break;
     case 'W':
       bici.avance += 0.5*bici.multiplicador;
-      bici.rota_rueda = 2*M_PI*bici.avance*bici.multiplicador;      
+      bici.rota_rueda = 2*M_PI*bici.avance*bici.multiplicador;   
+      bici.giro_pedales -= 5; 
+      bici.it--;  
+      bici.numero_rotacion_pedales = 180/(5*bici.multiplicador);
       break;
     case 'w':
       bici.avance -= 0.5*bici.multiplicador;
       bici.rota_rueda = 2*M_PI*bici.avance*bici.multiplicador;
+      bici.giro_pedales += 5;
+      bici.it++;
+      bici.numero_rotacion_pedales = 180/(5*bici.multiplicador);
       break;
     case 'T':
       if(bici.altura_sillin >= 1) bici.altura_sillin = 1;
@@ -63,17 +69,27 @@ void entradaTecladoBici(unsigned char letra){
       if(bici.altura_sillin <= -0.5) bici.altura_sillin = -0.5;
       else bici.altura_sillin -= 0.1;
       break;
+    case 'D':
+      bici.numero_rotacion_pedales = 180/(5*bici.multiplicador);
+      bici.giro_pedales += 5;
+      bici.it++;
+      break;
+    case 'd':
+      bici.numero_rotacion_pedales = 180/(5*bici.multiplicador);
+      bici.giro_pedales -= 5;
+      bici.it--;
+      break;
     case '1':
       bici.multiplicador = 1;
       break;
     case '2':
-      bici.multiplicador = 1.5;
-      break;
-    case '3':
       bici.multiplicador = 2;
       break;
-    case '4':
+    case '3':
       bici.multiplicador = 2.5;
+      break;
+    case '4':
+      bici.multiplicador = 2.75;
       break;
     case '5':
       bici.multiplicador = 3;

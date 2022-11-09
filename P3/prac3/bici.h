@@ -60,6 +60,9 @@ class Bici:Objeto3D{
 		float avance = 0;
 		float rota_rueda = 0;
 		float altura_sillin = 0;
+		float giro_pedales = 0;
+		float numero_rotacion_pedales = 36; //180 entre 5(arbitrario)
+		int it = 0;
 
 		/**
 		 * Constructor
