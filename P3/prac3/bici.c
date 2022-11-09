@@ -22,6 +22,7 @@
 #include <iostream>
 #include "objetoRevolucion.h"
 
+float defaultColor[4] = {1, 1, 1, 1};
 float cuerpoColor[4] = {1, 0.2, 0.2, 1};
 float sillinColor[4] = {0.1, 0.1, 0.1, 1};
 
@@ -32,7 +33,6 @@ float ruedaColor[4] = {0.305, 0.29, 0.278, 1};
 float pedalColor[4] = {0.3, 0.3, 0.3, 1};
 
 Malla sillin("./plys/sillin");
-Malla cierre("./plys/cierre");
 ObjetoRevolucion pieza("./plys/cilindro", 32, true, true);
 ObjetoRevolucion rueda("./plys/rueda",32, false, false);
 /**
@@ -149,30 +149,40 @@ void creaCuerpoBici(){
   glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, cuerpoColor);
 
   glPushMatrix();
+  glTranslatef(-0.87,2.5,0);
+  glRotatef(15, 0, 0, 1);
+  glScalef(0.11,1,0.11);
+  rueda.draw();
+  glPopMatrix();
+
+  glPushMatrix();
+
   cilindro(-0.75, 2, 0, 1.75, 2.5, 0, 0.21); //1
   cilindro(-0.25, 0, 0, -0.75, 2, 0, 0.21); //2.1
   cilindro(-0.75, 2, 0, -1.0, 3, 0, 0.19); //2.2
 
   cilindro(-0.25, 0.0, 0.0, 1.85, 2.3, 0, 0.22); //3
-  cilindro(-2.43, 0.0, -0.3, -1.05, 1.7, -0.3, 0.2, 0.1); //4
-  cilindro(-2.43, 0.0, 0.3, -1.05, 1.7, 0.3, 0.2, 0.1); //4 paralela
+  cilindro(-2.43, 0.0, -0.75, -1.05, 1.7, -0.3, 0.2, 0.1); //4
+  cilindro(-2.43, 0.0, 0.65, -1.05, 1.7, 0.3, 0.2, 0.1); //4 paralela
   cilindro(-1.05, 1.7, -0.3, -1.05, 1.7, 0.3, 0.2, 0.1); //4 union superior
   cilindro(-1.07, 1.68, 0.3, -0.75, 2.05, 0, 0.2, 0.1); //4 extension frontal
   cilindro(-1.07, 1.68, -0.3, -0.75, 2.05, 0, 0.2, 0.1); //4 extension trasera
 
-  cilindro(-2.5, 0.0, -0.3, -0.45, 0.0, -0.3, 0.14); //5
-  cilindro(-2.5, 0.0, 0.3, -0.45, 0.0, 0.3, 0.14); //5 paralela
+  cilindro(-2.4, 0.0, -0.7, -0.45, 0.0, -0.3, 0.14); //5
+  cilindro(-2.4, 0.0, 0.65, -0.45, 0.0, 0.3, 0.14); //5 paralela
   cilindro(-0.51, 0.0, 0.3, -0.35, 0, 0, 0.15); //5 extension frontal
   cilindro(-0.51, 0.0, -0.3, -0.35, 0, 0, 0.15); //5 extension trasera
 
-  cilindro(1.85, 2.2, 0, 1.45, 3.5, 0, 0.21); //6.1
+  cilindro(1.85, 2.2, 0.0, 1.6, 3.0, 0, 0.21); //6.1
+  cilindro(1.6, 3.0, 0.0, 1.55, 3.2, 0.0, 0.15); //6.1 extension arriba
+  cilindro(1.6, 3.0, 0.0, 2.4, 3.3, 0.0, 0.21); //Union cuerpo y manillar
   cilindro(2.45, 0, -0.3, 1.95, 1.7, -0.3, 0.2); //6.2
   cilindro(2.45, 0, 0.3, 1.95, 1.7, 0.3, 0.2); //6.2 paralela
 
   glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, metalicColor);
   cilindro(-2.45, 0.0, 0.3, -2.45, 0.0, 0.25, 0.5); //4 platillo trasero
   cilindro(-2.45, 0.0, -0.3, -2.45, 0.0, -0.25, 0.5); //4 platillo trasero
-  cilindro(-2.45, 0.0, -0.45, -2.45, 0.0, 0.45, 0.2); //4 union rueda izquierda
+  cilindro(-2.45, 0.0, -0.805, -2.45, 0.0, 0.705, 0.15); //4 union rueda izquierda
   cilindro(2.45, 0.0, 0.3, 2.45, 0.0, 0.25, 0.5); //6 platillo delantero
   cilindro(2.45, 0.0, -0.3, 2.45, 0.0, -0.25, 0.5); //6 platillo delantero
   cilindro(2.45, 0.0, 0.45, 2.45, 0.0, -0.45, 0.2); //6.2 union rueda derecha
@@ -182,9 +192,9 @@ void creaCuerpoBici(){
   cilindro(1.95, 1.7, -0.3, 1.85, 2.2, 0, 0.19); //6.2 extension trasera
 
   glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, sillinColor);
-  cilindro(1.45, 3.5, -1.0, 1.45, 3.5, 1, 0.19); //Barra Manillar
-  cilindro(1.45, 3.5, -1.0, 1.95, 3.7, -1, 0.19); //Manillar Izquierdo
-  cilindro(1.45, 3.5, 1.0, 1.95, 3.7, 1, 0.19); //Manillar Derecho
+  cilindro(2.4, 3.3, -1.0, 2.4, 3.3, 1, 0.19); //Barra Manillar
+  cilindro(2.4, 3.3, -1.0, 2.8, 3.5, -1, 0.19); //Manillar Izquierdo
+  cilindro(2.4, 3.3, 1.0, 2.8, 3.5, 1, 0.19); //Manillar Derecho
 
   /*Sustituir por ply de sillin*/
   glTranslatef(-1, 3, 0);
@@ -192,7 +202,10 @@ void creaCuerpoBici(){
 
   glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, sillinColor);
   sillin.draw();
-  cierre.draw();
+
+  glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, cuerpoColor);
+
+  glTranslatef(0, 0.0, 2.0);
 
   glPopMatrix();
 }
@@ -226,13 +239,13 @@ void creaRuedas(float escala, float grosor){
   glPushMatrix();
   float x,y, desfase = 0.15;
   int num_llantas = 24;
-  float tamaño_llanta = 1*escala;
+  float tamanio_llanta = 1*escala;
 
   //Llantas delantera
   glTranslatef(pos_rD, 0, 0);
   for(int i = 0; i <= num_llantas; i++){
-    x = tamaño_llanta*cos((M_PI/(num_llantas/2))*i + desfase);
-    y = tamaño_llanta*sin((M_PI/(num_llantas/2))*i + desfase);
+    x = tamanio_llanta*cos((M_PI/(num_llantas/2))*i + desfase);
+    y = tamanio_llanta*sin((M_PI/(num_llantas/2))*i + desfase);
     cilindro(x/7, y/7, -0.3, x, y, 0.0, 0.05);
     cilindro(x/7, y/7, 0.3, x, y, 0.0, 0.05);
   }
@@ -242,8 +255,8 @@ void creaRuedas(float escala, float grosor){
   //Llantas traseras
   glTranslatef(pos_rI, 0, 0);
   for(int i = 0; i <= num_llantas; i++){
-    x = tamaño_llanta*cos((M_PI/(num_llantas/2))*i + desfase);
-    y = tamaño_llanta*sin((M_PI/(num_llantas/2))*i + desfase);
+    x = tamanio_llanta*cos((M_PI/(num_llantas/2))*i + desfase);
+    y = tamanio_llanta*sin((M_PI/(num_llantas/2))*i + desfase);
     cilindro(x/7, y/7, -0.3, x, y, 0.0, 0.05);
     cilindro(x/7, y/7, 0.3, x, y, 0.0, 0.05);
   }
@@ -270,31 +283,96 @@ void pedal(float pos_x, float pos_y, float pos_z, float tam_x, float tam_y, floa
   caja(-0.5, 0.0, 0, -0.5, 0.0, 1.5, 0.2, 0.1); //Reflectante
 }
 
+void pinion(float tam, int num_engranajes){
+  glPushMatrix();
+  glRotatef(90, 1, 0, 0);
+  glScalef(tam, 0.7, tam);
+  rueda.draw();
+  glPopMatrix();
+
+  glPushMatrix();
+  //Crea los engranajes
+  float tamanio_engranaje = tam*0.97, x,y;
+  for(int i = 0; i <= num_engranajes; i++){
+    x = tamanio_engranaje*cos((M_PI/(num_engranajes/2))*i);
+    y = tamanio_engranaje*sin((M_PI/(num_engranajes/2))*i);
+    cilindro(1.2*x, 1.2*y, 0, x, y, 0.0, 0.1, 0.05);
+  }
+
+  glPopMatrix();
+}
+
 void creaSistemaPedales(){
   glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, metalicColor);
 
+  //Brazos pedales
   glPushMatrix();
 
-  cilindro(-0.25, 0.0, -0.6, -0.25, 0.0, 0.6, 0.2); //Conexion pedales y cuerpo
+  cilindro(-0.25, 0.0, -0.8, -0.25, 0.0, 0.8, 0.2); //Conexion pedales y cuerpo
 
-  cilindro(-0.25, 0.0, 0.55, 0.75, 0.0, 0.55, 0.2, 0.1); //Brazo pedal frontal Izquierda
-  cilindro(0.75, 0.0, 0.55, 0.75, 0.0, 0.7, 0.15); //Union brazo y pedal Izquierda
+  cilindro(-0.25, 0.0, 0.75, 0.75, 0.0, 0.75, 0.2, 0.1); //Brazo pedal frontal Izquierda
+  cilindro(0.75, 0.0, 0.75, 0.75, 0.0, 1.0, 0.15); //Union brazo y pedal Izquierda
 
   glTranslatef(-0.5,0,0);
   glRotatef(180, 0, 1, 0);
 
-  cilindro(-0.25, 0.0, 0.55, 0.75, 0.0, 0.55, 0.2, 0.1); //Brazo pedal frontal Derecha
-  cilindro(0.75, 0.0, 0.55, 0.75, 0.0, 0.7, 0.15); //Union brazo y pedal Derecha
+  cilindro(-0.25, 0.0, 0.75, 0.75, 0.0, 0.75, 0.2, 0.1); //Brazo pedal frontal Derecha
+  cilindro(0.75, 0.0, 0.75, 0.75, 0.0, 1.0, 0.15); //Union brazo y pedal Derecha
 
   glPopMatrix();
   
+  //Pedales
   glPushMatrix();
-  pedal(0.75, 0, 0.75, 0.5, 0.5, 0.5);
+  pedal(0.75, 0, 1.05, 0.5, 0.5, 0.5);
   glPopMatrix();
   
   glPushMatrix(); 
   glRotatef(180, 1, 0, 0); 
-  pedal(-1.25, 0, 0.75, 0.5, 0.5, 0.5);
+  pedal(-1.25, 0, 1.05, 0.5, 0.5, 0.5);
   glPopMatrix();
 
+  //Piñones traseros
+  glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, defaultColor);
+  
+  glPushMatrix();
+  glTranslatef(-0.25, 0.0, -0.6);  
+  glScalef(0.5, 0.5, 0.5);
+  
+  pinion(1, 36);
+  glTranslatef(0, 0, 0.15);
+  pinion(0.75, 24);
+  glTranslatef(0, 0, 0.15);
+  pinion(0.5, 16);
+
+  float x,y;
+  int num_llantas = 6;
+  float tamanio_llanta = 1;
+
+  for(int i = 0; i <= num_llantas; i++){
+    x = tamanio_llanta*cos((M_PI/(num_llantas/2))*i);
+    y = tamanio_llanta*sin((M_PI/(num_llantas/2))*i);
+    cilindro(x/9, y/9, -0.3, x, y, -0.3, 0.5, 0.1);
+  }
+  glPopMatrix();
+
+
+  //Piñones delanteros
+  glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, defaultColor);
+  
+  glPushMatrix();
+  glTranslatef(-2.45, 0.0, -0.65);  
+  glScalef(0.5, 0.5, 0.5);
+
+
+  pinion(0.2, 24);  
+  glTranslatef(0, 0, 0.12);
+  pinion(0.3, 24);  
+  glTranslatef(0, 0, 0.12);
+  pinion(0.35, 24);  
+  glTranslatef(0, 0, 0.12);
+  pinion(0.4, 24);
+  glTranslatef(0, 0, 0.12);
+  pinion(0.5, 16);
+
+  glPopMatrix();
 }

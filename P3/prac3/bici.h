@@ -46,5 +46,7 @@ void creaRuedas(float escala, float grosor);
 */
 void creaSistemaPedales();
 
+void pinion(float tam, int num_engranajes);
+
 #endif
 
