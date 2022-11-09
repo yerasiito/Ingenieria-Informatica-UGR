@@ -203,8 +203,9 @@ void Bici::creaCuerpoBici(){
 }
 
 void Bici::Rueda(){
+  glEnable(GL_NORMALIZE);
   glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, ruedaColor);
-  //Rueda delantera
+  //Neumatico
   glPushMatrix();
     glRotatef(90, 1, 0, 0);
     glScalef(escala_r2, grosor_r, escala_r2);
@@ -212,7 +213,7 @@ void Bici::Rueda(){
   glPopMatrix();
 
   glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, llantaColor);
-  //Llantas delantera
+  // Llantas
   glPushMatrix();
     float x,y, x1, y1, desfase = 0.15;
     int num_llantas = 24;
@@ -245,7 +246,7 @@ void Bici::creaRuedas(){
     Rueda();
   glPopMatrix();
 
-  //Rueda delantera
+  // //Rueda delantera
   glPushMatrix();
     glTranslatef(pos_rDelantera, 0, 0);
     glRotatef(rota_rueda, 0, 0, -1);
@@ -306,7 +307,7 @@ void Bici::cadenas(int num_cadenas, float pendiente){
 void Bici::creaSistemaPedales(){
   glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, metalicColor);
 
-  //Brazos pedales
+  // Brazos pedales
   glPushMatrix();
     glTranslatef(-0.25,0,0);
     glRotatef(giro_pedales, 0, 0, 1);
@@ -362,7 +363,7 @@ void Bici::creaSistemaPedales(){
 
   glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, defaultColor);
   
-  //Piñones delanteros  
+  // Piñones delanteros  
   glPushMatrix();
   glTranslatef(-2.45, 0.0, -0.65);  
     glScalef(0.5, 0.5, 0.5);
@@ -379,16 +380,16 @@ void Bici::creaSistemaPedales(){
     pinion(0.5, 16);
   glPopMatrix();
 
-  //Cadenas
+  // Cadenas
   glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, sillinColor);
   
-  //Inferior
+  // Inferior
   glPushMatrix();
     glTranslatef(-2.5, -0.2, -0.58);
     cadenas(22, -0.01);
   glPopMatrix();
   
-  //Cirfunferencia piñon izquierdo
+  // Cirfunferencia piñon izquierdo
   glPushMatrix();
     glTranslatef(-0.25, 0.0, -0.58);
     int num_cadenas = 25;
@@ -407,7 +408,7 @@ void Bici::creaSistemaPedales(){
     cilindro(x1, y1, 0, x1, y1, 0.1, 0.05); //Cilindro izquierdo
   glPopMatrix();
 
-  //Cirfunferencia piñon derecho
+  // Cirfunferencia piñon derecho
   glPushMatrix();
     glTranslatef(-2.5, 0.0, -0.58);
     tamanio_penion = 0.2;
@@ -425,7 +426,7 @@ void Bici::creaSistemaPedales(){
     cilindro(x1, y1, 0, x1, y1, 0.1, 0.05); //Cilindro izquierdo
   glPopMatrix();
 
-  //Superior
+  // Superior
   glPushMatrix();
     glTranslatef(-2.5, 0.2, -0.58);
     cadenas(22, 0.01);
@@ -438,6 +439,7 @@ void Bici::draw(){
   glRotatef(angulo, 0, 1, 0); //Gira sobre si misma
   glTranslatef(avance,0,0);
 
+  //Dibujado
   glPushMatrix();
     glScalef(escale, escale, escale); 
     creaCuerpoBici();
@@ -447,4 +449,6 @@ void Bici::draw(){
   glPushMatrix();
     creaRuedas();
   glPopMatrix();
+  glEnable(GL_NORMALIZE);
+  glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, metalicColor);
 }

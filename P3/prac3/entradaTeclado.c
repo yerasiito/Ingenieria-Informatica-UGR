@@ -86,6 +86,10 @@ void letra (unsigned char k, int x, int y)
   
   switch (k)
     {
+    case 'A':
+    case 'a':
+      alternarAnimacion();
+      break;
     case 'p':
     case 'P':
       setModo(GL_POINT);

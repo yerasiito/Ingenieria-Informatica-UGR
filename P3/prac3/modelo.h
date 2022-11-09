@@ -67,6 +67,11 @@ int getSombreado();
  **/
 void invertirIluminacion();
 
+/**
+ * Funcion para activar/desactivar la iluminacion
+*/
+void alternarAnimacion();
+
 class Objeto3D { 
 public: 
 

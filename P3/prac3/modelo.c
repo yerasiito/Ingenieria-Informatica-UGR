@@ -36,6 +36,7 @@ modulo modelo.c
 #include "entradaTeclado.h"
 
 Bici bici(1, 1.5, 1.5, 1);
+bool animacion = false;
 
 void entradaTecladoBici(unsigned char letra){
   switch(letra){
@@ -128,6 +129,10 @@ void invertirIluminacion(){
   luz = !luz;
 }
 
+void alternarAnimacion(){
+  animacion = !animacion;
+}
+
 /**	void initModel()
 Inicializa el modelo y de las variables globales
 **/
@@ -190,7 +195,7 @@ void Dibuja (void)
 
   glPushMatrix ();		// Apila la transformacion geometrica actual
 
-  glClearColor (0.0, 0.0, 0.0, 1.0);	// Fija el color de fondo a negro
+  glClearColor (1.0, 1.0, 1.0, 1.0);	// Fija el color de fondo a negro
 
   glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// Inicializa el buffer de color y el Z-Buffer
   transformacionVisualizacion ();	// Carga transformacion de visualizacion
@@ -294,7 +299,35 @@ Procedimiento de fondo. Es llamado por glut cuando no hay eventos pendientes.
 **/
 void idle (int v)
 {
-  //roty+=5.0;
+  //Animacion bici
+  if(animacion){
+    static int sentido = 1, bajaSube = 1;
+
+    /*Ejecutores de animacion*/
+    //Desplazamiento
+    if(sentido == 1)
+      entradaTecladoBici('W'); //Hacia delante
+    else
+      entradaTecladoBici('w'); //Hacia atras
+
+    //Sillin
+    if(bajaSube == 1)
+      entradaTecladoBici('T');
+    else
+      entradaTecladoBici('t');
+
+    /*Disparadores de animacion*/
+    if(bici.avance >= 20)
+      sentido = -1;
+    if(bici.avance <= -20)
+      sentido = 1;
+
+    if(bici.altura_sillin >= 1)
+      bajaSube = -1;
+    if(bici.altura_sillin <= -0.5)
+      bajaSube = 1;
+
+  }
   glutPostRedisplay ();		// Redibuja
   glutTimerFunc (30, idle, 0);	// Vuelve a activarse dentro de 30 ms
 }
