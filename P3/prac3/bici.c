@@ -217,7 +217,6 @@ void Bici::Rueda(){
     float x,y, x1, y1, desfase = 0.15;
     int num_llantas = 24;
     float tamanio_llanta = escala_r2;
-    glRotatef(3*M_PI*avance*multiplicador, 0, 0, -1);
     for(int i = 0; i <= num_llantas; i++){
       if(i == num_llantas-1) //Resalta una de las llantas para ver que giran
         glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, colorR);
@@ -242,14 +241,14 @@ void Bici::creaRuedas(){
   //Rueda trasera
   glPushMatrix();
     glTranslatef(pos_rTrasera, 0, 0);
-    glRotatef(3*M_PI*avance*multiplicador, 0, 0, -1);
+    glRotatef(rota_rueda, 0, 0, -1);
     Rueda();
   glPopMatrix();
 
   //Rueda delantera
   glPushMatrix();
     glTranslatef(pos_rDelantera, 0, 0);
-    glRotatef(3*M_PI*avance*multiplicador, 0, 0, -1);
+    glRotatef(rota_rueda, 0, 0, -1);
     Rueda();
   glPopMatrix();
 }
@@ -431,7 +430,7 @@ void Bici::creaSistemaPedales(){
 void Bici::draw(){
   //Animacion
   glRotatef(angulo, 0, 1, 0); //Gira sobre si misma
-  glTranslatef(avance, 0, 0); //Se mueve hacia delante y atrás
+  glTranslatef(avance,0,0);
 
   glPushMatrix();
     glScalef(escale, escale, escale); 

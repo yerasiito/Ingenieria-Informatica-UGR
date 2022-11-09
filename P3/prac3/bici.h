@@ -58,6 +58,7 @@ class Bici:Objeto3D{
 		int multiplicador = 1;
 		float angulo = 0;
 		float avance = 0;
+		float rota_rueda = 0;
 
 		/**
 		 * Constructor

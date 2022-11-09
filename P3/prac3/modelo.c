@@ -49,24 +49,28 @@ void entradaTecladoBici(unsigned char letra){
       break;
     case 'W':
       bici.avance += 0.5*bici.multiplicador;
+      
+      bici.rota_rueda = 2*M_PI*bici.avance*bici.multiplicador;      
       break;
     case 'w':
       bici.avance -= 0.5*bici.multiplicador;
+
+      bici.rota_rueda = 2*M_PI*bici.avance*bici.multiplicador;
       break;
     case '1':
       bici.multiplicador = 1;
       break;
     case '2':
-      bici.multiplicador = 2;
+      bici.multiplicador = 1.5;
       break;
     case '3':
-      bici.multiplicador = 3;
+      bici.multiplicador = 2;
       break;
     case '4':
-      bici.multiplicador = 4;
+      bici.multiplicador = 2.5;
       break;
     case '5':
-      bici.multiplicador = 5;
+      bici.multiplicador = 3;
       break;
   }
 }
