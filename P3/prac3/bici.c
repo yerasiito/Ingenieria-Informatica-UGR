@@ -284,6 +284,7 @@ void pedal(float pos_x, float pos_y, float pos_z, float tam_x, float tam_y, floa
 }
 
 void pinion(float tam, int num_engranajes){
+  //Disco del piñon
   glPushMatrix();
   glRotatef(90, 1, 0, 0);
   glScalef(tam, 0.7, tam);
@@ -297,6 +298,18 @@ void pinion(float tam, int num_engranajes){
     x = tamanio_engranaje*cos((M_PI/(num_engranajes/2))*i);
     y = tamanio_engranaje*sin((M_PI/(num_engranajes/2))*i);
     cilindro(1.2*x, 1.2*y, 0, x, y, 0.0, 0.1, 0.05);
+  }
+
+  glPopMatrix();
+}
+
+void cadenas(int num_cadenas, float pendiente){
+  glPushMatrix();
+  for(int i = 0; i <= num_cadenas; i++){
+    cilindro(0, 0, 0.01, 0.1, pendiente, 0.01, 0.05, 0.02); //Extension trasera
+    cilindro(0, 0, 0.09, 0.1, pendiente, 0.09, 0.05, 0.01); //Extension delantera
+    cilindro(0, 0, 0, 0, 0, 0.1, 0.05); //Cilindro izquierdo
+    glTranslatef(0.1, pendiente, 0);
   }
 
   glPopMatrix();
@@ -375,4 +388,57 @@ void creaSistemaPedales(){
   pinion(0.5, 16);
 
   glPopMatrix();
+
+  //Cadenas
+  glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, sillinColor);
+  
+  //Inferior
+  glPushMatrix();
+  glTranslatef(-2.5, -0.2, -0.58);
+  cadenas(22, -0.01);
+  glPopMatrix();
+  
+  //Cirfunferencia piñon izquierdo
+  glPushMatrix();
+  glTranslatef(-0.25, 0.0, -0.58);
+  int num_cadenas = 25;
+  float tamanio_penion = 0.43;
+  float x1,y1;
+  for(int i = -num_cadenas/4; i < num_cadenas/4; i++){
+    x = tamanio_penion*cos(M_PI/(num_cadenas/2)*i);
+    y = tamanio_penion*sin(M_PI/(num_cadenas/2)*i);
+
+    x1 = tamanio_penion*cos(M_PI/(num_cadenas/2)*(i+1));
+    y1 = tamanio_penion*sin(M_PI/(num_cadenas/2)*(i+1));
+    cilindro(x, y, 0.01, x1, y1, 0.01, 0.02); //Extension trasera
+    cilindro(x, y, 0.09, x1, y1, 0.09, 0.05, 0.01); //Extension delantera
+    cilindro(x, y, 0, x, y, 0.1, 0.05); //Cilindro izquierdo
+  }
+  cilindro(x1, y1, 0, x1, y1, 0.1, 0.05); //Cilindro izquierdo
+  glPopMatrix();
+
+  //Cirfunferencia piñon derecho
+  glPushMatrix();
+  glTranslatef(-2.5, 0.0, -0.58);
+  tamanio_penion = 0.2;
+  num_cadenas = 20;
+  for(int i = num_cadenas/4; i < 3*num_cadenas/4; i++){
+    x = tamanio_penion*cos(M_PI/(num_cadenas/2)*i);
+    y = tamanio_penion*sin(M_PI/(num_cadenas/2)*i);
+
+    x1 = tamanio_penion*cos(M_PI/(num_cadenas/2)*(i+1));
+    y1 = tamanio_penion*sin(M_PI/(num_cadenas/2)*(i+1));
+    cilindro(x, y, 0.01, x1, y1, 0.01, 0.02); //Extension trasera
+    cilindro(x, y, 0.09, x1, y1, 0.09, 0.05, 0.01); //Extension delantera
+    cilindro(x, y, 0, x, y, 0.1, 0.05); //Cilindro izquierdo
+  }
+  cilindro(x1, y1, 0, x1, y1, 0.1, 0.05); //Cilindro izquierdo
+  glPopMatrix();
+
+  //Superior
+  glPushMatrix();
+  glTranslatef(-2.5, 0.2, -0.58);
+  cadenas(22, 0.01);
+  glPopMatrix();
+
 }

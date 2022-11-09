@@ -218,7 +218,6 @@ void Dibuja (void)
 
   float biciC[4] = { 1.0, 1.0, 1.0, 1};
   glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, biciC);
-  glTranslatef(0.25,0,0);
   creaCuerpoBici();
   creaRuedas(1.5, 1);
   creaSistemaPedales();
