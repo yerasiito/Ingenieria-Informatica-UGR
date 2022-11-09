@@ -59,6 +59,7 @@ class Bici:Objeto3D{
 		float angulo = 0;
 		float avance = 0;
 		float rota_rueda = 0;
+		float altura_sillin = 0;
 
 		/**
 		 * Constructor

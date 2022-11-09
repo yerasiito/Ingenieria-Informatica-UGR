@@ -49,13 +49,19 @@ void entradaTecladoBici(unsigned char letra){
       break;
     case 'W':
       bici.avance += 0.5*bici.multiplicador;
-      
       bici.rota_rueda = 2*M_PI*bici.avance*bici.multiplicador;      
       break;
     case 'w':
       bici.avance -= 0.5*bici.multiplicador;
-
       bici.rota_rueda = 2*M_PI*bici.avance*bici.multiplicador;
+      break;
+    case 'T':
+      if(bici.altura_sillin >= 1) bici.altura_sillin = 1;
+      else bici.altura_sillin += 0.1;
+      break;
+    case 't':
+      if(bici.altura_sillin <= -0.5) bici.altura_sillin = -0.5;
+      else bici.altura_sillin -= 0.1;
       break;
     case '1':
       bici.multiplicador = 1;

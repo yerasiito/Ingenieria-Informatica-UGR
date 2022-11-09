@@ -146,7 +146,6 @@ void Bici::creaCuerpoBici(){
   glPushMatrix();
     cilindro(-0.75, 2, 0, 1.75, 2.5, 0, 0.21); //1
     cilindro(-0.25, 0, 0, -0.75, 2, 0, 0.21); //2.1
-    cilindro(-0.75, 2, 0, -1.0, 3, 0, 0.19); //2.2
 
     cilindro(-0.25, 0.0, 0.0, 1.85, 2.3, 0, 0.22); //3
     cilindro(-2.43, 0.0, -0.75, -1.05, 1.7, -0.3, 0.2, 0.1); //4
@@ -183,10 +182,11 @@ void Bici::creaCuerpoBici(){
     cilindro(2.4, 3.3, -1.0, 2.8, 3.5, -1, 0.19); //Manillar Izquierdo
     cilindro(2.4, 3.3, 1.0, 2.8, 3.5, 1, 0.19); //Manillar Derecho
 
-    /*Sustituir por ply de sillin*/
-    glTranslatef(-1, 3, 0);
-    glScalef(1, 1, 1);
-
+    
+    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, cuerpoColor);
+    cilindro(-0.75, 2, 0, -0.875, 2.5, 0, 0.19); //2.1
+    cilindro(-0.875, 2.5, 0, -1.0-altura_sillin/4, 3+altura_sillin, 0, 0.19); //Mango sillin. Relacion x/y 1/4
+    glTranslatef(-1-altura_sillin/4, 3+altura_sillin, 0);
     glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, sillinColor);
     sillin.draw();
   glPopMatrix();
