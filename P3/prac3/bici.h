@@ -31,14 +31,20 @@ void cilindro(float x0, float y0, float z0,
 // =========================== creaEstructura ==========================================
 
 /**
- * Experimental function to create the bike structure
+ * Crea el cuerpo de la bicicleta: armazon, manillar, uniones de las ruedas
 */
 void creaCuerpoBici();
 
 /**
- * Experimental function to create bike wheels
+ * Crea las ruedas y las llantas
 */
 void creaRuedas(float escala, float grosor);
+
+
+/**
+ * Crea los piñones y los pedales
+*/
+void creaSistemaPedales();
 
 #endif
 
