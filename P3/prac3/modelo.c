@@ -81,10 +81,10 @@ void entradaTecladoBici(unsigned char letra){
       bici.it--;
       break;
     case 'N':
-      bici.rota_rueda += 2*M_PI*1*bici.multiplicador; 
+      bici.rota_rueda -= 2*M_PI*1*bici.multiplicador; 
       break;
     case 'n':
-      bici.rota_rueda -= 2*M_PI*1*bici.multiplicador; 
+      bici.rota_rueda += 2*M_PI*1*bici.multiplicador; 
       break;
     case 'F':
     case 'f':

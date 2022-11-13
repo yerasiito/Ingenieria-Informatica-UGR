@@ -114,35 +114,43 @@ void Malla::normales_vertices(){
 }
 
 void Malla::draw_caras(){
-  glShadeModel(GL_FLAT);
-  glBegin(GL_TRIANGLES);
-  {
-    for(size_t i = 0; i < caras.size(); i+=3){
-      int iv = caras[i]*3;
-      int iv1 = caras[i+1]*3;
-      int iv2 = caras[i+2]*3;
+  glPushMatrix();
+    glScalef(1,1,1.5);
 
-      glNormal3f(normales_c[i], normales_c[i+1], normales_c[i+2]);
+    glShadeModel(GL_FLAT);
+    glBegin(GL_TRIANGLES);
+    {
+      for(size_t i = 0; i < caras.size(); i+=3){
+        int iv = caras[i]*3;
+        int iv1 = caras[i+1]*3;
+        int iv2 = caras[i+2]*3;
 
-      glVertex3f(vertices[iv], vertices[iv+1], vertices[iv+2]);
-      glVertex3f(vertices[iv1], vertices[iv1+1], vertices[iv1+2]); 
-      glVertex3f(vertices[iv2], vertices[iv2+1], vertices[iv2+2]);
+        glNormal3f(normales_c[i], normales_c[i+1], normales_c[i+2]);
+
+        glVertex3f(vertices[iv], vertices[iv+1], vertices[iv+2]);
+        glVertex3f(vertices[iv1], vertices[iv1+1], vertices[iv1+2]); 
+        glVertex3f(vertices[iv2], vertices[iv2+1], vertices[iv2+2]);
+      }
     }
-  }
-  glEnd();
+    glEnd();
+  glPopMatrix();
 }
 
 void Malla::draw_vertices(){
-  glShadeModel(GL_SMOOTH);
-  glBegin(GL_TRIANGLES);
-  {
-    for(size_t i = 0; i < caras.size(); i++){
-      int iv = caras[i]*3;
-      glNormal3f(normales_v[iv], normales_v[iv+1], normales_v[iv+2]);
-      glVertex3f(vertices[iv], vertices[iv+1], vertices[iv+2]);
+  glPushMatrix();
+    glScalef(1,1,1.5);
+
+    glShadeModel(GL_SMOOTH);
+    glBegin(GL_TRIANGLES);
+    {
+      for(size_t i = 0; i < caras.size(); i++){
+        int iv = caras[i]*3;
+        glNormal3f(normales_v[iv], normales_v[iv+1], normales_v[iv+2]);
+        glVertex3f(vertices[iv], vertices[iv+1], vertices[iv+2]);
+      }
     }
-  }
-  glEnd();
+    glEnd();
+  glPopMatrix();
 }
 
 void Malla::draw(){

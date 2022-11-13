@@ -137,28 +137,28 @@ void Dibuja (void)
   glTranslatef(default_size*1.5, 0, 0);
   piramide.draw();
 
-  //Figura extra 1 (toroide)
-  glTranslatef(default_size*3, 0, default_size/2);
-  glRotatef(90, 1, 0, 0);
+  // //Figura extra 1 (toroide)
+  // glTranslatef(default_size*3, 0, default_size/2);
+  // glRotatef(90, 1, 0, 0);
 
-  glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, color3);
-  glColor3f (color3[0], color3[1], color3[2]);
-  glutSolidTorus(default_size/2, default_size, 24, 32);
-  glRotatef(-90, 1, 0, 0);
+  // glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, color3);
+  // glColor3f (color3[0], color3[1], color3[2]);
+  // glutSolidTorus(default_size/2, default_size, 24, 32);
+  // glRotatef(-90, 1, 0, 0);
 
-  //Figura extra 2 (cono)
-  glTranslatef(-4*default_size, 0, 2*default_size);
-  glRotatef(-90, 1, 0, 0);
+  // //Figura extra 2 (cono)
+  // glTranslatef(-4*default_size, 0, 2*default_size);
+  // glRotatef(-90, 1, 0, 0);
 
-  glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, color4);
-  glColor3f (color4[0], color4[1], color4[2]);
-  glutSolidCone(default_size,default_size,24,20);
+  // glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, color4);
+  // glColor3f (color4[0], color4[1], color4[2]);
+  // glutSolidCone(default_size,default_size,24,20);
 
-  glRotatef(90, 1, 0, 0);
+  // glRotatef(90, 1, 0, 0);
 
-  //Figura extra 3 (prisma base hexagonal)
-  glTranslatef(default_size*1.5, 0, -default_size/2);
-  prisma.draw();
+  // //Figura extra 3 (prisma base hexagonal)
+  // glTranslatef(default_size*1.5, 0, -default_size/2);
+  // prisma.draw();
 
   glPopMatrix();
   
