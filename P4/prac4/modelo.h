@@ -74,8 +74,7 @@ void alternarAnimacion();
 
 class Objeto3D { 
 public: 
-
-virtual void draw( ) = 0; // Dibuja el objeto
-} ; 
+	virtual void draw( ) = 0; // Dibuja el objeto
+	} ; 
 
 #endif

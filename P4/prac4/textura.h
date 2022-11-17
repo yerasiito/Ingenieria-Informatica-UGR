@@ -4,7 +4,7 @@
  	
 	Codigo base para la realización de las practicas de IG
 	
-	Estudiante: Yeray Lopez Ramirez 
+	Estudiante: Yeray Lopez Ramirez
 
 =======================================================
 	G. Arroyo, J.C. Torres 
@@ -22,25 +22,41 @@
  GNU General Public License for more details 
  http://www.gnu.org/copyleft/gpl.html
 
-=======================================================
+=======================================================/
+	modulo textura.h
 
-	practicasIG.h
 */
-#ifndef PRACTICASIG_H
-#define PRACTICASIG_H
 
-#include  "modelo.h"
-#include  "mouse.h"
-#include  "entradaTeclado.h"
-#include  "visual.h"
-#include  "file_ply_stl.h"
-#include  "cubo.h"
-#include  "piramide.h"
-#include  "prismaHexagonal.h"
-#include  "malla.h"
-#include  "objetoRevolucion.h"
-#include  "bici.h"
-#include  "textura.h"
-#include  "lector-jpg.h"
+#ifndef TEXTURA_H
+#define TEXTURA_H
+
+#include <vector>
+#include "modelo.h"
+
+class Textura{
+  public:
+  //private:
+    GLuint* texId;
+	  unsigned anchoT, altoT;
+    unsigned char *data;
+    const char *image;
+          
+  public:
+    /****************CONSTRUCTORES****************/
+    /**
+     * @brief Constructor por defecto, necesario para compilar las clases heredadas 
+    */
+    Textura();
+
+    /**
+     * @brief Constructor con parametro. Lee el fichero dado e introduce los valores en las variables de la clase
+     * @param nombre_archivo el nombre del archivo a leer
+    */
+    Textura(const char *nombre_archivo);
+
+    void activar();
+
+    unsigned char * leerPixels()  ;
+};
 
 #endif

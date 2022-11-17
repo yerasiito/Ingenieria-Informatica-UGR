@@ -40,6 +40,13 @@ Malla::Malla(const char *nombre_archivo){
   normales_vertices();
 }
 
+Malla::Malla(const char *nombre_archivo, const char *archivo_textura){
+  ply::read(nombre_archivo, vertices, caras);
+  setTextura(archivo_textura);
+  normales_caras();
+  normales_vertices();
+}
+
 void Malla::setMatAmbient(GLfloat new_ambient[4]){
   mat_ambient[0] = new_ambient[0];
   mat_ambient[1] = new_ambient[1];
@@ -194,8 +201,20 @@ void Malla::draw_vertices(){
 }
 
 void Malla::draw(){
+  if(textura != nullptr){
+		glEnable(GL_TEXTURE_2D);
+		textura->activar();
+	}
+
   if(getSombreado() == GL_FLAT)
     draw_caras();
   else if(getSombreado() == GL_SMOOTH)
     draw_vertices();
+
+  glDisable(GL_TEXTURE_2D);
+}
+
+void Malla::setTextura(const char *archivo)
+{
+  *textura = Textura(archivo);
 }

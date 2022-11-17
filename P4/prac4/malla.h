@@ -31,6 +31,7 @@
 #define MALLA_H
 
 #include <vector>
+#include "textura.h"
 #include "modelo.h"
 
 class Malla:public Objeto3D{
@@ -40,11 +41,14 @@ class Malla:public Objeto3D{
     std::vector <int> caras;
     std::vector <float> normales_c;
     std::vector <float> normales_v;
+    std::vector <float> cordtextura;
     GLfloat mat_ambient[4] = {0.8f, 0.8f, 0.8f, 1.0f};
     GLfloat mat_diffuse[4] = {0.1f, 0.1f, 0.1f, 1.0f};
     GLfloat mat_specular[4] = {1.0f, 1.0f, 1.0f, 1.0f};
     GLfloat shininess = 100.0f;
     GLfloat mat_emission[4] = {0.0f, 0.0f, 0.0f, 1.0f};
+
+    Textura *textura = nullptr;
           
   public:
     /****************CONSTRUCTORES****************/
@@ -58,6 +62,8 @@ class Malla:public Objeto3D{
      * @param nombre_archivo el nombre del archivo a leer
     */
     Malla(const char *nombre_archivo);
+
+    Malla(const char *nombre_archivo, const char *archivo_textura);
 
     /****************NORMALES****************/
     /**
@@ -121,6 +127,9 @@ class Malla:public Objeto3D{
      * @brief Dibuja el objeto en funcion del modo actual de dibujo
     */
     void draw();
+
+    void setTextura(const char *archivo);
+
 };
 
 #endif

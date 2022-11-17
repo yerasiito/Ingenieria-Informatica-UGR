@@ -180,6 +180,8 @@ public:
         glEnable (GL_LIGHTING);
       }
   }
+
+  void asignarTextura(){};
 }; 
 
 //Crea los objetos que vamos a dibujar
@@ -195,16 +197,16 @@ Malla malla1("./plys/beethoven");
 Malla malla2("./plys/big_dodge");
 ObjetoRevolucion peon("./plys/perfil", 20,true, true);
 ObjetoRevolucion fuente("./plys/miperfil", 100, true, true);
-
 /*Practica 4*/
 // ObjetoRevolucion lata("./plys/lata-pcue", 16, false, false);
+Malla dado("./plys/cubo", "./texturas/dado.jpg");
 
 /**	void Dibuja( void )
 Procedimiento de dibujo del modelo. Es llamado por glut cada vez que se debe redibujar.
 **/
 void Dibuja (void)
 {
-  static GLfloat pos[4] = { 0.0, 5.0, 10.0, 0.0 };	// Posicion de la fuente de luz
+  static GLfloat pos[4] = { 5.0, 5.0, 10.0, 0.0 };	// Posicion de la fuente de luz
 
   glPushMatrix ();		// Apila la transformacion geometrica actual
 
@@ -264,7 +266,7 @@ void Dibuja (void)
   glTranslatef(default_size*1.5, 0, -default_size/2);
   prisma.draw();
   */
-  /*Dibuja objetos de la PRACTICA 2*/
+  /*Dibuja objetos de la PRACTICA 4*/
   GLfloat no_mat[4] = {0.0f, 0.0f, 0.0f, 1.0f};
   GLfloat colorMalla1[4] = { 0.8, 0.2, 0.2, 1.0f};
   GLfloat colorMalla2[4] = { 0.2, 0.8, 0.2, 1.0f};
@@ -272,7 +274,6 @@ void Dibuja (void)
   float revolucionI2[4] = { 0.2, 0.2, 0.8, 1};
   
   glTranslatef(-13, 0, 0); 
-  
   //bethoween
   malla1.setMatAmbient(colorMalla1);
   malla1.setMatDiffuse(colorMalla1);
@@ -305,7 +306,10 @@ void Dibuja (void)
   fuente.setMatDiffuse(revolucion2);
   fuente.setMatEmission(revolucionI2);
   fuente.draw();
-  
+
+  //Textura
+  glTranslatef(-20,4,0);
+  dado.draw();
   /*Dibuja objetos de la PRACTICA 3*/
 
   // float biciC[4] = { 1.0, 1.0, 1.0, 1};
