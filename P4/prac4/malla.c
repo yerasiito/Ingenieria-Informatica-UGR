@@ -158,7 +158,6 @@ void Malla::normales_vertices(){
 void Malla::draw_caras(){
   glPushMatrix();
   glShadeModel(GL_FLAT);
-  setIluMat();
   glBegin(GL_TRIANGLES);
   {
     for(size_t i = 0; i < caras.size(); i+=3){
@@ -179,7 +178,6 @@ void Malla::draw_caras(){
 
 void Malla::draw_vertices(){
   glPushMatrix();
-  setIluMat();
   glShadeModel(GL_SMOOTH);
   glBegin(GL_TRIANGLES);
   {
@@ -194,6 +192,7 @@ void Malla::draw_vertices(){
 }
 
 void Malla::draw(){
+  setIluMat();
   if(getSombreado() == GL_FLAT)
     draw_caras();
   else if(getSombreado() == GL_SMOOTH)

@@ -272,43 +272,43 @@ void Dibuja (void)
   float revolucion2[4] = { 1.0, 1.0, 1.0, 1};
   float revolucionI2[4] = { 0.2, 0.2, 0.8, 1};
   
-  glTranslatef(-13, 0, 0); 
-  //bethoween
-  malla1.setMatAmbient(colorMalla1);
-  malla1.setMatDiffuse(colorMalla1);
-  malla1.setSpecularExponent(100);
-  malla1.setMatEmission(no_mat);
-  malla1.draw();
+  // glTranslatef(-13, 0, 0); 
+  // //bethoween
+  // malla1.setMatAmbient(colorMalla1);
+  // malla1.setMatDiffuse(colorMalla1);
+  // malla1.setSpecularExponent(100);
+  // malla1.setMatEmission(no_mat);
+  // malla1.draw();
 
-  glTranslatef(13, 0, 0); 
+  // glTranslatef(13, 0, 0); 
 
-  //Coche
-  //Iluminacion
-  malla2.setMatAmbient(colorMalla2);
-  malla2.setMatDiffuse(colorMalla2);
-  malla2.setSpecularExponent(100);
-  malla2.draw();
+  // //Coche
+  // //Iluminacion
+  // malla2.setMatAmbient(colorMalla2);
+  // malla2.setMatDiffuse(colorMalla2);
+  // malla2.setSpecularExponent(100);
+  // malla2.draw();
 
-  glTranslatef(11, 0, 0);
+  // glTranslatef(11, 0, 0);
   
-  //Peon
-  glPushMatrix();
-    glScalef(2, 2, 2); //Escalamos el peon
-    glEnable(GL_NORMALIZE); //Al escalar, hay que renormalizar las normales  
-    peon.draw();
-  glPopMatrix();
+  // //Peon
+  // glPushMatrix();
+  //   glScalef(2, 2, 2); //Escalamos el peon
+  //   glEnable(GL_NORMALIZE); //Al escalar, hay que renormalizar las normales  
+  //   peon.draw();
+  // glPopMatrix();
   
-  glTranslatef(8, 0, 0);
+  // glTranslatef(8, 0, 0);
 
-  //Fuente
-  fuente.setMatAmbient(revolucion2);
-  fuente.setMatDiffuse(revolucion2);
-  fuente.setMatEmission(revolucionI2);
-  fuente.draw();
+  // //Fuente
+  // fuente.setMatAmbient(revolucion2);
+  // fuente.setMatDiffuse(revolucion2);
+  // fuente.setMatEmission(revolucionI2);
+  // fuente.draw();
 
-  //Textura
+  //Dado con textura
   glEnable(GL_TEXTURE_2D);
-  glTranslatef(-20,4,0);
+  glTranslatef(-1,-1,-1);
   cubo.draw();
   glDisable(GL_TEXTURE_2D);
   /*Dibuja objetos de la PRACTICA 3*/
