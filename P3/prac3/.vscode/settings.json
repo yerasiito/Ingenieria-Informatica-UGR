@@ -68,7 +68,8 @@
         "typeinfo": "c",
         "valarray": "c",
         "variant": "c",
-        "bici.h": "c"
+        "bici.h": "c",
+        "cubo.h": "c"
     },
     "C_Cpp.errorSquiggles": "Enabled"
 }

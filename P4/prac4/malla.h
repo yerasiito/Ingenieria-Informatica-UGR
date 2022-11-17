@@ -31,7 +31,6 @@
 #define MALLA_H
 
 #include <vector>
-#include "textura.h"
 #include "modelo.h"
 
 class Malla:public Objeto3D{
@@ -48,8 +47,6 @@ class Malla:public Objeto3D{
     GLfloat shininess = 100.0f;
     GLfloat mat_emission[4] = {0.0f, 0.0f, 0.0f, 1.0f};
 
-    Textura *textura = nullptr;
-          
   public:
     /****************CONSTRUCTORES****************/
     /**
@@ -62,8 +59,6 @@ class Malla:public Objeto3D{
      * @param nombre_archivo el nombre del archivo a leer
     */
     Malla(const char *nombre_archivo);
-
-    Malla(const char *nombre_archivo, const char *archivo_textura);
 
     /****************NORMALES****************/
     /**

@@ -40,7 +40,6 @@
 #include  "malla.h"
 #include  "objetoRevolucion.h"
 #include  "bici.h"
-#include  "textura.h"
 #include  "lector-jpg.h"
 
 #endif

@@ -147,10 +147,11 @@ void alternarAnimacion(){
 /**	void initModel()
 Inicializa el modelo y de las variables globales
 **/
-void
-initModel ()
-{
+Cubo cubo(default_size, "./texturas/dado.jpg");
 
+void initModel ()
+{
+  cubo.activarTextura();
 }
 
 class Ejes:Objeto3D 
@@ -188,7 +189,6 @@ public:
 Ejes ejesCoordenadas;
 
 /*Practica 1*/
-// Cubo cubo(default_size);
 // Piramide piramide(default_size,default_size*2);
 // PrismaHexagonal prisma(default_size/2, default_size);
 
@@ -199,7 +199,6 @@ ObjetoRevolucion peon("./plys/perfil", 20,true, true);
 ObjetoRevolucion fuente("./plys/miperfil", 100, true, true);
 /*Practica 4*/
 // ObjetoRevolucion lata("./plys/lata-pcue", 16, false, false);
-Malla dado("./plys/cubo", "./texturas/dado.jpg");
 
 /**	void Dibuja( void )
 Procedimiento de dibujo del modelo. Es llamado por glut cada vez que se debe redibujar.
@@ -308,8 +307,10 @@ void Dibuja (void)
   fuente.draw();
 
   //Textura
+  glEnable(GL_TEXTURE_2D);
   glTranslatef(-20,4,0);
-  dado.draw();
+  cubo.draw();
+  glDisable(GL_TEXTURE_2D);
   /*Dibuja objetos de la PRACTICA 3*/
 
   // float biciC[4] = { 1.0, 1.0, 1.0, 1};
