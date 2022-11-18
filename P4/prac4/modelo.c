@@ -115,9 +115,15 @@ int modo = GL_FILL;
 int sombreado1 = GL_SMOOTH, sombreado2 = GL_FLAT;
 bool luz = true;
 int roty = 0;
+char modelLetra = '2';
 
 void setModo(int M){
   modo = M;
+}
+
+void setmodelLetra(char k){
+  if(k == '1' or k == '2' or k == '3' or k == '4' or k == '5')
+    modelLetra = k;
 }
 
 void invertirSombreado(){
@@ -147,11 +153,11 @@ void alternarAnimacion(){
 /**	void initModel()
 Inicializa el modelo y de las variables globales
 **/
-Cubo cubo(default_size, "./texturas/dado.jpg");
+Cubo dado(default_size, "./texturas/dado.jpg");
 
 void initModel ()
 {
-  cubo.activarTextura();
+  dado.activarTextura();
 }
 
 class Ejes:Objeto3D 
@@ -189,8 +195,9 @@ public:
 Ejes ejesCoordenadas;
 
 /*Practica 1*/
-// Piramide piramide(default_size,default_size*2);
-// PrismaHexagonal prisma(default_size/2, default_size);
+Cubo cubo(default_size);
+Piramide piramide(default_size,default_size*2);
+PrismaHexagonal prisma(default_size/2, default_size);
 
 /*Practica 2*/
 Malla malla1("./plys/beethoven");
@@ -230,97 +237,131 @@ void Dibuja (void)
   glPointSize(3);
   glPolygonMode(GL_FRONT_AND_BACK, modo);
 
-  // Dibuja el modelo (A rellenar en prácticas 1,2 y 3)          
-  
-  /*Dibuja objetos de la PRACTICA 1*/
-  /*
-  float p1Color3[4] = { 1.0, 0.0, 0, 1 };
+  //Variables P1
+  float  cuboC[4] = { 0.5, 0.0, 1, 1 };
+  float p1Color3[4] = { 1.0, 0.0, 0, 1 };  
   float p1Color4[4] = { 0.0, 1.0, 0.0, 1 };
-  
-  // Dibuja el cubo
-  cubo.draw();                
 
-  // Dibuja la pirámide
-  glTranslatef(default_size*1.5, 0, 0);
-  piramide.draw();
-
-  // Figura extra 1 (toroide)
-  glTranslatef(default_size*3, 0, default_size/2);
-  glRotatef(90, 1, 0, 0);
-
-  glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, p1Color3);
-  glutSolidTorus(default_size/2, default_size, 24, 32);
-  glRotatef(-90, 1, 0, 0);
-
-  // Figura extra 2 (cono)
-  glTranslatef(-4*default_size, 0, 2*default_size);
-  glRotatef(-90, 1, 0, 0);
-
-  glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, p1Color4);
-  glutSolidCone(default_size,default_size,24,20);
-
-  glRotatef(90, 1, 0, 0);
-
-  //Figura extra 3 (prisma base hexagonal)
-  glTranslatef(default_size*1.5, 0, -default_size/2);
-  prisma.draw();
-  */
-  /*Dibuja objetos de la PRACTICA 4*/
+  //Variables P2
   GLfloat no_mat[4] = {0.0f, 0.0f, 0.0f, 1.0f};
   GLfloat colorMalla1[4] = { 0.8, 0.2, 0.2, 1.0f};
   GLfloat colorMalla2[4] = { 0.2, 0.8, 0.2, 1.0f};
+  float peonColor[4] = { 0.1, 0.1, 0.1, 1};
   float revolucion2[4] = { 1.0, 1.0, 1.0, 1};
   float revolucionI2[4] = { 0.2, 0.2, 0.8, 1};
-  
-  // glTranslatef(-13, 0, 0); 
-  // //bethoween
-  // malla1.setMatAmbient(colorMalla1);
-  // malla1.setMatDiffuse(colorMalla1);
-  // malla1.setSpecularExponent(100);
-  // malla1.setMatEmission(no_mat);
-  // malla1.draw();
 
-  // glTranslatef(13, 0, 0); 
+  //Variables P3
 
-  // //Coche
-  // //Iluminacion
-  // malla2.setMatAmbient(colorMalla2);
-  // malla2.setMatDiffuse(colorMalla2);
-  // malla2.setSpecularExponent(100);
-  // malla2.draw();
+  // Dibuja el modelo (A rellenar en prácticas 1,2 y 3)          
+  switch(modelLetra){
+    case '1': /*Dibuja objetos de la PRACTICA 1*/
+      glPushAttrib(GL_LIGHTING_BIT);
+      glPushMatrix();
+        // Dibuja el cubo
+        glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, cuboC);
+        glColor3fv (cuboC);
+        cubo.draw();                
 
-  // glTranslatef(11, 0, 0);
-  
-  // //Peon
-  // glPushMatrix();
-  //   glScalef(2, 2, 2); //Escalamos el peon
-  //   glEnable(GL_NORMALIZE); //Al escalar, hay que renormalizar las normales  
-  //   peon.draw();
-  // glPopMatrix();
-  
-  // glTranslatef(8, 0, 0);
+        // Dibuja la pirámide
+        glTranslatef(default_size*1.5, 0, 0);
+        piramide.draw();
+      
+        // Figura extra 1 (toroide)
+        glTranslatef(default_size*3, 0, default_size/2);
+        glRotatef(90, 1, 0, 0);
 
-  // //Fuente
-  // fuente.setMatAmbient(revolucion2);
-  // fuente.setMatDiffuse(revolucion2);
-  // fuente.setMatEmission(revolucionI2);
-  // fuente.draw();
+        glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, p1Color3);
+        glColor3fv(p1Color3);
+        glutSolidTorus(default_size/2, default_size, 24, 32);
+      glPopMatrix();
+      
+      glPushMatrix();
+        // Figura extra 2 (cono)
+        glTranslatef(1, 0, 2.5*default_size);
 
-  //Dado con textura
-  glEnable(GL_TEXTURE_2D);
-  glTranslatef(-1,-1,-1);
-  cubo.draw();
-  glDisable(GL_TEXTURE_2D);
+        glRotatef(-90, 1, 0, 0);
+        glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, p1Color4);
+        glColor3fv(p1Color4);
+        glutSolidCone(default_size/2,default_size,24,20);
+      glPopMatrix();
+
+      glPushMatrix();
+        //Figura extra 3 (prisma base hexagonal)
+        glTranslatef(default_size*1.5, 0, 2*default_size);
+        prisma.draw();
+      glPopMatrix();
+
+      glPopMatrix();
+      glPopAttrib();
+      break;
+  case '2':  
+    /*Dibuja P2 con iluminacion y materiales de la P4*/
+
+    glPushAttrib(GL_LIGHTING_BIT);
+      glTranslatef(-13, 0, 0); 
+      //bethoween
+      malla1.setMatAmbient(colorMalla1);
+      malla1.setMatDiffuse(colorMalla1);
+      malla1.setSpecularExponent(100);
+      malla1.setMatEmission(no_mat);
+      malla1.draw();
+    glPopAttrib();
+
+    //Coche
+    glPushAttrib(GL_LIGHTING_BIT);
+      glTranslatef(13, 0, 0); 
+      malla2.setMatAmbient(colorMalla2);
+      malla2.setMatDiffuse(colorMalla2);
+      malla2.setSpecularExponent(100);
+      malla2.draw();
+    glPopAttrib();
+
+
+    //Peon
+    glTranslatef(11, 0, 0);    
+    glPushMatrix();
+      glScalef(2, 2, 2); //Escalamos el peon
+      glEnable(GL_NORMALIZE); //Al escalar, hay que renormalizar las normales  
+      peon.setMatAmbient(peonColor);
+      peon.draw();
+    glPopMatrix();
+    glPopAttrib();
+    
+    //Fuente
+    glPushAttrib(GL_LIGHTING_BIT);
+      glTranslatef(8, 0, 0);
+      fuente.setMatAmbient(revolucion2);
+      fuente.setMatDiffuse(revolucion2);
+      fuente.setMatEmission(revolucionI2);
+      fuente.draw();
+    glPopAttrib();
+    glPopMatrix();
+
+    break;
+  case '3':
+    glPushAttrib(GL_LIGHTING_BIT);
+      bici.draw(); 
+    glPopAttrib();
+    break;
+  case '4':
+    //Dado con textura
+    glPushAttrib(GL_LIGHTING_BIT);
+    glEnable(GL_TEXTURE_2D);
+    glTranslatef(-1,-1,-1);
+    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, revolucion2);
+    glColor3fv (revolucion2);
+    cubo.draw();
+    glPopAttrib();
+    glDisable(GL_TEXTURE_2D);
+    break;
   /*Dibuja objetos de la PRACTICA 3*/
 
-  // float biciC[4] = { 1.0, 1.0, 1.0, 1};
-  // glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, biciC);
-  // bici.draw();  
+ 
 
   /*Dibuja objetos de la PRACTICA 4*/
   // glEnable(GL_NORMALIZE);
   // lata.draw();
-
+  }
     glPopMatrix();
   
   glutSwapBuffers ();		// Intercambia el buffer de dibujo y visualizacion

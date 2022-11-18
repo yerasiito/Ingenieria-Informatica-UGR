@@ -40,44 +40,24 @@ Malla::Malla(const char *nombre_archivo){
   normales_vertices();
 }
 
-void Malla::setMatAmbient(GLfloat new_ambient[4]){
-  mat_ambient[0] = new_ambient[0];
-  mat_ambient[1] = new_ambient[1];
-  mat_ambient[2] = new_ambient[2];
-  mat_ambient[3] = new_ambient[3];
+void Malla::setMatAmbient(GLfloat mat_ambient[4]){
+  glColor3fv(mat_ambient);
+  glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient); //Iluminacion ambiente
 }
 
-void Malla::setMatDiffuse(GLfloat new_diffuse[4]){
-  mat_diffuse[0] = new_diffuse[0];
-  mat_diffuse[1] = new_diffuse[1];
-  mat_diffuse[2] = new_diffuse[2];
-  mat_diffuse[3] = new_diffuse[3];
+void Malla::setMatDiffuse(GLfloat mat_diffuse[4]){
+  glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse); //Reflexión difusa
 }
 
-void Malla::setMatSpecular(GLfloat new_specular[4]){
-  mat_specular[0] = new_specular[0];
-  mat_specular[1] = new_specular[1];
-  mat_specular[2] = new_specular[2];
-  mat_specular[3] = new_specular[3];
+void Malla::setMatSpecular(GLfloat mat_specular[4]){
+  glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular); //Reflexión especular
 }
 
 void Malla::setSpecularExponent(GLfloat e){
-  shininess = e;
+  glMaterialf(GL_FRONT, GL_SHININESS, e); //exponente especular
 }
 
-void Malla::setMatEmission(GLfloat new_emission[4]){
-  mat_emission[0] = new_emission[0];
-  mat_emission[1] = new_emission[1];
-  mat_emission[2] = new_emission[2];
-  mat_emission[3] = new_emission[3];
-}
-
-void Malla::setIluMat(){
-  glColor3fv(mat_ambient);
-  glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient); //Iluminacion ambiente
-  glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse); //Reflexión difusa
-  glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular); //Reflexión especular
-  glMaterialf(GL_FRONT, GL_SHININESS, shininess); //exponente especular
+void Malla::setMatEmission(GLfloat mat_emission[4]){
   glMaterialfv(GL_FRONT, GL_EMISSION, mat_emission); //Emisividad, por defecto es 0. (Los objetos no suelen emitir luz propia)
 }
 
@@ -192,11 +172,8 @@ void Malla::draw_vertices(){
 }
 
 void Malla::draw(){
-  setIluMat();
   if(getSombreado() == GL_FLAT)
     draw_caras();
   else if(getSombreado() == GL_SMOOTH)
     draw_vertices();
-
-  glDisable(GL_TEXTURE_2D);
 }

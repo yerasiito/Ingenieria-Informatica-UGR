@@ -38,6 +38,7 @@
   }
 
   void PrismaHexagonal::draw(){
+    glPushAttrib(GL_LIGHTING_BIT);
     //base inferior
     glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, color);
     glColor3f (color[0], color[1], color[2]);
@@ -102,4 +103,5 @@
 
     }
     glEnd();
+    glPopAttrib();
   }

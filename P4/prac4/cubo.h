@@ -36,10 +36,9 @@ class Cubo:Objeto3D
 {
    private:
       float l;
-	  GLuint *texId;
+	  GLuint texId = 500;
 	  unsigned int w, h;
 	  unsigned char *pixeles;
-      float  color[4] = { 0.5, 0.0, 1, 1 };
    public:
       Cubo(float lado=1);
 	  Cubo(float lado, const char *nombre_archivo);

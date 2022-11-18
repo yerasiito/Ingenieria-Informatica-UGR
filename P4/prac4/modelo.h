@@ -72,6 +72,11 @@ void invertirIluminacion();
 */
 void alternarAnimacion();
 
+/**
+ * Obtiene la entrada de teclado para seleccionar la practica en Dibuja de modelo
+*/
+void setmodelLetra(char k);
+
 class Objeto3D { 
 public: 
 	virtual void draw( ) = 0; // Dibuja el objeto

@@ -143,6 +143,7 @@ Bici::Bici(float escalar, float escala_rueda1, float escala_rueda2, float grosor
 
 void Bici::creaCuerpoBici(){
   glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, cuerpoColor);
+  pieza.setMatAmbient(cuerpoColor);
   glPushMatrix();
     cilindro(-0.75, 2, 0, 1.75, 2.5, 0, 0.21); //1
     cilindro(-0.25, 0, 0, -0.75, 2, 0, 0.21); //2.1
@@ -166,34 +167,44 @@ void Bici::creaCuerpoBici(){
     cilindro(2.45, 0, 0.3, 1.95, 1.7, 0.3, 0.2); //6.2 paralela
 
     glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, metalicColor);
+    pieza.setMatAmbient(metalicColor);
     cilindro(-2.45, 0.0, 0.3, -2.45, 0.0, 0.25, 0.5); //4 platillo trasero
     cilindro(-2.45, 0.0, -0.3, -2.45, 0.0, -0.25, 0.5); //4 platillo trasero
     cilindro(-2.45, 0.0, -0.805, -2.45, 0.0, 0.705, 0.15); //4 union rueda izquierda
     cilindro(2.45, 0.0, 0.3, 2.45, 0.0, 0.25, 0.5); //6 platillo delantero
     cilindro(2.45, 0.0, -0.3, 2.45, 0.0, -0.25, 0.5); //6 platillo delantero
     cilindro(2.45, 0.0, 0.45, 2.45, 0.0, -0.45, 0.2); //6.2 union rueda derecha
+
     glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, cuerpoColor);
-    
+    pieza.setMatAmbient(cuerpoColor);
     cilindro(1.95, 1.7, 0.3, 1.85, 2.2, 0, 0.19); //6.2 extension frontal
     cilindro(1.95, 1.7, -0.3, 1.85, 2.2, 0, 0.19); //6.2 extension trasera
 
     glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, sillinColor);
+    pieza.setMatAmbient(sillinColor);
+
     cilindro(2.4, 3.3, -1.0, 2.4, 3.3, 1, 0.19); //Barra Manillar
     cilindro(2.4, 3.3, -1.0, 2.8, 3.5, -1, 0.19); //Manillar Izquierdo
     cilindro(2.4, 3.3, 1.0, 2.8, 3.5, 1, 0.19); //Manillar Derecho
 
     
     glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, cuerpoColor);
+    pieza.setMatAmbient(cuerpoColor);
+
     cilindro(-0.75, 2, 0, -0.875, 2.5, 0, 0.19); //2.1
     cilindro(-0.875, 2.5, 0, -1.0-altura_sillin/4, 3+altura_sillin, 0, 0.19); //Mango sillin. Relacion x/y 1/4
     glTranslatef(-1-altura_sillin/4, 3+altura_sillin, 0);
     glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, sillinColor);
+    pieza.setMatAmbient(sillinColor);
+
     sillin.draw();
   glPopMatrix();
 
   //Añillo sillin
   glPushMatrix();
     glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, cuerpoColor);
+    rueda.setMatAmbient(cuerpoColor);
+
     glTranslatef(-0.87,2.5,0);
     glRotatef(15, 0, 0, 1);
     glScalef(0.11,1,0.11);
@@ -205,6 +216,8 @@ void Bici::creaCuerpoBici(){
 void Bici::Rueda(){
   glEnable(GL_NORMALIZE);
   glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, ruedaColor);
+  rueda.setMatAmbient(ruedaColor);
+
   //Neumatico
   glPushMatrix();
     glRotatef(90, 1, 0, 0);
@@ -213,15 +226,17 @@ void Bici::Rueda(){
   glPopMatrix();
 
   glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, llantaColor);
+  pieza.setMatAmbient(llantaColor);
   // Llantas
   glPushMatrix();
     float x,y, x1, y1, desfase = 0.15;
     int num_llantas = 24;
     float tamanio_llanta = escala_r2;
     for(int i = 0; i <= num_llantas; i++){
-      if(i == num_llantas-1) //Resalta una de las llantas para ver que giran
+      if(i == num_llantas-1){ //Resalta una de las llantas para ver que giran
         glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, colorR);
-
+        pieza.setMatAmbient(colorR);
+      }
       x = tamanio_llanta*cos((M_PI/(num_llantas/2))*i + desfase);
       y = tamanio_llanta*sin((M_PI/(num_llantas/2))*i + desfase);
 
@@ -261,6 +276,7 @@ void Bici::pedal(float pos_x, float pos_y, float pos_z, float tam_x, float tam_y
     glScalef(tam_x, tam_y, tam_z);
 
     glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, pedalColor);
+    glColor3fv(pedalColor);
     ortoedro(0, 0, 0, 0, 0, 1, 0.2); //Centro del pedal
     ortoedro(-0.4, 0, -0.1, -0.4, 0, 1.5, 0.3, 0.2); //Paralela izquierda 
     ortoedro(0.4, 0, -0.1, 0.4, 0, 1.5, 0.3, 0.2); //Paralela derecha
@@ -270,6 +286,7 @@ void Bici::pedal(float pos_x, float pos_y, float pos_z, float tam_x, float tam_y
     ortoedro(-0.5, 0, 1.5, 0.5, 0, 1.5, 0.3, 0.2); //Paralela frontal
     
     glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, colorR);
+    glColor3fv(colorR);
     ortoedro(-0.5, 0.0, 0, -0.5, 0.0, 1.5, 0.2, 0.1); //Reflectante
   glPopMatrix();
 }
@@ -306,6 +323,7 @@ void Bici::cadenas(int num_cadenas, float pendiente){
 
 void Bici::creaSistemaPedales(){
   glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, metalicColor);
+  glColor3fv(metalicColor);
 
   // Brazos pedales
   glPushMatrix();
@@ -339,6 +357,7 @@ void Bici::creaSistemaPedales(){
 
   //Piñones traseros
   glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, defaultColor);
+  glColor3fv(defaultColor);
   
   glPushMatrix();
     glTranslatef(-0.25, 0.0, -0.6);  
@@ -382,6 +401,7 @@ void Bici::creaSistemaPedales(){
 
   // Cadenas
   glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, sillinColor);
+  glColor3fv(sillinColor);
   
   // Inferior
   glPushMatrix();
@@ -449,6 +469,4 @@ void Bici::draw(){
   glPushMatrix();
     creaRuedas();
   glPopMatrix();
-  glEnable(GL_NORMALIZE);
-  glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, metalicColor);
 }

@@ -30,6 +30,7 @@
 #include <GL/glut.h>		// Libreria de utilidades de OpenGL
 #include "lector-jpg.h"
 #include "cubo.h"
+#include <iostream>
 
 Cubo::Cubo(float lado){
   l = lado;
@@ -41,10 +42,9 @@ Cubo::Cubo(float lado, const char *nombre_archivo){
 }
 
 void Cubo::activarTextura(){
-    texId = new GLuint;
-    std::cout << texId << "\n";
-    glGenTextures (1 , texId );
-    glBindTexture( GL_TEXTURE_2D , *texId );
+    texId = 10;
+    glGenTextures (1 , &texId );
+    glBindTexture( GL_TEXTURE_2D , texId );
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
@@ -57,7 +57,8 @@ void Cubo::activarTextura(){
 
 void Cubo::draw( )
 {
-glBegin(GL_QUADS);
+  glPushAttrib(GL_LIGHTING_BIT);
+  glBegin(GL_QUADS);
     // frente
     glNormal3f(0,0,1);
     glTexCoord2f(0.497f, 0.747f);   glVertex3f(0.0f, 0.0f, l);
@@ -65,35 +66,36 @@ glBegin(GL_QUADS);
     glTexCoord2f(0.7441f, 0.5f);   glVertex3f(l, l, l);
     glTexCoord2f(0.497f, 0.5f);   glVertex3f(0.0f, l, l);
     // Trasera
-    glNormal3f(0,0,1);
+    glNormal3f(0,0,-1);
     glTexCoord2f(0.25f, 0.5f);      glVertex3f(l, l, 0.0f);
     glTexCoord2f(0.25f, 0.747f);     glVertex3f(l, 0.0f, 0.0f);
     glTexCoord2f(0.00585f, 0.747f);  glVertex3f(0.0f, 0.0f, 0.0f);
     glTexCoord2f(0.00585f, 0.5f);   glVertex3f(0.0f, l, 0.0f);
     // Lateral derecha
-    glNormal3f(0,0,1);
+    glNormal3f(1,0,0);
     glTexCoord2f(0.9941f, 0.747f);     glVertex3f(l, 0.0f, 0.0f);
     glTexCoord2f(0.9941f, 0.5f);      glVertex3f(l, l, 0.0f);
     glTexCoord2f(0.7441f, 0.5f);   glVertex3f(l, l, l);
     glTexCoord2f(0.7441f, 0.747f);   glVertex3f(l, 0.0f, l);
     // Lateral izquierdo
-    glNormal3f(0,0,1);
+    glNormal3f(-1,0,0);
     glTexCoord2f(0.497f, 0.747f);   glVertex3f(0.0f, 0.0f, l);
     glTexCoord2f(0.497f, 0.5f );  glVertex3f(0.0f, l, l);
     glTexCoord2f(0.25f, 0.5f);   glVertex3f(0.0f, l, 0.0f);
     glTexCoord2f(0.25f, 0.747f);  glVertex3f(0.0f, 0.0f, 0.0f);
     // Tapa de arriba
-    glNormal3f(0,0,1);
+    glNormal3f(0,1,0);
     glTexCoord2f(0.497f, 0.5f );  glVertex3f(0.0f, l, l);
     glTexCoord2f(0.7441f, 0.5f);   glVertex3f(l, l, l);
     glTexCoord2f(0.7441f, 0.2519f);      glVertex3f(l, l, 0.0f);
     glTexCoord2f(0.497f, 0.2519f);   glVertex3f(0.0f, l, 0.0f);
     // Tapa de abajo
-    glNormal3f(0,0,1);
+    glNormal3f(0,-1,0);
     glTexCoord2f(0.7441f, 0.747f);   glVertex3f(l, 0.0f, l);
     glTexCoord2f(0.497f, 0.747f);   glVertex3f(0.0f, 0.0f, l);
     glTexCoord2f(0.497f, 0.995f);  glVertex3f(0.0f, 0.0f, 0.0f);
     glTexCoord2f(0.7441f, 0.995f);     glVertex3f(l, 0.0f, 0.0f);
 
 glEnd(); 
+glPopAttrib();
 }

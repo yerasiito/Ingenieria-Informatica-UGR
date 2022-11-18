@@ -41,12 +41,6 @@ class Malla:public Objeto3D{
     std::vector <float> normales_c;
     std::vector <float> normales_v;
     std::vector <float> cordtextura;
-    GLfloat mat_ambient[4] = {0.8f, 0.8f, 0.8f, 1.0f};
-    GLfloat mat_diffuse[4] = {0.1f, 0.1f, 0.1f, 1.0f};
-    GLfloat mat_specular[4] = {1.0f, 1.0f, 1.0f, 1.0f};
-    GLfloat shininess = 100.0f;
-    GLfloat mat_emission[4] = {0.0f, 0.0f, 0.0f, 1.0f};
-
   public:
     /****************CONSTRUCTORES****************/
     /**
@@ -102,11 +96,6 @@ class Malla:public Objeto3D{
     */
     void setMatEmission(GLfloat new_emission[4]);
     
-    /**
-     * @brief Aplica la iluminacion al material del objeto malla
-    */
-    void setIluMat();
-
     /****************FUNCIONES DRAW****************/
     /**
      * @brief Dibuja en modo caras(FLAT)
