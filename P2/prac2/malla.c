@@ -115,7 +115,6 @@ void Malla::normales_vertices(){
 
 void Malla::draw_caras(){
   glPushMatrix();
-    glScalef(1,1,1.5);
 
     glShadeModel(GL_FLAT);
     glBegin(GL_TRIANGLES);
@@ -138,7 +137,6 @@ void Malla::draw_caras(){
 
 void Malla::draw_vertices(){
   glPushMatrix();
-    glScalef(1,1,1.5);
 
     glShadeModel(GL_SMOOTH);
     glBegin(GL_TRIANGLES);

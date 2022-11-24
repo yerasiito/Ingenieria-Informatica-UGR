@@ -346,16 +346,14 @@ void Dibuja (void)
   case '4':
     //Dado con textura
     glPushAttrib(GL_LIGHTING_BIT);
-    glTranslatef(-1,-1,-1);
+    // glTranslatef(-1,-1,-1);
     glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, revolucion2);
     glColor3fv (revolucion2);
     glEnable(GL_TEXTURE_2D);
-    cubo.draw();
 
-    glTranslatef(3,0,0);
-
-    dado.draw();
-
+    // dado.draw();
+    
+    // glTranslatef(3,0,0);
 
     /*Dibuja objetos de la PRACTICA 4*/
     glEnable(GL_NORMALIZE);

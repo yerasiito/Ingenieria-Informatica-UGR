@@ -41,7 +41,7 @@ class Malla:public Objeto3D{
     std::vector <int> caras;
     std::vector <float> normales_c;
     std::vector <float> normales_v;
-    std::vector <float> coordTextura;
+    std::vector <float> coordTextura = {};
   public:
     /****************CONSTRUCTORES****************/
     /**
