@@ -68,7 +68,12 @@
         "typeinfo": "c",
         "valarray": "c",
         "variant": "c",
-        "bici.h": "c"
+        "bici.h": "c",
+        "codecvt": "c",
+        "forward_list": "c",
+        "iomanip": "c",
+        "cfenv": "c",
+        "typeindex": "c"
     },
     "C_Cpp.errorSquiggles": "Enabled"
 }

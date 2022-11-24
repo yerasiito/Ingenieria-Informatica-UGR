@@ -32,20 +32,15 @@
 
 #include "modelo.h"
 
-class Cubo:Objeto3D
+class Cubo:public Objeto3D
 {
    private:
       float l;
-	  GLuint texId = 500;
-	  unsigned int w, h;
-	  unsigned char *pixeles;
    public:
       Cubo(float lado=1);
 	  Cubo(float lado, const char *nombre_archivo);
 
       void draw();
-
-	  void activarTextura();
 };
 
 #endif

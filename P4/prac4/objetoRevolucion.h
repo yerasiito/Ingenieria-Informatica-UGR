@@ -31,6 +31,7 @@
 #define OBJETOREVOLUCION_H
 
 #include "malla.h"
+#include "lector-jpg.h"
 
 class ObjetoRevolucion:public Malla
 {
@@ -51,6 +52,10 @@ class ObjetoRevolucion:public Malla
    * @param tapa_sup True para crear la tapa inferior, false en otro caso. Por defecto true
    */
   ObjetoRevolucion(const char *nombre_archivo, int nrevol = 10, bool tapa_sup = false, bool tapa_inf = true);
+
+
+ObjetoRevolucion(const char *nombre_archivo, const char *nombre_textura, int nrevol, bool tapa_sup, bool tapa_inf);
+
 
   void crearRevolucion();
 

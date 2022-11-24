@@ -115,7 +115,7 @@ int modo = GL_FILL;
 int sombreado1 = GL_SMOOTH, sombreado2 = GL_FLAT;
 bool luz = true;
 int roty = 0;
-char modelLetra = '2';
+char modelLetra = '4';
 
 void setModo(int M){
   modo = M;
@@ -154,10 +154,11 @@ void alternarAnimacion(){
 Inicializa el modelo y de las variables globales
 **/
 Cubo dado(default_size, "./texturas/dado.jpg");
-
+ObjetoRevolucion lata("./plys/lata-pcue", "./texturas/lata.jpg", 16, false, false);
 void initModel ()
 {
   dado.activarTextura();
+  lata.activarTextura();
 }
 
 class Ejes:Objeto3D 
@@ -205,8 +206,6 @@ Malla malla2("./plys/big_dodge");
 ObjetoRevolucion peon("./plys/perfil", 20,true, true);
 ObjetoRevolucion fuente("./plys/miperfil", 100, true, true);
 /*Practica 4*/
-// ObjetoRevolucion lata("./plys/lata-pcue", 16, false, false);
-
 /**	void Dibuja( void )
 Procedimiento de dibujo del modelo. Es llamado por glut cada vez que se debe redibujar.
 **/
@@ -244,6 +243,7 @@ void Dibuja (void)
 
   //Variables P2
   GLfloat no_mat[4] = {0.0f, 0.0f, 0.0f, 1.0f};
+  GLfloat full_mat[4] = {1.0f, 1.0f, 1.0f, 1.0f};
   GLfloat colorMalla1[4] = { 0.8, 0.2, 0.2, 1.0f};
   GLfloat colorMalla2[4] = { 0.2, 0.8, 0.2, 1.0f};
   float peonColor[4] = { 0.1, 0.1, 0.1, 1};
@@ -302,6 +302,7 @@ void Dibuja (void)
       //bethoween
       malla1.setMatAmbient(colorMalla1);
       malla1.setMatDiffuse(colorMalla1);
+      malla1.setMatSpecular(full_mat);
       malla1.setSpecularExponent(100);
       malla1.setMatEmission(no_mat);
       malla1.draw();
@@ -312,7 +313,6 @@ void Dibuja (void)
       glTranslatef(13, 0, 0); 
       malla2.setMatAmbient(colorMalla2);
       malla2.setMatDiffuse(colorMalla2);
-      malla2.setSpecularExponent(100);
       malla2.draw();
     glPopAttrib();
 
@@ -351,16 +351,20 @@ void Dibuja (void)
     glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, revolucion2);
     glColor3fv (revolucion2);
     cubo.draw();
+
+    glTranslatef(3,0,0);
+
+    dado.draw();
+
+
+    /*Dibuja objetos de la PRACTICA 4*/
+    glEnable(GL_NORMALIZE);
+    lata.draw();
     glPopAttrib();
     glDisable(GL_TEXTURE_2D);
+
     break;
   /*Dibuja objetos de la PRACTICA 3*/
-
- 
-
-  /*Dibuja objetos de la PRACTICA 4*/
-  // glEnable(GL_NORMALIZE);
-  // lata.draw();
   }
     glPopMatrix();
   

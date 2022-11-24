@@ -30,12 +30,31 @@
 #include <GL/glut.h>		// Libreria de utilidades de OpenGL
 #include "malla.h"
 #include "file_ply_stl.h"
+#include "lector-jpg.h"
 #include <iostream>
 
 Malla::Malla(){}
 
 Malla::Malla(const char *nombre_archivo){
   ply::read(nombre_archivo, vertices, caras);
+  normales_caras();
+  normales_vertices();
+}
+
+void Malla::calcularMinMax(){
+  for(size_t i = 0; i < vertices.size(); i+=3){
+    minY = std::min(minY, vertices[i+1]);
+    maxY = std::max(minY, vertices[i+1]);
+  }
+}
+
+Malla::Malla(const char *nombre_archivo, const char *nombre_textura){
+  pixeles = LeerArchivoJPEG(nombre_textura, w, h);
+  ply::read(nombre_archivo, vertices, caras);
+  calcularMinMax();
+  glGenTextures (1 , &texId );
+  setcoordTextura();
+
   normales_caras();
   normales_vertices();
 }
@@ -159,11 +178,14 @@ void Malla::draw_caras(){
 void Malla::draw_vertices(){
   glPushMatrix();
   glShadeModel(GL_SMOOTH);
+  // std::cout << "Identificador: " << texId << "\n";
+	glBindTexture( GL_TEXTURE_2D , texId );
   glBegin(GL_TRIANGLES);
   {
     for(size_t i = 0; i < caras.size(); i++){
       int iv = caras[i]*3;
       glNormal3f(normales_v[iv], normales_v[iv+1], normales_v[iv+2]);
+      // glTexCoord2d(coordTextura[iv], coordTextura[iv+1]);
       glVertex3f(vertices[iv], vertices[iv+1], vertices[iv+2]);
     }
   }
@@ -176,4 +198,20 @@ void Malla::draw(){
     draw_caras();
   else if(getSombreado() == GL_SMOOTH)
     draw_vertices();
+}
+
+void Malla::setcoordTextura(){
+  float alfa,u,v;
+
+  for(size_t i = 0; i < vertices.size(); i+=3){
+    alfa = atan2(vertices[i+2], vertices[i]);
+    u = 0.5f + alfa/(2*M_PI);
+    v = (vertices[i+1] - minY)/(maxY - minY);
+    std::vector<float> coordenada = {u,v};
+    coordTextura.insert(coordTextura.end(), coordenada.begin(), coordenada.end());
+  }
+
+  // for(size_t i = 0; i < coordTextura.size(); i+=2){
+  //   std::cout << coordTextura[i] << " " << coordTextura[i+1] << "\n";
+  // }
 }

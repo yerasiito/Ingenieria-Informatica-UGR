@@ -41,22 +41,9 @@ Cubo::Cubo(float lado, const char *nombre_archivo){
   pixeles = LeerArchivoJPEG(nombre_archivo, w, h);
 }
 
-void Cubo::activarTextura(){
-    texId = 10;
-    glGenTextures (1 , &texId );
-    glBindTexture( GL_TEXTURE_2D , texId );
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-    glTexImage2D(GL_TEXTURE_2D,0, GL_RGB, w, h, 0, GL_RGB,
-    GL_UNSIGNED_BYTE, pixeles);
-}
-
 void Cubo::draw( )
 {
+  glBindTexture( GL_TEXTURE_2D , 0);
   glPushAttrib(GL_LIGHTING_BIT);
   glBegin(GL_QUADS);
     // frente

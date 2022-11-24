@@ -36,11 +36,12 @@
 class Malla:public Objeto3D{
   public:
   //private:
+    float minY, maxY;
     std::vector <float> vertices;
     std::vector <int> caras;
     std::vector <float> normales_c;
     std::vector <float> normales_v;
-    std::vector <float> cordtextura;
+    std::vector <float> coordTextura;
   public:
     /****************CONSTRUCTORES****************/
     /**
@@ -49,10 +50,15 @@ class Malla:public Objeto3D{
     Malla();
 
     /**
-     * @brief Constructor con parametro. Lee el fichero dado e introduce los valores en las variables de la clase
+     * @brief Constructor con parametro. Lee el ply e introduce los valores en las variables de la clase
      * @param nombre_archivo el nombre del archivo a leer
     */
     Malla(const char *nombre_archivo);
+
+    /**
+     * @brief Constructor con parametro. Lee el ply y la textura.
+    */
+    Malla(const char *nombre_archivo, const char *nombre_textura);
 
     /****************NORMALES****************/
     /**
@@ -112,7 +118,9 @@ class Malla:public Objeto3D{
     */
     void draw();
 
-    void setTextura(const char *archivo);
+    void setcoordTextura();
+
+    void calcularMinMax();
 
 };
 

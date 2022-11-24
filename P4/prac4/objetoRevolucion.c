@@ -48,6 +48,24 @@ ObjetoRevolucion::ObjetoRevolucion(const char *nombre_archivo, int nrevol, bool 
     normales_vertices();
   }
 
+  ObjetoRevolucion::ObjetoRevolucion(const char *nombre_archivo, const char *nombre_textura, int nrevol, bool tapa_sup, bool tapa_inf){
+    pixeles = LeerArchivoJPEG(nombre_textura, w, h);    
+    ply::read_vertices(nombre_archivo, vertices);
+
+    /*Altura min y max de y*/calcularMinMax();
+
+    m = vertices.size()/3;
+    n = nrevol;
+    
+    crear_tapas(tapa_sup, tapa_inf);
+    crearRevolucion();
+    setcoordTextura();
+
+    normales_caras();
+    normales_vertices();
+  }
+
+
   void ObjetoRevolucion::normales_vertices(){
     Malla::normales_vertices();
 
