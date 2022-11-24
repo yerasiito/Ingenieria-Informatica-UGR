@@ -43,7 +43,7 @@ Cubo::Cubo(float lado, const char *nombre_archivo){
 
 void Cubo::draw( )
 {
-  glBindTexture( GL_TEXTURE_2D , 0);
+  glBindTexture(GL_TEXTURE_2D , texId);
   glPushAttrib(GL_LIGHTING_BIT);
   glBegin(GL_QUADS);
     // frente

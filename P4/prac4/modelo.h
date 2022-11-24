@@ -86,12 +86,14 @@ public:
 
 	void activarTextura(){
 		glGenTextures (1 , &texId );
+		glBindTexture(GL_TEXTURE_2D, texId);
   		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   		glTexImage2D(GL_TEXTURE_2D,0, GL_RGB, w, h, 0, GL_RGB,
     		GL_UNSIGNED_BYTE, pixeles);
+
 	}
 
 		virtual void draw() = 0; // Dibuja el objeto

@@ -346,10 +346,10 @@ void Dibuja (void)
   case '4':
     //Dado con textura
     glPushAttrib(GL_LIGHTING_BIT);
-    glEnable(GL_TEXTURE_2D);
     glTranslatef(-1,-1,-1);
     glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, revolucion2);
     glColor3fv (revolucion2);
+    glEnable(GL_TEXTURE_2D);
     cubo.draw();
 
     glTranslatef(3,0,0);
