@@ -168,12 +168,21 @@ ObjetoRevolucion::ObjetoRevolucion(const char *nombre_archivo, int nrevol, bool 
 
   void ObjetoRevolucion::setcoordTextura(){
     float u,v;
+    float v1, v2;
     float di, dmax = maxY - minY;
-    
-    for(int i = 0; i < n; i++){
+    float dx = 1/n;
+
+    for(int i = 0; i <= n; i++){
       u = (float)i/n;
-      for(int j = 0; j < m; j++){
-        v = (float)j/m;
+      di = 0;
+      for(int j = m; (j-1) >= 0; j--){
+        v = di/dmax;
+        v1 = vertices[j*3-5];
+        v2 = vertices[j*3-2];
+        di += sqrt(pow((v1 - v2),2));
+        v = (float)(1 - v);
+        // std::cout << "\nVertices: " << v1 << " " << v2 << " ";
+        std::cout << "\nCoordenadas: " << u << " " << v << "\n";
         std::vector<float> coordenada = {u,v};
         coordTextura.insert(coordTextura.end(), coordenada.begin(), coordenada.end());
       }
