@@ -41,7 +41,7 @@ class Malla:public Objeto3D{
     std::vector <int> caras;
     std::vector <float> normales_c;
     std::vector <float> normales_v;
-    std::vector <float> coordTextura = {};
+    std::vector <float> coordTextura;
   public:
     /****************CONSTRUCTORES****************/
     /**
@@ -117,10 +117,6 @@ class Malla:public Objeto3D{
      * @brief Dibuja el objeto en funcion del modo actual de dibujo
     */
     void draw();
-
-    void setcoordTextura();
-
-    void calcularMinMax();
 
 };
 

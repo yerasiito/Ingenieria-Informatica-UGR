@@ -36,26 +36,15 @@
 Malla::Malla(){}
 
 Malla::Malla(const char *nombre_archivo){
-  coordTextura = {};
   ply::read(nombre_archivo, vertices, caras);
   normales_caras();
   normales_vertices();
-}
-
-void Malla::calcularMinMax(){
-  for(size_t i = 0; i < vertices.size(); i+=3){
-    minY = std::min(minY, vertices[i+1]);
-    maxY = std::max(minY, vertices[i+1]);
-  }
 }
 
 Malla::Malla(const char *nombre_archivo, const char *nombre_textura){
   pixeles = LeerArchivoJPEG(nombre_textura, w, h);
   ply::read(nombre_archivo, vertices, caras);
   
-  calcularMinMax();
-  setcoordTextura();
-
   normales_caras();
   normales_vertices();
 }
@@ -161,22 +150,22 @@ void Malla::draw_caras(){
   glBegin(GL_TRIANGLES);
   {
     for(size_t i = 0; i < caras.size(); i+=3){
-      int iv = caras[i]*3;
-      int iv1 = caras[i+1]*3;
-      int iv2 = caras[i+2]*3;
+      int iv = caras[i]*3, ivT = caras[i]*2;
+      int iv1 = caras[i+1]*3, ivT1 = caras[i]*2;
+      int iv2 = caras[i+2]*3, ivT2 = caras[i]*2;
 
       glNormal3f(normales_c[i], normales_c[i+1], normales_c[i+2]);
 
-      if(!coordTextura.empty())
-        glTexCoord2d(coordTextura[iv], coordTextura[iv+1]);
+      if(texId != 0)
+        glTexCoord2f(coordTextura[ivT], coordTextura[ivT+1]);
       glVertex3f(vertices[iv], vertices[iv+1], vertices[iv+2]);
       
-      if(!coordTextura.empty())
-        glTexCoord2d(coordTextura[iv1], coordTextura[iv1+1]);
+      if(texId != 0)
+        glTexCoord2f(coordTextura[ivT1], coordTextura[ivT1+1]);
       glVertex3f(vertices[iv1], vertices[iv1+1], vertices[iv1+2]); 
     
-      if(!coordTextura.empty())
-        glTexCoord2d(coordTextura[iv2], coordTextura[iv2+1]);
+      if(texId != 0)
+        glTexCoord2f(coordTextura[ivT2], coordTextura[ivT2+1]);
       glVertex3f(vertices[iv2], vertices[iv2+1], vertices[iv2+2]);
     }
   }
@@ -192,8 +181,10 @@ void Malla::draw_vertices(){
   {
     for(size_t i = 0; i < caras.size(); i++){
       int iv = caras[i]*3;
-      if(!coordTextura.empty())
-        glTexCoord2d(coordTextura[iv], coordTextura[iv+1]);
+      int ivT = caras[i]*2;
+
+      if(texId != 0)
+        glTexCoord2f(coordTextura[ivT], coordTextura[ivT+1]);
       glNormal3f(normales_v[iv], normales_v[iv+1], normales_v[iv+2]);
       glVertex3f(vertices[iv], vertices[iv+1], vertices[iv+2]);
     }
@@ -207,16 +198,4 @@ void Malla::draw(){
     draw_caras();
   else if(getSombreado() == GL_SMOOTH)
     draw_vertices();
-}
-
-void Malla::setcoordTextura(){
-  float alfa,u,v;
-  for(size_t i = 0; i < vertices.size(); i+=3){
-    alfa = atan2(vertices[i+2], vertices[i]);
-    u = 0.5f + alfa/(2*M_PI);
-    v = (vertices[i+1] - minY)/(maxY - minY);
-    std::vector<float> coordenada = {u,v};
-    coordTextura.insert(coordTextura.end(), coordenada.begin(), coordenada.end());
-  }
-  std::cout << "\nCsize:" << coordTextura.size() << "\n";
 }

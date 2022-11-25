@@ -52,14 +52,14 @@ ObjetoRevolucion::ObjetoRevolucion(const char *nombre_archivo, int nrevol, bool 
     pixeles = LeerArchivoJPEG(nombre_textura, w, h);    
     ply::read_vertices(nombre_archivo, vertices);
 
-    /*Altura min y max de y*/calcularMinMax();
-
     m = vertices.size()/3;
     n = nrevol;
-    
+
+    calcularMinMax();
+    setcoordTextura();
+
     crear_tapas(tapa_sup, tapa_inf);
     crearRevolucion();
-    setcoordTextura();
 
     normales_caras();
     normales_vertices();
@@ -160,3 +160,23 @@ ObjetoRevolucion::ObjetoRevolucion(const char *nombre_archivo, int nrevol, bool 
     }
     glEnd();
   }
+
+  void ObjetoRevolucion::calcularMinMax(){
+    minY = 0.03;
+    maxY = 1.06;
+  }
+
+  void ObjetoRevolucion::setcoordTextura(){
+    float u,v;
+    float di, dmax = maxY - minY;
+    
+    for(int i = 0; i < n; i++){
+      u = (float)i/n;
+      for(int j = 0; j < m; j++){
+        v = (float)j/m;
+        std::vector<float> coordenada = {u,v};
+        coordTextura.insert(coordTextura.end(), coordenada.begin(), coordenada.end());
+      }
+    }
+
+}

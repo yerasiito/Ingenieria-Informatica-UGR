@@ -66,5 +66,10 @@ ObjetoRevolucion(const char *nombre_archivo, const char *nombre_textura, int nre
   void draw_lines();
 
   void draw_points();
+
+  void setcoordTextura();
+
+  void calcularMinMax();
+
 };
 #endif

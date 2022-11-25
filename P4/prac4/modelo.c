@@ -153,11 +153,11 @@ void alternarAnimacion(){
 /**	void initModel()
 Inicializa el modelo y de las variables globales
 **/
-Cubo dado(default_size, "./texturas/dado.jpg");
+// Cubo dado(default_size, "./texturas/dado.jpg");
 ObjetoRevolucion lata("./plys/lata-pcue", "./texturas/lata.jpg", 16, false, false);
 void initModel ()
 {
-  dado.activarTextura();
+  // dado.activarTextura();
   lata.activarTextura();
 }
 
