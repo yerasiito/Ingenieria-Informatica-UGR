@@ -82,7 +82,6 @@ void ObjetoRevolucion::normales_vertices()
   }
   // Normalizamos cada vertice
   float modulo = 0.0;
-  int j = normales_v.size();
   for (int i = 0; i < m * 3; i += 3)
   {
     modulo = sqrt(normales_v[i] * normales_v[i] + normales_v[i + 1] * normales_v[i + 1] + normales_v[i + 2] * normales_v[i + 2]);
@@ -145,8 +144,7 @@ void ObjetoRevolucion::crear_tapas(bool tapa_sup, bool tapa_inf)
   }
 }
 
-void ObjetoRevolucion::draw_lines()
-{
+void ObjetoRevolucion::draw_lines(){
 
   size_t j = 0;
   while (j < vertices.size())
@@ -161,44 +159,13 @@ void ObjetoRevolucion::draw_lines()
     }
     glEnd();
   }
-<<<<<<< HEAD
-
-  void ObjetoRevolucion::calcularMinMax(){
-    minY = 0.03;
-    maxY = 1.06;
-  }
-
-  void ObjetoRevolucion::setcoordTextura(){
-    float u,v;
-    float v1, v2;
-    float di, dmax = maxY - minY;
-    float dx = 1/n;
-
-    for(int i = 0; i <= n; i++){
-      u = (float)i/n;
-      di = 0;
-      for(int j = m; (j-1) >= 0; j--){
-        v = di/dmax;
-        v1 = vertices[j*3-5];
-        v2 = vertices[j*3-2];
-        di += sqrt(pow((v1 - v2),2));
-        v = (float)(1 - v);
-        // std::cout << "\nVertices: " << v1 << " " << v2 << " ";
-        std::cout << "\nCoordenadas: " << u << " " << v << "\n";
-        std::vector<float> coordenada = {u,v};
-        coordTextura.insert(coordTextura.end(), coordenada.begin(), coordenada.end());
-      }
-    }
-
-=======
 }
 
 void ObjetoRevolucion::draw_points()
 {
   glBegin(GL_POINTS);
   {
-    for (size_t i = 0; i < vertices.size(); i += 3)
-    {
+    for (size_t i = 0; i < vertices.size(); i += 3){
       glVertex3f(vertices[i], vertices[i + 1], vertices[i + 2]);
     }
   }
@@ -258,5 +225,4 @@ void ObjetoRevolucion::setTexturaTapa(float centro)
     }
     std::cout << std::endl;
   }
->>>>>>> 8bb47dc (Fix: Lata dibujada correctamente. Falta tpa inferior.)
 }
