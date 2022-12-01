@@ -111,6 +111,9 @@ void letra (unsigned char k, int x, int y)
     case 'I':
       invertirIluminacion();
       break;
+    case 'c':
+      cambiarPuntoLuz();
+      break;
     case 'h':
     case 'H':
       printHelp ();		// H y h imprimen ayuda

@@ -113,9 +113,9 @@ void entradaTecladoBici(unsigned char letra){
 float default_size = 2;
 int modo = GL_FILL;
 int sombreado1 = GL_SMOOTH, sombreado2 = GL_FLAT;
-bool luz = true;
+bool luz = true, luz0 = true;
 int roty = 0;
-char modelLetra = '3';
+char modelLetra = '4';
 
 void setModo(int M){
   modo = M;
@@ -144,6 +144,10 @@ int getSombreado(){
 //Cambia el estado de la iluminacion(si true entonces false y viceversa)
 void invertirIluminacion(){ 
   luz = !luz;
+}
+
+void cambiarPuntoLuz(){ 
+  luz0 = !luz0;
 }
 
 void alternarAnimacion(){
@@ -215,7 +219,15 @@ Procedimiento de dibujo del modelo. Es llamado por glut cada vez que se debe red
 **/
 void Dibuja (void)
 {
-  static GLfloat pos[4] = { 5.0, 5.0, 10.0, 0.0 };	// Posicion de la fuente de luz
+  //Variables iluminacion y materiales
+  GLfloat bright_mat[4] = {0.2f, 0.2f, 0.2f, 1.0f};
+  GLfloat full_mat[4] = {1.0f, 1.0f, 1.0f, 1.0f};
+  GLfloat light_red[4] = { 0.8, 0.2, 0.2, 1.0f};
+  GLfloat light_green[4] = { 0.2, 0.8, 0.2, 1.0f};
+  float black[4] = { 0.1, 0.1, 0.1, 1};
+
+  static GLfloat pos1[4] = { 5.0, 5.0, 10.0, 0.0 };	// Posicion de la fuente de luz 1
+  static GLfloat pos2[4] = { -5.0, -5.0, -10.0, 0.0 };	// Posicion de la fuente de luz 2
 
   glPushMatrix ();		// Apila la transformacion geometrica actual
 
@@ -224,11 +236,21 @@ void Dibuja (void)
   glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// Inicializa el buffer de color y el Z-Buffer
   transformacionVisualizacion ();	// Carga transformacion de visualizacion
 
-  glLightfv (GL_LIGHT0, GL_POSITION, pos);	// Declaracion de luz. Colocada aqui esta fija en la escena
-
+  glLightfv (GL_LIGHT0, GL_POSITION, pos1);	// Declaracion de luz. Colocada aqui esta fija en la escena
+  glLightfv (GL_LIGHT1, GL_POSITION, pos2);	// Declaracion de luz. Colocada aqui esta fija en la escena
+  glLightfv (GL_LIGHT1, GL_DIFFUSE, light_red);
   // Activa o desactiva la iluminacion
   if(luz){
     glEnable (GL_LIGHTING);
+    if(luz0){
+      glEnable (GL_LIGHT0);
+      glDisable (GL_LIGHT1);
+    }
+    else{
+      glEnable (GL_LIGHT1);
+      glDisable (GL_LIGHT0);
+    }
+
   }
   else{
     glDisable (GL_LIGHTING);
@@ -245,14 +267,6 @@ void Dibuja (void)
   float p1Color3[4] = { 1.0, 0.0, 0, 1 };  
   float p1Color4[4] = { 0.0, 1.0, 0.0, 1 };
 
-  //Variables P2
-  GLfloat no_mat[4] = {0.0f, 0.0f, 0.0f, 1.0f};
-  GLfloat full_mat[4] = {1.0f, 1.0f, 1.0f, 1.0f};
-  GLfloat colorMalla1[4] = { 0.8, 0.2, 0.2, 1.0f};
-  GLfloat colorMalla2[4] = { 0.2, 0.8, 0.2, 1.0f};
-  float peonColor[4] = { 0.1, 0.1, 0.1, 1};
-  float revolucion2[4] = { 1.0, 1.0, 1.0, 1};
-  float revolucionI2[4] = { 0.2, 0.2, 0.8, 1};
 
   //Variables P3
 
@@ -304,29 +318,23 @@ void Dibuja (void)
     glPushAttrib(GL_LIGHTING_BIT);
       glTranslatef(-13, 0, 0); 
       //bethoween
-      malla1.setMatAmbient(colorMalla1);
-      malla1.setMatDiffuse(colorMalla1);
-      malla1.setMatSpecular(full_mat);
-      malla1.setSpecularExponent(100);
-      malla1.setMatEmission(no_mat);
+      glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, light_red);
       malla1.draw();
     glPopAttrib();
 
     //Coche
     glPushAttrib(GL_LIGHTING_BIT);
       glTranslatef(13, 0, 0); 
-      malla2.setMatAmbient(colorMalla2);
-      malla2.setMatDiffuse(colorMalla2);
+      glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, light_green);
       malla2.draw();
     glPopAttrib();
-
 
     //Peon
     glTranslatef(11, 0, 0);    
     glPushMatrix();
       glScalef(2, 2, 2); //Escalamos el peon
       glEnable(GL_NORMALIZE); //Al escalar, hay que renormalizar las normales  
-      peon.setMatAmbient(peonColor);
+      glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, black);
       peon.draw();
     glPopMatrix();
     glPopAttrib();
@@ -334,9 +342,7 @@ void Dibuja (void)
     //Fuente
     glPushAttrib(GL_LIGHTING_BIT);
       glTranslatef(8, 0, 0);
-      fuente.setMatAmbient(revolucion2);
-      fuente.setMatDiffuse(revolucion2);
-      fuente.setMatEmission(revolucionI2);
+      glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, full_mat);
       fuente.draw();
     glPopAttrib();
     glPopMatrix();
@@ -348,20 +354,52 @@ void Dibuja (void)
     glPopAttrib();
     break;
   case '4':
-    //Dado con textura
-    glPushAttrib(GL_LIGHTING_BIT);
-    // glTranslatef(-1,-1,-1);
-    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, revolucion2);
-    glColor3fv (revolucion2);
-    glEnable(GL_TEXTURE_2D);
-
-    dado.draw();
-    
-    glTranslatef(3,0,0);
-
     /*Dibuja objetos de la PRACTICA 4*/
+    //Peon 1
+    glTranslatef(-4.5,0,0);
+
+    glPushAttrib(GL_LIGHTING_BIT);
+      glTranslatef(0,1.4,0);
+      peon.setMatAmbient(black);
+      peon.setMatDiffuse(black);
+      peon.draw();
+    glPopAttrib();
+    //Peon 2
+    glPushAttrib(GL_LIGHTING_BIT);
+      glTranslatef(3,0,0);
+      peon.setMatAmbient(light_red);
+      peon.setMatDiffuse(light_red);
+      peon.setMatSpecular(full_mat);
+      peon.setSpecularExponent(100);
+      peon.draw();
+    glPopAttrib();
+
+    //Peon 3
+    glPushAttrib(GL_LIGHTING_BIT);
+      glTranslatef(3,0,0);
+      peon.setMatAmbient(light_green);
+      peon.setMatDiffuse(light_green);
+      peon.setMatEmission(bright_mat);
+      peon.draw();
+    glPopAttrib();
+
+    glTranslatef(2,0,0);
+
+    glTranslatef(0,-1.4, 0);
+    glPushMatrix();
+      glTranslatef(0,0,-0.5);
+      //Cubo con textura de dado
+      glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, full_mat);
+      glColor3fv (full_mat);
+      glEnable(GL_TEXTURE_2D);
+      dado.draw();
+    glPopMatrix();
+
+    glTranslatef(4,0,0);
+
     glEnable(GL_NORMALIZE);
     glRotatef(90, 0, 1, 0);
+    glScalef(2,2,2);
     lata.draw();
 
     tapainf.draw();
@@ -374,7 +412,6 @@ void Dibuja (void)
   /*Dibuja objetos de la PRACTICA 3*/
   }
     glPopMatrix();
-  
   glutSwapBuffers ();		// Intercambia el buffer de dibujo y visualizacion
 }
 

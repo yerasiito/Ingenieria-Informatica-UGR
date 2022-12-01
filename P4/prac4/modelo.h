@@ -68,6 +68,7 @@ int getSombreado();
  **/
 void invertirIluminacion();
 
+void cambiarPuntoLuz();
 /**
  * Funcion para activar/desactivar la iluminacion
 */

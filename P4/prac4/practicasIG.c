@@ -81,6 +81,7 @@ int main (int argc, char *argv[])
   glEnable (GL_CULL_FACE);
   glEnable (GL_LIGHTING);
   glEnable (GL_LIGHT0);
+  glEnable (GL_LIGHT1);
 
 // Lanza el gestor de eventos de glut
   glutMainLoop ();
