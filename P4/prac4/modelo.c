@@ -115,7 +115,7 @@ int modo = GL_FILL;
 int sombreado1 = GL_SMOOTH, sombreado2 = GL_FLAT;
 bool luz = true;
 int roty = 0;
-char modelLetra = '4';
+char modelLetra = '3';
 
 void setModo(int M){
   modo = M;
@@ -159,7 +159,7 @@ ObjetoRevolucion tapainf("./plys/lata-pinf", "./texturas/tapas.jpg", 0.5f, 100, 
 ObjetoRevolucion tapasup("./plys/lata-psup", "./texturas/tapas.jpg", 0.0f, 100, true, false); //x=770, y=257, radio 255
 void initModel ()
 {
-  // dado.activarTextura();
+  dado.activarTextura();
   lata.activarTextura();
   tapainf.activarTextura();
   tapasup.activarTextura();
@@ -355,9 +355,9 @@ void Dibuja (void)
     glColor3fv (revolucion2);
     glEnable(GL_TEXTURE_2D);
 
-    // dado.draw();
+    dado.draw();
     
-    // glTranslatef(3,0,0);
+    glTranslatef(3,0,0);
 
     /*Dibuja objetos de la PRACTICA 4*/
     glEnable(GL_NORMALIZE);

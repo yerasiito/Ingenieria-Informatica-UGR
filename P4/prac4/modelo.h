@@ -80,7 +80,7 @@ void setmodelLetra(char k);
 
 class Objeto3D { 
 public: 
-	GLuint texId;
+	GLuint texId = 0;
 	unsigned int w, h;
 	unsigned char *pixeles;
 
