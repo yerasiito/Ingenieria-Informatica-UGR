@@ -38,6 +38,7 @@ class ObjetoRevolucion:public Malla
   public:
     int n; //Numero de revoluciones
     int m; //Numero de vertices del perfil inicial
+    bool tapa = false;
   
   /**
    * Constructor vacio
@@ -51,10 +52,10 @@ class ObjetoRevolucion:public Malla
    * @param tapa_sup True para crear la tapa superior, false en otro caso. Por defecto false
    * @param tapa_sup True para crear la tapa inferior, false en otro caso. Por defecto true
    */
-  ObjetoRevolucion(const char *nombre_archivo, int nrevol = 10, bool tapa_sup = false, bool tapa_inf = true);
+  ObjetoRevolucion(const char *nombre_archivo, int nrevol, bool tapa_sup = false, bool tapa_inf = true);
 
 
-ObjetoRevolucion(const char *nombre_archivo, const char *nombre_textura, int nrevol, bool tapa_sup, bool tapa_inf);
+  ObjetoRevolucion(const char *nombre_archivo, const char *nombre_textura, float centroT = 0, int nrevol = 10, bool tapa_sup = false, bool tapa_inf = false);
 
 
   void crearRevolucion();
@@ -67,7 +68,9 @@ ObjetoRevolucion(const char *nombre_archivo, const char *nombre_textura, int nre
 
   void draw_points();
 
-  void setcoordTextura();
+  void setTexturaCil();
+
+  void setTexturaTapa(float centro);
 
   void calcularMinMax();
 

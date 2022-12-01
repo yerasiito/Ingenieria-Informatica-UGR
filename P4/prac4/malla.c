@@ -147,12 +147,13 @@ void Malla::normales_vertices(){
 void Malla::draw_caras(){
   glPushMatrix();
   glShadeModel(GL_FLAT);
+	glBindTexture( GL_TEXTURE_2D , texId );
   glBegin(GL_TRIANGLES);
   {
     for(size_t i = 0; i < caras.size(); i+=3){
       int iv = caras[i]*3, ivT = caras[i]*2;
-      int iv1 = caras[i+1]*3, ivT1 = caras[i]*2;
-      int iv2 = caras[i+2]*3, ivT2 = caras[i]*2;
+      int iv1 = caras[i+1]*3, ivT1 = caras[i+1]*2;
+      int iv2 = caras[i+2]*3, ivT2 = caras[i+2]*2;
 
       glNormal3f(normales_c[i], normales_c[i+1], normales_c[i+2]);
 
@@ -179,7 +180,7 @@ void Malla::draw_vertices(){
 	glBindTexture( GL_TEXTURE_2D , texId );
   glBegin(GL_TRIANGLES);
   {
-    for(size_t i = 0; i < caras.size(); i++){
+    for(size_t i = 0; i < caras.size() ; i++){
       int iv = caras[i]*3;
       int ivT = caras[i]*2;
 

@@ -153,12 +153,16 @@ void alternarAnimacion(){
 /**	void initModel()
 Inicializa el modelo y de las variables globales
 **/
-// Cubo dado(default_size, "./texturas/dado.jpg");
-ObjetoRevolucion lata("./plys/lata-pcue", "./texturas/lata.jpg", 16, false, false);
+Cubo dado(default_size, "./texturas/dado.jpg");
+ObjetoRevolucion lata("./plys/lata-pcue", "./texturas/cerveza.jpg", 0.25, 8); //El 0/1 indica el algoritmo de texturizacion
+ObjetoRevolucion tapainf("./plys/lata-pinf", "./texturas/tapas.jpg", 0.2495, 8, false, true); //x=260, y=256, radio 255
+ObjetoRevolucion tapasup("./plys/lata-psup", "./texturas/tapas.jpg",0.7534, 8, true, false); //x=770, y=257, radio 255
 void initModel ()
 {
   // dado.activarTextura();
   lata.activarTextura();
+  // tapainf.activarTextura();
+  tapasup.activarTextura();
 }
 
 class Ejes:Objeto3D 
@@ -357,7 +361,12 @@ void Dibuja (void)
 
     /*Dibuja objetos de la PRACTICA 4*/
     glEnable(GL_NORMALIZE);
+    glRotatef(90, 0, 1, 0);
     lata.draw();
+
+    tapainf.draw();
+    tapasup.draw();
+
     glPopAttrib();
     glDisable(GL_TEXTURE_2D);
 
