@@ -56,13 +56,14 @@ ObjetoRevolucion::ObjetoRevolucion(const char *nombre_archivo, const char *nombr
   n = nrevol;
 
   calcularMinMax();
+
+  crear_tapas(tapa_sup, tapa_inf);
+  crearRevolucion();
+
   if (!tapa_sup && !tapa_inf)
     setTexturaCil();
   else
     setTexturaTapa(centroT);
-
-  crear_tapas(tapa_sup, tapa_inf);
-  crearRevolucion();
 
   normales_caras();
   normales_vertices();
@@ -174,8 +175,8 @@ void ObjetoRevolucion::draw_points()
 
 void ObjetoRevolucion::calcularMinMax()
 {
-  minY = 0.03;
-  maxY = 1.06;
+  minY = vertices[1];
+  maxY = vertices[vertices.size()-2];
 }
 
 void ObjetoRevolucion::setTexturaCil()
@@ -206,23 +207,12 @@ void ObjetoRevolucion::setTexturaCil()
 void ObjetoRevolucion::setTexturaTapa(float centro)
 {
   coordTextura = {};
-  centro = 0.2495;
-  float valor2= 0.4980;
-  float u, v, ui, vi;
-  for (int i = 0; i < n; i++)
-  {
-    float alfa = -(2 * M_PI * i) / n;
-    // std::cout << "ALFA: " << alfa << "\n";
-    ui = centro * cos(alfa);
-    vi = valor2 * sin(alfa);
-    for (int j = m; j >= 0; j--)
-    { // desde el principio hasta el centro
-      u = centro + (float)(j * ui / m);
-      v = valor2 - (float)(j * vi / m);
-      std::cout << "Coordenadas: " << u << " " << v << std::endl;
-      std::vector<float> coordenada = {u, v};
-      coordTextura.insert(coordTextura.end(), coordenada.begin(), coordenada.end());
-    }
-    std::cout << std::endl;
+  float u, v;
+  float radio = 0.22;
+  for(size_t i = 0; i < vertices.size(); i+=3){
+    u = centro + ((vertices[i]+radio)/(2*radio))/2;
+    v = ((vertices[i+2]+radio)/(2*radio));
+    std::vector<float> coordenada = {u, v};
+    coordTextura.insert(coordTextura.end(), coordenada.begin(), coordenada.end());
   }
 }
