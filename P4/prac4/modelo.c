@@ -35,7 +35,6 @@ modulo modelo.c
 #include "practicasIG.h"
 #include "entradaTeclado.h"
 
-Bici bici(1, 1.5, 1.5, 1);
 bool animacion = false, lectura = false;
 
 //Global variables
@@ -91,6 +90,8 @@ void alternarAnimacion(){
 /**	void initModel()
 Inicializa el modelo y de las variables globales
 **/
+
+/*Practica 4*/
 Cubo dado(default_size, "./texturas/dado.jpg");
 ObjetoRevolucion lata("./plys/lata-pcue", "./texturas/cerveza.jpg", 0.25f, 100); //El 0/1 indica el algoritmo de texturizacion
 ObjetoRevolucion tapainf("./plys/lata-pinf", "./texturas/tapas.jpg", 0.5f, 100, false, true); //x=260, y=256, radio 255
@@ -147,7 +148,10 @@ Malla malla1("./plys/beethoven");
 Malla malla2("./plys/big_dodge");
 ObjetoRevolucion peon("./plys/perfil", 20,true, true);
 ObjetoRevolucion fuente("./plys/miperfil", 100, true, true);
-/*Practica 4*/
+
+/*Practica 3*/
+Bici bici(1, 1.5, 1.5, 1);
+
 /**	void Dibuja( void )
 Procedimiento de dibujo del modelo. Es llamado por glut cada vez que se debe redibujar.
 **/
@@ -156,23 +160,23 @@ void Dibuja (void)
   //Variables iluminacion y materiales
   GLfloat bright_mat[4] = {0.2f, 0.2f, 0.2f, 1.0f};
   GLfloat full_mat[4] = {1.0f, 1.0f, 1.0f, 1.0f};
-  GLfloat light_red[4] = { 0.8, 0.2, 0.2, 1.0f};
-  GLfloat light_green[4] = { 0.2, 0.8, 0.2, 1.0f};
-  float black[4] = { 0.1, 0.1, 0.1, 1};
+  GLfloat light_red[4] = { 0.8f, 0.2f, 0.2f, 1.0f};
+  GLfloat light_green[4] = { 0.2f, 0.8f, 0.2f, 1.0f};
+  float black[4] = { 0.1f, 0.1f, 0.1f, 1.0f};
 
   static GLfloat pos1[4] = { 5.0, 5.0, 10.0, 0.0 };	// Posicion de la fuente de luz 1
   static GLfloat pos2[4] = { -5.0, -5.0, -10.0, 0.0 };	// Posicion de la fuente de luz 2
 
-  glPushMatrix ();		// Apila la transformacion geometrica actual
-
   glClearColor (0.0, 0.0, 0.0, 1.0);	// Fija el color de fondo a negro
 
   glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// Inicializa el buffer de color y el Z-Buffer
+  glPushMatrix ();		// Apila la transformacion geometrica actual
   transformacionVisualizacion ();	// Carga transformacion de visualizacion
 
   glLightfv (GL_LIGHT0, GL_POSITION, pos1);	// Declaracion de luz. Colocada aqui esta fija en la escena
   glLightfv (GL_LIGHT1, GL_POSITION, pos2);	// Declaracion de luz. Colocada aqui esta fija en la escena
   glLightfv (GL_LIGHT1, GL_DIFFUSE, light_red);
+  
   // Activa o desactiva la iluminacion
   if(luz){
     glEnable (GL_LIGHTING);
@@ -184,7 +188,6 @@ void Dibuja (void)
       glEnable (GL_LIGHT1);
       glDisable (GL_LIGHT0);
     }
-
   }
   else{
     glDisable (GL_LIGHTING);
@@ -197,22 +200,13 @@ void Dibuja (void)
   glPolygonMode(GL_FRONT_AND_BACK, modo);
 
   //Variables P1
-  float  cuboC[4] = { 0.5, 0.0, 1, 1 };
+  float cuboC[4] = { 0.5, 0.0, 1, 1 };
   float p1Color3[4] = { 1.0, 0.0, 0, 1 };  
   float p1Color4[4] = { 0.0, 1.0, 0.0, 1 };
 
-
-  //Variables P3
-
-  // Dibuja el modelo (A rellenar en prácticas 1,2 y 3) 
   setNumPractica();
-  if(lectura){
-    bici.entradaTecladoBici(Letra);
-    lectura = false;
-  }
   switch(numPractica){
     case '1': /*Dibuja objetos de la PRACTICA 1*/
-      glPushAttrib(GL_LIGHTING_BIT);
       glPushMatrix();
         // Dibuja el cubo
         glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, cuboC);
@@ -248,80 +242,63 @@ void Dibuja (void)
         prisma.draw();
       glPopMatrix();
 
-      glPopMatrix();
-      glPopAttrib();
       break;
   case '2':  
     /*Dibuja P2 con iluminacion y materiales de la P4*/
-
-    glPushAttrib(GL_LIGHTING_BIT);
       glTranslatef(-13, 0, 0); 
       //bethoween
-      glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, light_red);
+      malla1.setMaterial(light_red, light_red);
       malla1.draw();
-    glPopAttrib();
 
     //Coche
-    glPushAttrib(GL_LIGHTING_BIT);
       glTranslatef(13, 0, 0); 
-      glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, light_green);
+      malla2.setMaterial(light_green, light_green);
       malla2.draw();
-    glPopAttrib();
 
     //Peon
     glTranslatef(11, 0, 0);    
     glPushMatrix();
       glScalef(2, 2, 2); //Escalamos el peon
       glEnable(GL_NORMALIZE); //Al escalar, hay que renormalizar las normales  
-      glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, black);
+      malla2.setMaterial(black, black);
       peon.draw();
     glPopMatrix();
-    glPopAttrib();
     
     //Fuente
-    glPushAttrib(GL_LIGHTING_BIT);
       glTranslatef(8, 0, 0);
-      glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, full_mat);
+      fuente.setMaterial(full_mat, full_mat);
       fuente.draw();
-    glPopAttrib();
-    glPopMatrix();
-
     break;
   case '3':
-    glPushAttrib(GL_LIGHTING_BIT);
-      bici.draw(); 
-    glPopAttrib();
+    if(lectura){
+      bici.entradaTecladoBici(Letra);
+      lectura = false;
+    }
+    bici.draw(); 
     break;
   case '4':
     /*Dibuja objetos de la PRACTICA 4*/
     //Peon 1
     glTranslatef(-4.5,0,0);
 
-    glPushAttrib(GL_LIGHTING_BIT);
+    // glPushAttrib(GL_LIGHTING_BIT);
       glTranslatef(0,1.4,0);
-      peon.setMatAmbient(black);
-      peon.setMatDiffuse(black);
+      peon.setMaterial(black, black);
       peon.draw();
-    glPopAttrib();
+    // glPopAttrib();
     //Peon 2
-    glPushAttrib(GL_LIGHTING_BIT);
+    // glPushAttrib(GL_LIGHTING_BIT);
       glTranslatef(3,0,0);
-      peon.setMatAmbient(light_red);
-      peon.setMatDiffuse(light_red);
-      peon.setMatSpecular(full_mat);
-      peon.setSpecularExponent(100);
+      peon.setMaterial(light_red, light_red, full_mat, 100);
       peon.draw();
-    glPopAttrib();
+    // glPopAttrib();
 
     //Peon 3
-    glPushAttrib(GL_LIGHTING_BIT);
+    // glPushAttrib(GL_LIGHTING_BIT);
       glTranslatef(3,0,0);
-      peon.setMatAmbient(light_green);
-      peon.setMatDiffuse(light_green);
-      peon.setMatEmission(bright_mat);
+      peon.setMaterial(light_green, light_green, bright_mat);
       peon.draw();
-    glPopAttrib();
-
+    // glPopAttrib();
     glTranslatef(2,0,0);
 
     glTranslatef(0,-1.4, 0);
@@ -344,13 +321,13 @@ void Dibuja (void)
     tapainf.draw();
     tapasup.draw();
 
-    glPopAttrib();
     glDisable(GL_TEXTURE_2D);
 
     break;
     /*Dibuja objetos de la PRACTICA 3*/
   }
-    glPopMatrix();
+  
+  glPopMatrix();
   glutSwapBuffers ();		// Intercambia el buffer de dibujo y visualizacion
 }
 

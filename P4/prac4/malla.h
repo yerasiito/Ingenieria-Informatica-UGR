@@ -73,34 +73,15 @@ class Malla:public Objeto3D{
 
     /************ILUMINACION & MATERIALES************/
     /**
-     * @brief establece el color del material con luz ambiente
-     * @param new_ambient establece el nuevo color
+     * @brief establece el material del objeto
+     * @param mat_ambient establece el nuevo color ambiente
+     * @param mat_diffuse establece el nuevo color difuso
+     * @param mat_specular establece el nuevo color especular
+     * @param e establece la nueva exponente especular
+     * @param mat_emission establece el nuevo color de emision
     */
-    void setMatAmbient(GLfloat new_ambient[4]);
-
-    /**
-     * @brief establece el color del material con luz difusa
-     * @param new_diffuse establece el nuevo color
-    */
-    void setMatDiffuse(GLfloat new_diffuse[4]);
-
-    /**
-     * @brief establece el color del material con luz especular
-     * @param new_specular establece el nuevo color
-    */
-    void setMatSpecular(GLfloat new_specular[4]);
-
-    /**
-     * @brief establece el color del material con luz especular
-     * @param e exponente especular
-    */
-    void setSpecularExponent(GLfloat e);
-
-    /**
-     * @brief establece el color de emisión del material
-     * @param new_diffuse establece el nuevo color que emite
-    */
-    void setMatEmission(GLfloat new_emission[4]);
+void setMaterial(GLfloat mat_ambient[4] = {}, GLfloat mat_diffuse[4] = {}, GLfloat mat_specular[4] = {}, 
+                        GLfloat e = -1, GLfloat mat_emission[4] = {});
     
     /****************FUNCIONES DRAW****************/
     /**

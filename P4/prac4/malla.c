@@ -49,25 +49,23 @@ Malla::Malla(const char *nombre_archivo, const char *nombre_textura){
   normales_vertices();
 }
 
-void Malla::setMatAmbient(GLfloat mat_ambient[4]){
-  glColor3fv(mat_ambient);
-  glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient); //Iluminacion ambiente
-}
+void Malla::setMaterial(GLfloat mat_ambient[4], GLfloat mat_diffuse[4], GLfloat mat_specular[4], 
+                        GLfloat e, GLfloat mat_emission[4]){
+  glPushAttrib(GL_LIGHTING_BIT);
+  
+  if(mat_ambient){
+    glColor3fv(mat_ambient);
+    glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient); //Iluminacion ambiente
+  }
+  if(mat_diffuse)
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse); //Reflexión difusa
+  if(mat_specular)
+    glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular); //Reflexión especular
+  if(e != -1)
+    glMaterialf(GL_FRONT, GL_SHININESS, e); //exponente especular
+  if(mat_emission)
+    glMaterialfv(GL_FRONT, GL_EMISSION, mat_emission); //Emisividad, por defecto es 0. (Los objetos no suelen emitir luz propia)
 
-void Malla::setMatDiffuse(GLfloat mat_diffuse[4]){
-  glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse); //Reflexión difusa
-}
-
-void Malla::setMatSpecular(GLfloat mat_specular[4]){
-  glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular); //Reflexión especular
-}
-
-void Malla::setSpecularExponent(GLfloat e){
-  glMaterialf(GL_FRONT, GL_SHININESS, e); //exponente especular
-}
-
-void Malla::setMatEmission(GLfloat mat_emission[4]){
-  glMaterialfv(GL_FRONT, GL_EMISSION, mat_emission); //Emisividad, por defecto es 0. (Los objetos no suelen emitir luz propia)
 }
 
 void Malla::normales_caras(){
@@ -199,4 +197,5 @@ void Malla::draw(){
     draw_caras();
   else if(getSombreado() == GL_SMOOTH)
     draw_vertices();
+  glPopAttrib();
 }
