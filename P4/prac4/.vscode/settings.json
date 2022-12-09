@@ -73,7 +73,10 @@
         "forward_list": "c",
         "iomanip": "c",
         "cfenv": "c",
-        "typeindex": "c"
+        "typeindex": "c",
+        "glut.h": "c",
+        "malla.h": "c",
+        "objetorevolucion.h": "c"
     },
-    "C_Cpp.errorSquiggles": "Enabled"
+    "C_Cpp.errorSquiggles": "Disabled"
 }

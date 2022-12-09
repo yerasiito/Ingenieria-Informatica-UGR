@@ -29,9 +29,7 @@
 
 #ifndef MODELO_H
 #define MODELO_H
-#include "iostream"
-
-void entradaTecladoBici(unsigned char letra);
+#include <iostream>
 
 /**
 	Funcion de redibujado. Se ejecuta con los eventos postRedisplay
@@ -77,7 +75,7 @@ void alternarAnimacion();
 /**
  * Obtiene la entrada de teclado para seleccionar la practica en Dibuja de modelo
 */
-void setmodelLetra(char k);
+void setLetra(char k);
 
 class Objeto3D { 
 public: 

@@ -470,3 +470,74 @@ void Bici::draw(){
     creaRuedas();
   glPopMatrix();
 }
+
+void Bici::entradaTecladoBici(unsigned char letra){
+  switch(letra){
+    case 'R':
+      angulo += 5;
+      if ( angulo > 360) angulo -=360;
+      break;
+    case 'r':
+      angulo -= 5;
+      if ( angulo < 0) angulo +=360;
+      break;
+    case 'W':
+      avance += 0.5*multiplicador;
+      rota_rueda = 2*M_PI*avance*multiplicador;   
+      giro_pedales -= 5; 
+      it--;  
+      numero_rotacion_pedales = 180/(5*multiplicador);
+      break;
+    case 'w':
+      avance -= 0.5*multiplicador;
+      rota_rueda = 2*M_PI*avance*multiplicador;
+      giro_pedales += 5;
+      it++;
+      numero_rotacion_pedales = 180/(5*multiplicador);
+      break;
+    case 'T':
+      if(altura_sillin >= 1) altura_sillin = 1;
+      else altura_sillin += 0.1;
+      break;
+    case 't':
+      if(altura_sillin <= -0.5) altura_sillin = -0.5;
+      else altura_sillin -= 0.1;
+      break;
+    case 'D':
+      numero_rotacion_pedales = 180/(5*multiplicador);
+      giro_pedales += 5;
+      it++;
+      break;
+    case 'd':
+      numero_rotacion_pedales = 180/(5*multiplicador);
+      giro_pedales -= 5;
+      it--;
+      break;
+    case 'N':
+      rota_rueda -= 2*M_PI*1*multiplicador; 
+      break;
+    case 'n':
+      rota_rueda += 2*M_PI*1*multiplicador; 
+      break;
+    case 'F':
+    case 'f':
+      multiplicador = 1;
+      break;
+    case 'G':
+    case 'g':
+      multiplicador = 2;
+      break;
+    case 'H':
+    case 'h':
+      multiplicador = 2.5;
+      break;
+    case 'J':
+    case 'j':
+      multiplicador = 2.75;
+      break;
+    case 'K':
+    case 'k':
+      multiplicador = 3;
+      break;
+  }
+}

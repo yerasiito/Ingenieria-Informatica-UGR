@@ -108,6 +108,8 @@ class Bici:Objeto3D{
 		 * Dibuja todos los componentes de la bicicleta
 		*/
 		void draw();
+
+		void entradaTecladoBici(unsigned char letra);
 };
 
 

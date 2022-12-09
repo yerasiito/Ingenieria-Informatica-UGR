@@ -36,78 +36,7 @@ modulo modelo.c
 #include "entradaTeclado.h"
 
 Bici bici(1, 1.5, 1.5, 1);
-bool animacion = false;
-
-void entradaTecladoBici(unsigned char letra){
-  switch(letra){
-    case 'R':
-      bici.angulo += 5;
-      if ( bici.angulo > 360) bici.angulo -=360;
-      break;
-    case 'r':
-      bici.angulo -= 5;
-      if ( bici.angulo < 0) bici.angulo +=360;
-      break;
-    case 'W':
-      bici.avance += 0.5*bici.multiplicador;
-      bici.rota_rueda = 2*M_PI*bici.avance*bici.multiplicador;   
-      bici.giro_pedales -= 5; 
-      bici.it--;  
-      bici.numero_rotacion_pedales = 180/(5*bici.multiplicador);
-      break;
-    case 'w':
-      bici.avance -= 0.5*bici.multiplicador;
-      bici.rota_rueda = 2*M_PI*bici.avance*bici.multiplicador;
-      bici.giro_pedales += 5;
-      bici.it++;
-      bici.numero_rotacion_pedales = 180/(5*bici.multiplicador);
-      break;
-    case 'T':
-      if(bici.altura_sillin >= 1) bici.altura_sillin = 1;
-      else bici.altura_sillin += 0.1;
-      break;
-    case 't':
-      if(bici.altura_sillin <= -0.5) bici.altura_sillin = -0.5;
-      else bici.altura_sillin -= 0.1;
-      break;
-    case 'D':
-      bici.numero_rotacion_pedales = 180/(5*bici.multiplicador);
-      bici.giro_pedales += 5;
-      bici.it++;
-      break;
-    case 'd':
-      bici.numero_rotacion_pedales = 180/(5*bici.multiplicador);
-      bici.giro_pedales -= 5;
-      bici.it--;
-      break;
-    case 'N':
-      bici.rota_rueda -= 2*M_PI*1*bici.multiplicador; 
-      break;
-    case 'n':
-      bici.rota_rueda += 2*M_PI*1*bici.multiplicador; 
-      break;
-    case 'F':
-    case 'f':
-      bici.multiplicador = 1;
-      break;
-    case 'G':
-    case 'g':
-      bici.multiplicador = 2;
-      break;
-    case 'H':
-    case 'h':
-      bici.multiplicador = 2.5;
-      break;
-    case 'J':
-    case 'j':
-      bici.multiplicador = 2.75;
-      break;
-    case 'K':
-    case 'k':
-      bici.multiplicador = 3;
-      break;
-  }
-}
+bool animacion = false, lectura = false;
 
 //Global variables
 float default_size = 2;
@@ -115,15 +44,20 @@ int modo = GL_FILL;
 int sombreado1 = GL_SMOOTH, sombreado2 = GL_FLAT;
 bool luz = true, luz0 = true;
 int roty = 0;
-char modelLetra = '4';
+char numPractica = '4', Letra;
 
 void setModo(int M){
   modo = M;
 }
 
-void setmodelLetra(char k){
-  if(k == '1' or k == '2' or k == '3' or k == '4' or k == '5')
-    modelLetra = k;
+void setLetra(char k){
+  lectura = true;
+  Letra = k;
+}
+
+void setNumPractica(){
+  if(Letra == '1' or Letra == '2' or Letra == '3' or Letra == '4' or Letra == '5')
+    numPractica = Letra;
 }
 
 void invertirSombreado(){
@@ -270,8 +204,13 @@ void Dibuja (void)
 
   //Variables P3
 
-  // Dibuja el modelo (A rellenar en prácticas 1,2 y 3)          
-  switch(modelLetra){
+  // Dibuja el modelo (A rellenar en prácticas 1,2 y 3) 
+  setNumPractica();
+  if(lectura){
+    bici.entradaTecladoBici(Letra);
+    lectura = false;
+  }
+  switch(numPractica){
     case '1': /*Dibuja objetos de la PRACTICA 1*/
       glPushAttrib(GL_LIGHTING_BIT);
       glPushMatrix();
@@ -409,7 +348,7 @@ void Dibuja (void)
     glDisable(GL_TEXTURE_2D);
 
     break;
-  /*Dibuja objetos de la PRACTICA 3*/
+    /*Dibuja objetos de la PRACTICA 3*/
   }
     glPopMatrix();
   glutSwapBuffers ();		// Intercambia el buffer de dibujo y visualizacion
@@ -430,15 +369,15 @@ void idle (int v)
     /*Ejecutores de animacion*/
     //Desplazamiento
     if(sentido == 1)
-      entradaTecladoBici('W'); //Hacia delante
+      bici.entradaTecladoBici('W'); //Hacia delante
     else
-      entradaTecladoBici('w'); //Hacia atras
+      bici.entradaTecladoBici('w'); //Hacia atras
 
     //Sillin
     if(bajaSube == 1)
-      entradaTecladoBici('T');
+      bici.entradaTecladoBici('T');
     else
-      entradaTecladoBici('t');
+      bici.entradaTecladoBici('t');
 
     /*Disparadores de animacion*/
     if(bici.avance >= 20)

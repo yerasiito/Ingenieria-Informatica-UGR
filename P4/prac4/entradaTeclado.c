@@ -82,8 +82,7 @@ float dCamara = 10;
 
 void letra (unsigned char k, int x, int y)
 {
-  setmodelLetra(k);
-  entradaTecladoBici(k);
+  setLetra(k);
   
   switch (k)
     {
