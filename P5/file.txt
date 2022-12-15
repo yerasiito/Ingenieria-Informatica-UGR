@@ -1,0 +1,13 @@
+    case GLUT_KEY_F1:
+      // glMatrixMode (GL_PROJECTION);
+      // glLoadIdentity ();
+      // glOrtho(10, -10, 10, -10, 10, -10);
+      rotxCamara = 0;
+      rotyCamara = 0;
+      dCamara = 10;
+      break;
+    case GLUT_KEY_F2:
+      rotxCamara = 90;
+      rotyCamara = 0;
+      dCamara = 10;
+      break;
