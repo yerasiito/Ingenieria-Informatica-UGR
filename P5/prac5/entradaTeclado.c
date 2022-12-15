@@ -78,7 +78,7 @@ y:
 
 float rotxCamara = 30, rotyCamara = 45;
 float dCamara = 10;
-
+bool perspectiva = true;
 
 void letra (unsigned char k, int x, int y)
 {
@@ -180,28 +180,27 @@ void especial (int k, int x, int y)
       rotxCamara = 0;
       rotyCamara = 0;
       dCamara = 12;
-      fijaProyeccion2(false);
+      perspectiva = false;
       break;
     case GLUT_KEY_F2:
       rotxCamara = 0;
       rotyCamara = -90;
       dCamara = 12;
-      fijaProyeccion2(true);
+      perspectiva = true;
       break;
     case GLUT_KEY_F3:
       rotxCamara = 90;
       rotyCamara = 0;
       dCamara = 12;
-      fijaProyeccion2(true);
+      perspectiva = true;
       break;
     case GLUT_KEY_F4:
-      static bool state = true;
-      fijaProyeccion2(state);
-      state = !state;
+      perspectiva = !perspectiva;
       break;
     default:
       return;
     }
+  fijaProyeccion(perspectiva);
   setCamara (rotxCamara, rotyCamara, dCamara);
   glutPostRedisplay ();		// Actualiza la imagen (ver proc. letra)
 }

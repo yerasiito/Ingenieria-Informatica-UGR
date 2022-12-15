@@ -108,25 +108,7 @@ void transformacionVisualizacion ()
 Fija la transformacion de proyeccion en funcion del tamaño de la ventana y del tipo de proyeccion
 
 **/
-void fijaProyeccion ()
-{
-  float calto;			// altura de la ventana corregida
-
-  if (anchoVentana > 0)
-    calto = altoVentana / anchoVentana;
-  else
-    calto = 1;
-
-  std::cout << "Perspectiva\n";
-  glFrustum (-1, 1, -calto, calto, 1, 1500);
-  gluPerspective(10, calto, 1.0, 1);
-
-  glMatrixMode(GL_MODELVIEW);
-  glLoadIdentity ();
-
-}
-
-void fijaProyeccion2 (bool perspectiva)
+void fijaProyeccion (bool perspectiva)
 {
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity ();
@@ -143,6 +125,9 @@ void fijaProyeccion2 (bool perspectiva)
   else{
     glOrtho(-10, 10, -calto*10, calto*10, 1, 1500);
   }
+
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity ();
 
 }
 

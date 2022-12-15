@@ -55,9 +55,7 @@ void transformacionVisualizacion ();
 Fija la transformacion de proyeccion en funcion del tamaño de la ventana y del tipo de proyeccion
 
 **/
-void fijaProyeccion ();
-void fijaProyeccion2 (bool perspectiva = true);
-
+void fijaProyeccion (bool perspectiva = true);
 
 /**	void inicializaVentana(GLsizei ancho,GLsizei alto)
 
