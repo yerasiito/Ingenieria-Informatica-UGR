@@ -307,7 +307,7 @@ void Dibuja (void)
 
     glTranslatef(0,-1.4, 0);
     glPushMatrix();
-      glTranslatef(0,0,-0.5);
+      glTranslatef(0,0,-1);
       //Cubo con textura de dado
       glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, full_mat);
       glColor3fv (full_mat);

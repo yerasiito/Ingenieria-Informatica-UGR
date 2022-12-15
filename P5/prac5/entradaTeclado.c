@@ -177,17 +177,27 @@ void especial (int k, int x, int y)
       dCamara += 0.5;
       break;
     case GLUT_KEY_F1:
-      // glMatrixMode (GL_PROJECTION);
-      // glLoadIdentity ();
-      // glOrtho(10, -10, 10, -10, 10, -10);
       rotxCamara = 0;
       rotyCamara = 0;
       dCamara = 12;
+      fijaProyeccion2(false);
       break;
     case GLUT_KEY_F2:
+      rotxCamara = 0;
+      rotyCamara = -90;
+      dCamara = 12;
+      fijaProyeccion2(true);
+      break;
+    case GLUT_KEY_F3:
       rotxCamara = 90;
       rotyCamara = 0;
       dCamara = 12;
+      fijaProyeccion2(true);
+      break;
+    case GLUT_KEY_F4:
+      static bool state = true;
+      fijaProyeccion2(state);
+      state = !state;
       break;
     default:
       return;

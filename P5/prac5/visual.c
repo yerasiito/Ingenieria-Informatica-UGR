@@ -117,14 +117,34 @@ void fijaProyeccion ()
   else
     calto = 1;
 
-  glFrustum (-1, 1, -calto, calto, 1.5, 1500);
+  std::cout << "Perspectiva\n";
+  glFrustum (-1, 1, -calto, calto, 1, 1500);
+  gluPerspective(10, calto, 1.0, 1);
 
-  glMatrixMode (GL_MODELVIEW);
-// A partir de este momento las transformaciones son de modelado.       
+  glMatrixMode(GL_MODELVIEW);
   glLoadIdentity ();
 
 }
 
+void fijaProyeccion2 (bool perspectiva)
+{
+  glMatrixMode(GL_PROJECTION);
+  glLoadIdentity ();
+  float calto;			// altura de la ventana corregida
+
+  if (anchoVentana > 0)
+    calto = altoVentana / anchoVentana;
+  else
+    calto = 1;
+
+  if(perspectiva){
+    glFrustum (-1, 1, -calto, calto, 1, 1500);
+  }
+  else{
+    glOrtho(-10, 10, -calto*10, calto*10, 1, 1500);
+  }
+
+}
 
 /**	void inicializaVentana(GLsizei ancho,GLsizei alto)
 
