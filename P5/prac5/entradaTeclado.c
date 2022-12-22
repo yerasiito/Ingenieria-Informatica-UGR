@@ -79,6 +79,7 @@ y:
 float rotxCamara = 30, rotyCamara = 45;
 float dCamara = 10;
 bool perspectiva = true;
+int xcamara = 0.0, ycamara = 0.0, zcamara = 0.0;
 
 void letra (unsigned char k, int x, int y)
 {
@@ -86,8 +87,29 @@ void letra (unsigned char k, int x, int y)
   
   switch (k)
     {
+    case 'A':
+    case 'a':
+      xcamara -= 2.0;
+      break;
+    case 'S':
+    case 's':
+      dCamara += 2.0;
+      break;
+    case 'W':
+    case 'w':
+      dCamara -= 2.0; 
+      break;
+    case 'D':
+    case 'd':
+      xcamara += 2.0;  
+      break;
     case 'R':
     case 'r':
+      rotxCamara = 0;
+      rotyCamara = 0;
+      dCamara = 10;
+    case 'U':
+    case 'u':
       alternarAnimacion();
       break;
     case 'p':
@@ -128,7 +150,7 @@ void letra (unsigned char k, int x, int y)
     default:
       return;
     }
-  setCamara (rotxCamara, rotyCamara, dCamara);
+  setCamara (rotxCamara, rotyCamara, dCamara, xcamara, ycamara, zcamara);
   glutPostRedisplay ();		// Algunas de las opciones cambian paramentros
 }				// de la camara. Es necesario actualziar la imagen
 
@@ -201,6 +223,6 @@ void especial (int k, int x, int y)
       return;
     }
   fijaProyeccion(perspectiva);
-  setCamara (rotxCamara, rotyCamara, dCamara);
+  setCamara (rotxCamara, rotyCamara, dCamara, xcamara, ycamara, zcamara);
   glutPostRedisplay ();		// Actualiza la imagen (ver proc. letra)
 }

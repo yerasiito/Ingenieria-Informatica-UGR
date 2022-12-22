@@ -48,7 +48,7 @@ Angulos de rotacion de la camara.
 **/
 
 float view_rotx = 30, view_roty = 45;
-
+float x_camara, y_camara, z_camara;
 
 /**
 
@@ -70,18 +70,24 @@ float anchoVentana, altoVentana;
 
 
 
-
 /** 	void setCamara()
 
 Cambia los parámetros de la cámara en el modulo visual
 
 **/
-void setCamara (float ax, float ay, float d)
+void setCamara (float ax, float ay, float d, float x, float y, float z)
 {
   view_rotx = ax;
   view_roty = ay;
-
+  x_camara = x;
+  y_camara = y;
+  z_camara = z;
   D = d;
+}
+
+void giroCamara (float ax, float ay){
+  view_rotx = ax;
+  view_roty = ay;
 }
 
 
@@ -100,7 +106,7 @@ void transformacionVisualizacion ()
   glRotatef (view_rotx, 1.0, 0.0, 0.0);
   glRotatef (view_roty, 0.0, 1.0, 0.0);
 
-  // glTranslatef(-x_camara,-y_camara,-z_camara);
+  glTranslatef(-x_camara,-y_camara,-z_camara);
 }
 
 /**	void fijaProyeccion()
