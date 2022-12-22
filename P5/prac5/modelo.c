@@ -362,9 +362,9 @@ void idle (int v)
     /*Ejecutores de animacion*/
     //Desplazamiento
     if(sentido == 1)
-      bici.entradaTecladoBici('W'); //Hacia delante
+      bici.entradaTecladoBici('E'); //Hacia delante
     else
-      bici.entradaTecladoBici('w'); //Hacia atras
+      bici.entradaTecladoBici('e'); //Hacia atras
 
     //Sillin
     if(bajaSube == 1)

@@ -86,8 +86,8 @@ void letra (unsigned char k, int x, int y)
   
   switch (k)
     {
-    case 'A':
-    case 'a':
+    case 'R':
+    case 'r':
       alternarAnimacion();
       break;
     case 'p':
@@ -102,8 +102,8 @@ void letra (unsigned char k, int x, int y)
     case 'F':
       setModo(GL_FILL);
       break;
-    case 's':
-    case 'S':
+    case 'Y':
+    case 'y':
       invertirSombreado();
       break;
     case 'i':

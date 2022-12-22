@@ -473,22 +473,22 @@ void Bici::draw(){
 
 void Bici::entradaTecladoBici(unsigned char letra){
   switch(letra){
-    case 'R':
-      angulo += 5;
-      if ( angulo > 360) angulo -=360;
-      break;
-    case 'r':
-      angulo -= 5;
-      if ( angulo < 0) angulo +=360;
-      break;
-    case 'W':
+    // case 'R':
+    //   angulo += 5;
+    //   if ( angulo > 360) angulo -=360;
+    //   break;
+    // case 'r':
+    //   angulo -= 5;
+    //   if ( angulo < 0) angulo +=360;
+    //   break;
+    case 'E':
       avance += 0.5*multiplicador;
       rota_rueda = 2*M_PI*avance*multiplicador;   
       giro_pedales -= 5; 
       it--;  
       numero_rotacion_pedales = 180/(5*multiplicador);
       break;
-    case 'w':
+    case 'e':
       avance -= 0.5*multiplicador;
       rota_rueda = 2*M_PI*avance*multiplicador;
       giro_pedales += 5;
@@ -503,12 +503,12 @@ void Bici::entradaTecladoBici(unsigned char letra){
       if(altura_sillin <= -0.5) altura_sillin = -0.5;
       else altura_sillin -= 0.1;
       break;
-    case 'D':
+    case 'O':
       numero_rotacion_pedales = 180/(5*multiplicador);
       giro_pedales += 5;
       it++;
       break;
-    case 'd':
+    case 'o':
       numero_rotacion_pedales = 180/(5*multiplicador);
       giro_pedales -= 5;
       it--;
