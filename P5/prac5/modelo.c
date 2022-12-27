@@ -145,43 +145,14 @@ public:
   void asignarTextura(){};
 }; 
 
-//Crea los objetos que vamos a dibujar
-Ejes ejesCoordenadas;
-
-/*Practica 1*/
-Cubo cubo(default_size);
-Piramide piramide(default_size,default_size*2);
-PrismaHexagonal prisma(default_size/2, default_size);
-
-/*Practica 3*/
-Bici bici(1, 1.5, 1.5, 1);
-
-/**	void Dibuja( void )
-Procedimiento de dibujo del modelo. Es llamado por glut cada vez que se debe redibujar.
-**/
-void Dibuja (void)
-{
-  //Variables iluminacion y materiales
-  GLfloat bright_mat[4] = {0.2f, 0.2f, 0.2f, 1.0f};
-  GLfloat full_mat[4] = {1.0f, 1.0f, 1.0f, 1.0f};
+void controlLuz(){
   GLfloat light_red[4] = { 0.8f, 0.2f, 0.2f, 1.0f};
-  GLfloat light_green[4] = { 0.2f, 0.8f, 0.2f, 1.0f};
-  float black[4] = { 0.1f, 0.1f, 0.1f, 1.0f};
-
   static GLfloat pos1[4] = { 5.0, 5.0, 10.0, 0.0 };	// Posicion de la fuente de luz 1
   static GLfloat pos2[4] = { -5.0, -5.0, -10.0, 0.0 };	// Posicion de la fuente de luz 2
-
-  glClearColor (0.0, 0.0, 0.0, 1.0);	// Fija el color de fondo a negro
-
-  glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// Inicializa el buffer de color y el Z-Buffer
-  glPushMatrix ();		// Apila la transformacion geometrica actual
-  transformacionVisualizacion ();	// Carga transformacion de visualizacion
 
   glLightfv (GL_LIGHT0, GL_POSITION, pos1);	// Declaracion de luz. Colocada aqui esta fija en la escena
   glLightfv (GL_LIGHT1, GL_POSITION, pos2);	// Declaracion de luz. Colocada aqui esta fija en la escena
   glLightfv (GL_LIGHT1, GL_DIFFUSE, light_red);
-  
-  // Activa o desactiva la iluminacion
   if(luz){
     glEnable (GL_LIGHTING);
     if(luz0){
@@ -196,6 +167,70 @@ void Dibuja (void)
   else{
     glDisable (GL_LIGHTING);
   }
+}
+
+//Crea los objetos que vamos a dibujar
+Ejes ejesCoordenadas;
+
+/*Practica 1*/
+Cubo cubo(default_size);
+Piramide piramide(default_size,default_size*2);
+PrismaHexagonal prisma(default_size/2, default_size);
+
+/*Practica 3*/
+Bici bici(1, 1.5, 1.5, 1);
+
+void pick(int x, int y){
+  std::cout << "Picking\n";
+  GLint viewport[4];
+  unsigned char data[4];
+
+  glGetIntegerv (GL_VIEWPORT, viewport);
+  glDisable(GL_DITHER);
+  glDisable(GL_LIGHTING);
+  dibujoEscena();
+  glEnable(GL_LIGHTING);
+  glEnable(GL_DITHER);
+  glFlush();
+  glFinish();
+
+  glReadPixels(x, viewport[3]-y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, data);
+  glutPostRedisplay();
+}
+
+void ColorSeleccion ( int i, int componente){
+  unsigned char r = (i & 0xFF);
+  unsigned char g = (componente & 0xFF);
+  glColor3ub(r,g,0);
+}
+
+/**	void Dibuja( void )
+Procedimiento de dibujo del modelo. Es llamado por glut cada vez que se debe redibujar.
+**/
+void Dibuja (void){  
+  // Activa o desactiva la iluminacion
+  controlLuz();
+
+  dibujoEscena();
+
+  glutSwapBuffers ();		// Intercambia el buffer de dibujo y visualizacion
+}
+
+
+void dibujoEscena ()
+{
+  glClearColor (0.0, 0.0, 0.0, 1.0);	// Fija el color de fondo a negro
+  glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// Inicializa el buffer de color y el Z-Buffer
+  
+  glPushMatrix ();		// Apila la transformacion geometrica actual
+  transformacionVisualizacion ();	// Carga transformacion de visualizacion
+
+  //Variables iluminacion y materiales
+  GLfloat bright_mat[4] = {0.2f, 0.2f, 0.2f, 1.0f};
+  GLfloat full_mat[4] = {1.0f, 1.0f, 1.0f, 1.0f};
+  GLfloat light_red[4] = { 0.8f, 0.2f, 0.2f, 1.0f};
+  GLfloat light_green[4] = { 0.2f, 0.8f, 0.2f, 1.0f};
+  float black[4] = { 0.1f, 0.1f, 0.1f, 1.0f};
 
   ejesCoordenadas.draw();			// Dibuja los ejes
   
@@ -252,11 +287,13 @@ void Dibuja (void)
       glTranslatef(-13, 0, 0); 
       //bethoween
       malla1.setMaterial(light_red, light_red);
+      ColorSeleccion(0,100);
       malla1.draw();
 
     //Coche
       glTranslatef(13, 0, 0); 
       malla2.setMaterial(light_green, light_green);
+      ColorSeleccion(0,100);
       malla2.draw();
 
     //Peon
@@ -265,12 +302,14 @@ void Dibuja (void)
       glScalef(2, 2, 2); //Escalamos el peon
       glEnable(GL_NORMALIZE); //Al escalar, hay que renormalizar las normales  
       malla2.setMaterial(black, black);
+      ColorSeleccion(0,100);
       peon.draw();
     glPopMatrix();
     
     //Fuente
       glTranslatef(8, 0, 0);
       fuente.setMaterial(full_mat, full_mat);
+      ColorSeleccion(0,100);
       fuente.draw();
     break;
   case '3':
@@ -344,7 +383,6 @@ void Dibuja (void)
   }
   
   glPopMatrix();
-  glutSwapBuffers ();		// Intercambia el buffer de dibujo y visualizacion
 }
 
 
