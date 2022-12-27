@@ -86,8 +86,8 @@ void setCamara (float ax, float ay, float d, float x, float y, float z)
 }
 
 void giroCamara (float ax, float ay){
-  view_rotx = ax;
-  view_roty = ay;
+  view_rotx += ax;
+  view_roty += ay;
 }
 
 

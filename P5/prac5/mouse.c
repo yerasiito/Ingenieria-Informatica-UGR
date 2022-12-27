@@ -47,22 +47,21 @@ estado: Estado en el que esta el boton que se ha pulsado.
 x,y: Posicion, en coordenadas de pantalla, en que se encuantra el cursor.
 
 **/
-bool moviendoCamara = false;
-
+bool moviendoCamara;
+int xant, yant;
 void clickRaton (int boton, int estado, int x, int y)
 {
-	// std::cout << "click\n";
+	 if(boton == GLUT_LEFT_BUTTON){ //GLUT_MIDDLE_BUTTON para el raton
+		if(estado == GLUT_DOWN){
 
-	// if(boton == GLUT_MIDDLE_BUTTON){
-	// 	if(boton == GLUT_DOWN){
-	// 		moviendoCamara = true;
-	// 	}
-	// 	else{
-	// 		moviendoCamara = false;
-	// 	}
-	// }
-	// RatonMovido(x,y);
-
+	 		moviendoCamara = true;
+			xant = x;
+			yant = y;
+	 	}
+	 	else{
+	 		moviendoCamara = false;
+	 	}
+	 }
 }
 
 
@@ -77,11 +76,10 @@ x,y: Posicion, en coordenadas de pantalla, en que se encuantra el cursor.
 **/
 void RatonMovido (int x, int y)
 {
-	// static int xant = x, yant = y;
-	// if(moviendoCamara){
-	// 	xant = -x;
-	// 	yant = -y;
-	// }
-	// giroCamara(y-yant, x-xant);
-	// glutPostRedisplay();
+	if(moviendoCamara){
+		giroCamara(y-yant, x-xant);
+	 	xant = x;
+	 	yant = y;
+	}
+	glutPostRedisplay();
 }

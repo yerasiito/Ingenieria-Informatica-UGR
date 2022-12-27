@@ -76,7 +76,9 @@
         "typeindex": "c",
         "glut.h": "c",
         "malla.h": "c",
-        "objetorevolucion.h": "c"
+        "objetorevolucion.h": "c",
+        "hash_map": "c",
+        "hash_set": "c"
     },
     "C_Cpp.errorSquiggles": "Disabled"
 }

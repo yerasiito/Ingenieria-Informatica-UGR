@@ -89,19 +89,19 @@ void letra (unsigned char k, int x, int y)
     {
     case 'A':
     case 'a':
-      xcamara -= 2.0;
+      xcamara -= 1.0;
       break;
     case 'S':
     case 's':
-      dCamara += 2.0;
+      zcamara += 1.0;
       break;
     case 'W':
     case 'w':
-      dCamara -= 2.0; 
+      zcamara -= 1.0; 
       break;
     case 'D':
     case 'd':
-      xcamara += 2.0;  
+      xcamara += 1.0;  
       break;
     case 'R':
     case 'r':
