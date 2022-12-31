@@ -140,10 +140,10 @@ void letra (unsigned char k, int x, int y)
       printHelp ();		// H y h imprimen ayuda
       break;
     case '+':			// acerca la cámara
-      dCamara -= 5.0;
+      dCamara /= 1.1;
       break;
     case '-':			// aleja la cámara
-      dCamara += 5.0;
+      dCamara *= 1.1;
       break;
     case 27:			// Escape  Terminar
       exit (0);

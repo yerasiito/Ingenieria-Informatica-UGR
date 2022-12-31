@@ -180,7 +180,7 @@ PrismaHexagonal prisma(default_size/2, default_size);
 /*Practica 3*/
 Bici bici(1, 1.5, 1.5, 1);
 
-void pick(int x, int y){
+int pick(int x, int y, int *i, int *componente){
   std::cout << "Picking\n";
   GLint viewport[4];
   unsigned char data[4];
@@ -188,14 +188,19 @@ void pick(int x, int y){
   glGetIntegerv (GL_VIEWPORT, viewport);
   glDisable(GL_DITHER);
   glDisable(GL_LIGHTING);
-  dibujoEscena();
+  Dibuja();
   glEnable(GL_LIGHTING);
   glEnable(GL_DITHER);
   glFlush();
   glFinish();
 
   glReadPixels(x, viewport[3]-y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, data);
+  
+  *i = data[0];
+  *componente = data[1];
+
   glutPostRedisplay();
+  return *i;
 }
 
 void ColorSeleccion ( int i, int componente){
@@ -209,16 +214,15 @@ Procedimiento de dibujo del modelo. Es llamado por glut cada vez que se debe red
 **/
 void Dibuja (void){  
   // Activa o desactiva la iluminacion
-  controlLuz();
-
-  dibujoEscena();
-
   glutSwapBuffers ();		// Intercambia el buffer de dibujo y visualizacion
+  dibujoEscena();
 }
 
 
 void dibujoEscena ()
 {
+  controlLuz();
+
   glClearColor (0.0, 0.0, 0.0, 1.0);	// Fija el color de fondo a negro
   glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// Inicializa el buffer de color y el Z-Buffer
   
@@ -240,7 +244,7 @@ void dibujoEscena ()
 
   //Variables P1
   float cuboC[4] = { 0.5, 0.0, 1, 1 };
-  float p1Color3[4] = { 1.0, 0.0, 0, 1 };  
+  float p1Color3[4] = { 1.0, 0.0, 0, 1 };
   float p1Color4[4] = { 0.0, 1.0, 0.0, 1 };
 
   setNumPractica();
@@ -249,6 +253,7 @@ void dibujoEscena ()
       glPushMatrix();
         // Dibuja el cubo
         glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, cuboC);
+
         glColor3fv (cuboC);
         cubo.draw();                
 
@@ -287,13 +292,11 @@ void dibujoEscena ()
       glTranslatef(-13, 0, 0); 
       //bethoween
       malla1.setMaterial(light_red, light_red);
-      ColorSeleccion(0,100);
       malla1.draw();
 
     //Coche
       glTranslatef(13, 0, 0); 
       malla2.setMaterial(light_green, light_green);
-      ColorSeleccion(0,100);
       malla2.draw();
 
     //Peon
@@ -302,14 +305,12 @@ void dibujoEscena ()
       glScalef(2, 2, 2); //Escalamos el peon
       glEnable(GL_NORMALIZE); //Al escalar, hay que renormalizar las normales  
       malla2.setMaterial(black, black);
-      ColorSeleccion(0,100);
       peon.draw();
     glPopMatrix();
     
     //Fuente
       glTranslatef(8, 0, 0);
       fuente.setMaterial(full_mat, full_mat);
-      ColorSeleccion(0,100);
       fuente.draw();
     break;
   case '3':

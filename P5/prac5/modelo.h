@@ -31,12 +31,13 @@
 #define MODELO_H
 #include <iostream>
 
-void pick(int x, int y);
+int pick(int x, int y, int *i, int *componente);
 
 void ColorSeleccion ( int i, int componente);
 
 void dibujoEscena ();
 
+void dibujoSeleccion ();
 /**
 	Funcion de redibujado. Se ejecuta con los eventos postRedisplay
 **/

@@ -52,12 +52,15 @@ int xant, yant;
 void clickRaton (int boton, int estado, int x, int y)
 {
 	 if(boton == GLUT_LEFT_BUTTON){ //GLUT_MIDDLE_BUTTON para el raton
-		pick(x,y);
 		if(estado == GLUT_DOWN){
 	 		moviendoCamara = true;
 			xant = x;
 			yant = y;
-	 	}
+			int i,j;
+			i = pick(x,y,&i, &j);
+			std::cout << i << "\n" << j << "\n";
+			ColorSeleccion(i, j);
+		}
 	 	else{
 	 		moviendoCamara = false;
 	 	}
