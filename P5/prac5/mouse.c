@@ -58,8 +58,9 @@ void clickRaton (int boton, int estado, int x, int y)
 			yant = y;
 			int i,j;
 			i = pick(x,y,&i, &j);
-			std::cout << i << "\n" << j << "\n";
-			ColorSeleccion(i, j);
+			if(i != 0 && j != 0){
+				setSeleccion(i,j);
+			}
 		}
 	 	else{
 	 		moviendoCamara = false;

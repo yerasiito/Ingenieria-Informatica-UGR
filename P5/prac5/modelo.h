@@ -35,6 +35,10 @@ int pick(int x, int y, int *i, int *componente);
 
 void ColorSeleccion ( int i, int componente);
 
+void setSeleccion (int i, int j);
+
+void getSeleccion(float *i, float *j);
+
 void dibujoEscena ();
 
 void dibujoSeleccion ();

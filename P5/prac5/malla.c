@@ -55,7 +55,15 @@ Malla::Malla(const char *nombre_archivo, const char *nombre_textura){
 void Malla::setMaterial(GLfloat mat_ambient[4], GLfloat mat_diffuse[4], GLfloat mat_specular[4], 
                         GLfloat e, GLfloat mat_emission[4]){
   glPushAttrib(GL_LIGHTING_BIT);
-  
+  float i,j;
+  getSeleccion(&i,&j);
+  if(i == mat_ambient[0] && j == mat_ambient[1]){
+    glColor3fv(seleccionado);
+    normales_v = {};
+    normales_c = {};
+    return;
+  }
+
   if(mat_ambient){
     glColor3fv(mat_ambient);
     glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient); //Iluminacion ambiente

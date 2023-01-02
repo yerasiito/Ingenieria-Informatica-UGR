@@ -43,6 +43,7 @@ int modo = GL_FILL;
 int sombreado1 = GL_SMOOTH, sombreado2 = GL_FLAT;
 bool luz = true, luz0 = true;
 int roty = 0;
+float r = 0,g = 0;
 char numPractica = '4', Letra;
 
 void setModo(int M){
@@ -87,6 +88,17 @@ void alternarAnimacion(){
   animacion = !animacion;
 }
 
+void setSeleccion(int i, int j){
+  r = i/255.0f;
+  g = j/255.0f;
+  r = round(r*100)/100;
+  g = round(g*100)/100;
+}
+
+void getSeleccion(float *i, float *j){
+  *i = r;
+  *j = g;
+}
 /**	void initModel()
 Inicializa el modelo y de las variables globales
 **/
@@ -181,15 +193,14 @@ PrismaHexagonal prisma(default_size/2, default_size);
 Bici bici(1, 1.5, 1.5, 1);
 
 int pick(int x, int y, int *i, int *componente){
-  std::cout << "Picking\n";
   GLint viewport[4];
   unsigned char data[4];
-
+  bool luzAnterior = luz;
   glGetIntegerv (GL_VIEWPORT, viewport);
   glDisable(GL_DITHER);
-  glDisable(GL_LIGHTING);
-  Dibuja();
-  glEnable(GL_LIGHTING);
+  luz = false;
+  dibujoEscena();
+  luz = luzAnterior;
   glEnable(GL_DITHER);
   glFlush();
   glFinish();
@@ -214,15 +225,14 @@ Procedimiento de dibujo del modelo. Es llamado por glut cada vez que se debe red
 **/
 void Dibuja (void){  
   // Activa o desactiva la iluminacion
-  glutSwapBuffers ();		// Intercambia el buffer de dibujo y visualizacion
   dibujoEscena();
+  glutSwapBuffers ();		// Intercambia el buffer de dibujo y visualizacion
 }
 
 
 void dibujoEscena ()
 {
   controlLuz();
-
   glClearColor (0.0, 0.0, 0.0, 1.0);	// Fija el color de fondo a negro
   glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// Inicializa el buffer de color y el Z-Buffer
   
