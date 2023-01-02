@@ -167,8 +167,9 @@ void inicializaVentana (GLsizei ancho, GLsizei alto)
 }
 
 int menu, colorMenu, matMenu;
+typedef enum{} opciones_menu;
 typedef enum{ROJO, AZUL, VERDE, MAGENTA} colores_menu;
-typedef enum{AMBIENTE, DIFUSO, ESPECULAR, E, EMISION} materiales_menu;
+typedef enum{DIFUSO, ESPECULAR, E, EMISION} materiales_menu;
 
 void initMenu(){
 	colorMenu = glutCreateMenu(setColor);
@@ -178,7 +179,6 @@ void initMenu(){
 	glutAddMenuEntry("Default",MAGENTA);
 
   matMenu = glutCreateMenu(setMat);
-	glutAddMenuEntry("Ambiente",AMBIENTE);
 	glutAddMenuEntry("Difuso",DIFUSO);
 	glutAddMenuEntry("Especular",ESPECULAR);
 	glutAddMenuEntry("Exponente especular",E);
@@ -221,8 +221,8 @@ void setColor(int opcion){
 
 void setMat(int opcion){
   switch(opcion){
-    case AMBIENTE:
-    std::cout << "Ambiente\n";
+    case DIFUSO:
+      setAccionActualMenu(DIFUSO);
     break;
   }
 }

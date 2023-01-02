@@ -36,17 +36,17 @@ modulo modelo.c
 #include "entradaTeclado.h"
 
 bool animacion = false, lectura = false;
+typedef enum{NONE, COLOR, DIFUSO, ESPECULAR, E, EMISION} accionesMenu;
 
 //Global variables
 float default_size = 2;
 int modo = GL_FILL;
 int sombreado1 = GL_SMOOTH, sombreado2 = GL_FLAT;
-bool luz = true, luz0 = true, modoTextura = true, cambios = false;
-int roty = 0;
+bool luz = true, luz0 = true, modoTextura = true;
+int roty = 0, accionActual = NONE;
 float r = 0,g = 0;
 char numPractica = '4', Letra;
-GLfloat seleccionado[4] = {1,0,1,1};
-
+GLfloat seleccionado[4] = {1,0,1,1}, aseleccionado[4];
 void setModo(int M){
   modo = M;
 }
@@ -101,19 +101,52 @@ void getSeleccion(float *i, float *j){
   *j = g;
 }
 
+void guardaSeleccion(){
+  std::copy(std::begin(seleccionado), std::end(seleccionado), std::begin(aseleccionado));
+}
+void recuperaSeleccion(){
+  std::copy(std::begin(aseleccionado), std::end(aseleccionado), std::begin(seleccionado));
+}
+
 void setColorSeleccion(float color[3]){
+  guardaSeleccion();
   seleccionado[0] = color[0];
   seleccionado[1] = color[1];
   seleccionado[2] = color[2];
-  cambios = true;
+  accionActual = COLOR;
+}
+
+void setAccionActualMenu(int nuevaAccion){
+  accionActual = nuevaAccion;
 }
 
 const GLfloat * getSeleccionado(){
   return seleccionado;
 }
 
-bool getCambios(){
-  return cambios;
+int getAccionActual(){
+  return accionActual;
+}
+
+void elegirAccionMenu(int opcion, GLfloat mat_ambient[4], GLfloat mat_diffuse[4], GLfloat mat_specular[4], 
+                        GLfloat e, GLfloat mat_emission[4]){
+  switch(opcion){
+    case COLOR: //o ambiente
+      mat_ambient[0] = getSeleccionado()[0];
+      mat_ambient[1] = getSeleccionado()[1];
+      mat_ambient[2] = getSeleccionado()[2];
+      recuperaSeleccion();
+      accionActual = NONE;
+    break;
+    case DIFUSO:
+      std::cout << "Momento difuso\n";
+      mat_diffuse[0] = getSeleccionado()[0];
+      mat_diffuse[1] = getSeleccionado()[1];
+      mat_diffuse[2] = getSeleccionado()[2];
+      recuperaSeleccion();
+      accionActual = NONE;
+    break;
+  }
 }
 
 /**	void initModel()
@@ -233,7 +266,6 @@ int pick(int x, int y, int *i, int *componente){
   
   *i = data[0];
   *componente = data[1];
-
   glutPostRedisplay();
   return *i;
 }
@@ -253,16 +285,6 @@ void Dibuja (void){
   glutSwapBuffers ();		// Intercambia el buffer de dibujo y visualizacion
 }
 
-
-void dibujoEscena ()
-{
-  controlLuz();
-  glClearColor (0.0, 0.0, 0.0, 1.0);	// Fija el color de fondo a negro
-  glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// Inicializa el buffer de color y el Z-Buffer
-  
-  glPushMatrix ();		// Apila la transformacion geometrica actual
-  transformacionVisualizacion ();	// Carga transformacion de visualizacion
-
   //Variables iluminacion y materiales
   GLfloat bright_mat[4] = {0.2f, 0.2f, 0.2f, 1.0f};
   
@@ -279,6 +301,15 @@ void dibujoEscena ()
   GLfloat light_green[4] = { 0.2f, 0.8f, 0.2f, 1.0f};
   GLfloat light_greenPeon[4] = { 0.21f, 0.81f, 0.21f, 1.0f};
   float black[4] = { 0.1f, 0.1f, 0.1f, 1.0f};
+
+void dibujoEscena ()
+{
+  controlLuz();
+  glClearColor (0.0, 0.0, 0.0, 1.0);	// Fija el color de fondo a negro
+  glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// Inicializa el buffer de color y el Z-Buffer
+  
+  glPushMatrix ();		// Apila la transformacion geometrica actual
+  transformacionVisualizacion ();	// Carga transformacion de visualizacion
 
   ejesCoordenadas.draw();			// Dibuja los ejes
   

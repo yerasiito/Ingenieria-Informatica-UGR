@@ -63,9 +63,9 @@ void clickRaton (int boton, int estado, int x, int y)
 	 }
 
 	 if(boton == GLUT_LEFT_BUTTON){
-		int i,j;
-		i = pick(x,y,&i, &j);
-		if(i != 0 && j != 0){
+		if(estado == GLUT_DOWN){
+			int i,j;
+			i = pick(x,y,&i, &j);
 			setSeleccion(i,j);
 		}
 	 }

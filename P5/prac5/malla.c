@@ -58,11 +58,8 @@ void Malla::setMaterial(GLfloat mat_ambient[4], GLfloat mat_diffuse[4], GLfloat 
   float i,j;
   getSeleccion(&i,&j);
   if(i == mat_ambient[0] && j == mat_ambient[1]){
-    if(true){
-      mat_ambient[0] = 1;
-      mat_ambient[1] = 1;
-      mat_ambient[2] = 1;
-    }
+    //Los cambios del menu se aplican en el objeto seleccionado
+    elegirAccionMenu(getAccionActual(), mat_ambient, mat_diffuse, mat_specular, e, mat_emission);
     glColor3fv(getSeleccionado());
     glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, getSeleccionado()); //Iluminacion ambiente
     return;
@@ -71,6 +68,7 @@ void Malla::setMaterial(GLfloat mat_ambient[4], GLfloat mat_diffuse[4], GLfloat 
     glColor3fv(mat_ambient);
     glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient); //Iluminacion ambiente
   }
+
   if(mat_diffuse)
     glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse); //Reflexión difusa
   if(mat_specular)
