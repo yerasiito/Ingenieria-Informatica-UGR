@@ -49,7 +49,7 @@ class Bici:Objeto3D{
 		GLfloat cuerpoColor[4] = {1, 0.2, 0.2, 1};
 		
 		GLfloat manillarColor[4] = {0.11, 0.11, 0.11, 1};
-		GLfloat sillinColor[4] = {0.1, 0.1, 0.1, 1};
+		GLfloat sillinColor[4] = {0.09, 0.09, 0.09, 1};
 		GLfloat cadenaColor[4] = {0.12, 0.12, 0.12, 1};
 
 		GLfloat metalicColor[4] = {0.8, 0.8, 0.8, 1};

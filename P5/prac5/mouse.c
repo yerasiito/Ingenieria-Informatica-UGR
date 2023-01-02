@@ -51,20 +51,23 @@ bool moviendoCamara;
 int xant, yant;
 void clickRaton (int boton, int estado, int x, int y)
 {
-	 if(boton == GLUT_LEFT_BUTTON){ //GLUT_MIDDLE_BUTTON para el raton
+	 if(boton == GLUT_MIDDLE_BUTTON){ //GLUT_MIDDLE_BUTTON para el raton
 		if(estado == GLUT_DOWN){
 	 		moviendoCamara = true;
 			xant = x;
 			yant = y;
-			int i,j;
-			i = pick(x,y,&i, &j);
-			if(i != 0 && j != 0){
-				setSeleccion(i,j);
-			}
 		}
 	 	else{
 	 		moviendoCamara = false;
 	 	}
+	 }
+
+	 if(boton == GLUT_LEFT_BUTTON){
+		int i,j;
+		i = pick(x,y,&i, &j);
+		if(i != 0 && j != 0){
+			setSeleccion(i,j);
+		}
 	 }
 }
 

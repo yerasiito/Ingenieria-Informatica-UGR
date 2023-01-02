@@ -79,10 +79,11 @@ y:
 float rotxCamara = 30, rotyCamara = 45;
 float dCamara = 10;
 bool perspectiva = true;
-int xcamara = 0.0, ycamara = 0.0, zcamara = 0.0;
+float xcamara = 0.0, ycamara = 0.0, zcamara = 0.0;
 
 void letra (unsigned char k, int x, int y)
 {
+  actualizaCamara(rotxCamara, rotyCamara, dCamara, xcamara, ycamara, zcamara);
   setLetra(k);
   
   switch (k)
@@ -169,28 +170,28 @@ y:
 **/
 void especial (int k, int x, int y)
 {
-
+  actualizaCamara(rotxCamara, rotyCamara, dCamara, xcamara, ycamara, zcamara);
   switch (k)
     {
     case GLUT_KEY_UP:
       rotxCamara += 5.0;	// Cursor arriba + rotacion x
       if (rotxCamara > 360)
-	rotxCamara -= 360;
+	      rotxCamara -= 360;
       break;
     case GLUT_KEY_DOWN:
       rotxCamara -= 5.0;
       if (rotxCamara < 0)
-	rotxCamara += 360;
+	      rotxCamara += 360;
       break;
     case GLUT_KEY_LEFT:
       rotyCamara += 5.0;
       if (rotyCamara > 360)
-	rotyCamara -= 360;
+      	rotyCamara -= 360;
       break;
     case GLUT_KEY_RIGHT:
       rotyCamara -= 5.0;
       if (rotyCamara < 0)
-	rotyCamara += 360;
+      	rotyCamara += 360;
       break;
     case GLUT_KEY_PAGE_DOWN:	// acerca la cámara
       dCamara -= 0.5;

@@ -259,6 +259,7 @@ void dibujoEscena ()
   GLfloat dadoColor[4] = {0.81f, 0.81f, 0.81f, 1.0f};
 
   GLfloat light_red[4] = { 0.8f, 0.2f, 0.2f, 1.0f};
+  GLfloat light_blue[4] = { 0.2f, 0.2f, 0.8f, 1.0f};
   GLfloat light_green[4] = { 0.2f, 0.8f, 0.2f, 1.0f};
   GLfloat light_greenPeon[4] = { 0.21f, 0.81f, 0.21f, 1.0f};
   float black[4] = { 0.1f, 0.1f, 0.1f, 1.0f};
@@ -329,7 +330,7 @@ void dibujoEscena ()
     glPushMatrix();
       glScalef(2, 2, 2); //Escalamos el peon
       glEnable(GL_NORMALIZE); //Al escalar, hay que renormalizar las normales  
-      malla2.setMaterial(black, black);
+      malla2.setMaterial(light_blue, light_blue);
       peon.draw();
     glPopMatrix();
     

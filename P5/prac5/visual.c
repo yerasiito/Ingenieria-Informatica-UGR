@@ -70,6 +70,15 @@ float anchoVentana, altoVentana;
 
 
 
+void actualizaCamara(float &ax, float &ay, float &d, float &x, float &y, float &z){
+  ax = view_rotx;
+  ay = view_roty;
+  x = x_camara;
+  y = y_camara;
+  z = z_camara;
+  d = D;
+}
+
 /** 	void setCamara()
 
 Cambia los parámetros de la cámara en el modulo visual
