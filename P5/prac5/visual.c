@@ -166,23 +166,63 @@ void inicializaVentana (GLsizei ancho, GLsizei alto)
 
 }
 
-int menu;
-typedef enum{START, SALIR,PAUSE} opciones_menu;
+int menu, colorMenu, matMenu;
+typedef enum{ROJO, AZUL, VERDE, MAGENTA} colores_menu;
+typedef enum{AMBIENTE, DIFUSO, ESPECULAR, E, EMISION} materiales_menu;
 
-void Init(){
-  menu = glutCreateMenu(seleccionMenu);
-  glutAddMenuEntry("Start", START);
-  glutAddMenuEntry("Exit", SALIR);
-  glutAttachMenu(GLUT_RIGHT_BUTTON);
+void initMenu(){
+	colorMenu = glutCreateMenu(setColor);
+	glutAddMenuEntry("Rojo",ROJO);
+	glutAddMenuEntry("Azul",AZUL);
+	glutAddMenuEntry("Verde",VERDE);
+	glutAddMenuEntry("Default",MAGENTA);
+
+  matMenu = glutCreateMenu(setMat);
+	glutAddMenuEntry("Ambiente",AMBIENTE);
+	glutAddMenuEntry("Difuso",DIFUSO);
+	glutAddMenuEntry("Especular",ESPECULAR);
+	glutAddMenuEntry("Exponente especular",E);
+	glutAddMenuEntry("Emision",EMISION);
+
+	menu = glutCreateMenu(seleccionMenu);
+	glutAddSubMenu("Color", colorMenu);
+	glutAddSubMenu("Material", matMenu);
+
+	// attach the menu to the right button
+	glutAttachMenu(GLUT_RIGHT_BUTTON);
 }
 
 void seleccionMenu (int opcion){
-  switch ( opcion ){
-    case START:
-      std::cout << "empieza\n";
-    case SALIR:
-      exit(0);
-  }
+
   glutPostRedisplay();
 
+}
+
+void setColor(int opcion){
+  GLfloat rojo[3] = {1,0,0};
+  GLfloat verde[3] = {0,1,0};
+  GLfloat azul[3] = {0,0,1};
+  GLfloat magenta[3] = {1,0,1};
+  switch(opcion){
+    case ROJO:
+      setColorSeleccion(rojo);
+      break;
+    case VERDE:
+      setColorSeleccion(verde);
+      break;
+    case AZUL:
+      setColorSeleccion(azul); 
+      break;
+    case MAGENTA:
+    setColorSeleccion(magenta); 
+    break;
+  }
+}
+
+void setMat(int opcion){
+  switch(opcion){
+    case AMBIENTE:
+    std::cout << "Ambiente\n";
+    break;
+  }
 }

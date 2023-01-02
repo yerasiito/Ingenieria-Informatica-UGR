@@ -58,11 +58,15 @@ void Malla::setMaterial(GLfloat mat_ambient[4], GLfloat mat_diffuse[4], GLfloat 
   float i,j;
   getSeleccion(&i,&j);
   if(i == mat_ambient[0] && j == mat_ambient[1]){
-    glColor3fv(seleccionado);
-    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, seleccionado); //Iluminacion ambiente
+    if(true){
+      mat_ambient[0] = 1;
+      mat_ambient[1] = 1;
+      mat_ambient[2] = 1;
+    }
+    glColor3fv(getSeleccionado());
+    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, getSeleccionado()); //Iluminacion ambiente
     return;
   }
-
   if(mat_ambient){
     glColor3fv(mat_ambient);
     glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient); //Iluminacion ambiente

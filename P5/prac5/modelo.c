@@ -41,10 +41,11 @@ bool animacion = false, lectura = false;
 float default_size = 2;
 int modo = GL_FILL;
 int sombreado1 = GL_SMOOTH, sombreado2 = GL_FLAT;
-bool luz = true, luz0 = true, modoTextura = true;
+bool luz = true, luz0 = true, modoTextura = true, cambios = false;
 int roty = 0;
 float r = 0,g = 0;
 char numPractica = '4', Letra;
+GLfloat seleccionado[4] = {1,0,1,1};
 
 void setModo(int M){
   modo = M;
@@ -100,6 +101,20 @@ void getSeleccion(float *i, float *j){
   *j = g;
 }
 
+void setColorSeleccion(float color[3]){
+  seleccionado[0] = color[0];
+  seleccionado[1] = color[1];
+  seleccionado[2] = color[2];
+  cambios = true;
+}
+
+const GLfloat * getSeleccionado(){
+  return seleccionado;
+}
+
+bool getCambios(){
+  return cambios;
+}
 
 /**	void initModel()
 Inicializa el modelo y de las variables globales
@@ -118,6 +133,7 @@ ObjetoRevolucion tapainf("./plys/lata-pinf", "./texturas/tapas.jpg", 0.5f, 100, 
 ObjetoRevolucion tapasup("./plys/lata-psup", "./texturas/tapas.jpg", 0.0f, 100, true, false); //x=770, y=257, radio 255
 void initModel ()
 {
+  initMenu();
   dado.activarTextura();
   lata.activarTextura();
   tapainf.activarTextura();

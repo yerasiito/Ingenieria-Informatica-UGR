@@ -39,6 +39,12 @@ void setSeleccion (int i, int j);
 
 void getSeleccion(float *i, float *j);
 
+void setColorSeleccion(GLfloat color[3]);
+
+bool getCambios();
+
+const GLfloat * getSeleccionado();
+
 void dibujoEscena ();
 
 void dibujoSeleccion ();

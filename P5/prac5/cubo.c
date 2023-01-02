@@ -86,12 +86,12 @@ glEnd();
 }
 
 void Cubo::setMaterialC(GLfloat materialO[4]){
-		const GLfloat seleccionado[4] = {1,0,1,1};
+		// const GLfloat seleccionado[4] = {1,0,1,1};
     float i,j;
     getSeleccion(&i,&j);
     if(i == materialO[0] && j == materialO[1]){
-      glColor3fv(seleccionado);
-      glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, seleccionado); //Iluminacion ambiente
+      glColor3fv(getSeleccionado());
+      glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, getSeleccionado()); //Iluminacion ambiente
     }
     else{
       glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, materialO);
