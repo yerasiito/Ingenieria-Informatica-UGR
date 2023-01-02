@@ -41,6 +41,8 @@ class Cubo:public Objeto3D
 	  Cubo(float lado, const char *nombre_archivo);
 
       void draw();
+
+	  void setMaterialC(GLfloat materialO[4]);
 };
 
 #endif

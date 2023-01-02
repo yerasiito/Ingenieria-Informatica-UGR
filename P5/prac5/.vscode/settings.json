@@ -78,7 +78,8 @@
         "malla.h": "c",
         "objetorevolucion.h": "c",
         "hash_map": "c",
-        "hash_set": "c"
+        "hash_set": "c",
+        "complex": "c"
     },
     "C_Cpp.errorSquiggles": "Disabled"
 }

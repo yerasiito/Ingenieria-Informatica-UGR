@@ -42,7 +42,7 @@ class Malla:public Objeto3D{
     std::vector <float> normales_v;
     std::vector <float> coordTextura;
     float xMax = 0.0, yMax = 0.0f;
-    const GLfloat seleccionado[4] = {1,1,1,1};
+    GLfloat seleccionado[4] = {1,0,1,1};
   public:
     /****************CONSTRUCTORES****************/
     /**

@@ -41,7 +41,7 @@ bool animacion = false, lectura = false;
 float default_size = 2;
 int modo = GL_FILL;
 int sombreado1 = GL_SMOOTH, sombreado2 = GL_FLAT;
-bool luz = true, luz0 = true;
+bool luz = true, luz0 = true, modoTextura = true;
 int roty = 0;
 float r = 0,g = 0;
 char numPractica = '4', Letra;
@@ -99,13 +99,14 @@ void getSeleccion(float *i, float *j){
   *i = r;
   *j = g;
 }
+
+
 /**	void initModel()
 Inicializa el modelo y de las variables globales
 **/
-/*Practica 2 pero tiene texturas*/
-const char *cadena = "./texturas/rajoy.jpeg";
-Malla malla1("./plys/beethoven", cadena);
-Malla malla2("./plys/big_dodge", cadena);
+/*Practica 2*/
+Malla malla1("./plys/beethoven");
+Malla malla2("./plys/big_dodge");
 //Sin textura
 ObjetoRevolucion peon("./plys/perfil" , 20, true, true);
 ObjetoRevolucion fuente("./plys/miperfil", 100, true, true);
@@ -117,9 +118,6 @@ ObjetoRevolucion tapainf("./plys/lata-pinf", "./texturas/tapas.jpg", 0.5f, 100, 
 ObjetoRevolucion tapasup("./plys/lata-psup", "./texturas/tapas.jpg", 0.0f, 100, true, false); //x=770, y=257, radio 255
 void initModel ()
 {
-  malla1.activarTextura();
-  malla2.activarTextura();
-
   dado.activarTextura();
   lata.activarTextura();
   tapainf.activarTextura();
@@ -181,6 +179,14 @@ void controlLuz(){
   }
 }
 
+void controlTextura(){
+  if(modoTextura)
+    glEnable(GL_TEXTURE_2D);
+  else
+    glDisable(GL_TEXTURE_2D);
+
+}
+
 //Crea los objetos que vamos a dibujar
 Ejes ejesCoordenadas;
 
@@ -198,9 +204,11 @@ int pick(int x, int y, int *i, int *componente){
   bool luzAnterior = luz;
   glGetIntegerv (GL_VIEWPORT, viewport);
   glDisable(GL_DITHER);
+  modoTextura = false;
   luz = false;
   dibujoEscena();
   luz = luzAnterior;
+  modoTextura = true;
   glEnable(GL_DITHER);
   glFlush();
   glFinish();
@@ -241,9 +249,18 @@ void dibujoEscena ()
 
   //Variables iluminacion y materiales
   GLfloat bright_mat[4] = {0.2f, 0.2f, 0.2f, 1.0f};
-  GLfloat full_mat[4] = {1.0f, 1.0f, 1.0f, 1.0f};
+  
+  GLfloat white[4] = {1.0f, 1.0f, 1.0f, 1.0f};
+  GLfloat fuenteColor[4] = {0.99f, 0.99f, 0.99f, 1.0f};
+  GLfloat tapainfColor[4] = {0.98f, 0.98f, 0.98f, 1.0f};
+  GLfloat tapasupColor[4] = {0.97f, 0.97f, 0.97f, 1.0f};
+  
+
+  GLfloat dadoColor[4] = {0.81f, 0.81f, 0.81f, 1.0f};
+
   GLfloat light_red[4] = { 0.8f, 0.2f, 0.2f, 1.0f};
   GLfloat light_green[4] = { 0.2f, 0.8f, 0.2f, 1.0f};
+  GLfloat light_greenPeon[4] = { 0.21f, 0.81f, 0.21f, 1.0f};
   float black[4] = { 0.1f, 0.1f, 0.1f, 1.0f};
 
   ejesCoordenadas.draw();			// Dibuja los ejes
@@ -263,8 +280,6 @@ void dibujoEscena ()
       glPushMatrix();
         // Dibuja el cubo
         glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, cuboC);
-
-        glColor3fv (cuboC);
         cubo.draw();                
 
         // Dibuja la pirámide
@@ -320,7 +335,7 @@ void dibujoEscena ()
     
     //Fuente
       glTranslatef(8, 0, 0);
-      fuente.setMaterial(full_mat, full_mat);
+      fuente.setMaterial(fuenteColor, fuenteColor);
       fuente.draw();
     break;
   case '3':
@@ -343,54 +358,44 @@ void dibujoEscena ()
     //Peon 2
     // glPushAttrib(GL_LIGHTING_BIT);
       glTranslatef(3,0,0);
-      peon.setMaterial(light_red, light_red, full_mat, 100);
+      peon.setMaterial(light_red, light_red, white, 100);
       peon.draw();
     // glPopAttrib();
 
     //Peon 3
     // glPushAttrib(GL_LIGHTING_BIT);
       glTranslatef(3,0,0);
-      peon.setMaterial(light_green, light_green, bright_mat);
+      peon.setMaterial(light_greenPeon, light_greenPeon, bright_mat);
       peon.draw();
     // glPopAttrib();
-    glTranslatef(2,0,0);
 
-    glTranslatef(0,-1.4, 0);
+    glTranslatef(2,-1.4, 0);
     glPushMatrix();
+    glPushAttrib(GL_LIGHTING_BIT);
       glTranslatef(0,0,-1);
       //Cubo con textura de dado
-      glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, full_mat);
-      glColor3fv (full_mat);
-      glEnable(GL_TEXTURE_2D);
+      cubo.setMaterialC(dadoColor);
+      controlTextura();
       dado.draw();
     glPopMatrix();
+    glPopAttrib();
 
     glTranslatef(4,0,0);
 
     glEnable(GL_NORMALIZE);
     glRotatef(90, 0, 1, 0);
     glScalef(2,2,2);
+    lata.setMaterial(white,white);
     lata.draw();
 
+    tapainf.setMaterial(tapainfColor,tapainfColor);
     tapainf.draw();
+
+    tapasup.setMaterial(tapasupColor,tapasupColor);
     tapasup.draw();
     glDisable(GL_TEXTURE_2D);
 
     break;
-    case '5': //Es la 2 con texturas
-      glEnable(GL_TEXTURE_2D);
-        glTranslatef(-5, 0, 0); 
-        //bethoween
-        malla1.setMaterial(full_mat, full_mat);
-        malla1.draw();
-
-        //Coche
-        glTranslatef(13, 0, 0); 
-        malla2.setMaterial(full_mat, full_mat);
-        malla2.draw();
-      glDisable(GL_TEXTURE_2D);
-      break;
-    /*Dibuja objetos de la PRACTICA 3*/
   }
   
   glPopMatrix();

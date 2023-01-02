@@ -156,3 +156,24 @@ void inicializaVentana (GLsizei ancho, GLsizei alto)
   fijaProyeccion ();		// Cargamos la transformacion de proyeccion
 
 }
+
+int menu;
+typedef enum{START, SALIR,PAUSE} opciones_menu;
+
+void Init(){
+  menu = glutCreateMenu(seleccionMenu);
+  glutAddMenuEntry("Start", START);
+  glutAddMenuEntry("Exit", SALIR);
+  glutAttachMenu(GLUT_RIGHT_BUTTON);
+}
+
+void seleccionMenu (int opcion){
+  switch ( opcion ){
+    case START:
+      std::cout << "empieza\n";
+    case SALIR:
+      exit(0);
+  }
+  glutPostRedisplay();
+
+}

@@ -44,7 +44,6 @@ Cubo::Cubo(float lado, const char *nombre_archivo){
 void Cubo::draw( )
 {
   glBindTexture(GL_TEXTURE_2D , texId);
-  glPushAttrib(GL_LIGHTING_BIT);
   glBegin(GL_QUADS);
     // frente
     glNormal3f(0,0,1);
@@ -84,5 +83,18 @@ void Cubo::draw( )
     glTexCoord2f(0.7441f, 0.995f);     glVertex3f(l, 0.0f, 0.0f);
 
 glEnd(); 
-glPopAttrib();
+}
+
+void Cubo::setMaterialC(GLfloat materialO[4]){
+		const GLfloat seleccionado[4] = {1,0,1,1};
+    float i,j;
+    getSeleccion(&i,&j);
+    if(i == materialO[0] && j == materialO[1]){
+      glColor3fv(seleccionado);
+      glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, seleccionado); //Iluminacion ambiente
+    }
+    else{
+      glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, materialO);
+      glColor3fv(materialO);
+    }
 }

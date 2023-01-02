@@ -18,6 +18,8 @@
 #include <GL/glut.h>
 #include "objetoRevolucion.h"
 
+void materialOrtoedro(GLfloat materialO[4]);
+
 // =========================== ortoedro ================================================
 
 void ortoedro(float x0, float y0, float z0,
@@ -43,16 +45,24 @@ class Bici:Objeto3D{
 		
 		float escale = 1, escala_r1 = 1, escala_r2 = 1, grosor_r = 1;
 
-		float defaultColor[4] = {1, 1, 1, 1};
-		float cuerpoColor[4] = {1, 0.2, 0.2, 1};
-		float sillinColor[4] = {0.1, 0.1, 0.1, 1};
+		GLfloat defaultColor[4] = {0.9, 0.9, 0.9, 1};
+		GLfloat cuerpoColor[4] = {1, 0.2, 0.2, 1};
+		
+		GLfloat manillarColor[4] = {0.11, 0.11, 0.11, 1};
+		GLfloat sillinColor[4] = {0.1, 0.1, 0.1, 1};
+		GLfloat cadenaColor[4] = {0.12, 0.12, 0.12, 1};
 
-		float metalicColor[4] = {0.792, 0.8, 0.807, 1};
+		GLfloat metalicColor[4] = {0.8, 0.8, 0.8, 1};
+		GLfloat pedalExtension[4] = {0.85, 0.85, 0.85, 1};
 
-		float llantaColor[4] = {0.69, 0.702, 0.717, 1};
-		float ruedaColor[4] = {0.305, 0.29, 0.278, 1};
-		float pedalColor[4] = {0.3, 0.3, 0.3, 1};
-		 float colorR[4] = { 1.0, 0.55, 0.0, 1};
+		GLfloat llantaColor[4] = {0.7, 0.7, 0.7, 1};
+		GLfloat ruedaColor[4] = {0.3, 0.3, 0.3, 1};
+		GLfloat pedalColor[4] = {0.4, 0.4, 0.4, 1};
+
+		GLfloat colorR[4] = { 1.0, 0.5, 0.0, 1};
+		GLfloat colorRpedal[4] = { 1.0, 0.55, 0.0, 1};
+		
+		GLfloat seleccionado[4] = {1,0,1,1};
 	public:
 		/*Parametros animacion*/
 		int multiplicador = 1;
