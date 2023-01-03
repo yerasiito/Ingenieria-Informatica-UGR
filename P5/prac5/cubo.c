@@ -90,6 +90,7 @@ void Cubo::setMaterialC(GLfloat materialO[4]){
     float i,j;
     getSeleccion(&i,&j);
     if(i == materialO[0] && j == materialO[1]){
+      elegirAccionMenu(materialO, materialO);
       glColor3fv(getSeleccionado());
       glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, getSeleccionado()); //Iluminacion ambiente
     }

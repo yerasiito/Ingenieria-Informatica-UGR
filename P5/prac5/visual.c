@@ -166,43 +166,34 @@ void inicializaVentana (GLsizei ancho, GLsizei alto)
 
 }
 
-int menu, colorMenu, matMenu;
+int menu, colorMenu;
 typedef enum{} opciones_menu;
-typedef enum{ROJO, AZUL, VERDE, MAGENTA} colores_menu;
-typedef enum{DIFUSO, ESPECULAR, E, EMISION} materiales_menu;
+typedef enum{ROJO, AZUL, VERDE, NARANJA, CELESTE, BLANCO} colores_menu;
 
 void initMenu(){
 	colorMenu = glutCreateMenu(setColor);
 	glutAddMenuEntry("Rojo",ROJO);
 	glutAddMenuEntry("Azul",AZUL);
 	glutAddMenuEntry("Verde",VERDE);
-	glutAddMenuEntry("Default",MAGENTA);
+	glutAddMenuEntry("Naranja",NARANJA);
+	glutAddMenuEntry("Celeste",CELESTE);
+	glutAddMenuEntry("Blanco",BLANCO);
 
-  matMenu = glutCreateMenu(setMat);
-	glutAddMenuEntry("Difuso",DIFUSO);
-	glutAddMenuEntry("Especular",ESPECULAR);
-	glutAddMenuEntry("Exponente especular",E);
-	glutAddMenuEntry("Emision",EMISION);
 
-	menu = glutCreateMenu(seleccionMenu);
-	glutAddSubMenu("Color", colorMenu);
-	glutAddSubMenu("Material", matMenu);
+	menu = glutCreateMenu(setColor);
+	glutAddSubMenu("Cambiar color", colorMenu);
 
 	// attach the menu to the right button
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
-}
-
-void seleccionMenu (int opcion){
-
-  glutPostRedisplay();
-
 }
 
 void setColor(int opcion){
   GLfloat rojo[3] = {1,0,0};
   GLfloat verde[3] = {0,1,0};
   GLfloat azul[3] = {0,0,1};
-  GLfloat magenta[3] = {1,0,1};
+  GLfloat naranja[3] = {1,0.5,0};
+  GLfloat celeste[3] = {0,1,1};
+  GLfloat blanco[3] = {1,1,1};
   switch(opcion){
     case ROJO:
       setColorSeleccion(rojo);
@@ -213,16 +204,14 @@ void setColor(int opcion){
     case AZUL:
       setColorSeleccion(azul); 
       break;
-    case MAGENTA:
-    setColorSeleccion(magenta); 
+    case NARANJA:
+      setColorSeleccion(naranja); 
     break;
-  }
-}
-
-void setMat(int opcion){
-  switch(opcion){
-    case DIFUSO:
-      setAccionActualMenu(DIFUSO);
+    case CELESTE:
+      setColorSeleccion(celeste); 
+    break;
+    case BLANCO:
+      setColorSeleccion(blanco); 
     break;
   }
 }

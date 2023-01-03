@@ -57,18 +57,18 @@ void Malla::setMaterial(GLfloat mat_ambient[4], GLfloat mat_diffuse[4], GLfloat 
   glPushAttrib(GL_LIGHTING_BIT);
   float i,j;
   getSeleccion(&i,&j);
-  if(i == mat_ambient[0] && j == mat_ambient[1]){
+  if(i == mat_ambient[0] && j == mat_ambient[1]){ //Comprueba si el objeto está seleccionado
     //Los cambios del menu se aplican en el objeto seleccionado
-    elegirAccionMenu(getAccionActual(), mat_ambient, mat_diffuse, mat_specular, e, mat_emission);
+    elegirAccionMenu(mat_ambient, mat_diffuse);
     glColor3fv(getSeleccionado());
     glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, getSeleccionado()); //Iluminacion ambiente
     return;
   }
+
   if(mat_ambient){
     glColor3fv(mat_ambient);
     glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient); //Iluminacion ambiente
   }
-
   if(mat_diffuse)
     glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse); //Reflexión difusa
   if(mat_specular)
@@ -77,7 +77,6 @@ void Malla::setMaterial(GLfloat mat_ambient[4], GLfloat mat_diffuse[4], GLfloat 
     glMaterialf(GL_FRONT, GL_SHININESS, e); //exponente especular
   if(mat_emission)
     glMaterialfv(GL_FRONT, GL_EMISSION, mat_emission); //Emisividad, por defecto es 0. (Los objetos no suelen emitir luz propia)
-
 }
 
 void Malla::normales_caras(){

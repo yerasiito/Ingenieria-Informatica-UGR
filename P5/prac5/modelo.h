@@ -41,9 +41,7 @@ void getSeleccion(float *i, float *j);
 
 void setColorSeleccion(GLfloat color[3]);
 
-int getAccionActual();
-void elegirAccionMenu(int opcion, GLfloat mat_ambient[4], GLfloat mat_diffuse[4], GLfloat mat_specular[4], 
-                        GLfloat e, GLfloat mat_emission[4]);
+void elegirAccionMenu(GLfloat mat_ambient[4], GLfloat mat_diffuse[4]);
 
 void setAccionActualMenu(int nuevaAccion);
 

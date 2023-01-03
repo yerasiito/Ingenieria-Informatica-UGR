@@ -67,9 +67,6 @@ void inicializaVentana (GLsizei ancho, GLsizei alto);
 
 void initMenu();
 
-void seleccionMenu (int opcion);
-
 void setColor(int opcion);
-void setMat(int opcion);
 
 #endif

@@ -36,7 +36,7 @@ modulo modelo.c
 #include "entradaTeclado.h"
 
 bool animacion = false, lectura = false;
-typedef enum{NONE, COLOR, DIFUSO, ESPECULAR, E, EMISION} accionesMenu;
+typedef enum{NONE, COLOR, TRANSFORMAR} accionesMenu;
 
 //Global variables
 float default_size = 2;
@@ -124,22 +124,13 @@ const GLfloat * getSeleccionado(){
   return seleccionado;
 }
 
-int getAccionActual(){
-  return accionActual;
-}
-
-void elegirAccionMenu(int opcion, GLfloat mat_ambient[4], GLfloat mat_diffuse[4], GLfloat mat_specular[4], 
-                        GLfloat e, GLfloat mat_emission[4]){
-  switch(opcion){
+void elegirAccionMenu(GLfloat mat_ambient[4], GLfloat mat_diffuse[4]){
+  switch(accionActual){
     case COLOR: //o ambiente
       mat_ambient[0] = getSeleccionado()[0];
       mat_ambient[1] = getSeleccionado()[1];
       mat_ambient[2] = getSeleccionado()[2];
-      recuperaSeleccion();
-      accionActual = NONE;
-    break;
-    case DIFUSO:
-      std::cout << "Momento difuso\n";
+
       mat_diffuse[0] = getSeleccionado()[0];
       mat_diffuse[1] = getSeleccionado()[1];
       mat_diffuse[2] = getSeleccionado()[2];
@@ -292,6 +283,7 @@ void Dibuja (void){
   GLfloat fuenteColor[4] = {0.99f, 0.99f, 0.99f, 1.0f};
   GLfloat tapainfColor[4] = {0.98f, 0.98f, 0.98f, 1.0f};
   GLfloat tapasupColor[4] = {0.97f, 0.97f, 0.97f, 1.0f};
+  GLfloat lataColor[4] = {0.96f, 0.96f, 0.96f, 1.0f};
   
 
   GLfloat dadoColor[4] = {0.81f, 0.81f, 0.81f, 1.0f};
@@ -433,7 +425,7 @@ void dibujoEscena ()
     glEnable(GL_NORMALIZE);
     glRotatef(90, 0, 1, 0);
     glScalef(2,2,2);
-    lata.setMaterial(white,white);
+    lata.setMaterial(lataColor,lataColor);
     lata.draw();
 
     tapainf.setMaterial(tapainfColor,tapainfColor);
