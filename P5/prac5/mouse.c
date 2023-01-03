@@ -51,7 +51,7 @@ bool moviendoCamara;
 int xant, yant;
 void clickRaton (int boton, int estado, int x, int y)
 {
-	 if(boton == GLUT_MIDDLE_BUTTON){ //GLUT_MIDDLE_BUTTON para el raton
+	 if(boton == GLUT_LEFT_BUTTON){ //GLUT_MIDDLE_BUTTON para el raton
 		if(estado == GLUT_DOWN){
 	 		moviendoCamara = true;
 			xant = x;
