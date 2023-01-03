@@ -22,6 +22,10 @@ Animacion de la bicicleta:
   j: Velocidad x2.75
   k: Velocidad x3
 c: Alternar luz 1/2 (blanca/roja)
+f1: vista perfil (ortogonal)
+f2: vista alzado (perspectiva)
+f3: vista planta (perspectiva)
+f4: alternar vista perspectiva/ortogonal
 a: Desplaza la camara -x
 d: Desplaza la camara +x
 w: Desplaza la camara -z
