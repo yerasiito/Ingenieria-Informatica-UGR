@@ -1,0 +1,62 @@
+BasicGame
+    SpriteSet
+        floor > Immovable img=oryx/grass autotiling=True hidden=True
+        exit > Door color=GREEN img=newset/exit2
+        avatar > MovingAvatar zv=True img=newset/girl1
+        trap > Immovable img=oryx/spike2
+        trapHdn1 > Immovable invisible=True hidden=True
+        trapHdn2 > Immovable invisible=True hidden=True
+        trapHdn3 > Immovable invisible=True hidden=True
+        trapHdn4 > Immovable invisible=True hidden=True
+        wall > Immovable img=oryx/wall1
+        wallHdn1 > Immovable img=oryx/wall1 invisible=True hidden=True
+        wallHdn2 > Immovable img=oryx/wall1 invisible=True hidden=True
+        wallHdn3 > Immovable img=oryx/wall1 invisible=True hidden=True
+        wallHdn4 > Immovable img=oryx/wall1 invisible=True hidden=True
+        s1 > Immovable img=oryx/floorTileOrange hidden=True invisible=False
+        s2 > Immovable img=oryx/floorTileOrange hidden=True invisible=False
+        s3 > Immovable img=oryx/floorTileOrange hidden=True invisible=False
+        s4 > Immovable img=oryx/floorTileOrange hidden=True invisible=False
+
+
+    InteractionSet
+
+        avatar wall > stepBack
+        exit avatar > killSprite scoreChange=1
+        avatar trap > killSprite scoreChange=-1
+        
+        avatar s1 > transformToAll stype=trapHdn1 stypeTo=trap
+        avatar s1 > transformToAll stype=wallHdn1 stypeTo=wall
+        
+        avatar s2 > transformToAll stype=trapHdn2 stypeTo=trap
+        avatar s2 > transformToAll stype=wallHdn2 stypeTo=wall
+        
+        avatar s3 > transformToAll stype=trapHdn3 stypeTo=trap
+        avatar s3 > transformToAll stype=wallHdn3 stypeTo=wall
+        
+        avatar s4 > transformToAll stype=trapHdn4 stypeTo=trap
+        avatar s4 > transformToAll stype=wallHdn4 stypeTo=wall
+
+    TerminationSet
+        SpriteCounter stype=avatar limit=0 win=False
+        SpriteCounter stype=exit limit=0 win=True
+        Timeout limit=10000 win=False
+
+    LevelMapping
+        x > floor exit
+        t > floor trap
+        + > floor trapHdn1
+        - > floor trapHdn2
+        * > floor trapHdn3
+        / > floor trapHdn4
+        . > floor
+        w > floor wall
+        h > floor wallHdn1
+        j > floor wallHdn2
+        k > floor wallHdn3
+        l > floor wallHdn4
+        A > floor avatar
+        1 > floor s1
+        2 > floor s2
+        3 > floor s3
+        4 > floor s4
