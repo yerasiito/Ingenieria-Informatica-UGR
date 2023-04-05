@@ -1,0 +1,10 @@
+**/CMakeFiles/
+**/Teoria/
+**/pdfs/
+**/pdf/
+**/build/
+**.vscode/
+*.zip
+*.pdf
+*.cmake
+**/CMakeCache.txt
