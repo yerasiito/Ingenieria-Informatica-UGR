@@ -1,0 +1,7 @@
+PROJECT(CXX)
+cmake_minimum_required(VERSION 3.16)
+ADD_EXECUTABLE(random ejemplo_random.cc)
+TARGET_LINK_LIBRARIES(random)
+SET(TIEMPOS_SRC fact.cc tiempos.cc)
+ADD_EXECUTABLE(tiempos ${TIEMPOS_SRC})
+TARGET_LINK_LIBRARIES(tiempos m)

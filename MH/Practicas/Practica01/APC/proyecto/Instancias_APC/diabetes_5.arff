@@ -1,0 +1,247 @@
+% 1. Title: Pima Indians Diabetes Database
+% 
+% 2. Sources:
+%    (a) Original owners: National Institute of Diabetes and Digestive and
+%                         Kidney Diseases
+%    (b) Donor of database: Vincent Sigillito (vgs@aplcen.apl.jhu.edu)
+%                           Research Center, RMI Group Leader
+%                           Applied Physics Laboratory
+%                           The Johns Hopkins University
+%                           Johns Hopkins Road
+%                           Laurel, MD 20707
+%                           (301) 953-6231
+%    (c) Date received: 9 May 1990
+% 
+% 3. Past Usage:
+%     1. Smith,~J.~W., Everhart,~J.~E., Dickson,~W.~C., Knowler,~W.~C., \&
+%        Johannes,~R.~S. (1988). Using the ADAP learning algorithm to forecast
+%        the onset of diabetes mellitus.  In {\it Proceedings of the Symposium
+%        on Computer Applications and Medical Care} (pp. 261--265).  IEEE
+%        Computer Society Press.
+% 
+%        The diagnostic, binary-valued variable investigated is whether the
+%        patient shows signs of diabetes according to World Health Organization
+%        criteria (i.e., if the 2 hour post-load plasma glucose was at least 
+%        200 mg/dl at any survey  examination or if found during routine medical
+%        care).   The population lives near Phoenix, Arizona, USA.
+% 
+%        Results: Their ADAP algorithm makes a real-valued prediction between
+%        0 and 1.  This was transformed into a binary decision using a cutoff of 
+%        0.448.  Using 576 training instances, the sensitivity and specificity
+%        of their algorithm was 76% on the remaining 192 instances.
+% 
+% 4. Relevant Information:
+%       Several constraints were placed on the selection of these instances from
+%       a larger database.  In particular, all patients here are females at
+%       least 21 years old of Pima Indian heritage.  ADAP is an adaptive learning
+%       routine that generates and executes digital analogs of perceptron-like
+%       devices.  It is a unique algorithm; see the paper for details.
+% 
+% 5. Number of Instances: 768
+% 
+% 6. Number of Attributes: 8 plus class 
+% 
+% 7. For Each Attribute: (all numeric-valued)
+%    1. Number of times pregnant
+%    2. Plasma glucose concentration a 2 hours in an oral glucose tolerance test
+%    3. Diastolic blood pressure (mm Hg)
+%    4. Triceps skin fold thickness (mm)
+%    5. 2-Hour serum insulin (mu U/ml)
+%    6. Body mass index (weight in kg/(height in m)^2)
+%    7. Diabetes pedigree function
+%    8. Age (years)
+%    9. Class variable (0 or 1)
+% 
+% 8. Missing Attribute Values: None
+% 
+% 9. Class Distribution: (class value 1 is interpreted as "tested positive for
+%    diabetes")
+% 
+%    Class Value  Number of instances
+%    0            500
+%    1            268
+% 
+% 10. Brief statistical analysis:
+% 
+%     Attribute number:    Mean:   Standard Deviation:
+%     1.                     3.8     3.4
+%     2.                   120.9    32.0
+%     3.                    69.1    19.4
+%     4.                    20.5    16.0
+%     5.                    79.8   115.2
+%     6.                    32.0     7.9
+%     7.                     0.5     0.3
+%     8.                    33.2    11.8
+% 
+% 
+%
+%
+%
+%
+% Relabeled values in attribute 'class'
+%    From: 0                       To: tested_negative     
+%    From: 1                       To: tested_positive     
+%
+@relation pima_diabetes
+@attribute 'preg' real
+@attribute 'plas' real
+@attribute 'pres' real
+@attribute 'skin' real
+@attribute 'insu' real
+@attribute 'mass' real
+@attribute 'pedi' real
+@attribute 'age' real
+@attribute 'class' { tested_negative, tested_positive}
+@data
+11.0,143.0,94.0,33.0,146.0,36.6,0.254,51.0,tested_positive
+2.0,129.0,74.0,26.0,205.0,33.2,0.591,25.0,tested_negative
+7.0,179.0,95.0,31.0,0.0,34.2,0.164,60.0,tested_negative
+7.0,187.0,50.0,33.0,392.0,33.9,0.826,34.0,tested_positive
+9.0,112.0,82.0,32.0,175.0,34.2,0.26,36.0,tested_positive
+2.0,112.0,75.0,32.0,0.0,35.7,0.148,21.0,tested_negative
+3.0,158.0,76.0,36.0,245.0,31.6,0.851,28.0,tested_positive
+7.0,136.0,74.0,26.0,135.0,26.0,0.647,51.0,tested_negative
+2.0,110.0,74.0,29.0,125.0,32.4,0.698,27.0,tested_negative
+8.0,74.0,70.0,40.0,49.0,35.3,0.705,39.0,tested_negative
+0.0,118.0,64.0,23.0,89.0,0.0,1.731,21.0,tested_negative
+5.0,166.0,72.0,19.0,175.0,25.8,0.587,51.0,tested_positive
+1.0,119.0,88.0,41.0,170.0,45.3,0.507,26.0,tested_negative
+7.0,159.0,66.0,0.0,0.0,30.4,0.383,36.0,tested_positive
+0.0,162.0,76.0,56.0,100.0,53.2,0.759,25.0,tested_positive
+1.0,81.0,74.0,41.0,57.0,46.3,1.096,32.0,tested_negative
+2.0,108.0,62.0,32.0,56.0,25.2,0.128,21.0,tested_negative
+6.0,105.0,80.0,28.0,0.0,32.5,0.878,26.0,tested_negative
+2.0,102.0,86.0,36.0,120.0,45.5,0.127,23.0,tested_positive
+9.0,152.0,78.0,34.0,171.0,34.2,0.893,33.0,tested_positive
+0.0,173.0,78.0,32.0,265.0,46.5,1.159,58.0,tested_negative
+2.0,90.0,60.0,0.0,0.0,23.5,0.191,25.0,tested_negative
+2.0,92.0,62.0,28.0,0.0,31.6,0.13,24.0,tested_negative
+0.0,147.0,85.0,54.0,0.0,42.8,0.375,24.0,tested_negative
+5.0,139.0,64.0,35.0,140.0,28.6,0.411,26.0,tested_negative
+1.0,149.0,68.0,29.0,127.0,29.3,0.349,42.0,tested_positive
+2.0,120.0,76.0,37.0,105.0,39.7,0.215,29.0,tested_negative
+1.0,113.0,64.0,35.0,0.0,33.6,0.543,21.0,tested_positive
+2.0,101.0,58.0,35.0,90.0,21.8,0.155,22.0,tested_negative
+6.0,134.0,70.0,23.0,130.0,35.4,0.542,29.0,tested_positive
+3.0,174.0,58.0,22.0,194.0,32.9,0.593,36.0,tested_positive
+1.0,106.0,76.0,0.0,0.0,37.5,0.197,26.0,tested_negative
+4.0,96.0,56.0,17.0,49.0,20.8,0.34,26.0,tested_negative
+12.0,151.0,70.0,40.0,271.0,41.8,0.742,38.0,tested_positive
+2.0,82.0,52.0,22.0,115.0,28.5,1.699,25.0,tested_negative
+0.0,138.0,0.0,0.0,0.0,36.3,0.933,25.0,tested_positive
+1.0,157.0,72.0,21.0,168.0,25.6,0.123,24.0,tested_negative
+3.0,187.0,70.0,22.0,200.0,36.4,0.408,36.0,tested_positive
+4.0,154.0,62.0,31.0,284.0,32.8,0.237,23.0,tested_negative
+2.0,99.0,60.0,17.0,160.0,36.6,0.453,21.0,tested_negative
+10.0,162.0,84.0,0.0,0.0,27.7,0.182,54.0,tested_negative
+2.0,105.0,75.0,0.0,0.0,23.3,0.56,53.0,tested_negative
+2.0,112.0,86.0,42.0,160.0,38.4,0.246,28.0,tested_negative
+2.0,94.0,68.0,18.0,76.0,26.0,0.561,21.0,tested_negative
+2.0,92.0,76.0,20.0,0.0,24.2,1.698,28.0,tested_negative
+4.0,76.0,62.0,0.0,0.0,34.0,0.391,25.0,tested_negative
+2.0,96.0,68.0,13.0,49.0,21.1,0.647,26.0,tested_negative
+1.0,97.0,68.0,21.0,0.0,27.2,1.095,22.0,tested_negative
+1.0,82.0,64.0,13.0,95.0,21.2,0.415,23.0,tested_negative
+6.0,190.0,92.0,0.0,0.0,35.5,0.278,66.0,tested_positive
+5.0,187.0,76.0,27.0,207.0,43.6,1.034,53.0,tested_positive
+1.0,80.0,55.0,0.0,0.0,19.1,0.258,21.0,tested_negative
+7.0,194.0,68.0,28.0,0.0,35.9,0.745,41.0,tested_positive
+0.0,146.0,70.0,0.0,0.0,37.9,0.334,28.0,tested_positive
+4.0,156.0,75.0,0.0,0.0,48.3,0.238,32.0,tested_positive
+4.0,97.0,60.0,23.0,0.0,28.2,0.443,22.0,tested_negative
+4.0,146.0,92.0,0.0,0.0,31.2,0.539,61.0,tested_positive
+2.0,125.0,60.0,20.0,140.0,33.8,0.088,31.0,tested_negative
+2.0,106.0,56.0,27.0,165.0,29.0,0.426,22.0,tested_negative
+1.0,85.0,66.0,29.0,0.0,26.6,0.351,31.0,tested_negative
+0.0,102.0,64.0,46.0,78.0,40.6,0.496,21.0,tested_negative
+2.0,112.0,78.0,50.0,140.0,39.4,0.175,24.0,tested_negative
+0.0,126.0,86.0,27.0,120.0,27.4,0.515,21.0,tested_negative
+0.0,98.0,82.0,15.0,84.0,25.2,0.299,22.0,tested_negative
+5.0,73.0,60.0,0.0,0.0,26.8,0.268,27.0,tested_negative
+2.0,127.0,46.0,21.0,335.0,34.4,0.176,22.0,tested_negative
+1.0,133.0,102.0,28.0,140.0,32.8,0.234,45.0,tested_positive
+3.0,88.0,58.0,11.0,54.0,24.8,0.267,22.0,tested_negative
+13.0,152.0,90.0,33.0,29.0,26.8,0.731,43.0,tested_positive
+1.0,147.0,94.0,41.0,0.0,49.3,0.358,27.0,tested_positive
+0.0,125.0,68.0,0.0,0.0,24.7,0.206,21.0,tested_negative
+11.0,136.0,84.0,35.0,130.0,28.3,0.26,42.0,tested_positive
+4.0,171.0,72.0,0.0,0.0,43.6,0.479,26.0,tested_positive
+0.0,102.0,52.0,0.0,0.0,25.1,0.078,21.0,tested_negative
+0.0,129.0,110.0,46.0,130.0,67.1,0.319,26.0,tested_positive
+0.0,105.0,84.0,0.0,0.0,27.9,0.741,62.0,tested_positive
+7.0,137.0,90.0,41.0,0.0,32.0,0.391,39.0,tested_negative
+11.0,155.0,76.0,28.0,150.0,33.3,1.353,51.0,tested_positive
+1.0,107.0,68.0,19.0,0.0,26.5,0.165,24.0,tested_negative
+2.0,109.0,92.0,0.0,0.0,42.7,0.845,54.0,tested_negative
+1.0,111.0,86.0,19.0,0.0,30.1,0.143,23.0,tested_negative
+0.0,125.0,96.0,0.0,0.0,22.5,0.262,21.0,tested_negative
+0.0,119.0,66.0,27.0,0.0,38.8,0.259,22.0,tested_negative
+6.0,114.0,0.0,0.0,0.0,0.0,0.189,26.0,tested_negative
+3.0,182.0,74.0,0.0,0.0,30.5,0.345,29.0,tested_positive
+2.0,117.0,90.0,19.0,71.0,25.2,0.313,21.0,tested_negative
+7.0,142.0,90.0,24.0,480.0,30.4,0.128,43.0,tested_positive
+6.0,85.0,78.0,0.0,0.0,31.2,0.382,42.0,tested_negative
+10.0,92.0,62.0,0.0,0.0,25.9,0.167,31.0,tested_negative
+4.0,99.0,68.0,38.0,0.0,32.8,0.145,33.0,tested_negative
+6.0,148.0,72.0,35.0,0.0,33.6,0.627,50.0,tested_positive
+1.0,126.0,60.0,0.0,0.0,30.1,0.349,47.0,tested_positive
+4.0,144.0,58.0,28.0,140.0,29.5,0.287,37.0,tested_negative
+0.0,129.0,80.0,0.0,0.0,31.2,0.703,29.0,tested_negative
+3.0,173.0,84.0,33.0,474.0,35.7,0.258,22.0,tested_positive
+4.0,146.0,85.0,27.0,100.0,28.9,0.189,27.0,tested_negative
+10.0,161.0,68.0,23.0,132.0,25.5,0.326,47.0,tested_positive
+11.0,138.0,76.0,0.0,0.0,33.2,0.42,35.0,tested_negative
+1.0,140.0,74.0,26.0,180.0,24.1,0.828,23.0,tested_negative
+0.0,102.0,78.0,40.0,90.0,34.5,0.238,24.0,tested_negative
+0.0,106.0,70.0,37.0,148.0,39.4,0.605,22.0,tested_negative
+6.0,165.0,68.0,26.0,168.0,33.6,0.631,49.0,tested_negative
+3.0,132.0,80.0,0.0,0.0,34.4,0.402,44.0,tested_positive
+2.0,128.0,64.0,42.0,0.0,40.0,1.101,24.0,tested_negative
+0.0,101.0,65.0,28.0,0.0,24.6,0.237,22.0,tested_negative
+1.0,125.0,50.0,40.0,167.0,33.3,0.962,28.0,tested_positive
+4.0,122.0,68.0,0.0,0.0,35.0,0.394,29.0,tested_negative
+10.0,133.0,68.0,0.0,0.0,27.0,0.245,36.0,tested_negative
+13.0,76.0,60.0,0.0,0.0,32.8,0.18,41.0,tested_negative
+4.0,95.0,64.0,0.0,0.0,32.0,0.161,31.0,tested_positive
+8.0,120.0,0.0,0.0,0.0,30.0,0.183,38.0,tested_positive
+1.0,79.0,75.0,30.0,0.0,32.0,0.396,22.0,tested_negative
+1.0,108.0,60.0,46.0,178.0,35.5,0.415,24.0,tested_negative
+2.0,83.0,65.0,28.0,66.0,36.8,0.629,24.0,tested_negative
+3.0,171.0,72.0,33.0,135.0,33.3,0.199,24.0,tested_positive
+6.0,104.0,74.0,18.0,156.0,29.9,0.722,41.0,tested_positive
+13.0,145.0,82.0,19.0,110.0,22.2,0.245,57.0,tested_negative
+1.0,91.0,54.0,25.0,100.0,25.2,0.234,23.0,tested_negative
+1.0,128.0,82.0,17.0,183.0,27.5,0.115,22.0,tested_negative
+5.0,130.0,82.0,0.0,0.0,39.1,0.956,37.0,tested_positive
+3.0,84.0,68.0,30.0,106.0,31.9,0.591,25.0,tested_negative
+1.0,125.0,70.0,24.0,110.0,24.3,0.221,25.0,tested_negative
+1.0,143.0,86.0,30.0,330.0,30.1,0.892,23.0,tested_negative
+9.0,184.0,85.0,15.0,0.0,30.0,1.213,49.0,tested_positive
+1.0,112.0,72.0,30.0,176.0,34.4,0.528,25.0,tested_negative
+6.0,166.0,74.0,0.0,0.0,26.6,0.304,66.0,tested_negative
+6.0,103.0,66.0,0.0,0.0,24.3,0.249,29.0,tested_negative
+1.0,181.0,64.0,30.0,180.0,34.1,0.328,38.0,tested_positive
+2.0,108.0,62.0,10.0,278.0,25.3,0.881,22.0,tested_negative
+12.0,140.0,85.0,33.0,0.0,37.4,0.244,41.0,tested_negative
+3.0,173.0,78.0,39.0,185.0,33.8,0.97,31.0,tested_positive
+7.0,136.0,90.0,0.0,0.0,29.9,0.21,50.0,tested_negative
+0.0,145.0,0.0,0.0,0.0,44.2,0.63,31.0,tested_positive
+1.0,100.0,66.0,29.0,196.0,32.0,0.444,42.0,tested_negative
+9.0,145.0,80.0,46.0,130.0,37.9,0.637,40.0,tested_positive
+5.0,155.0,84.0,44.0,545.0,38.7,0.619,34.0,tested_negative
+5.0,117.0,86.0,30.0,105.0,39.1,0.251,42.0,tested_negative
+1.0,111.0,94.0,0.0,0.0,32.8,0.265,45.0,tested_negative
+0.0,101.0,64.0,17.0,0.0,21.0,0.252,21.0,tested_negative
+4.0,134.0,72.0,0.0,0.0,23.8,0.277,60.0,tested_positive
+1.0,107.0,50.0,19.0,0.0,28.3,0.181,29.0,tested_negative
+1.0,108.0,88.0,19.0,0.0,27.1,0.4,24.0,tested_negative
+7.0,142.0,60.0,33.0,190.0,28.8,0.687,61.0,tested_negative
+8.0,107.0,80.0,0.0,0.0,24.6,0.856,34.0,tested_negative
+3.0,150.0,76.0,0.0,0.0,21.0,0.207,37.0,tested_negative
+8.0,105.0,100.0,36.0,0.0,43.3,0.239,45.0,tested_positive
+1.0,167.0,74.0,17.0,144.0,23.4,0.447,33.0,tested_positive
+4.0,147.0,74.0,25.0,293.0,34.9,0.385,30.0,tested_negative
+9.0,130.0,70.0,0.0,0.0,34.2,0.652,45.0,tested_positive
+3.0,99.0,80.0,11.0,64.0,19.3,0.284,30.0,tested_negative
+0.0,117.0,0.0,0.0,0.0,33.8,0.932,44.0,tested_negative
+0.0,101.0,76.0,0.0,0.0,35.7,0.198,26.0,tested_negative
