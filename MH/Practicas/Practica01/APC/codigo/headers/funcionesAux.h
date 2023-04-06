@@ -28,4 +28,7 @@ double distanciaPonderada(const Ejemplo& a, const Ejemplo& b, std::vector<double
 */
 double calcularTasaRed(std::vector<double> pesos);
 
+
+void normalizar(Dataset &train, Dataset &test);
+
 #endif

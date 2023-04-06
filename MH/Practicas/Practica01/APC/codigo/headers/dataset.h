@@ -12,13 +12,16 @@ struct Ejemplo {
     std::vector<double> caracteristicas = {};
     int etiqueta = 0;
 
-    void imprimir(){
+    void imprimirCaracteristicas(){
         std::cout << std::endl;
-        for(auto it : caracteristicas){
-            std::cout << it << " ";
+        for(int i = 0; i < caracteristicas.size(); i++){
+            double num = caracteristicas[i];
+            if(num == int(num))
+                std::cout << caracteristicas[i] << ".0,";
+            else
+                std::cout << caracteristicas[i] << ",";
         }
         std::cout << etiqueta;
-        std::cout << std::endl;
     }
 };
 
@@ -57,13 +60,13 @@ class Dataset {
          * @brief devuelve el número de ejemplos del conjunto de datos
          * @return el numero de ejemplos
         */
-        const int numEjemplos();
+        const int numEjemplos() const;
 
         /**
          * @brief devuelve el número de característica de los ejemplos
          * @return el numero de características
         */
-        const int numCaracteristicas();
+        const int numCaracteristicas() const;
 
         /**
          * @brief devuelve el número de etiquetas del conjunto de datos
@@ -77,14 +80,14 @@ class Dataset {
          * @param j la posición de característica
          * @return la caracteristica en ds[i][j]
         */
-        const double getCaracteristica(int i, int j);
+        const double getCaracteristica(int i, int j) const;
 
         /**
          * @brief devuelve la etiqueta del ejemplo i
          * @param i el numero de ejemplo
          * @return la etiqueta int del ejemplo dado
         */
-        const int &getEtiqueta(int i);
+        const int &getEtiqueta(int i) const;
 
         /**
          * @brief devuelve el nombre de la etiqueta dada con un entero
@@ -104,8 +107,6 @@ class Dataset {
          * @brief Normaliza el dataset en un rango [0,1]
          * @return el dataset normalizado
         */
-        Dataset normalizar();
-
         /**
          * @brief Imprime la matriz de datos
         */

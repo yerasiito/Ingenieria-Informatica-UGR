@@ -1,8 +1,8 @@
 #include <iostream>
 #include <sstream>
 #include <algorithm>
+#include <iomanip>
 #include "dataset.h"
-
 using namespace std;
 
 /**
@@ -91,11 +91,11 @@ const Ejemplo &Dataset::getEjemplo(int i) const{
     return ejemplos[i];
 }
 
-const int Dataset::numEjemplos(){
+const int Dataset::numEjemplos() const{
     return ejemplos.size();
 }
 
-const int Dataset::numCaracteristicas(){
+const int Dataset::numCaracteristicas() const{
     return ejemplos[0].caracteristicas.size();
 }
 
@@ -103,11 +103,11 @@ const int Dataset::numEtiquetas(){
     return labelNames.size();
 }
 
-const double Dataset::getCaracteristica(int i, int j){
+const double Dataset::getCaracteristica(int i, int j) const{
     return ejemplos[i].caracteristicas[j];
 }
 
-const int &Dataset::getEtiqueta(int i){
+const int &Dataset::getEtiqueta(int i) const{
     return ejemplos[i].etiqueta;
 }
 
@@ -120,46 +120,10 @@ void Dataset::insertEjemplo(Ejemplo e){
     ejemplos.push_back(e);
 }
 
-Dataset Dataset::normalizar(){
-    Dataset ds_normalizado = *this;
-
-    //Para cada ejemplo recorremos cada atributo
-    double car = 0;
-    double min_car = INFINITY, max_car = -INFINITY;
-    
-    vector<double> min_atrib = {}, max_atrib = {};
-
-    for(int j = 0; j < numCaracteristicas(); j++){
-        //Para cada atributo buscamos su minimo y maximo
-        for(int i = 0; i < numEjemplos(); i++){
-            car = ejemplos[i].caracteristicas[j];
-            if(car > max_car)
-                max_car = car;
-
-            if(car < min_car)
-                min_car = car;
-        }
-        min_atrib.push_back(min_car);
-        max_atrib.push_back(max_car);
-    }
-
-    //Normaliza el dataset
-    for(int i = 0; i < numEjemplos(); i++){
-        Ejemplo &e = ds_normalizado.getEjemplo(i);
-        for(int j = 0; j < max_atrib.size(); j++){ //Aplicamos la formula
-            e.caracteristicas[j] = (e.caracteristicas[j] - min_atrib[j])/(max_atrib[j] - min_atrib[j]);
-        }
-    }
-
-    return ds_normalizado;
-}
-
 void Dataset::dataPrint(){
     for(int i = 0; i < numEjemplos(); i++){
-        cout << endl;
-        for(int j = 0; j < numCaracteristicas(); j++)
-            cout << getCaracteristica(i,j) << " ";
-        cout << getEtiqueta(i);
+        getEjemplo(i).imprimirCaracteristicas();
+        cout << "," << getLabelName(getEjemplo(i).etiqueta);
     }
     cout << endl;
 }

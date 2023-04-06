@@ -29,3 +29,46 @@ double calcularTasaRed(std::vector<double> pesos){
             tasa_red++;
     return tasa_red = 100*(tasa_red/pesos.size());
 }
+
+void normalizar(Dataset &train, Dataset &test){
+    //Para cada ejemplo recorremos cada atributo
+    double car = 0;
+    std::vector<double> min_atrib = {}, max_atrib = {};
+
+    for(int j = 0; j < train.numCaracteristicas(); j++){
+        double min_car = INFINITY, max_car = -INFINITY;
+        //Para cada atributo de train buscamos su minimo y maximo
+        for(int i = 0; i < train.numEjemplos(); i++){
+            car = train.getCaracteristica(i,j);
+            if(car > max_car)
+                max_car = car;
+
+            if(car < min_car)
+                min_car = car;
+        }
+        //Para cada atributo de test buscamos su minimo y maximo
+        for(int i = 0; i < test.numEjemplos(); i++){
+            car = test.getCaracteristica(i,j);
+            if(car > max_car)
+                max_car = car;
+
+            if(car < min_car)
+                min_car = car;
+        }
+        min_atrib.push_back(min_car);
+        max_atrib.push_back(max_car);
+    }
+    //Normaliza el dataset de train
+    for(int i = 0; i < train.numEjemplos(); i++){
+        for(int j = 0; j < max_atrib.size(); j++){ //Aplicamos la formula
+            train.getEjemplo(i).caracteristicas[j] = (train.getCaracteristica(i,j) - min_atrib[j])/(max_atrib[j] - min_atrib[j]);
+        }
+    }
+
+    //Normaliza el dataset de test
+    for(int i = 0; i < test.numEjemplos(); i++){
+        for(int j = 0; j < max_atrib.size(); j++){ //Aplicamos la formula
+            test.getEjemplo(i).caracteristicas[j] = (test.getCaracteristica(i,j) - min_atrib[j])/(max_atrib[j] - min_atrib[j]);
+        }
+    }
+}

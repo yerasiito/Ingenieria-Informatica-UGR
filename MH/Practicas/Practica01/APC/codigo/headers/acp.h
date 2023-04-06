@@ -28,7 +28,7 @@ struct Greedy{
      * @param dataset el conjunto de datos a predecir
      * @param weights son los pesos que se obtienen de salida
     */
-    void actualizar_pesos(const Ejemplo& inst, Dataset& dataset, std::vector<double>& weights);
+    void actualizar_pesos(const Ejemplo& inst, const Dataset& dataset, std::vector<double>& weights);
 
     // Función para seleccionar las k características con los pesos más altos
     // std::vector<int> select_features(const std::vector<double>& weights, int k);
@@ -38,7 +38,7 @@ struct Greedy{
      * @param dataset el conjunto de datos cuyos pesos queremos obtener
      * @return un vector de pesos para optimizar las distancias del dataset
     */
-    std::vector<double> greedy_relief(Dataset &dataset);
+    std::vector<double> greedy_relief(const Dataset &dataset);
 };
 
 #endif

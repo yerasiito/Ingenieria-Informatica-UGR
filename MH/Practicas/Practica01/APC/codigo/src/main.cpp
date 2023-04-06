@@ -4,8 +4,9 @@
 #include <iostream>
 #include <iomanip>
 #include <filesystem>
-
+#include <chrono>
 using namespace std;
+using namespace std::chrono;
 
 string path = "../Instancias_APC/";
 
@@ -17,29 +18,28 @@ string path = "../Instancias_APC/";
  * @param i el indice de particion (el numero indica el test)
 */
 int leerFicheros(string fichero, Dataset &train, Dataset &test, int k){ 
-    if(fichero == "diabetes"){
-        for(int i = 0; i < 5; i++){
-            string file = path + fichero + "_" + to_string(i+1) + ".arff";
-            ifstream f(file);
-            
-            //Lee el fichero y lo integra en el objeto dataset. Si falla entra en el if
-            if(i == k){
-                if(test.read(f)){
-                    cerr << "No se pudo abrir - '"
-                        << file << "'" << endl;
-                    return EXIT_FAILURE;
-                }
-            }
-            else if(train.read(f)){
+    if(fichero != "diabetes" && fichero != "ozone-320" && fichero != "spectf-heart"){
+        std::cout << "Los parametros admitidos son: diabetes, ozone-320 o spectf-heart\n";
+        return EXIT_FAILURE;
+    }
+
+    for(int i = 1; i <= 5; i++){
+        string file = path + fichero + "_" + to_string(i) + ".arff";
+        ifstream f(file);
+        
+        //Lee el fichero y lo integra en el objeto dataset. Si falla entra en el if
+        if(i == (5-k)){
+            if(test.read(f)){
                 cerr << "No se pudo abrir - '"
                     << file << "'" << endl;
                 return EXIT_FAILURE;
             }
         }
-    }
-    else{
-        cout << "Los parametros admitidos son: diabetes, \n";
-        return EXIT_FAILURE;
+        else if(train.read(f)){
+            cerr << "No se pudo abrir - '"
+                << file << "'" << endl;
+            return EXIT_FAILURE;
+        }
     }
 
     return EXIT_SUCCESS;
@@ -49,56 +49,46 @@ int leerFicheros(string fichero, Dataset &train, Dataset &test, int k){
 int main(int argc, char** argv) {
     Dataset train,test;
     vector<double> pesosMedios = {};
+    vector<vector<double>> pesosT;
 
-    cout << "Particion\t" << "Train[%]\t" << "Test[%]\t\t" << "Reduccion[%]\t" << "Fitness\n";
+    std::cout << "Particion\t" << "Tasa_clas[%]\t" << "Tasa_red[%]\t" << "Fitness\t\t" << "Tiempo[s]\n";
     for(int i = 0; i < 5; i++){
+        auto momentoInicio = high_resolution_clock::now();
         train = {}, test = {};
         //Lee el archivo pasado por parámetro
         if(leerFicheros(argv[1], train, test, i)){
-            cout << "Ha surgido un error leyendo los datos\n";
+            std::cout << "Ha surgido un error leyendo los datos\n";
             return EXIT_FAILURE;
         }
         
         //Normalizamos los datos
-        Dataset trainN = train.normalizar();
-        Dataset testN = test.normalizar();
+        normalizar(train, test);
 
         //Calculamos el rendimiento del clasificador con greedy
         vector<double> pesos;
         Greedy gr;
-        pesos = gr.greedy_relief(trainN);
+        pesos = gr.greedy_relief(train);
+
+        pesosT.push_back(pesos); //Para imprimirlos al final
 
         Clasificador clf;
-        double acierto = 0, error = 0;
-        Dataset trainset = trainN;
-        //Calcula para train
-        for(int i = 0; i < trainN.numEjemplos(); i++){
-            int label = clf.unoNNponderado(trainN.getEjemplo(i), trainN, pesos);
-            trainset.getEjemplo(i).etiqueta = label;
-            if(label == trainN.getEjemplo(i).etiqueta){
+        int acierto = 0, error = 0;
+        //Test
+        for(int i = 0; i < test.numEjemplos(); i++){
+            int label = clf.unoNNponderado(test.getEjemplo(i), train, pesos);
+            if(label == test.getEjemplo(i).etiqueta){
                 acierto++;
             }
             else
                 error++;
         }
-        double tasa_clas_train = 100*double(acierto)/double(trainN.numEjemplos());
-        acierto = 0, error = 0;
-        //Calcula para test
-        Dataset testset = testN;
-        for(int i = 0; i < testN.numEjemplos(); i++){
-            int label = clf.unoNNponderado(testN.getEjemplo(i), trainN, pesos);
-            testset.getEjemplo(i).etiqueta = label;
-            if(label == testset.getEjemplo(i).etiqueta){
-                acierto++;
-            }
-            else
-                error++;
-        }
-
-        double tasa_clas_test = 100*double(acierto)/double(testN.numEjemplos());
+        double tasa_clas = 100*double(acierto)/double(test.numEjemplos());
         double tasa_red = calcularTasaRed(pesos);
-        double fitness = 0.8*tasa_clas_train + 0.2*tasa_red;
-        cout << i+1 << "\t\t" << tasa_clas_train << "\t\t" << tasa_clas_test << "\t\t" << tasa_red << "\t\t" << fitness << endl;
+        double fitness = 0.8*tasa_clas + 0.2*tasa_red;
+        auto momentoFin = high_resolution_clock::now();
+        milliseconds tiempo = duration_cast<std::chrono::milliseconds>(momentoFin - momentoInicio);
+        std::cout << fixed << setprecision(2) << i+1 << "\t\t" << tasa_clas << "\t\t" 
+                  << tasa_red << "\t\t" << fitness << "\t\t" << double(tiempo.count()/1000.0) << endl;
 
         if(i == 0){
             pesosMedios = pesos;
@@ -108,13 +98,21 @@ int main(int argc, char** argv) {
                 pesosMedios[i] += pesos[i];
         }
     }
+    // std::cout << fixed << setprecision(5);
+    // std::cout << "Pesos por particion: " << endl;
+    // for(int i = 0; i < pesosT.size(); i++){
+    //     std::cout << "Particion " << i+1 << ": ";
+    //     for(int j = 0; j < pesosT[0].size(); j++)
+    //         std::cout << pesosT[i][j] << " ";
+    //     std::cout << endl << endl;
+    // }
 
-    cout << "Pesos medios:\n";
+    std::cout << "Pesos medios:\n";
     for(int i = 0; i < pesosMedios.size(); i++){
         pesosMedios[i] /= 5;
-        cout << pesosMedios[i] << " ";
+        std::cout << pesosMedios[i] << " ";
     }
-    cout << endl;
+    std::cout << endl;
 
     return 0;
 }
