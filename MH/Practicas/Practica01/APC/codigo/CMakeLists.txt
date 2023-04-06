@@ -2,13 +2,13 @@
 cmake_minimum_required(VERSION 3.16)
 
 # Establece el nombre del proyecto
-project(mi_proyecto)
+project(practica1)
 
 # Agrega los archivos de origen
-add_executable(mi_ejecutable 
+add_executable(practica1 
   src/main.cpp 
   src/dataset.cpp 
-  src/greedy.cpp
+  src/acp.cpp
   src/funcionesAux.cpp
 )
 

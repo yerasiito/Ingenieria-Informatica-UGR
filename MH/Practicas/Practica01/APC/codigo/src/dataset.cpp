@@ -40,7 +40,6 @@ int Dataset::read(ifstream &f){
             is_data = true;
         info = "";
     }
-   
     //Lee la matriz de datos
     while (getline(f, linea)){
         Ejemplo e;
@@ -73,6 +72,7 @@ int Dataset::read(ifstream &f){
 
 int Dataset::etiquetar(string nombre){
     auto it = find(labelNames.begin(), labelNames.end(), nombre);
+
     if(it == labelNames.end()){
         labelNames.push_back(nombre);
         it = find(labelNames.begin(), labelNames.end(), nombre);
