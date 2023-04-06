@@ -53,7 +53,7 @@ int Dataset::read(ifstream &f){
                 e.caracteristicas.push_back(value);
             } catch (const exception&) { //Si salta es que el valor no es numérico
                 value_str = limpiarEspacios(value_str); //Limpia espacios si tiene
-                e.etiqueta = etiquetar(value_str);
+                e.etiqueta = value_str;
                 excepcion = true;
             }
 
@@ -68,18 +68,6 @@ int Dataset::read(ifstream &f){
     f.close();
 
     return EXIT_SUCCESS;
-}
-
-int Dataset::etiquetar(string nombre){
-    auto it = find(labelNames.begin(), labelNames.end(), nombre);
-
-    if(it == labelNames.end()){
-        labelNames.push_back(nombre);
-        it = find(labelNames.begin(), labelNames.end(), nombre);
-    }
-    int pos = it - labelNames.begin();
-
-    return pos;
 }
 
 //Métodos get
@@ -107,7 +95,7 @@ const double Dataset::getCaracteristica(int i, int j) const{
     return ejemplos[i].caracteristicas[j];
 }
 
-const int &Dataset::getEtiqueta(int i) const{
+const string &Dataset::getEtiqueta(int i) const{
     return ejemplos[i].etiqueta;
 }
 
@@ -123,11 +111,17 @@ void Dataset::insertEjemplo(Ejemplo e){
 void Dataset::dataPrint(){
     for(int i = 0; i < numEjemplos(); i++){
         getEjemplo(i).imprimirCaracteristicas();
-        cout << "," << getLabelName(getEjemplo(i).etiqueta);
+        cout << "," << getEjemplo(i).etiqueta;
     }
     cout << endl;
 }
 
 void Dataset::dimensionPrint(){
     cout << "Tamaño de matrix: " << numEjemplos() << "x" << numCaracteristicas() << endl;
+}
+
+const Dataset Dataset::leave_one_out(int i) const{ 
+    Dataset lou = *this;
+    lou.ejemplos.erase(lou.ejemplos.begin() + i);
+    return lou;    
 }

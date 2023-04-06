@@ -4,21 +4,13 @@
 
 struct Clasificador{
     /**
-     * @brief predice una etiqueta de un ejemplo a partir de un dataset dado
-     * @param test_ejemplo es el ejemplo cuya etiqueta queremos predecir
-     * @param training_set es el conjunto de datos del cual predeciremos
-     * @return la etiqueta predicha para el ejemplo
-    */
-    int unoNN(Ejemplo test_ejemplo, Dataset training_set);
-
-    /**
      * @brief predice una etiqueta de un ejemplo a partir de un dataset dado a partir de unos pesos ponderados
      * @param test_ejemplo es el ejemplo cuya etiqueta queremos predecir
      * @param training_set es el conjunto de datos del cual predeciremos
      * @param w son los pesos a aplicar a las distancias
      * @return la etiqueta predicha para el ejemplo
     */
-    int unoNNponderado(Ejemplo test_ejemplo, Dataset training_set, std::vector<double> w);
+    std::string unoNN(Ejemplo test_ejemplo, Dataset training_set, std::vector<double> w);
 };
 
 struct Greedy{

@@ -10,7 +10,7 @@
 
 struct Ejemplo {
     std::vector<double> caracteristicas = {};
-    int etiqueta = 0;
+    std::string etiqueta = "";
 
     void imprimirCaracteristicas(){
         std::cout << std::endl;
@@ -36,14 +36,6 @@ class Dataset {
          * @return 1 si falla, 0 si todo va bien
         */
         int read(std::ifstream &f);
-
-        /**
-         * @brief Etiqueta un string como numero
-         * @param nombre La etiqueta string a etiquetar
-         * @return la posicion/etiqueta del string si está en labelNames, 
-         * sino devuelve la posicion/etiqueta nueva asignada
-        */
-        int etiquetar(std::string nombre);
 
         //Métodos get
 
@@ -87,10 +79,10 @@ class Dataset {
          * @param i el numero de ejemplo
          * @return la etiqueta int del ejemplo dado
         */
-        const int &getEtiqueta(int i) const;
+        const std::string &getEtiqueta(int i) const;
 
         /**
-         * @brief devuelve el nombre de la etiqueta dada con un entero
+         * @brief devuelve la etiqueta dada con un entero
          * @param i el num de etiqueta a obtener
          * @return el nombre de la etiqueta
         */
@@ -117,6 +109,7 @@ class Dataset {
         */
         void dimensionPrint();
 
+        const Dataset leave_one_out(int i) const;
 
 
 };

@@ -48,30 +48,16 @@ std::vector<double> Greedy::greedy_relief(const Dataset &dataset) {
     return weights;
 }
 
-int Clasificador::unoNN(Ejemplo test_ejemplo, Dataset training_set) {
+std::string Clasificador::unoNN(Ejemplo test_ejemplo, Dataset train, std::vector<double> w) {
     int min_index = 0;
     double min_distance = INFINITY;
 
-    for (int i = 0; i < training_set.numEjemplos(); i++) {
-        double distance = distancia(test_ejemplo, training_set.getEjemplo(i));
-        if (distance < min_distance && distance != 0) {
+    for (int i = 0; i < train.numEjemplos(); i++) {
+        double distance = distancia(test_ejemplo, train.getEjemplo(i));
+        if (distance < min_distance) {
             min_index = i;
             min_distance = distance;
         }
     }
-    return training_set.getEjemplo(min_index).etiqueta;
-}
-
-int Clasificador::unoNNponderado(Ejemplo test_ejemplo, Dataset training_set, std::vector<double> w) {
-    int min_index = 0;
-    double min_distance = INFINITY;
-
-    for (int i = 0; i < training_set.numEjemplos(); i++) {
-        double distance = distanciaPonderada(test_ejemplo, training_set.getEjemplo(i), w);
-        if (distance < min_distance && distance > 0) {
-            min_index = i;
-            min_distance = distance;
-        }
-    }
-    return training_set.getEjemplo(min_index).etiqueta;
+    return train.getEjemplo(min_index).etiqueta;
 }
