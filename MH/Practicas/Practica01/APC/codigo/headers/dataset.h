@@ -52,19 +52,19 @@ class Dataset {
          * @brief devuelve el número de ejemplos del conjunto de datos
          * @return el numero de ejemplos
         */
-        const int numEjemplos() const;
+        int numEjemplos() const;
 
         /**
          * @brief devuelve el número de característica de los ejemplos
          * @return el numero de características
         */
-        const int numCaracteristicas() const;
+        int numCaracteristicas() const;
 
         /**
          * @brief devuelve el número de etiquetas del conjunto de datos
          * @return el numero de etiquetas
         */
-        const int numEtiquetas();
+        int numEtiquetas() const;
 
         /**
          * @brief devuelve la caracteristica j del ejemplo i
@@ -72,7 +72,7 @@ class Dataset {
          * @param j la posición de característica
          * @return la caracteristica en ds[i][j]
         */
-        const double getCaracteristica(int i, int j) const;
+        double getCaracteristica(int i, int j) const;
 
         /**
          * @brief devuelve la etiqueta del ejemplo i
@@ -86,7 +86,7 @@ class Dataset {
          * @param i el num de etiqueta a obtener
          * @return el nombre de la etiqueta
         */
-        const std::string &getLabelName(int i);
+        const std::string &getLabelName(int i) const;
 
         //Métodos set
         /**
@@ -109,6 +109,11 @@ class Dataset {
         */
         void dimensionPrint();
 
+        /**
+         * @brief Devuelve el dataset sin el ejemplo con el indice dado
+         * @param i el indice del ejemplo a dejar fuera
+         * @return el mismo dataset con el ejemplo fuera
+        */
         const Dataset leave_one_out(int i) const;
 
 

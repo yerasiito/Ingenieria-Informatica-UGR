@@ -2,27 +2,10 @@
 #include <sstream>
 #include <algorithm>
 #include <iomanip>
+#include "funcionesAux.h"
 #include "dataset.h"
+
 using namespace std;
-
-/**
- * @brief Funcion auxiliar para limpiar los espacios de un string
- * @param str el string a limpiar
- * @return str el mismo string sin espacios en blanco
-*/
-string limpiarEspacios(string str){
-    // Eliminar espacios en blanco al principio del string
-    str.erase(str.begin(), find_if(str.begin(), str.end(), [](unsigned char c) {
-        return !isspace(c);
-    }));
-
-    // Eliminar espacios en blanco al final del string
-    str.erase(find_if(str.rbegin(), str.rend(), [](unsigned char c) {
-        return !isspace(c);
-    }).base(), str.end());
-
-    return str;
-}
 
 //Metodos de lectura
 int Dataset::read(ifstream &f){
@@ -51,8 +34,7 @@ int Dataset::read(ifstream &f){
             try {
                 double value = stof(value_str); // Convertir la cadena a un número entero
                 e.caracteristicas.push_back(value);
-            } catch (const exception&) { //Si salta es que el valor no es numérico
-                value_str = limpiarEspacios(value_str); //Limpia espacios si tiene
+            } catch (const exception&) { //Si salta es que el valor no es numérico y debe ser la etiqueta
                 e.etiqueta = value_str;
                 excepcion = true;
             }
@@ -79,19 +61,19 @@ const Ejemplo &Dataset::getEjemplo(int i) const{
     return ejemplos[i];
 }
 
-const int Dataset::numEjemplos() const{
+int Dataset::numEjemplos() const{
     return ejemplos.size();
 }
 
-const int Dataset::numCaracteristicas() const{
+int Dataset::numCaracteristicas() const{
     return ejemplos[0].caracteristicas.size();
 }
 
-const int Dataset::numEtiquetas(){
+int Dataset::numEtiquetas() const{
     return labelNames.size();
 }
 
-const double Dataset::getCaracteristica(int i, int j) const{
+double Dataset::getCaracteristica(int i, int j) const{
     return ejemplos[i].caracteristicas[j];
 }
 
@@ -99,15 +81,16 @@ const string &Dataset::getEtiqueta(int i) const{
     return ejemplos[i].etiqueta;
 }
 
-const string &Dataset::getLabelName(int i){
+const string &Dataset::getLabelName(int i) const {
     return labelNames[i];
 }
 
-//Métodos set
+//Método insert
 void Dataset::insertEjemplo(Ejemplo e){
     ejemplos.push_back(e);
 }
 
+//Metodos print
 void Dataset::dataPrint(){
     for(int i = 0; i < numEjemplos(); i++){
         getEjemplo(i).imprimirCaracteristicas();
@@ -120,6 +103,7 @@ void Dataset::dimensionPrint(){
     cout << "Tamaño de matrix: " << numEjemplos() << "x" << numCaracteristicas() << endl;
 }
 
+//Método de cómputo 
 const Dataset Dataset::leave_one_out(int i) const{ 
     Dataset lou = *this;
     lou.ejemplos.erase(lou.ejemplos.begin() + i);
