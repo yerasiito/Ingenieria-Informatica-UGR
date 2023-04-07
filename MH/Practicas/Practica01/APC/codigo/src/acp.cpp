@@ -53,7 +53,7 @@ std::string Clasificador::unoNN(Ejemplo test_ejemplo, Dataset train, std::vector
     double min_distance = INFINITY;
 
     for (int i = 0; i < train.numEjemplos(); i++) {
-        double distance = distancia(test_ejemplo, train.getEjemplo(i));
+        double distance = distanciaPonderada(test_ejemplo, train.getEjemplo(i), w);
         if (distance < min_distance) {
             min_index = i;
             min_distance = distance;

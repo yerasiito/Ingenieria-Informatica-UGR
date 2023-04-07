@@ -13,9 +13,10 @@ double distancia(const Ejemplo& a, const Ejemplo& b) {
 double distanciaPonderada(const Ejemplo& a, const Ejemplo& b, std::vector<double> w) {
     double dist = 0;
     for (int i = 0; i < a.caracteristicas.size(); i++) {
-        if(w[i] >= 0.1){
-            dist += w[i]*pow(a.caracteristicas[i] - b.caracteristicas[i], 2);
+        if(w[i] < 0.1){
+            continue;
         }
+            dist += w[i]*pow(a.caracteristicas[i] - b.caracteristicas[i], 2);
     }
     return sqrt(dist);
 }
