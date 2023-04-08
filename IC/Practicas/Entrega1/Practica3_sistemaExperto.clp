@@ -15,29 +15,6 @@
     (Bienvenida No)
 )
 
-;;; Para reprensentar que el sistema aconseja elegir un destino <nombre del destino> ;;;
-;;; por el motivo <texto del motivo> utilizaremos el hecho ;;;
-
-; (Adecuado <nombre del destino> “<texto del motivo>” “apodo del experto”) ;
-; Se crea la plantilla para organizar qué contiene un consejo de destino adecuado
-(deftemplate Adecuado
-  (slot codigo
-    (type SYMBOL)
-    (default null)
-    (allowed-symbols  null ES FR AL UC EU)
-  )
-  (slot motivo
-    (type STRING)
-    (default ?DERIVE)
-  )
-  (slot experto
-    (type STRING)
-    (default "Clips")
-    (allowed-strings "Clips" "D. Experto Yerasito")
-  )
-)
-
-
 ; Se crea la plantilla para organizar qué contiene un consejo adecuado de viaje
 (deftemplate Viaje
     (slot codigo
@@ -50,7 +27,7 @@
         (allowed-strings "España" "Alemania" "Francia" "Ucrania" "Estados Unidos")
     )
 
-    (slot dia_salida
+    (slot temporada
         (type SYMBOL)
         (default null)
         (allowed-symbols null invierno primavera verano otoño)
@@ -77,51 +54,64 @@
     )
 )
 
+; Se crean hechos con los viajes programados
+(defrule Viajes
+(declare(salience 9999))
+=>
+   (assert (Viaje (codigo ES) (destino "España") (temporada verano) (transporte avion) (duracion media) (precio medio) (beneficio_agencia alto)))
+   (assert (Viaje (codigo FR) (destino "Francia") (temporada primavera) (transporte tren) (duracion larga) (precio caro) (beneficio_agencia alto)))
+   (assert (Viaje (codigo AL) (destino "Alemania") (temporada primavera) (transporte avion) (duracion media) (precio medio) (beneficio_agencia medio)))
+   (assert (Viaje (codigo UC) (destino "Ucrania") (temporada invierno) (transporte avion) (duracion larga) (precio medio) (beneficio_agencia medio)))
+   (assert (Viaje (codigo EU) (destino "Estados Unidos") (temporada otoño) (transporte avion) (duracion corta) (precio caro) (beneficio_agencia bajo)))
+)
+
+; Se definen hechos para el viajero
+(deffacts Viajero
+   (edad e) ; joven, media, mayor
+   (epoca_de_viaje ep) ; invierno, primavera, verano, otoño
+   (transporte_pref trans) ; barco, avion, tren, coche
+   (duracion_de_viaje d) ; corto, medio, largo
+   (presupuesto p) ; bajo, medio, alto
+   (experiencia_viajando ex) ; si, no
+   (tipo_de_destino tip) ; Playa, montaña, ciudad
+)
+
+; (Adecuado <nombre del destino> “<texto del motivo>” “apodo del experto”) ;
+; Se crea la plantilla para organizar qué contiene un consejo de destino adecuado
+(deftemplate Adecuado
+  (slot codigo
+    (type SYMBOL)
+    (default null)
+    (allowed-symbols null ES FR AL UC EU)
+  )
+  (slot motivo
+    (type STRING)
+    (default ?DERIVE)
+  )
+  (slot experto
+    (type STRING)
+    (default "Clips")
+    (allowed-strings "Clips" "D. Experto Yerasito")
+  )
+)
+
 ;;; El sistema debe utilizar las propiedades o características que emplearíais en la vida ;;;
 ;;; real para proporcionar el consejo. Hay que incluir al principio del fichero un ;;;
 ;;; comentario indicando las propiedades que usareis, los valores que pueden tomar y ;;;
 ;;; cómo se representan en el sistema. ;;;
 
-
-; Para relacionar cada simbolo del viaje con su nombre completo
-
-(deftemplate Relacion_Binaria
-   (slot destino
-      (type SYMBOL)
-      (default null)
-      (allowed-symbols null España Francia Alemania Ucrania Estados_Unidos)
-   )
-   (slot simbolo_destino
-      (type SYMBOL)
-      (default null)
-      (allowed-symbols null ES FR AL RU EU)
-   )
-)
-
-; Al cliente se le hará una serie de preguntas y a razón de ello, se eligirá un viaje ;
-; Se creará una plantilla que guarde como un hecho las respuestas
-(deffacts Respuestas
-   (estado_civil e)
-   (edad e)
-   (presupuesto p)
-   (tiempo_de_viaje tie)
-   (gusta_viajar g)
-   (tipo_de_destino tip)
-)
-
 ; Se establece como un hecho cada viaje con su codigo
 
 (deffacts relaciones
-   (Relacion_Binaria (destino España) (simbolo_destino ES))
-   (Relacion_Binaria (destino Francia) (simbolo_destino FR))
-   (Relacion_Binaria (destino Alemania) (simbolo_destino AL))
-   (Relacion_Binaria (destino Ucrania) (simbolo_destino RU))
-   (Relacion_Binaria (destino Estados_Unidos) (simbolo_destino EU))
+   (Viaje (codigo ES) (destino "España"))
+   (Viaje (codigo FR) (destino "Francia"))
+   (Viaje (codigo AL) (destino "Alemania"))
+   (Viaje (codigo UC) (destino "Ucrania"))
+   (Viaje (codigo EU) (destino "Estados Unidos"))
 )
 
-
 ;;;;;; Para usar un template, es igual que un hecho, solo que hay que indicar cada campo
-;;;; Si se ha creado el template Respuestas para crear un hecho de este tipo es (Respuestas_Preguntas (edad ?m) ... (tipo_de_destino ?p))
+;;;; Si se ha creado el template Viajero para crear un hecho de este tipo es (Viajero (edad ?m) ... (tipo_de_destino ?p))
 ;;;; Y se crea el hecho
 
 
@@ -143,21 +133,9 @@
 
 ;;;;; REGLAS PARA HACER PREGUNTAS ;;;;;
 
-;; ¿Estado civil? ;;
-
-(defrule pregunta_estado_civil
-=>
-   (printout t "¿Cual es tu estado civil? (casado|soltero|nose): " crlf)
-   (bind ?resp (read))
-   (while (and (not (eq ?resp casado)) (not (eq ?resp soltero)) (not (eq ?resp nose)))
-      (printout t "Valor Incorrecto. Introduce un valor (casado|soltero|nose)" crlf)
-      (bind ?resp (read))
-   )
-   (assert (ec ?resp))
-)
-
 ;; ¿Edad? ;;
 (defrule pregunta_edad
+   (not (Viajero edad ?))
 =>
    (printout t "Cual es tu edad? (NUMERO)): " crlf)
    (bind ?resp (read))
@@ -172,7 +150,7 @@
 ?h <- (e ?e)
 (test (<= ?e 30))
 =>
-   (assert (e_valoracion joven))
+   (assert (Viajero edad joven)) 
    (retract ?h)
 )
 
@@ -180,7 +158,7 @@
 ?h <- (e ?e)
 (test (and (> ?e 30) (<= ?e 50)))
 =>
-   (assert (e_valoracion medio))
+   (assert (Viajero edad media)) 
    (retract ?h)
 )
 
@@ -188,12 +166,53 @@
 ?h <- (e ?e)
 (test (> ?e 50))
 =>
-   (assert (e_valoracion viejo))
+   (assert (Viajero edad mayor)) 
    (retract ?h)
+)
+
+;; ¿Temporada? ;;
+(defrule pregunta_temporada
+   (not (Viajero epoca_de_viaje ?))
+=>
+   (printout t "¿Cual es tu temporada preferida? (invierno|primavera|verano|otoño): " crlf)
+   (bind ?resp (read))
+   (while (and (not (eq ?resp invierno)) (not (eq ?resp primavera)) (not (eq ?resp verano)) (not (eq ?resp otoño)))
+      (printout t "Valor Incorrecto. Introduce un valor (invierno|primavera|verano|otoño)" crlf)
+      (bind ?resp (read))
+   )
+   (assert (Viajero epoca_de_viaje ?resp))
+)
+
+;; ¿Transporte? ;;
+
+(defrule pregunta_transporte
+   (not (Viajero transporte_pref ?))
+=>
+   (printout t "Cual es tu transporte preferido? (barco|avion|tren|coche)): " crlf)
+   (bind ?resp (read))
+   (while (and (not (eq ?resp barco)) (not (eq ?resp avion)) (not (eq ?resp tren)) (not (eq ?resp coche)))
+      (printout t "Valor Incorrecto. Introduce un valor (barco|avion|tren|coche)" crlf)
+      (bind ?resp (read))
+   )
+   (assert (Viajero transporte_pref ?resp))
+)
+
+;; Duracion de viaje?
+(defrule pregunta_duracion_de_viaje
+   (not (Viajero duracion_de_viaje ?))
+=>
+   (printout t "¿Cuanto tiempo quieres viajar? (corto|medio|largo): " crlf)
+   (bind ?resp (read))
+   (while (and (not (eq ?resp corto)) (not (eq ?resp medio)) (not (eq ?resp largo)))
+      (printout t "Valor Incorrecto. Introduce un valor (corto|medio|largo)" crlf)
+      (bind ?resp (read))
+   )
+   (assert (Viajero duracion_de_viaje ?resp))
 )
 
 ;; ¿Presupuesto? ;;
 (defrule pregunta_presupuesto
+   (not (Viajero presupuesto ?))
 =>
    (printout t "Cual es tu presupuesto? (NUMERO)): " crlf)
    (bind ?resp (read))
@@ -208,7 +227,7 @@
 ?h <- (p ?p)
 (test (<= ?p 1000))
 =>
-   (assert (p_valoracion bajo))
+   (assert (Viajero presupuesto bajo)) 
    (retract ?h)
 )
 
@@ -216,7 +235,7 @@
 ?h <- (p ?p)
 (test (and (> ?p 1000) (<= ?p 3000)))
 =>
-   (assert (p_valoracion medio))
+   (assert (Viajero presupuesto medio)) 
    (retract ?h)
 )
 
@@ -224,37 +243,26 @@
 ?h <- (p ?p)
 (test (> ?p 50))
 =>
-   (assert (p_valoracion alto))
+   (assert (Viajero presupuesto alto)) 
    (retract ?h)
 )
 
-;; ¿Tiempo de viaje?
-(defrule pregunta_tiempo_de_viaje
+;; Experiencia en viaje?
+(defrule pregunta_experiencia_viajando
+   (not (Viajero experiencia_viajando ?))
 =>
-   (printout t "¿Cuanto tiempo quieres viajar? (corto|medio|largo): " crlf)
-   (bind ?resp (read))
-   (while (and (not (eq ?resp corto)) (not (eq ?resp medio)) (not (eq ?resp largo)))
-      (printout t "Valor Incorrecto. Introduce un valor (corto|medio|largo)" crlf)
-      (bind ?resp (read))
-   )
-   (assert (t ?resp))
-)
-
-;; ¿Tipo de viaje?
-(defrule pregunta_viajar
-=>
-   (OtraVez ?a)
    (printout t "¿Has viajado mucho? (si|no|regular): " crlf)
    (bind ?resp (read))
    (while (and (not (eq ?resp si)) (not (eq ?resp no)) (not (eq ?resp regular)))
       (printout t "Valor Incorrecto. Introduce un valor (si|no|regular)" crlf)
       (bind ?resp (read))
    )
-   (assert (v ?resp))
+   (assert (Viajero experiencia_viajando ?resp))
 )
 
 ;; ¿Tipo de destino?
 (defrule pregunta_tipo_de_destino
+   (not (Viajero tipo_de_destino ?))
 =>
    (printout t "¿Cual es tu tipo de destino? (playa|montaña|ciudad): " crlf)
    (bind ?resp (read))
@@ -262,51 +270,26 @@
       (printout t "Valor Incorrecto. Introduce un valor (playa|montaña|ciudad)" crlf)
       (bind ?resp (read))
    )
-   (assert (tipd ?resp))
-)
-
-;; Se recogen los datos introducidos por el usuario
-(defrule recoger_datos
-;; Todas estos hechos existen como único, ya que ha sido lo que ha respondido el usuario
-?ec <- (ec ?estadocivil)
-?e_valor <- (e_valoracion ?edad) ;; Aqui la edad ha sido actualizada a un valor joven|medio|viejo
-?p_valor <- (p_valoracion ?presupuesto) ;; Aqui el presupuesto ha sido actualizado a un valor bajo|medio|alto
-?t <- (t ?tiempodeviaje)
-?v <- (v ?viajar)
-?tipd <- (tipd ?tipodedestino)
-=>
-   (assert (Respuestas estado_civil ?estadocivil))
-   (assert (Respuestas edad ?edad)) 
-   (assert (Respuestas presupuesto ?presupuesto))
-   (assert (Respuestas tiempo_de_viaje ?tiempodeviaje))
-   (assert (Respuestas gusta_viajar ?viajar))
-   (assert (Respuestas tipo_de_destino ?tipodedestino))
-   ;; DEBUG
-   ; (printout t "Los datos obtenidos son: " ?estadocivil " " ?edad " " ?presupuesto " " ?tiempodeviaje " " ?viajar " " ?tipodedestino crlf)
-   ;;; Estos valores ya no interesa guardarlos, ya que se tienen almacenados en el hecho Respuestas
-   (retract ?ec)
-   (retract ?e_valor)
-   (retract ?p_valor)
-   (retract ?t)
-   (retract ?v)
-   (retract ?tipd)
+   (assert (Viajero tipo_de_destino ?resp))
 )
 
 ;; Se elige un consejo a razón de las respuestas
 (defrule gusta_viaje_playa
 (OfertaRecibida No) ;; Estas reglas solo se aplican si el consejo aun no se ha deliberado
-(Respuestas tipo_de_destino ?tipodedestino)
+(Viajero tipo_de_destino ?tipodedestino)
 (test (eq ?tipodedestino playa))
 =>
    (assert (Elegido ES))
    (assert (Motivo "Te gusta la playa"))
    (assert (Experto "D. Experto Yerasito"))
+   (assert (Razon tipo_de_destino))
+   (assert (Razon temporada))
 )
 
 (defrule gusta_ciudad_y_dinero
 (OfertaRecibida No)
-(Respuestas tipo_de_destino ?tipd)
-(Respuestas presupuesto ?presupuesto)
+(Viajero tipo_de_destino ?tipd)
+(Viajero presupuesto ?presupuesto)
 (test (eq ?tipd ciudad))
 (test (eq ?presupuesto alto))
 =>
@@ -317,7 +300,7 @@
 
 (defrule gusta_viajar
 (OfertaRecibida No)
-(Respuestas gusta_viajar ?viajar)
+(Viajero gusta_viajar ?viajar)
 (test (or (eq ?viajar si) (eq ?viajar regular)))
 =>
    (assert (PreguntaTipoDeViaje))
@@ -368,36 +351,6 @@
 
 )
 
-;;; Si el usuario elige a todo NO ;;;;
-(defrule todo_no
-   (declare (salience 800))
-   ?cr <- (OfertaRecibida No)
-   (Respuestas estado_civil ?estadocivil) 
-   (Respuestas gusta_viajar ?viajar)
-   (test (eq ?viajar no))
-   (test (eq ?estadocivil casado))
-=>
-   (printout t "No te gusta nada, por lo que es dificil recomendarte un viaje." crlf)
-   (printout t "La unica recomendacion posible seria hacer un crucero a varios paises y elegir" crlf)
-   (printout t "los viajes que mas te puedan llamar la atencion por actividades o cultura" crlf)
-   (retract ?cr)
-   (assert (OfertaRecibida Si))
-
-)
-
-;;; Si el usuario elige REGULAR en todo ;;;;;
-(defrule todo_regular
-   (declare (salience 800))
-   (OfertaRecibida No)
-   (Respuestas gusta_viajar ?viajar)
-   (test (eq ?viajar regular))
-=>
-   (assert (Elegido EU))
-   (assert (Motivo "No te gusta nada en especial. Quizas el país que más se adepte a ti sea Estados Unidos dad su variedad"))
-   (assert (Experto "D. Experto Yerasito"))
-
-)
-
 ;; Si el programa llega hasta aqui sin una respuesta
 (defrule consejo_por_defecto
    (declare (salience -10))
@@ -413,19 +366,53 @@
 ;; Se crea un consejo ;;
 (defrule crear_oferta
    (declare (salience 1000))
-   (Elegido ?el)
-   (Motivo ?mot)
-   (Experto ?expt)
+   ?e <- (Elegido ?el)
+   ?m <- (Motivo ?mot)
+   ?ex <- (Experto ?expt)
 =>
    (assert (Adecuado (codigo ?el) (motivo ?mot) (experto ?expt)))
+   (retract ?e)
+   (retract ?m)
+   (retract ?ex)
 )
+
+;; Imprime las respuestas ;;
+(defrule datosViajero
+   (declare (salience 9000))
+   (Viajero edad ?edad)
+   (Viajero epoca_de_viaje ?epoca)
+   (Viajero transporte_pref ?trans)
+   (Viajero duracion_de_viaje ?duraciondeviaje)
+   (Viajero presupuesto ?pres)
+   (Viajero experiencia_viajando ?exp)
+   (Viajero tipo_de_destino ?tipodedestino)
+
+=>
+   (printout t "Datos viajero: " crlf)
+   (printout t crlf "Edad: " ?edad crlf)
+   (printout t "Epoca: " ?epoca crlf)
+   (printout t "Transporte: " ?trans crlf)
+   (printout t "Duracion de viaje: " ?duraciondeviaje crlf)
+   (printout t "Presupuesto: " ?pres crlf)
+   (printout t "Experiencia viajando: " ?exp crlf)
+   (printout t "Tipo de destino: " ?tipodedestino crlf crlf)
+)
+
+; (defrule datosViaje
+;    (declare (salience 9000))
+;    (Adecuado (codigo ?el) (motivo ?texto) (experto ?experto))
+;    (Viaje (codigo ?el) (destino ?r) (temporada ?temp) (transporte ?trans) (duracion ?dur) (precio ?prec) (beneficio_agencia ?ben))
+; =>
+;    (printout t "Datos viaje: " crlf)
+;    (printout t "Viaje a " ?r "(" ?el "):" ?temp " " ?trans " " ?dur " " ?prec " " ?ben crlf)
+; )
 
 ;; Se imprime un consejo ;;
 (defrule ofrece_destino
    (declare (salience 9000))
    ?cr <- (OfertaRecibida No)
    (Adecuado (codigo ?el) (motivo ?texto) (experto ?experto))
-   (Relacion_Binaria (destino ?r) (simbolo_destino ?el))
+   (Viaje (codigo ?el) (destino ?r))
 =>
    (printout t ?experto " te aconseja el Destino " ?r "." crlf)
    (printout t "Motivo: " ?texto "." crlf)
@@ -435,31 +422,48 @@
       (printout t "Valor Incorrecto. Introduce un valor (Si|No) " crlf)
       (bind ?resp (read))
    )
-
-   (printout t "Cual es tu motivo de rechazo?")
-   (bind ?motivo (read))
-   (assert (MotivoRechazo ?motivo)) ; Hecho con el motivo de rechazo: tiempo, tipo, dinero, etc.
-
    (assert (Rechazada ?resp) ) ;; Guarda si rechaza
    (retract ?cr)
+   (assert (OfertaRecibida Si))
+)
+
+(defrule MotivoRechazo
+   (declare (salience 9000))
+   (Rechazada Si)
+   ?adec <- (Adecuado (codigo ?el) (motivo ?mot) (experto ?expt))
+=>
+   (printout t "¿Cuál es tu motivo de rechazo?" crlf)
+   
+    (printout t "Hechos Razon encontrados:" crlf)
+    (do-for-all-facts ((?r Razon)) TRUE
+        ;; Obtenemos los nombres de los slots del hecho
+        (bind ?slot-names (fact-slot-names ?r))
+        ;; Iteramos sobre los slots del hecho
+        (foreach ?slot-name ?slot-names
+            ;; Obtenemos el valor del slot y lo imprimimos en la salida estándar
+            (bind ?slot-value (fact-slot-value ?r ?slot-name))
+            (printout t ?slot-value crlf)
+        )
+    )
+
+   (bind ?motivo (read))
+   (assert (MotivoRechazo ?motivo)) ; Hecho con el motivo de rechazo: tiempo, tipo, dinero, etc.
+   (retract ?adec)
 )
 
 (defrule reofrecer
    (declare (salience 9000))
    (MotivoRechazo ?motivo)
-   ?rech <- (Respuestas ?motivo ?valor) ; Ej. Se rechaza el tiempo (volveria a preguntar la duracion del viaje)
-
-   ?resp1 <- (Adecuado (codigo ?el) (motivo ?mot) (experto ?expt))
-
+   ?of <- (OfertaRecibida Si)
+   ?resp <- (Viajero ?motivo ?valor) ; Ej. Se rechaza el tiempo (volveria a preguntar la duracion del viaje)
    ?r <- (Rechazada Si)
 =>
-   (printout t "Respuestas " ?motivo " " ?valor)
-   (retract ?rech)
+   (printout t "Se rechaza " ?motivo " " ?valor crlf)
+   (retract ?of) 
+   (retract ?resp)
    (retract ?r)
-   (retract ?resp1)  
   
    (assert (OfertaRecibida No))
-   (assert (OtraVez Si))
 )
 
 ;; Para que no siga haciendo preguntas

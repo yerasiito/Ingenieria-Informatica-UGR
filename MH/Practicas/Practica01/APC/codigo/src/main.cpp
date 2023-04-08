@@ -5,12 +5,26 @@
 #include "dataset.h"
 #include "acp.h"
 #include "funcionesAux.h"
+#include "random.hpp"
+#include "busquedaLocal.h"
 
 using namespace std;
+using Random = effolkronium::random_static;
 
 vector<string> nombreDatasets = {"diabetes", "ozone-320", "spectf-heart"}; //Datasets a utilizar
 
 int main(int argc, char** argv) {
+    long int seed;
+
+    if (argc <= 2) {
+        cout <<"Sin semilla fija" <<endl;
+    }
+    else {
+        seed = atoi(argv[2]);
+        Random::seed(seed);
+        cout <<"Usando semilla: " <<seed <<endl;
+    }
+    
     int acierto_train, acierto_test;
     string algoritmo = "1-NN";
     vector<double> pesosMedios;
@@ -21,7 +35,7 @@ int main(int argc, char** argv) {
     if (argc != 1)
         algoritmo = argv[1];
     //Devuelve error en caso de pasar un parametro desconocido
-    if(algoritmo != "1-NN" && algoritmo != "greedy"){
+    if(algoritmo != "1-NN" && algoritmo != "greedy" && algoritmo != "bl"){
         cerr << "Algoritmo " << argv[1] << " desconocido. Elige: 'sin parametro', greedy o bl.\n";
         return EXIT_FAILURE;
     }
@@ -41,7 +55,7 @@ int main(int argc, char** argv) {
                 return EXIT_FAILURE;
             }
 
-            //Inicializae variables
+            //Inicializar variables
             if(i == 0) //en la primera iteracion
                 pesosMedios.resize(train.numCaracteristicas(),0);
             vector<double> pesos(train.numCaracteristicas(),1);  //en todas las iteraciones
@@ -55,9 +69,14 @@ int main(int argc, char** argv) {
                 Greedy gr;
                 pesos = gr.greedy_relief(train);
             }
+            else if(algoritmo == "bl"){
+                //Probando bl
+
+                pesos = algoritmo_busqueda_local(train);//bl.algoritmo_busqueda_local(train, test);
+            }
 
             //Ejecutamos el clasificador 1NN
-            clasificar(train, test, pesos, acierto_train, acierto_test);
+            clasificar(train, test, pesos, acierto_train, acierto_test, false);
 
             //Guardamos los resultados en una matriz/tabla de rendimiento
             rendimiento.push_back(calcularRendimiento(acierto_train, acierto_test, train, test, pesos, momentoInicio));
@@ -66,6 +85,7 @@ int main(int argc, char** argv) {
                 pesosMedios[j] += pesos[j];
 
             pesosParticiones.push_back(pesos); //Para imprimirlos al final
+
         }
         /*Resultados del clasificador*/
         std::cout << "--------------------------------------Clasificador (" << algoritmo << "):" << fichero << "-------------------------------------";

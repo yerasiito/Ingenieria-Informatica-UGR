@@ -41,8 +41,13 @@ struct Greedy{
  * @param pesos el vector de pesos ponderados, si greedy ni bl no se ejecutan se inicializan a 1
  * @param acierto_train el acierto de train de salida
  * @param acierto_test el acierto de test de salida
+ * @param tasa_train un booleano para determinar si calcular o no el tasa train, por defecto false
 */
-void clasificar(Dataset train, Dataset test, std::vector<double> pesos, int &acierto_train, int &acierto_test);
+void clasificar(Dataset train, Dataset test, std::vector<double> pesos, int &acierto_train, int &acierto_test, bool tasa_train = false);
+
+void clasificarTrain(Dataset train, std::vector<double> pesos, int &acierto_train);
+
+void clasificarTest(Dataset train, Dataset test, std::vector<double> pesos,int &acierto_test);
 
 /**
  * @brief Funcion para calcular la tasa de reduccion
@@ -50,6 +55,10 @@ void clasificar(Dataset train, Dataset test, std::vector<double> pesos, int &aci
  * @return la tasa de reduccion
 */
 double calcularTasaRed(std::vector<double> pesos);
+
+
+double calcularFitness(int acierto, int numEjemplos, std::vector<double> pesos);
+
 
 /**
  * @brief Función para calcular el rendimiento de los algoritmos tras clasificar con 1nn

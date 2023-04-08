@@ -1,6 +1,6 @@
 # Establece la versión mínima requerida de CMake
 cmake_minimum_required(VERSION 3.16)
-
+set(CMAKE_CXX_FLAGS "-O2 -march=native -funroll-loops")
 # Establece el nombre del proyecto
 project(practica1)
 
@@ -10,6 +10,7 @@ add_executable(practica1
   src/dataset.cpp 
   src/acp.cpp
   src/funcionesAux.cpp
+  src/busquedaLocal.cpp
 )
 
 # Agrega los archivos de encabezado

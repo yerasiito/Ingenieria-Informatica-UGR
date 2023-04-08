@@ -68,14 +68,26 @@ string Clasificador::unoNN(Ejemplo test_ejemplo, Dataset train, vector<double> w
 }
 
 // Función principal para clasificar los datasets de train y test
-void clasificar(Dataset train, Dataset test, vector<double> pesos, int &acierto_train, int &acierto_test){
-    Clasificador clf;
+void clasificar(Dataset train, Dataset test, vector<double> pesos, int &acierto_train, int &acierto_test, bool tasa_train){
     acierto_train = 0, acierto_test = 0;
+    if(tasa_train)
+        clasificarTrain(train, pesos, acierto_train);
+    clasificarTest(train, test, pesos, acierto_test);
+}
+
+void clasificarTrain(Dataset train, vector<double> pesos, int &acierto_train){
+    acierto_train = 0;
+    Clasificador clf;
     for(int i = 0; i < train.numEjemplos(); i++){
         string label_train = clf.unoNN(train.getEjemplo(i), train.leave_one_out(i), pesos);
         if(label_train == train.getEjemplo(i).etiqueta)
             acierto_train++;
     }
+}
+
+void clasificarTest(Dataset train, Dataset test, vector<double> pesos,int &acierto_test){
+    acierto_test = 0;
+    Clasificador clf;
     for(int i = 0; i < test.numEjemplos(); i++){
         string label_test = clf.unoNN(test.getEjemplo(i), train, pesos);
         if(label_test == test.getEjemplo(i).etiqueta)
@@ -92,6 +104,13 @@ double calcularTasaRed(vector<double> pesos){
     return tasa_red = 100*(tasa_red/pesos.size());
 }
 
+double calcularFitness(int acierto, int numEjemplos, vector<double> pesos){
+    double tasa_clas = 100.0*(double(acierto)/double(numEjemplos));
+    double tasa_red = calcularTasaRed(pesos);
+
+    return 0.8*tasa_clas + 0.2*tasa_red;
+}
+
 // Función para calcular el rendimiento de un algoritmo apartir de sus aciertos y pesos
 vector<double> calcularRendimiento(int acierto_train, int acierto_test, Dataset train, Dataset test, vector<double> w,
     chrono::high_resolution_clock::time_point momentoInicio){
@@ -102,33 +121,36 @@ vector<double> calcularRendimiento(int acierto_train, int acierto_test, Dataset 
     double fitness = 0.8*tasa_clas_test + 0.2*tasa_red;
     auto momentoFin = chrono::high_resolution_clock::now();
     chrono::milliseconds tiempo = chrono::duration_cast<chrono::milliseconds>(momentoFin - momentoInicio);
-    double t = double(tiempo.count());
+    double t = double(tiempo.count()/1000.0);
 
     vector<double> rendimiento = {tasa_clas_train, tasa_clas_test, tasa_red, fitness, t};
     return rendimiento;
 }
 
 void imprimeRendimiento(vector<vector<double>> resultados){
+    int n = resultados.size(), m = resultados[0].size();
     cout << "\nParticion\t" << "Tasa_clas_train[%]\t" << "Tasa_clas_test[%]\t" << "Tasa_red[%]\t" << "Fitness\t\t" << "Tiempo[ms]";
-    cout << fixed << setprecision(2);
-    vector<double> media(resultados[0].size(),0);
-    for(int i = 0; i < resultados.size(); i++){
+    vector<double> media(n,0);
+    for(int i = 0; i < n; i++){
         cout << endl;
         cout << i+1 << "\t\t";
-        for(int j = 0; j < resultados[0].size(); j++){
+        for(int j = 0; j < m-1; j++){
             media[j] += resultados[i][j];
-            cout << resultados[i][j] << "\t\t";
+            cout << fixed << setprecision(2) << resultados[i][j] << "\t\t";
             if(j < 2)
                 cout << "\t";
         }
+        media[m-1] += resultados[i][m-1];
+        cout << defaultfloat << resultados[i][m-1] << "\t\t";
     }
     //MEDIA
     cout << "\nMEDIA\t\t";
-    for(int i = 0; i < resultados[0].size(); i++){
-        cout << media[i]/5.0 << "\t\t";
+    for(int i = 0; i < m-1; i++){
+        cout << fixed << setprecision(2) << media[i]/5.0 << "\t\t";
         if(i < 2)
             cout << "\t";
     }
+    cout << defaultfloat << media[n-1]/5.0;
     cout << endl;
 }
 
