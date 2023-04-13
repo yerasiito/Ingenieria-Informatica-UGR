@@ -1,3 +1,6 @@
+;;;; REALIZADO POR: Yeray Lopez Ramirez ;;;;;
+;;;;           DNI: 26050768W		    ;;;;;
+
 ;;;; HECHOS GENERALES DEL SISTEMA ;;;;;
 ;;;;(seran validos para todas las ejecuciones del sistema ;;;;
 

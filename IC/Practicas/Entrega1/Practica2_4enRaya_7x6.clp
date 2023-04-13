@@ -1,3 +1,6 @@
+;;;; REALIZADO POR: Yeray Lopez Ramirez ;;;;;
+;;;;           DNI: 26050768W		    ;;;;;
+
 ;;;;;;; JUGADOR DE 4 en RAYA ;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
 ;;;;;;;;;; Version de 4 en raya clásico: Tablero de 6x7, donde se introducen fichas por arriba
