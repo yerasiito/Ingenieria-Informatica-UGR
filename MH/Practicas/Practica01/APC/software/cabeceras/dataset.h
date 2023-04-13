@@ -5,8 +5,6 @@
 #include <vector>
 #include <string>
 #include <fstream>
-#include <cmath>
-
 
 struct Ejemplo {
     std::vector<double> caracteristicas = {};
@@ -66,6 +64,9 @@ class Dataset {
         */
         int numEtiquetas() const;
 
+        
+        double &getCaracteristica(int i, int j);
+
         /**
          * @brief devuelve la caracteristica j del ejemplo i
          * @param i la posición del ejemplo
@@ -89,6 +90,9 @@ class Dataset {
         const std::string &getLabelName(int i) const;
 
         //Métodos set
+
+        void setCaracteristica(int i, int j, double valor);
+
         /**
          * @brief Inserta un struct ejemplo en el conjunto de datos
          * @param e El ejemplo a insertar

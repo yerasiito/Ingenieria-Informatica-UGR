@@ -6,12 +6,11 @@ project(practica1)
 
 # Agrega los archivos de origen
 add_executable(practica1 
-  src/main.cpp 
-  src/dataset.cpp 
-  src/acp.cpp
-  src/funcionesAux.cpp
-  src/busquedaLocal.cpp
+  fuentes/main.cpp 
+  fuentes/dataset.cpp 
+  fuentes/apc.cpp
+  fuentes/funcionesAux.cpp
 )
 
 # Agrega los archivos de encabezado
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/headers)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/cabeceras)

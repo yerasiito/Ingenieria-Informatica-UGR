@@ -1,0 +1,8 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n}{Input}\PYG{p}{(}\PYG{n}{Conjunto}\PYG{+w}{ }\PYG{n}{de}\PYG{+w}{ }\PYG{n}{datos}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}C\PYGZdq{}}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{Indice}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}i\PYGZdq{}}\PYG{p}{)}
+\PYG{n}{Inicio}
+\PYG{+w}{    }\PYG{n}{Dataset}\PYG{+w}{ }\PYG{n}{Loo}\PYG{+w}{ }\PYG{o}{\PYGZlt{}\PYGZhy{}}\PYG{+w}{ }\PYG{n}{C}
+\PYG{+w}{    }\PYG{n}{ELIMINAR\PYGZus{}EJEMPLO}\PYG{p}{(}\PYG{n}{Loo}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{i}\PYG{p}{)}
+\PYG{+w}{    }\PYG{n}{DEVOLVER}\PYG{p}{(}\PYG{n}{Loo}\PYG{p}{)}
+\PYG{n}{Fin}
+\end{Verbatim}
