@@ -5,15 +5,16 @@ import java.util.PriorityQueue;
 
 import ontology.Types.ACTIONS;
 
-public class myQueue extends PriorityQueue<Nodo>{
+public class ColaNodo extends PriorityQueue<Nodo>{
 	private static final long serialVersionUID = 8780424473060020311L;
 	
-	public myQueue() {
+	public ColaNodo() {
 		super(new Comparador());
 	}
 	
 	private static class Comparador implements Comparator<Nodo> {
 
+		//Prioridad valorF>valorG>Orden de generacion
 		@Override
 	    public int compare(Nodo n1, Nodo n2) {
 	        double f1 = n1.getValorF();
@@ -40,6 +41,7 @@ public class myQueue extends PriorityQueue<Nodo>{
 	        }
 		}
 		
+		//Prioridad de generacion: UP, DOWN, LEFT, RIGHT
 	    private int getPriority(ACTIONS action) {
 	        switch (action) {
 	            case ACTION_UP:
@@ -55,6 +57,7 @@ public class myQueue extends PriorityQueue<Nodo>{
 	        }
 	    }
 }
+	//Contiene si tiene las mismas coordenadas
 	@Override
     public boolean contains(Object o) {
 	    if (!(o instanceof Nodo)) {

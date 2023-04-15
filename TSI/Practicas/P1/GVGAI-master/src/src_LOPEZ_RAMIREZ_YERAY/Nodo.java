@@ -6,7 +6,7 @@ import core.game.StateObservation;
 import ontology.Types.ACTIONS;
 import tools.Vector2d;
 
-public class Nodo implements Comparable<Nodo>{
+public class Nodo {
 
 	private Nodo padre;
 	private Vector2d meta;
@@ -19,11 +19,6 @@ public class Nodo implements Comparable<Nodo>{
 	private ACTIONS movimiento;
 	private boolean estadoFinal;
 	private boolean heuristica;
-	
-	
-	public enum Acciones {
-		ACTION_UP, ACTION_DOWN, ACTION_LEFT, ACTION_RIGHT;
-	}
 	
 	//CONSTRUCTOR
 	public Nodo(Vector2d pos, ACTIONS acc, Nodo parent, Vector2d goal, Boolean heuristic) {
@@ -68,11 +63,13 @@ public class Nodo implements Comparable<Nodo>{
 	//METODOS SET
 	public void setEstadoFinal() {estadoFinal=!estadoFinal;}
 	public void setPadre(Nodo p) {padre = p;}
+	public void setValorH(double valor) {valorH = valor; valorF = (valorG + valor);}
 	
 	public boolean compararAccion(Nodo otro) {
 		return false;
 	}
 	
+	//Calcula la posicion segun la accion
 	private Vector2d getPosicionJugador(ACTIONS ac) {
 		Vector2d posicionJugador = new Vector2d(0,0);
 		if(ac == ACTIONS.ACTION_UP)
@@ -86,6 +83,8 @@ public class Nodo implements Comparable<Nodo>{
 		
 		return posicionJugador;
 	}
+	
+	//Metodo de generacion de hijos en ORDEN
 	public ArrayList<Nodo> expandirHijos(StateObservation stateObs) {		
 		//Lo primero es inicializar el Array de hijos
 		//Genera los hijos en orden
@@ -98,6 +97,7 @@ public class Nodo implements Comparable<Nodo>{
 		return hijos;
 	}
 	
+	//Calcula si sucesor tiene mejor valor G que el nodo actual
 	public boolean mejorCaminoA(Nodo sucesor) {
 		if(sucesor.getValorG() < this.getValorG())
 			return true;
@@ -118,32 +118,4 @@ public class Nodo implements Comparable<Nodo>{
         
         return manhattan;
     }
-	
-	// Overriding equals() to compare two Complex objects 
-    @Override
-    public boolean equals(Object ob) { 
-    	if (ob instanceof Nodo) {
-            Nodo objeto = (Nodo) ob;
-            return (objeto.getPosicion() == posicion);
-        } else {
-            return false;
-        }
-    } 
- 
-	
-	//Se sobreescribe para ordenar más fácilmente un ArrayList de nodos
-	@Override
-	public int compareTo(Nodo otroNodo) {
-		//Si devuelve < 0, va antes
-		if(valorF < otroNodo.getValorF()) {
-			return -1;
-		}else {
-			if(valorF > otroNodo.getValorF()) {
-				return 1;
-			}
-		}
-		
-		return 0;
-	}
-
 }

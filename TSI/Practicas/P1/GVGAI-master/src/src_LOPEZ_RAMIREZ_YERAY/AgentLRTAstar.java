@@ -10,7 +10,7 @@ import ontology.Types.ACTIONS;
 import tools.ElapsedCpuTimer;
 import tools.Vector2d;
 
-public class AgentRTAstar extends AbstractPlayer{
+public class AgentLRTAstar extends AbstractPlayer{
 	//Atributos de la clase
 	private ArrayList<ArrayList<Boolean>> listaCerrados;
     protected ArrayList<Nodo> HijosActual = new ArrayList<>(); //Hijos en la ejecucion
@@ -26,7 +26,7 @@ public class AgentRTAstar extends AbstractPlayer{
      * @param elapsedTimer Timer when the action returned is due.
 	 * @throws IOException 
 	 */
-	public AgentRTAstar(StateObservation stateObs, ElapsedCpuTimer elapsedTimer) {
+	public AgentLRTAstar(StateObservation stateObs, ElapsedCpuTimer elapsedTimer) {
 		fescala = new Vector2d(stateObs.getWorldDimension().width / stateObs.getObservationGrid().length , 
         		stateObs.getWorldDimension().height / stateObs.getObservationGrid()[0].length);      
       
@@ -127,11 +127,6 @@ public class AgentRTAstar extends AbstractPlayer{
 		minimo = expandidos.poll();
 		accion = minimo.getAccion();
 		
-		//Segundo minimo
-		if(expandidos.size() > 0) {
-			minimo = expandidos.poll();
-		}
-
 		matrizHeuristica.get((int)posJ.y).set((int)posJ.x, Math.max(nodoLocal.getValorH(), minimo.getValorF()));
 		nodosExpandidos++;
 		return accion;
@@ -143,7 +138,6 @@ public class AgentRTAstar extends AbstractPlayer{
 	public ACTIONS act(StateObservation stateObs, ElapsedCpuTimer elapsedTimer) {	
 		ACTIONS accion = ACTIONS.ACTION_NIL;
 		accion = AlgoritmoRTA(stateObs);
-
 		return accion; 
 	}	
 	

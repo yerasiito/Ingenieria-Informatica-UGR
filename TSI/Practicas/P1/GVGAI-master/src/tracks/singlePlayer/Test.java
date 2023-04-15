@@ -27,6 +27,7 @@ public class Test {
         String agenteDijkstra = "src_LOPEZ_RAMIREZ_YERAY.AgentDijkstra";
         String agenteAStar = "src_LOPEZ_RAMIREZ_YERAY.AgentAstar";
         String agenteRTAstar = "src_LOPEZ_RAMIREZ_YERAY.AgentRTAstar";
+        String agenteLRTAstar = "src_LOPEZ_RAMIREZ_YERAY.AgentLRTAstar";
         String agenteCompeticion = "src_LOPEZ_RAMIREZ_YERAY.AgentCompeticion";
 
 		//Load available games
@@ -54,7 +55,7 @@ public class Test {
 //		ArcadeMachine.playOneGame(game, level1, recordActionsFile, seed);
 
 		// 2. This plays a game in a level by the controller.
-		ArcadeMachine.runOneGame(game, level1, visuals, agenteAStar, recordActionsFile, seed, 0);
+		ArcadeMachine.runOneGame(game, level1, visuals, agenteDijkstra, recordActionsFile, seed, 0);
 
 
 		// 3. This replays a game from an action file previously recorded

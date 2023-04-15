@@ -13,13 +13,13 @@ import tools.Vector2d;
 public class AgentAstar extends AbstractPlayer{
 	//Atributos de la clase
 	private ArrayList<ArrayList<Boolean>> listaCerrados;
-    private myQueue listaAbiertos = new myQueue(); //Abiertos
+    private ColaNodo listaAbiertos = new ColaNodo(); //Abiertos
     protected ArrayList<Nodo> HijosActual = new ArrayList<>(); //Hijos en la ejecucion
 	ArrayList<Observation>[] listadoInnamovible; //muros y trampas
 	ArrayList<ACTIONS> camino = new ArrayList<ACTIONS>();	
 	
     private ACTIONS accion;
-    
+
     Vector2d portalFin;
     Vector2d fescala;
   
@@ -32,7 +32,6 @@ public class AgentAstar extends AbstractPlayer{
 	public AgentAstar(StateObservation stateObs, ElapsedCpuTimer elapsedTimer) {
 		fescala = new Vector2d(stateObs.getWorldDimension().width / stateObs.getObservationGrid().length , 
         		stateObs.getWorldDimension().height / stateObs.getObservationGrid()[0].length);      
-      
         //Se crea una lista de observaciones de portales, ordenada por cercania al avatar
         ArrayList<Observation>[] posiciones = stateObs.getPortalsPositions(stateObs.getAvatarPosition());
         //Seleccionamos el portal mas proximo
@@ -69,13 +68,13 @@ public class AgentAstar extends AbstractPlayer{
 				listaCerrados.get(posy).set(posx,true);
 			}
 		}	
-		accion = ACTIONS.ACTION_NIL;
+		accion = null;
 	}
 	
 	int nodosExpandidos = 0;
 	private ArrayList<ACTIONS> AlgoritmoAstar(StateObservation mundo){
 		Vector2d posJ = new Vector2d(mundo.getAvatarPosition().x/fescala.x, mundo.getAvatarPosition().y/fescala.y);
-		Nodo nodoInicial = new Nodo(posJ, ACTIONS.ACTION_NIL, null, portalFin, true);
+		Nodo nodoInicial = new Nodo(posJ, null, null, portalFin, true);
 		
 		listaAbiertos.add(nodoInicial);	
 		Nodo actual;
@@ -130,7 +129,7 @@ public class AgentAstar extends AbstractPlayer{
 			entra = false;
 		}
 	    
-		accion = ACTIONS.ACTION_NIL; //Por defecto es nil
+		accion = null;
 		if(!camino.isEmpty()) {
 			accion = camino.get(camino.size()-1);
 			camino.remove(camino.size()-1);

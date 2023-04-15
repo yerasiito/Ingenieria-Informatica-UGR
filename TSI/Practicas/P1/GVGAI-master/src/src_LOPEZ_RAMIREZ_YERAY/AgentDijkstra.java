@@ -13,7 +13,7 @@ import tools.Vector2d;
 public class AgentDijkstra extends AbstractPlayer{
 	//Atributos de la clase
 	private ArrayList<ArrayList<Boolean>> listaCerrados;
-    private myQueue listaAbiertos = new myQueue(); //Abiertos
+    private ColaNodo listaAbiertos = new ColaNodo(); //Abiertos
     protected ArrayList<Nodo> HijosActual = new ArrayList<>(); //Hijos en la ejecucion
 	ArrayList<Observation>[] listadoInnamovible; //muros y trampas
 	ArrayList<ACTIONS> camino = new ArrayList<ACTIONS>();	
