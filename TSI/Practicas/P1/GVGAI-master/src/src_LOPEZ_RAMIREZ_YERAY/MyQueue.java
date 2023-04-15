@@ -1,7 +1,5 @@
 package src_LOPEZ_RAMIREZ_YERAY;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 
@@ -18,8 +16,8 @@ public class MyQueue extends PriorityQueue<Nodo>{
 
 		@Override
 	    public int compare(Nodo n1, Nodo n2) {
-	        double f1 = n1.getValorG();
-	        double f2 = n2.getValorG();
+	        double f1 = n1.getValorF();
+	        double f2 = n2.getValorF();
 	        if (f1 < f2) {
 	            return -1;
 	        } else if (f1 > f2) {

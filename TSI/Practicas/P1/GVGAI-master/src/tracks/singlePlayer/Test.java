@@ -25,7 +25,8 @@ public class Test {
         String sampleRHEAController = "tracks.singlePlayer.advanced.sampleRHEA.Agent";
 		String sampleOLETSController = "tracks.singlePlayer.advanced.olets.Agent";
         String camelloAgente = "src_LOPEZ_RAMIREZ_YERAY.myAgent_Camel";
-        String miAgente = "src_LOPEZ_RAMIREZ_YERAY.AgentDijkstra";
+        String agenteDijkstra = "src_LOPEZ_RAMIREZ_YERAY.AgentDijkstra";
+        String agenteAStar = "src_LOPEZ_RAMIREZ_YERAY.AgentAStar";
 
 		//Load available games
 		String spGamesCollection =  "examples/all_games_sp.csv";
@@ -52,7 +53,7 @@ public class Test {
 //		ArcadeMachine.playOneGame(game, level1, recordActionsFile, seed);
 
 		// 2. This plays a game in a level by the controller.
-		ArcadeMachine.runOneGame(game, level1, visuals, miAgente, recordActionsFile, seed, 0);
+		ArcadeMachine.runOneGame(game, level1, visuals, agenteAStar, recordActionsFile, seed, 0);
 
 
 		// 3. This replays a game from an action file previously recorded

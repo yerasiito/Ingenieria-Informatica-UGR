@@ -11,13 +11,14 @@ public class Nodo implements Comparable<Nodo>{
 	private Nodo padre;
 	private Vector2d meta;
 	private ArrayList<Nodo> hijos;
-	private double valorG;
-	private double valorH;
-	private double valorF;
+	private double valorG = 0;
+	private double valorH = 0;
+	private double valorF = 0;
 	//Escala que servirá para expandir los hijos
 	private Vector2d posicion;
 	private ACTIONS movimiento;
 	private boolean estadoFinal;
+	private boolean heuristica;
 	
 	
 	public enum Acciones {
@@ -25,7 +26,7 @@ public class Nodo implements Comparable<Nodo>{
 	}
 	
 	//CONSTRUCTOR
-	public Nodo(Vector2d pos, ACTIONS acc, Nodo parent, Vector2d goal) {
+	public Nodo(Vector2d pos, ACTIONS acc, Nodo parent, Vector2d goal, Boolean heuristic) {
 		padre = parent;
 		//Ya viene escalada
 		meta = goal;
@@ -36,6 +37,7 @@ public class Nodo implements Comparable<Nodo>{
 		posicion = pos;
 		
 		estadoFinal = (posicion.x == meta.x && posicion.y == meta.y); //Si devuelve TRUE, guarda TRUE
+		heuristica = heuristic;
 		
 		movimiento = acc;
 		hijos = new ArrayList<Nodo>();
@@ -46,7 +48,9 @@ public class Nodo implements Comparable<Nodo>{
 		}else {
 			valorG = 0;
 		}
-		valorH = HeuristicaManhattan();
+		if(heuristica)
+			valorH = HeuristicaManhattan();
+		
 		valorF = valorG + valorH;
 	}
 	
@@ -88,7 +92,7 @@ public class Nodo implements Comparable<Nodo>{
 		ArrayList<ACTIONS> accionesDisponibles = new ArrayList<> (Arrays.asList(ACTIONS.ACTION_UP, ACTIONS.ACTION_DOWN, ACTIONS.ACTION_LEFT, ACTIONS.ACTION_RIGHT));
 
 		for(ACTIONS ac : accionesDisponibles) {
-			hijos.add(new Nodo(getPosicionJugador(ac), ac, this, getMeta()));		
+			hijos.add(new Nodo(getPosicionJugador(ac), ac, this, getMeta(),heuristica));		
 		}
 		
 		return hijos;

@@ -10,7 +10,7 @@ import ontology.Types.ACTIONS;
 import tools.ElapsedCpuTimer;
 import tools.Vector2d;
 
-public class AgentDijkstra extends AbstractPlayer{
+public class AgentAStar extends AbstractPlayer{
 	//Atributos de la clase
 	private ArrayList<ArrayList<Boolean>> listaCerrados;
     private MyQueue listaAbiertos = new MyQueue(); //Abiertos
@@ -18,6 +18,7 @@ public class AgentDijkstra extends AbstractPlayer{
 	ArrayList<Observation>[] listadoInnamovible; //muros y trampas
 	ArrayList<ACTIONS> camino = new ArrayList<ACTIONS>();	
 	
+    private boolean rutaEncontrada = false;
     private ACTIONS accion;
     
     Vector2d portalFin;
@@ -29,7 +30,7 @@ public class AgentDijkstra extends AbstractPlayer{
      * @param elapsedTimer Timer when the action returned is due.
 	 * @throws IOException 
 	 */
-	public AgentDijkstra(StateObservation stateObs, ElapsedCpuTimer elapsedTimer) {
+	public AgentAStar(StateObservation stateObs, ElapsedCpuTimer elapsedTimer) {
 		fescala = new Vector2d(stateObs.getWorldDimension().width / stateObs.getObservationGrid().length , 
         		stateObs.getWorldDimension().height / stateObs.getObservationGrid()[0].length);      
       
@@ -40,6 +41,7 @@ public class AgentDijkstra extends AbstractPlayer{
         portalFin.x = Math.floor(portalFin.x / fescala.x);
         portalFin.y = Math.floor(portalFin.y / fescala.y);
 		
+		rutaEncontrada = false;
 		System.out.println("Jugador en: " + stateObs.getAvatarPosition().x/fescala.x + " " + stateObs.getAvatarPosition().y/fescala.y);
 		System.out.println("Meta en: " + portalFin);
 		
@@ -68,15 +70,14 @@ public class AgentDijkstra extends AbstractPlayer{
 				int posy = (int)(obs.position.y/fescala.y);
 				listaCerrados.get(posy).set(posx,true);
 			}
-		}
-	
+		}	
 		accion = ACTIONS.ACTION_NIL;
 	}
 	
 	int nodosExpandidos = 0;
 	private ArrayList<ACTIONS> AlgoritmoDijkstra(StateObservation mundo){
 		Vector2d posJ = new Vector2d(mundo.getAvatarPosition().x/fescala.x, mundo.getAvatarPosition().y/fescala.y);
-		Nodo nodoInicial = new Nodo(posJ, ACTIONS.ACTION_NIL, null, portalFin, false);
+		Nodo nodoInicial = new Nodo(posJ, ACTIONS.ACTION_NIL, null, portalFin, true);
 		listaAbiertos.add(nodoInicial);	
 		Nodo actual = null;
 
