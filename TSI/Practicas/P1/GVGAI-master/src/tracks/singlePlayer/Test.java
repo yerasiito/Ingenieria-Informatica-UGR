@@ -25,7 +25,7 @@ public class Test {
         String sampleRHEAController = "tracks.singlePlayer.advanced.sampleRHEA.Agent";
 		String sampleOLETSController = "tracks.singlePlayer.advanced.olets.Agent";
         String camelloAgente = "src_LOPEZ_RAMIREZ_YERAY.myAgent_Camel";
-        String miAgente = "src_LOPEZ_RAMIREZ_YERAY.AgenteDijkstra";
+        String miAgente = "src_LOPEZ_RAMIREZ_YERAY.AgentDijkstra";
 
 		//Load available games
 		String spGamesCollection =  "examples/all_games_sp.csv";
@@ -37,7 +37,7 @@ public class Test {
 
 		// Game and level to play
 		int gameIdx = 58; //122 extendidos
-		int levelIdx = 0; // level names from 0 to 4 (game_lvlN.txt).
+		int levelIdx = 7; // level names from 0 to 4 (game_lvlN.txt).
 		String gameName = games[gameIdx][1];
 		String game = games[gameIdx][0];
 		String level1 = game.replace(gameName, gameName + "_lvl" + levelIdx);
