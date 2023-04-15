@@ -10,13 +10,14 @@ import ontology.Types.ACTIONS;
 import tools.ElapsedCpuTimer;
 import tools.Vector2d;
 
-public class AgentAstar extends AbstractPlayer{
+public class AgentRTAstar extends AbstractPlayer{
 	//Atributos de la clase
 	private ArrayList<ArrayList<Boolean>> listaCerrados;
     private myQueue listaAbiertos = new myQueue(); //Abiertos
     protected ArrayList<Nodo> HijosActual = new ArrayList<>(); //Hijos en la ejecucion
 	ArrayList<Observation>[] listadoInnamovible; //muros y trampas
 	ArrayList<ACTIONS> camino = new ArrayList<ACTIONS>();	
+	private ArrayList<ArrayList<Double>> matrizHeuristica;
 	
     private ACTIONS accion;
     
@@ -29,7 +30,7 @@ public class AgentAstar extends AbstractPlayer{
      * @param elapsedTimer Timer when the action returned is due.
 	 * @throws IOException 
 	 */
-	public AgentAstar(StateObservation stateObs, ElapsedCpuTimer elapsedTimer) {
+	public AgentRTAstar(StateObservation stateObs, ElapsedCpuTimer elapsedTimer) {
 		fescala = new Vector2d(stateObs.getWorldDimension().width / stateObs.getObservationGrid().length , 
         		stateObs.getWorldDimension().height / stateObs.getObservationGrid()[0].length);      
       
@@ -51,13 +52,17 @@ public class AgentAstar extends AbstractPlayer{
 		System.out.println("Dimensiones: " + filas + "x" + columnas );
 		
 		listaCerrados = new ArrayList<ArrayList<Boolean>>(filas);
+		matrizHeuristica = new ArrayList<ArrayList<Double>>(filas);
 		
 		for(int i = 0; i < filas; i++) {
 		    ArrayList<Boolean> fila = new ArrayList<Boolean>(columnas);
+		    ArrayList<Double> filaD = new ArrayList<Double>(columnas);
 		    for(int j = 0; j < columnas; j++) {
-		        fila.add(false);
+		        fila.add(false); //Inicializa a false
+		        filaD.add(0.0); //Inicializa con las distancias
 		    }
 		    listaCerrados.add(fila);
+		    matrizHeuristica.add(filaD);
 		}
 		
 		listadoInnamovible = stateObs.getImmovablePositions(stateObs.getAvatarPosition());
@@ -68,9 +73,41 @@ public class AgentAstar extends AbstractPlayer{
 				int posy = (int)(obs.position.y/fescala.y);
 				listaCerrados.get(posy).set(posx,true);
 			}
-		}	
+		}
+		
+		for(int i = 0; i < matrizHeuristica.size(); i++) {
+			for(int j = 0; j < matrizHeuristica.get(0).size(); j++) {
+				matrizHeuristica.get(i).set(j, HeuristicaManhattan(j,i));
+			}
+		}
+		
+		for(ArrayList<Double> f : matrizHeuristica) {
+			System.out.println();
+			for(int i = 0; i < f.size(); i++)
+				System.out.print(f.get(i) + "\t");
+		}
+		System.out.println();
+		
 		accion = ACTIONS.ACTION_NIL;
 	}
+	
+	//Metaheuristica - Distancia Manhattan
+    private double HeuristicaManhattan(int x, int y) {      
+        double xDiff = 0, yDiff = 0;
+        
+        Vector2d pos = new Vector2d(x, y);
+        if(listaCerrados.get(y).get(x)) {
+        	pos.x = Double.NaN;
+        	pos.y = Double.NaN;
+        }
+        
+    	xDiff = Math.abs(pos.x - portalFin.x);
+        yDiff = Math.abs(pos.y - portalFin.y);
+        
+        double manhattan = xDiff + yDiff;
+        
+        return manhattan;
+    }
 	
 	int nodosExpandidos = 0;
 	private ArrayList<ACTIONS> AlgoritmoAstar(StateObservation mundo){
@@ -84,6 +121,8 @@ public class AgentAstar extends AbstractPlayer{
 		while(!listaAbiertos.isEmpty()) { //Mientras no encuentre el objetivo	
 			actual = listaAbiertos.poll();
 			listaCerrados.get((int)actual.getPosicion().y).set((int)actual.getPosicion().x, true); //Lo mete en cerrados poniendolo a true
+			Double dis = matrizHeuristica.get((int)actual.getPosicion().y).get((int)actual.getPosicion().x);
+			matrizHeuristica.get((int)actual.getPosicion().y).set((int)actual.getPosicion().x, dis+1);
 			
 			if(actual.getEstadoFinal()) { //Si es el estado final calcula el camino
 				nodosExpandidos++;
@@ -128,8 +167,15 @@ public class AgentAstar extends AbstractPlayer{
 			listaAbiertos.clear();
 			camino = AlgoritmoAstar(stateObs);
 			entra = false;
+			System.out.println("\nTras ejecutar");
+			for(ArrayList<Double> f : matrizHeuristica) {
+				System.out.println();
+				for(int i = 0; i < f.size(); i++)
+					System.out.print(f.get(i) + "\t");
+			}
+			System.out.println();
 		}
-	    
+		
 		accion = ACTIONS.ACTION_NIL; //Por defecto es nil
 		if(!camino.isEmpty()) {
 			accion = camino.get(camino.size()-1);

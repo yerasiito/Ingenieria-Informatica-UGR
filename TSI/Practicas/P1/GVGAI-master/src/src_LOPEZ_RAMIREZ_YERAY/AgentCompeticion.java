@@ -10,14 +10,14 @@ import ontology.Types.ACTIONS;
 import tools.ElapsedCpuTimer;
 import tools.Vector2d;
 
-public class AgentAstar extends AbstractPlayer{
+public class AgentCompeticion extends AbstractPlayer{
 	//Atributos de la clase
 	private ArrayList<ArrayList<Boolean>> listaCerrados;
     private myQueue listaAbiertos = new myQueue(); //Abiertos
     protected ArrayList<Nodo> HijosActual = new ArrayList<>(); //Hijos en la ejecucion
 	ArrayList<Observation>[] listadoInnamovible; //muros y trampas
 	ArrayList<ACTIONS> camino = new ArrayList<ACTIONS>();	
-	
+	private int nodosExpandidos = 0;
     private ACTIONS accion;
     
     Vector2d portalFin;
@@ -29,7 +29,7 @@ public class AgentAstar extends AbstractPlayer{
      * @param elapsedTimer Timer when the action returned is due.
 	 * @throws IOException 
 	 */
-	public AgentAstar(StateObservation stateObs, ElapsedCpuTimer elapsedTimer) {
+	public AgentCompeticion(StateObservation stateObs, ElapsedCpuTimer elapsedTimer) {
 		fescala = new Vector2d(stateObs.getWorldDimension().width / stateObs.getObservationGrid().length , 
         		stateObs.getWorldDimension().height / stateObs.getObservationGrid()[0].length);      
       
@@ -71,21 +71,22 @@ public class AgentAstar extends AbstractPlayer{
 		}	
 		accion = ACTIONS.ACTION_NIL;
 	}
-	
-	int nodosExpandidos = 0;
-	private ArrayList<ACTIONS> AlgoritmoAstar(StateObservation mundo){
+
+	private ArrayList<ACTIONS> Algoritmo(StateObservation mundo){
+		nodosExpandidos = 0;
+		
+		
 		Vector2d posJ = new Vector2d(mundo.getAvatarPosition().x/fescala.x, mundo.getAvatarPosition().y/fescala.y);
 		Nodo nodoInicial = new Nodo(posJ, ACTIONS.ACTION_NIL, null, portalFin, true);
 		
 		listaAbiertos.add(nodoInicial);	
 		Nodo actual;
 		boolean estaAbiertos = false, estaCerrados = false;
-		
 		while(!listaAbiertos.isEmpty()) { //Mientras no encuentre el objetivo	
 			actual = listaAbiertos.poll();
 			listaCerrados.get((int)actual.getPosicion().y).set((int)actual.getPosicion().x, true); //Lo mete en cerrados poniendolo a true
 			
-			if(actual.getEstadoFinal()) { //Si es el estado final calcula el camino
+			if(actual.getEstadoFinal() || nodosExpandidos == 250) { //Si es el estado final calcula el camino
 				nodosExpandidos++;
 				camino.add(actual.getAccion());
 				while(actual.getPadre() != null) {
@@ -124,11 +125,8 @@ public class AgentAstar extends AbstractPlayer{
 	boolean entra = true;
 	@Override
 	public ACTIONS act(StateObservation stateObs, ElapsedCpuTimer elapsedTimer) {	
-		if(entra) {
-			listaAbiertos.clear();
-			camino = AlgoritmoAstar(stateObs);
-			entra = false;
-		}
+		camino = Algoritmo(stateObs);
+		entra = false;
 	    
 		accion = ACTIONS.ACTION_NIL; //Por defecto es nil
 		if(!camino.isEmpty()) {

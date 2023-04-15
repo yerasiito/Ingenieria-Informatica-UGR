@@ -5,10 +5,10 @@ import java.util.PriorityQueue;
 
 import ontology.Types.ACTIONS;
 
-public class MyQueue extends PriorityQueue<Nodo>{
+public class myQueue extends PriorityQueue<Nodo>{
 	private static final long serialVersionUID = 8780424473060020311L;
 	
-	public MyQueue() {
+	public myQueue() {
 		super(new Comparador());
 	}
 	
@@ -18,19 +18,28 @@ public class MyQueue extends PriorityQueue<Nodo>{
 	    public int compare(Nodo n1, Nodo n2) {
 	        double f1 = n1.getValorF();
 	        double f2 = n2.getValorF();
-	        if (f1 < f2) {
-	            return -1;
-	        } else if (f1 > f2) {
-	            return 1;
-	        } else {
-	    	        int priority1 = getPriority(n1.getAccion());
-	    	        int priority2 = getPriority(n2.getAccion());
-	    	        
-//	    	        System.out.println(n1.getAccion() + " " + n2.getAccion() + " " + Integer.compare(priority1, priority2));
-	    	        
-	    			return Integer.compare(priority1, priority2);
-	    	    }
+	        if (f1 < f2)
+	        	return -1;
+	        else if (f1 > f2)
+	        	return 1;
+	        else
+	        {
+	        	double g1 = n1.getValorG();
+	        	double g2 = n2.getValorG();
+	  	        
+	        	if (g1 < g2)
+		            return -1;
+		        else if (g1 > g2)
+		            return 1;
+		        else
+		        {  
+		        	int priority1 = getPriority(n1.getAccion());
+		        	int priority2 = getPriority(n2.getAccion());	    	        
+		        	return Integer.compare(priority1, priority2);
+		        }
+	        }
 		}
+		
 	    private int getPriority(ACTIONS action) {
 	        switch (action) {
 	            case ACTION_UP:
@@ -51,6 +60,7 @@ public class MyQueue extends PriorityQueue<Nodo>{
 	    if (!(o instanceof Nodo)) {
 	        return false;
 	    }
+	    
 	    Nodo nodo = (Nodo) o;
         // Aquí se escribe el código para sobrescribir el método
     	boolean esta = false;
@@ -59,6 +69,8 @@ public class MyQueue extends PriorityQueue<Nodo>{
     			esta = true;
     		}
     	}
+    	
+    	
     	return esta;
     }
 }

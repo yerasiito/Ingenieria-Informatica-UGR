@@ -2,7 +2,6 @@ package tracks.singlePlayer;
 
 import java.util.Random;
 
-import core.logging.Logger;
 import tools.Utils;
 import tracks.ArcadeMachine;
 
@@ -26,7 +25,9 @@ public class Test {
 		String sampleOLETSController = "tracks.singlePlayer.advanced.olets.Agent";
         String camelloAgente = "src_LOPEZ_RAMIREZ_YERAY.myAgent_Camel";
         String agenteDijkstra = "src_LOPEZ_RAMIREZ_YERAY.AgentDijkstra";
-        String agenteAStar = "src_LOPEZ_RAMIREZ_YERAY.AgentAStar";
+        String agenteAStar = "src_LOPEZ_RAMIREZ_YERAY.AgentAstar";
+        String agenteRTAstar = "src_LOPEZ_RAMIREZ_YERAY.AgentRTAstar";
+        String agenteCompeticion = "src_LOPEZ_RAMIREZ_YERAY.AgentCompeticion";
 
 		//Load available games
 		String spGamesCollection =  "examples/all_games_sp.csv";
@@ -38,7 +39,7 @@ public class Test {
 
 		// Game and level to play
 		int gameIdx = 58; //122 extendidos
-		int levelIdx = 7; // level names from 0 to 4 (game_lvlN.txt).
+		int levelIdx = 8; // level names from 0 to 4 (game_lvlN.txt).
 		String gameName = games[gameIdx][1];
 		String game = games[gameIdx][0];
 		String level1 = game.replace(gameName, gameName + "_lvl" + levelIdx);

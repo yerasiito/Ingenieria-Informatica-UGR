@@ -13,7 +13,7 @@ import tools.Vector2d;
 public class AgentDijkstra extends AbstractPlayer{
 	//Atributos de la clase
 	private ArrayList<ArrayList<Boolean>> listaCerrados;
-    private MyQueue listaAbiertos = new MyQueue(); //Abiertos
+    private myQueue listaAbiertos = new myQueue(); //Abiertos
     protected ArrayList<Nodo> HijosActual = new ArrayList<>(); //Hijos en la ejecucion
 	ArrayList<Observation>[] listadoInnamovible; //muros y trampas
 	ArrayList<ACTIONS> camino = new ArrayList<ACTIONS>();	
@@ -94,7 +94,7 @@ public class AgentDijkstra extends AbstractPlayer{
 				break;
 			}
 			
-			ArrayList<Nodo> hijos = actual.expandirHijos();
+			ArrayList<Nodo> hijos = actual.expandirHijos(mundo);
 			for(Nodo n : hijos) {
 				if(!listaCerrados.get((int)n.getPosicion().y).get((int)n.getPosicion().x) && !listaAbiertos.contains(n)) {
 					listaAbiertos.add(n);

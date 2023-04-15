@@ -1,8 +1,8 @@
 package src_LOPEZ_RAMIREZ_YERAY;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
+import core.game.StateObservation;
 import ontology.Types.ACTIONS;
 import tools.Vector2d;
 
@@ -86,16 +86,23 @@ public class Nodo implements Comparable<Nodo>{
 		
 		return posicionJugador;
 	}
-	public ArrayList<Nodo> expandirHijos() {		
+	public ArrayList<Nodo> expandirHijos(StateObservation stateObs) {		
 		//Lo primero es inicializar el Array de hijos
 		//Genera los hijos en orden
-		ArrayList<ACTIONS> accionesDisponibles = new ArrayList<> (Arrays.asList(ACTIONS.ACTION_UP, ACTIONS.ACTION_DOWN, ACTIONS.ACTION_LEFT, ACTIONS.ACTION_RIGHT));
+		ArrayList<ACTIONS> accionesDisponibles = stateObs.getAvailableActions();
 
 		for(ACTIONS ac : accionesDisponibles) {
 			hijos.add(new Nodo(getPosicionJugador(ac), ac, this, getMeta(),heuristica));		
 		}
 		
 		return hijos;
+	}
+	
+	public boolean mejorCaminoA(Nodo sucesor) {
+		if(sucesor.getValorG() < this.getValorG())
+			return true;
+		
+		return false;
 	}
 	
 	//Metaheuristica - Distancia Manhattan
