@@ -60,6 +60,8 @@ public class AgentLRTAstar extends AbstractPlayer{
 		}
 		
 		//Actualiza la matriz de muros y trampas, la mete en cerrados
+		listadoInnamovible = stateObs.getImmovablePositions(stateObs.getAvatarPosition());
+		listadoInnamovible[0] = new ArrayList<Observation>(); //Para cambiar el tamaño
 		actualizarInnmovable(stateObs);
 		
 		//Set matriz heuristica
@@ -91,8 +93,8 @@ public class AgentLRTAstar extends AbstractPlayer{
     
     private void actualizarInnmovable(StateObservation stateObs) {
     	ArrayList<Observation>[] nuevoInmovable = stateObs.getImmovablePositions(stateObs.getAvatarPosition());
-		
-		if(!nuevoInmovable.equals(listadoInnamovible)) {
+		if(nuevoInmovable[0].size() != listadoInnamovible[0].size() || nuevoInmovable[1].size() != listadoInnamovible[1].size()) {
+			listadoInnamovible = nuevoInmovable;
 			for(ArrayList<Observation> obsList : nuevoInmovable) {
 				for(Observation obs : obsList) {
 					int posx = (int)(obs.position.x/fescala.x);
@@ -101,7 +103,6 @@ public class AgentLRTAstar extends AbstractPlayer{
 				}
 			}
 		}
-		listadoInnamovible = nuevoInmovable;
     }
     
 	int nodosExpandidos = 1;

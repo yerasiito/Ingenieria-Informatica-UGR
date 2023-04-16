@@ -61,7 +61,7 @@ public class AgentRTAstar extends AbstractPlayer{
 		
 		listadoInnamovible = stateObs.getImmovablePositions(stateObs.getAvatarPosition());
 		listadoInnamovible[0] = new ArrayList<Observation>(); //Para cambiar el tamaño
-		actualizarInnmovable(stateObs) ;
+		actualizarInnmovable(stateObs);
 		
 		for(int i = 0; i < matrizHeuristica.size(); i++) {
 			for(int j = 0; j < matrizHeuristica.get(0).size(); j++) {
@@ -72,8 +72,7 @@ public class AgentRTAstar extends AbstractPlayer{
 	
     private void actualizarInnmovable(StateObservation stateObs) {
     	ArrayList<Observation>[] nuevoInmovable = stateObs.getImmovablePositions(stateObs.getAvatarPosition());
-    	
-		if(nuevoInmovable[0].size() != listadoInnamovible[0].size()) {
+		if(nuevoInmovable[0].size() != listadoInnamovible[0].size() || nuevoInmovable[1].size() != listadoInnamovible[1].size()) {
 			listadoInnamovible = nuevoInmovable;
 			for(ArrayList<Observation> obsList : nuevoInmovable) {
 				for(Observation obs : obsList) {
