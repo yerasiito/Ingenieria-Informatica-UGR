@@ -12,13 +12,14 @@ import tools.Vector2d;
 
 public class AgentRTAstar extends AbstractPlayer{
 	//Atributos de la clase
-	private ArrayList<ArrayList<Boolean>> listaCerrados;
-    protected ArrayList<Nodo> HijosActual = new ArrayList<>(); //Hijos en la ejecucion
+	private boolean obstaculos[][];
+    protected ArrayList<Nodo> HijosActual; //Hijos en la ejecucion
 	ArrayList<Observation>[] listadoInnamovible; //muros y trampas
-	private ArrayList<ArrayList<Double>> matrizHeuristica;
+	private double matrizHeuristica[][];
 	
     Vector2d portalFin;
     Vector2d fescala;
+    private Vector2d posicionJugador;
   
 	/**
 	 * initialize all variables for the agent
@@ -27,131 +28,130 @@ public class AgentRTAstar extends AbstractPlayer{
 	 * @throws IOException 
 	 */
 	public AgentRTAstar(StateObservation stateObs, ElapsedCpuTimer elapsedTimer) {
+		// Calcular la escala de la cuadrícula
 		fescala = new Vector2d(stateObs.getWorldDimension().width / stateObs.getObservationGrid().length , 
         		stateObs.getWorldDimension().height / stateObs.getObservationGrid()[0].length);      
       
-        //Se crea una lista de observaciones de portales, ordenada por cercania al avatar
+		// Calcular las dimensiones del mundo
+		int columnas = (int)(stateObs.getWorldDimension().width/fescala.x);
+		int filas = (int)(int)(stateObs.getWorldDimension().height/fescala.y);
+
+        
+	    // Encontrar el portal más cercano
         ArrayList<Observation>[] posiciones = stateObs.getPortalsPositions(stateObs.getAvatarPosition());
-        //Seleccionamos el portal mas proximo
         portalFin = posiciones[0].get(0).position;
         portalFin.x = Math.floor(portalFin.x / fescala.x);
         portalFin.y = Math.floor(portalFin.y / fescala.y);
 		
-		System.out.println("Jugador en: " + stateObs.getAvatarPosition().x/fescala.x + " " + stateObs.getAvatarPosition().y/fescala.y);
-		System.out.println("Meta en: " + portalFin);
-		
-		int columnas = (int)(stateObs.getWorldDimension().width/fescala.x);
-		int filas = (int)(int)(stateObs.getWorldDimension().height/fescala.y);
-		
-		System.out.println("Dimensiones: " + filas + "x" + columnas );
-		
-		listaCerrados = new ArrayList<ArrayList<Boolean>>(filas);
-		matrizHeuristica = new ArrayList<ArrayList<Double>>(filas);
-		
-		for(int i = 0; i < filas; i++) {
-		    ArrayList<Boolean> fila = new ArrayList<Boolean>(columnas);
-		    ArrayList<Double> filaD = new ArrayList<Double>(columnas);
-		    for(int j = 0; j < columnas; j++) {
-		        fila.add(false); //Inicializa a false
-		        filaD.add(0.0); //Inicializa con las distancias
-		    }
-		    listaCerrados.add(fila);
-		    matrizHeuristica.add(filaD);
-		}
-		
+        // Inicializar matriz de obstaculos
 		listadoInnamovible = stateObs.getImmovablePositions(stateObs.getAvatarPosition());
 		listadoInnamovible[0] = new ArrayList<Observation>(); //Para cambiar el tamaño
+		obstaculos = new boolean[filas][columnas];
 		actualizarInnmovable(stateObs);
 		
-		for(int i = 0; i < matrizHeuristica.size(); i++) {
-			for(int j = 0; j < matrizHeuristica.get(0).size(); j++) {
-				matrizHeuristica.get(i).set(j, HeuristicaManhattan(j,i));
+		//Inicializar la matriz heuristica
+		matrizHeuristica = new double[filas][columnas];
+		for(int i = 0; i < matrizHeuristica.length; i++) {
+			for(int j = 0; j < matrizHeuristica[0].length; j++) {
+				matrizHeuristica[i][j] = HeuristicaManhattan(j,i);
 			}
-		}		
+		}
+		
+		// Obtener la posicion del jugador
+		posicionJugador = new Vector2d(stateObs.getAvatarPosition().x/fescala.x, stateObs.getAvatarPosition().y/fescala.y);
 	}
 	
+	// Actualiza la matriz de obstaculos en cada iteracion
     private void actualizarInnmovable(StateObservation stateObs) {
-    	ArrayList<Observation>[] nuevoInmovable = stateObs.getImmovablePositions(stateObs.getAvatarPosition());
-		if(nuevoInmovable[0].size() != listadoInnamovible[0].size() || nuevoInmovable[1].size() != listadoInnamovible[1].size()) {
-			listadoInnamovible = nuevoInmovable;
-			for(ArrayList<Observation> obsList : nuevoInmovable) {
-				for(Observation obs : obsList) {
-					int posx = (int)(obs.position.x/fescala.x);
-					int posy = (int)(obs.position.y/fescala.y);
-					listaCerrados.get(posy).set(posx,true);
-				}
-			}
+    	ArrayList<Observation>[] nuevosObstaculos = stateObs.getImmovablePositions(stateObs.getAvatarPosition());
+		
+    	// Si ha habido cambios en los obstaculos, actualiza
+    	if(nuevosObstaculos[0].size() != listadoInnamovible[0].size() || nuevosObstaculos[1].size() != listadoInnamovible[1].size()) {
+			listadoInnamovible = nuevosObstaculos;
+	        
+			// Actualizar muros
+			nuevosObstaculos[0].stream().forEach(obs -> {
+	            int posx = (int) (obs.position.x / fescala.x);
+	            int posy = (int) (obs.position.y / fescala.y);
+	            obstaculos[posy][posx] = true;
+	        });
+
+	        // Actualizar trampas
+	        nuevosObstaculos[1].stream().forEach(obs -> {
+	            int posx = (int) (obs.position.x / fescala.x);
+	            int posy = (int) (obs.position.y / fescala.y);
+	            obstaculos[posy][posx] = true;
+	        });
 		}
     }
     
 	//Metaheuristica - Distancia Manhattan
     private double HeuristicaManhattan(int x, int y) {      
         double xDiff = 0, yDiff = 0;
+
+        // Se calcula la diferencia en la coordenada X y Y entre la posición actual y la meta
+    	xDiff = Math.abs(x - portalFin.x);
+        yDiff = Math.abs(y - portalFin.y);
         
-        Vector2d pos = new Vector2d(x, y);
-        if(listaCerrados.get(y).get(x)) {
-        	pos.x = Double.NaN;
-        	pos.y = Double.NaN;
-        }
-        
-    	xDiff = Math.abs(pos.x - portalFin.x);
-        yDiff = Math.abs(pos.y - portalFin.y);
-        
-        double manhattan = xDiff + yDiff;
-        
-        return manhattan;
+        // Se devuelve la suma de las diferencias en X y Y
+        return xDiff + yDiff;
     }
 	
 	int nodosExpandidos = 1;
 	private ACTIONS AlgoritmoRTA(StateObservation mundo){
-		ACTIONS accion;
-		Vector2d posJ = new Vector2d(mundo.getAvatarPosition().x/fescala.x, mundo.getAvatarPosition().y/fescala.y);
-		Nodo nodoLocal = new Nodo(posJ, ACTIONS.ACTION_NIL, null, portalFin, true);		
-		double valorH = matrizHeuristica.get((int)posJ.y).get((int)posJ.x);
+	    // Actualizar la posición del jugador
+		posicionJugador = new Vector2d(mundo.getAvatarPosition().x/fescala.x, mundo.getAvatarPosition().y/fescala.y);
+	    
+		// Crear un nuevo nodo con la posicion actual del jugador
+		Nodo nodoLocal = new Nodo(posicionJugador, ACTIONS.ACTION_NIL, null, portalFin, true);		
+		
+		// Actualizamos el valor del nodo con el valor de la tabla heuristica
+		double valorH = matrizHeuristica[(int)posicionJugador.y][(int)posicionJugador.x];
 		nodoLocal.setValorH(valorH);
 		
+		// Expandir los hijos
 		ArrayList<Nodo> hijos = nodoLocal.expandirHijos(mundo);
-		ColaNodo expandidos = new ColaNodo();
+		
+	    // Crear la cola de prioridad
+		PriorityQueueNodo expandidos = new PriorityQueueNodo();
 		for(Nodo n : hijos) { //Obtenga las F
-			//Si es el nodo final, lo devuelve
-			if(n.getEstadoFinal()) {
+			//Si es el nodo final, devolver la accion
+			if(n.isEstadoFinal()) {
 				nodosExpandidos++;
 				System.out.println("Nodos expandidos: " + nodosExpandidos);
 				return n.getAccion();
 			}
-			//Si no es un obstaculo lo añade a expandidos
-			if(!listaCerrados.get((int)n.getPosicion().y).get((int)n.getPosicion().x)) {
-				valorH = matrizHeuristica.get((int)n.getPosicion().y).get((int)n.getPosicion().x);
+	        // Si no es un obstáculo, añadirlo a expandidos
+			if(!obstaculos[(int)n.getPosicion().y][(int)n.getPosicion().x]) {
+				valorH = matrizHeuristica[(int)n.getPosicion().y][(int)n.getPosicion().x];
 				n.setValorH(valorH);
 				expandidos.add(n);
 			}
 		}
-		//Obtiene 2º minimo
-		Nodo minimo = null;
-		
+
 		//Primer minimo
-		minimo = expandidos.poll();
-		accion = minimo.getAccion();
-		
+		Nodo minimo = expandidos.poll();
+		ACTIONS accion = minimo.getAccion();
 		//Segundo minimo
 		if(expandidos.size() > 0) {
 			minimo = expandidos.poll();
 		}
-
-		matrizHeuristica.get((int)posJ.y).set((int)posJ.x, Math.max(nodoLocal.getValorH(), minimo.getValorF()));
+		
+		// Actualizar la matriz heuristica
+		matrizHeuristica[(int)posicionJugador.y][(int)posicionJugador.x] = Math.max(nodoLocal.getValorH(), minimo.getValorF());
+		
 		nodosExpandidos++;
 		return accion;
 	}
 	//FIN DEL ALGORITMO
 	
-	int it = 0;
 	@Override
 	public ACTIONS act(StateObservation stateObs, ElapsedCpuTimer elapsedTimer) {	
-		ACTIONS accion = ACTIONS.ACTION_NIL;
+		// Comprobar cambios en los obstaculos
 		actualizarInnmovable(stateObs);
-		accion = AlgoritmoRTA(stateObs);
 
-		return accion; 
+		// Calcular accion a ejecutar
+		return AlgoritmoRTA(stateObs); 
 	}	
 	
 }

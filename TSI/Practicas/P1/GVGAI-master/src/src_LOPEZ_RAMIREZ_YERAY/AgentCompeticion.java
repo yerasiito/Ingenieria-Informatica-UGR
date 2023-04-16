@@ -12,17 +12,18 @@ import tools.Vector2d;
 
 public class AgentCompeticion extends AbstractPlayer{
 	//Atributos de la clase
-	private ArrayList<ArrayList<Boolean>> listaCerrados;
-    private ColaNodo listaAbiertos = new ColaNodo(); //Abiertos
+	private boolean listaCerrados[][]; // Nodos visitados, incluye muros y trampas. false no visitado, true visitado
+    private PriorityQueueNodo listaAbiertos = new PriorityQueueNodo(); // Nodos sin visitar
     protected ArrayList<Nodo> HijosActual = new ArrayList<>(); //Hijos en la ejecucion
-	ArrayList<Observation>[] listadoInnamovible; //muros y trampas
-	ArrayList<ACTIONS> camino = new ArrayList<ACTIONS>();	
-	private int nodosExpandidos = 0;
-    private ACTIONS accion;
+	private ArrayList<Observation>[] listadoInnamovible; //muros y trampas
+	private ArrayList<ACTIONS> camino = new ArrayList<ACTIONS>(); // El camino generado hacia la meta
     
-    Vector2d portalFin;
-    Vector2d fescala;
-  
+    private Vector2d portalFin;
+    private Vector2d fescala;
+    private Vector2d posicionJugador;
+    
+    private int filas, columnas;
+
 	/**
 	 * initialize all variables for the agent
 	 * @param stateObs Observation of the current state.
@@ -30,122 +31,128 @@ public class AgentCompeticion extends AbstractPlayer{
 	 * @throws IOException 
 	 */
 	public AgentCompeticion(StateObservation stateObs, ElapsedCpuTimer elapsedTimer) {
+		// Calcular la escala de la cuadrícula
 		fescala = new Vector2d(stateObs.getWorldDimension().width / stateObs.getObservationGrid().length , 
         		stateObs.getWorldDimension().height / stateObs.getObservationGrid()[0].length);      
       
-        //Se crea una lista de observaciones de portales, ordenada por cercania al avatar
+		// Calcular las dimensiones del mundo
+		filas = (int)(int)(stateObs.getWorldDimension().height/fescala.y);
+		columnas = (int)(stateObs.getWorldDimension().width/fescala.x);
+		
+		//Se crea una lista de observaciones de portales, ordenada por cercania al avatar
         ArrayList<Observation>[] posiciones = stateObs.getPortalsPositions(stateObs.getAvatarPosition());
-        //Seleccionamos el portal mas proximo
+       
+	    // Encontrar el portal
         portalFin = posiciones[0].get(0).position;
         portalFin.x = Math.floor(portalFin.x / fescala.x);
         portalFin.y = Math.floor(portalFin.y / fescala.y);
 		
-		System.out.println("Jugador en: " + stateObs.getAvatarPosition().x/fescala.x + " " + stateObs.getAvatarPosition().y/fescala.y);
-		System.out.println("Meta en: " + portalFin);
-		
-		inicializarCerrados(stateObs);
-		
 		//Actualiza mapa de muros
 		listadoInnamovible = stateObs.getImmovablePositions(stateObs.getAvatarPosition());
 		listadoInnamovible[0] = new ArrayList<Observation>(); //Para cambiar el tamaño
-		actualizarInnmovable(stateObs) ;
+		actualizarInnmovable(stateObs);
 	}
 
 	private ArrayList<ACTIONS> Algoritmo(StateObservation mundo){
-		nodosExpandidos = 0;
-		Vector2d posJ = new Vector2d(mundo.getAvatarPosition().x/fescala.x, mundo.getAvatarPosition().y/fescala.y);
-		Nodo nodoInicial = new Nodo(posJ, ACTIONS.ACTION_NIL, null, portalFin, true);
+		boolean estaAbiertos = false, estaCerrados = false;
+		// Obtener posicion actual del jugador
+		posicionJugador = new Vector2d(mundo.getAvatarPosition().x/fescala.x, mundo.getAvatarPosition().y/fescala.y);
+		
+		Nodo actual;
+		Nodo nodoInicial = new Nodo(posicionJugador, ACTIONS.ACTION_NIL, null, portalFin, true);
 		
 		listaAbiertos.add(nodoInicial);	
-		Nodo actual;
-		boolean estaAbiertos = false, estaCerrados = false;
+
 		while(!listaAbiertos.isEmpty()) { //Mientras no encuentre el objetivo	
+	        // Seleccionar el nodo con la menor distancia a la meta
 			actual = listaAbiertos.poll();
-			listaCerrados.get((int)actual.getPosicion().y).set((int)actual.getPosicion().x, true); //Lo mete en cerrados poniendolo a true
-			if(actual.getEstadoFinal()) { //Si es el estado final calcula el camino
-				nodosExpandidos++;
+			
+	        // Añadir la posición del nodo actual a la lista de nodos cerrados
+			listaCerrados[(int)actual.getPosicion().y][(int)actual.getPosicion().x] = true;
+			
+			if(actual.isEstadoFinal()) {
+	            // Si se ha alcanzado el estado final, construir el camino de acciones
 				camino.add(actual.getAccion());
 				while(actual.getPadre() != null) {
 					actual = actual.getPadre();
 					camino.add(actual.getAccion());
 				}
+				// Terminar la busqueda
 				break;
 			}
 			
+			// Expandir los nodos hijos del nodo actual
 			ArrayList<Nodo> hijos = actual.expandirHijos(mundo);
 			for(Nodo n : hijos) {
-				estaCerrados = listaCerrados.get((int)n.getPosicion().y).get((int)n.getPosicion().x);
+				estaCerrados = listaCerrados[(int)n.getPosicion().y][(int)n.getPosicion().x];
 				estaAbiertos = listaAbiertos.contains(n);
 				
+				// Si el nodo hijo está en cerrados y tiene mejor coste que el actual
 				if(estaCerrados && actual.mejorCaminoA(n)) {
-					listaCerrados.get((int)n.getPosicion().y).set((int)n.getPosicion().x, false);
+					// Lo sacamos de cerrados
+					listaCerrados[(int)n.getPosicion().y][(int)n.getPosicion().x] = false;
+					
+					//Actualiza el nodo con el sucesor quitando el actual y metiendo el mejor
 					listaAbiertos.remove(n);
 					listaAbiertos.add(n);
 				}
-				else if(!estaCerrados && !estaAbiertos) {
+				else if(!estaCerrados && !estaAbiertos) { // Si el nodo hijo no está en cerrados ni abiertos lo añadimos a abiertos
 					listaAbiertos.add(n);
 				}
-				else if(estaAbiertos && actual.mejorCaminoA(n)) {
+				else if(estaAbiertos && actual.mejorCaminoA(n)) { // Si el nodo hijo esta en abiertos
 					//Actualiza el nodo con el sucesor quitando el actual y metiendo el mejor
 					listaAbiertos.remove(n);
 					listaAbiertos.add(n);
 				}
 			}
-			nodosExpandidos++;
+	        // Incrementar el número de nodos expandidos
 		}
-//		System.out.println("Nodos expandidos: " + nodosExpandidos);
 		return camino;
 	}
 	//FIN DEL ALGORITMO
 	
-	private void inicializarCerrados(StateObservation stateObs) {
-		int columnas = (int)(stateObs.getWorldDimension().width/fescala.x);
-		int filas = (int)(int)(stateObs.getWorldDimension().height/fescala.y);
-		listaCerrados = new ArrayList<ArrayList<Boolean>>(filas);
-		
-		for(int i = 0; i < filas; i++) {
-		    ArrayList<Boolean> fila = new ArrayList<Boolean>(columnas);
-		    for(int j = 0; j < columnas; j++) {
-		        fila.add(false);
-		    }
-		    listaCerrados.add(fila);
-		}
-	}
-	
-	
     private boolean actualizarInnmovable(StateObservation stateObs) {
-    	ArrayList<Observation>[] nuevoInmovable = stateObs.getImmovablePositions(stateObs.getAvatarPosition());
-    	boolean cambios = nuevoInmovable[0].size() != listadoInnamovible[0].size() || nuevoInmovable[1].size() != listadoInnamovible[1].size();
+    	ArrayList<Observation>[] nuevosObstaculos = stateObs.getImmovablePositions(stateObs.getAvatarPosition());
+    	boolean cambios = nuevosObstaculos[0].size() != listadoInnamovible[0].size() || nuevosObstaculos[1].size() != listadoInnamovible[1].size();
+    	
+    	// Si ha habido cambios en los obstaculos, actualiza
     	if(cambios) {
-			inicializarCerrados(stateObs);
-			listadoInnamovible = nuevoInmovable;
-			for(ArrayList<Observation> obsList : nuevoInmovable) {
-				for(Observation obs : obsList) {
-					int posx = (int)(obs.position.x/fescala.x);
-					int posy = (int)(obs.position.y/fescala.y);
-					listaCerrados.get(posy).set(posx,true);
-				}
-			}
+    		// Inicalizar cerrados
+    		listaCerrados = new boolean[filas][columnas];
+    		
+			listadoInnamovible = nuevosObstaculos;
+	        
+			// Actualizar muros
+			nuevosObstaculos[0].stream().forEach(obs -> {
+	            int posx = (int) (obs.position.x / fescala.x);
+	            int posy = (int) (obs.position.y / fescala.y);
+	            listaCerrados[posy][posx] = true;
+	        });
+
+	        // Actualizar trampas
+	        nuevosObstaculos[1].stream().forEach(obs -> {
+	            int posx = (int) (obs.position.x / fescala.x);
+	            int posy = (int) (obs.position.y / fescala.y);
+	            listaCerrados[posy][posx] = true;
+	        });
 			listaAbiertos.clear();
 			camino.clear();
 		}
 		
+    	// Devuelve si ha habido cambios o no
 		return cambios;
     }
     
-    int it = 0;
 	@Override
 	public ACTIONS act(StateObservation stateObs, ElapsedCpuTimer elapsedTimer) {	
-		
-		if(it == 0 || actualizarInnmovable(stateObs)) {
+		ACTIONS accion = null;
+		// Comprobar si camino vacio o cambios en los obstaculos
+		if(camino.isEmpty() || actualizarInnmovable(stateObs))
 			camino = Algoritmo(stateObs);
-			it++;
-		}
 	    
-		if(!camino.isEmpty()) {
-			accion = camino.get(camino.size()-1);
-			camino.remove(camino.size()-1);
-		}
+	    // Obtener la accion a realizar del camino
+		if(!camino.isEmpty())
+			accion = camino.remove(camino.size()-1);
 			
 		return accion; 
 	}	

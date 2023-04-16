@@ -1,8 +1,6 @@
 package src_LOPEZ_RAMIREZ_YERAY;
 
-import java.io.IOException;
 import java.util.ArrayList;
-
 import core.game.Observation;
 import core.game.StateObservation;
 import core.player.AbstractPlayer;
@@ -10,122 +8,114 @@ import ontology.Types.ACTIONS;
 import tools.ElapsedCpuTimer;
 import tools.Vector2d;
 
+/**
+ * initialize all variables for the agent
+ * @param stateObs Observation of the current state.
+ * @param elapsedTimer Timer when the action returned is due.
+ * @throws IOException 
+ */
 public class AgentDijkstra extends AbstractPlayer{
 	//Atributos de la clase
-	private ArrayList<ArrayList<Boolean>> listaCerrados;
-    private ColaNodo listaAbiertos = new ColaNodo(); //Abiertos
+	private boolean listaCerrados[][]; //Nodos visitados, incluye muros y trampas. false no visitado, true visitado
+    private PriorityQueueNodo listaAbiertos = new PriorityQueueNodo(); //Nodos sin visitar
     protected ArrayList<Nodo> HijosActual = new ArrayList<>(); //Hijos en la ejecucion
-	ArrayList<Observation>[] listadoInnamovible; //muros y trampas
-	ArrayList<ACTIONS> camino = new ArrayList<ACTIONS>();	
+	private ArrayList<ACTIONS> camino = new ArrayList<ACTIONS>();	//El camino generado hacia la meta
 	
     private ACTIONS accion;
     
-    Vector2d portalFin;
-    Vector2d fescala;
+    private Vector2d portalFin;
+    private Vector2d fescala;
+    private Vector2d posicionJugador;
   
-	/**
-	 * initialize all variables for the agent
-	 * @param stateObs Observation of the current state.
-     * @param elapsedTimer Timer when the action returned is due.
-	 * @throws IOException 
-	 */
 	public AgentDijkstra(StateObservation stateObs, ElapsedCpuTimer elapsedTimer) {
+		// Calcular la escala de la cuadrícula
 		fescala = new Vector2d(stateObs.getWorldDimension().width / stateObs.getObservationGrid().length , 
         		stateObs.getWorldDimension().height / stateObs.getObservationGrid()[0].length);      
+		
+		// Calcular las dimensiones del mundo
+		int columnas = (int)(stateObs.getWorldDimension().width/fescala.x);
+		int filas = (int)(int)(stateObs.getWorldDimension().height/fescala.y);
       
-        //Se crea una lista de observaciones de portales, ordenada por cercania al avatar
+	    // Encontrar el portal
         ArrayList<Observation>[] posiciones = stateObs.getPortalsPositions(stateObs.getAvatarPosition());
-        //Seleccionamos el portal mas proximo
         portalFin = posiciones[0].get(0).position;
         portalFin.x = Math.floor(portalFin.x / fescala.x);
         portalFin.y = Math.floor(portalFin.y / fescala.y);
 		
-		System.out.println("Jugador en: " + stateObs.getAvatarPosition().x/fescala.x + " " + stateObs.getAvatarPosition().y/fescala.y);
-		System.out.println("Meta en: " + portalFin);
-		
-		ArrayList<Observation>[] listadoInnamovible;
-		
-		int columnas = (int)(stateObs.getWorldDimension().width/fescala.x);
-		int filas = (int)(int)(stateObs.getWorldDimension().height/fescala.y);
-		
-		System.out.println("Dimensiones: " + filas + "x" + columnas );
-		
-		listaCerrados = new ArrayList<ArrayList<Boolean>>(filas);
-		
-		for(int i = 0; i < filas; i++) {
-		    ArrayList<Boolean> fila = new ArrayList<Boolean>(columnas);
-		    for(int j = 0; j < columnas; j++) {
-		        fila.add(false);
-		    }
-		    listaCerrados.add(fila);
-		}
-		
-		listadoInnamovible = stateObs.getImmovablePositions(stateObs.getAvatarPosition());
-
+		// Encontrar las posiciones de los obstáculos y agregarlas a la matriz de cerrados
+		ArrayList<Observation>[] listadoInnamovible = stateObs.getImmovablePositions(stateObs.getAvatarPosition());
+		listaCerrados = new boolean[filas][columnas];
 		for(ArrayList<Observation> obsList : listadoInnamovible) {
 			for(Observation obs : obsList) {
-				int posx = (int)(obs.position.x/fescala.x);
-				int posy = (int)(obs.position.y/fescala.y);
-				listaCerrados.get(posy).set(posx,true);
+				int posy = (int)(obs.position.y/fescala.y); //La pos y en la matriz es la fila
+				int posx = (int)(obs.position.x/fescala.x); //La pos x en la matriz es la columna
+				listaCerrados[posy][posx] = true;
 			}
 		}
 	
-		accion = ACTIONS.ACTION_NIL;
+		// Obtener la posicion del jugador
+		posicionJugador = new Vector2d(stateObs.getAvatarPosition().x/fescala.x, stateObs.getAvatarPosition().y/fescala.y);
+		
+		// Para que no avance si no encuentra camino o se queda sin tiempo
+		accion = null;
 	}
 	
 	int nodosExpandidos = 0;
 	private ArrayList<ACTIONS> AlgoritmoDijkstra(StateObservation mundo){
-		Vector2d posJ = new Vector2d(mundo.getAvatarPosition().x/fescala.x, mundo.getAvatarPosition().y/fescala.y);
-		Nodo nodoInicial = new Nodo(posJ, ACTIONS.ACTION_NIL, null, portalFin, false);
+	    // Crear el nodo inicial y añadirlo a la lista abierta
+		Nodo nodoInicial = new Nodo(posicionJugador, null, null, portalFin, false);
 		listaAbiertos.add(nodoInicial);	
-		Nodo actual = null;
+		Nodo actual;
 
-		while(!listaAbiertos.isEmpty()) { //Mientras no encuentre el objetivo	
+		while(!listaAbiertos.isEmpty()) { // Mientras haya nodos en abiertos
+	        // Seleccionar el nodo con la menor distancia a la meta
 			actual = listaAbiertos.poll();
-			listaCerrados.get((int)actual.getPosicion().y).set((int)actual.getPosicion().x, true);
 			
-			if(actual.getEstadoFinal()) {
-				nodosExpandidos++;
+	        // Añadir la posición del nodo actual a la lista de nodos cerrados
+			listaCerrados[(int)actual.getPosicion().y][(int)actual.getPosicion().x] = true;
+			
+			if(actual.isEstadoFinal()) {
+	            // Si se ha alcanzado el estado final, construir el camino de acciones
 				camino.add(actual.getAccion());
 				while(actual.getPadre() != null) {
 					actual = actual.getPadre();
 					camino.add(actual.getAccion());
 				}
+				nodosExpandidos++;
+				// Terminar la busqueda
 				break;
 			}
-			
+
+			// Expandir los nodos hijos del nodo actual
 			ArrayList<Nodo> hijos = actual.expandirHijos(mundo);
 			for(Nodo n : hijos) {
-				if(!listaCerrados.get((int)n.getPosicion().y).get((int)n.getPosicion().x) && !listaAbiertos.contains(n)) {
+	            // Si el nodo hijo no está en abiertos ni en cerrados, añadirlo a abiertos
+				if(!listaCerrados[(int)n.getPosicion().y][(int)n.getPosicion().x] && !listaAbiertos.contains(n)) {
 					listaAbiertos.add(n);
 				}
 			}
+	        // Incrementar el número de nodos expandidos
 			nodosExpandidos++;
 		}
 		System.out.println("Nodos expandidos: " + nodosExpandidos);
+		
 		return camino;
 	}
 	//FIN DEL ALGORITMO
 	
-	int it = 0;
 	@Override
 	public ACTIONS act(StateObservation stateObs, ElapsedCpuTimer elapsedTimer) {	
-		if(it == 0) {
-			listaAbiertos.clear();
-			camino = AlgoritmoDijkstra(stateObs);
-			it++;
-		}
+	    // Calcular el camino con Dijkstra
+		if (camino.isEmpty()) {
+	        listaAbiertos.clear();
+	        camino = AlgoritmoDijkstra(stateObs);
+	    }
 	    
-		accion = ACTIONS.ACTION_NIL;
-		if(!camino.isEmpty()) {
-			accion = camino.get(camino.size()-1);
-			camino.remove(camino.size()-1);
-		}
+	    // Obtener la accion a realizar del camino
+	    if(!camino.isEmpty())
+			accion = camino.remove(camino.size()-1);
 			
-		//Averiguar camino
-		//Obtener el ultimo de cerrados y borrarlo
 		return accion;
         
 	}	
-	
 }
