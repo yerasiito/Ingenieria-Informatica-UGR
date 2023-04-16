@@ -40,8 +40,6 @@ public class AgentRTAstar extends AbstractPlayer{
 		System.out.println("Jugador en: " + stateObs.getAvatarPosition().x/fescala.x + " " + stateObs.getAvatarPosition().y/fescala.y);
 		System.out.println("Meta en: " + portalFin);
 		
-		ArrayList<Observation>[] listadoInnamovible;
-		
 		int columnas = (int)(stateObs.getWorldDimension().width/fescala.x);
 		int filas = (int)(int)(stateObs.getWorldDimension().height/fescala.y);
 		
@@ -62,14 +60,8 @@ public class AgentRTAstar extends AbstractPlayer{
 		}
 		
 		listadoInnamovible = stateObs.getImmovablePositions(stateObs.getAvatarPosition());
-
-		for(ArrayList<Observation> obsList : listadoInnamovible) {
-			for(Observation obs : obsList) {
-				int posx = (int)(obs.position.x/fescala.x);
-				int posy = (int)(obs.position.y/fescala.y);
-				listaCerrados.get(posy).set(posx,true);
-			}
-		}
+		listadoInnamovible[0] = new ArrayList<Observation>(); //Para cambiar el tamaño
+		actualizarInnmovable(stateObs) ;
 		
 		for(int i = 0; i < matrizHeuristica.size(); i++) {
 			for(int j = 0; j < matrizHeuristica.get(0).size(); j++) {
@@ -78,6 +70,21 @@ public class AgentRTAstar extends AbstractPlayer{
 		}		
 	}
 	
+    private void actualizarInnmovable(StateObservation stateObs) {
+    	ArrayList<Observation>[] nuevoInmovable = stateObs.getImmovablePositions(stateObs.getAvatarPosition());
+    	
+		if(nuevoInmovable[0].size() != listadoInnamovible[0].size()) {
+			listadoInnamovible = nuevoInmovable;
+			for(ArrayList<Observation> obsList : nuevoInmovable) {
+				for(Observation obs : obsList) {
+					int posx = (int)(obs.position.x/fescala.x);
+					int posy = (int)(obs.position.y/fescala.y);
+					listaCerrados.get(posy).set(posx,true);
+				}
+			}
+		}
+    }
+    
 	//Metaheuristica - Distancia Manhattan
     private double HeuristicaManhattan(int x, int y) {      
         double xDiff = 0, yDiff = 0;
@@ -142,6 +149,7 @@ public class AgentRTAstar extends AbstractPlayer{
 	@Override
 	public ACTIONS act(StateObservation stateObs, ElapsedCpuTimer elapsedTimer) {	
 		ACTIONS accion = ACTIONS.ACTION_NIL;
+		actualizarInnmovable(stateObs);
 		accion = AlgoritmoRTA(stateObs);
 
 		return accion; 

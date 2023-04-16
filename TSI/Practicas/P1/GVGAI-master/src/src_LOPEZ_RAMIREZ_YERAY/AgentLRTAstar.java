@@ -40,8 +40,6 @@ public class AgentLRTAstar extends AbstractPlayer{
 		System.out.println("Jugador en: " + stateObs.getAvatarPosition().x/fescala.x + " " + stateObs.getAvatarPosition().y/fescala.y);
 		System.out.println("Meta en: " + portalFin);
 		
-		ArrayList<Observation>[] listadoInnamovible;
-		
 		int columnas = (int)(stateObs.getWorldDimension().width/fescala.x);
 		int filas = (int)(int)(stateObs.getWorldDimension().height/fescala.y);
 		
@@ -61,16 +59,10 @@ public class AgentLRTAstar extends AbstractPlayer{
 		    matrizHeuristica.add(filaD);
 		}
 		
-		listadoInnamovible = stateObs.getImmovablePositions(stateObs.getAvatarPosition());
-
-		for(ArrayList<Observation> obsList : listadoInnamovible) {
-			for(Observation obs : obsList) {
-				int posx = (int)(obs.position.x/fescala.x);
-				int posy = (int)(obs.position.y/fescala.y);
-				listaCerrados.get(posy).set(posx,true);
-			}
-		}
+		//Actualiza la matriz de muros y trampas, la mete en cerrados
+		actualizarInnmovable(stateObs);
 		
+		//Set matriz heuristica
 		for(int i = 0; i < matrizHeuristica.size(); i++) {
 			for(int j = 0; j < matrizHeuristica.get(0).size(); j++) {
 				matrizHeuristica.get(i).set(j, HeuristicaManhattan(j,i));
@@ -96,6 +88,22 @@ public class AgentLRTAstar extends AbstractPlayer{
         return manhattan;
     }
 	
+    
+    private void actualizarInnmovable(StateObservation stateObs) {
+    	ArrayList<Observation>[] nuevoInmovable = stateObs.getImmovablePositions(stateObs.getAvatarPosition());
+		
+		if(!nuevoInmovable.equals(listadoInnamovible)) {
+			for(ArrayList<Observation> obsList : nuevoInmovable) {
+				for(Observation obs : obsList) {
+					int posx = (int)(obs.position.x/fescala.x);
+					int posy = (int)(obs.position.y/fescala.y);
+					listaCerrados.get(posy).set(posx,true);
+				}
+			}
+		}
+		listadoInnamovible = nuevoInmovable;
+    }
+    
 	int nodosExpandidos = 1;
 	private ACTIONS AlgoritmoRTA(StateObservation mundo){
 		ACTIONS accion;
@@ -137,6 +145,7 @@ public class AgentLRTAstar extends AbstractPlayer{
 	@Override
 	public ACTIONS act(StateObservation stateObs, ElapsedCpuTimer elapsedTimer) {	
 		ACTIONS accion = ACTIONS.ACTION_NIL;
+		actualizarInnmovable(stateObs);
 		accion = AlgoritmoRTA(stateObs);
 		return accion; 
 	}	

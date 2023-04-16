@@ -43,39 +43,16 @@ public class AgentCompeticion extends AbstractPlayer{
 		System.out.println("Jugador en: " + stateObs.getAvatarPosition().x/fescala.x + " " + stateObs.getAvatarPosition().y/fescala.y);
 		System.out.println("Meta en: " + portalFin);
 		
-		ArrayList<Observation>[] listadoInnamovible;
+		inicializarCerrados(stateObs);
 		
-		int columnas = (int)(stateObs.getWorldDimension().width/fescala.x);
-		int filas = (int)(int)(stateObs.getWorldDimension().height/fescala.y);
-		
-		System.out.println("Dimensiones: " + filas + "x" + columnas );
-		
-		listaCerrados = new ArrayList<ArrayList<Boolean>>(filas);
-		
-		for(int i = 0; i < filas; i++) {
-		    ArrayList<Boolean> fila = new ArrayList<Boolean>(columnas);
-		    for(int j = 0; j < columnas; j++) {
-		        fila.add(false);
-		    }
-		    listaCerrados.add(fila);
-		}
-		
+		//Actualiza mapa de muros
 		listadoInnamovible = stateObs.getImmovablePositions(stateObs.getAvatarPosition());
-
-		for(ArrayList<Observation> obsList : listadoInnamovible) {
-			for(Observation obs : obsList) {
-				int posx = (int)(obs.position.x/fescala.x);
-				int posy = (int)(obs.position.y/fescala.y);
-				listaCerrados.get(posy).set(posx,true);
-			}
-		}	
-		accion = ACTIONS.ACTION_NIL;
+		listadoInnamovible[0] = new ArrayList<Observation>(); //Para cambiar el tamaño
+		actualizarInnmovable(stateObs) ;
 	}
 
 	private ArrayList<ACTIONS> Algoritmo(StateObservation mundo){
 		nodosExpandidos = 0;
-		
-		
 		Vector2d posJ = new Vector2d(mundo.getAvatarPosition().x/fescala.x, mundo.getAvatarPosition().y/fescala.y);
 		Nodo nodoInicial = new Nodo(posJ, ACTIONS.ACTION_NIL, null, portalFin, true);
 		
@@ -85,8 +62,7 @@ public class AgentCompeticion extends AbstractPlayer{
 		while(!listaAbiertos.isEmpty()) { //Mientras no encuentre el objetivo	
 			actual = listaAbiertos.poll();
 			listaCerrados.get((int)actual.getPosicion().y).set((int)actual.getPosicion().x, true); //Lo mete en cerrados poniendolo a true
-			
-			if(actual.getEstadoFinal() || nodosExpandidos == 250) { //Si es el estado final calcula el camino
+			if(actual.getEstadoFinal()) { //Si es el estado final calcula el camino
 				nodosExpandidos++;
 				camino.add(actual.getAccion());
 				while(actual.getPadre() != null) {
@@ -117,18 +93,55 @@ public class AgentCompeticion extends AbstractPlayer{
 			}
 			nodosExpandidos++;
 		}
-		System.out.println("Nodos expandidos: " + nodosExpandidos);
+//		System.out.println("Nodos expandidos: " + nodosExpandidos);
 		return camino;
 	}
 	//FIN DEL ALGORITMO
 	
-	boolean entra = true;
+	private void inicializarCerrados(StateObservation stateObs) {
+		int columnas = (int)(stateObs.getWorldDimension().width/fescala.x);
+		int filas = (int)(int)(stateObs.getWorldDimension().height/fescala.y);
+		listaCerrados = new ArrayList<ArrayList<Boolean>>(filas);
+		
+		for(int i = 0; i < filas; i++) {
+		    ArrayList<Boolean> fila = new ArrayList<Boolean>(columnas);
+		    for(int j = 0; j < columnas; j++) {
+		        fila.add(false);
+		    }
+		    listaCerrados.add(fila);
+		}
+	}
+	
+	
+    private boolean actualizarInnmovable(StateObservation stateObs) {
+    	ArrayList<Observation>[] nuevoInmovable = stateObs.getImmovablePositions(stateObs.getAvatarPosition());
+    	boolean cambios = nuevoInmovable[0].size() != listadoInnamovible[0].size() || nuevoInmovable[1].size() != listadoInnamovible[1].size();
+    	if(cambios) {
+			inicializarCerrados(stateObs);
+			listadoInnamovible = nuevoInmovable;
+			for(ArrayList<Observation> obsList : nuevoInmovable) {
+				for(Observation obs : obsList) {
+					int posx = (int)(obs.position.x/fescala.x);
+					int posy = (int)(obs.position.y/fescala.y);
+					listaCerrados.get(posy).set(posx,true);
+				}
+			}
+			listaAbiertos.clear();
+			camino.clear();
+		}
+		
+		return cambios;
+    }
+    
+    int it = 0;
 	@Override
 	public ACTIONS act(StateObservation stateObs, ElapsedCpuTimer elapsedTimer) {	
-		camino = Algoritmo(stateObs);
-		entra = false;
+		
+		if(it == 0 || actualizarInnmovable(stateObs)) {
+			camino = Algoritmo(stateObs);
+			it++;
+		}
 	    
-		accion = ACTIONS.ACTION_NIL; //Por defecto es nil
 		if(!camino.isEmpty()) {
 			accion = camino.get(camino.size()-1);
 			camino.remove(camino.size()-1);
