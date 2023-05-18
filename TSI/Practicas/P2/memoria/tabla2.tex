@@ -1,0 +1,21 @@
+% Please add the following required packages to your document preamble:
+% \usepackage{graphicx}
+% \usepackage[table,xcdraw]{xcolor}
+% If you use beamer only pass "xcolor=table" option, i.e. \documentclass[xcolor=table]{beamer}
+\begin{table}[H]
+	\centering
+	\caption{Marcas con distancias diferentes}
+	\label{tab:tabla2}
+	\resizebox{0.8\textwidth}{!}{%
+		\begin{tabular}{|
+				>{\columncolor[HTML]{FFFC9E}}c |c|c|c|}
+			\hline
+			\cellcolor[HTML]{EFEFEF}\#marcas & \cellcolor[HTML]{EFEFEF}Posición de las marcas & \cellcolor[HTML]{EFEFEF}Última marca (Xm) & \cellcolor[HTML]{EFEFEF}Runtime \\ \hline
+			3  & {[}0,1,3{]}                                       & 3  & 74msec     \\ \hline
+			5  & {[}0, 2, 7, 8, 11{]}                              & 11 & 81msec     \\ \hline
+			7  & {[}0, 2, 3, 10, 16, 21, 25{]}                     & 25 & 85msec     \\ \hline
+			10 & {[}0, 1, 6, 10, 23, 26, 34, 41, 53, 55{]}         & 55 & 2s 622msec \\ \hline
+			12 & {[}0, 2, 6, 24, 29, 40, 43, 55, 68, 75, 76, 85{]} & 85 & 4m 30s     \\ \hline
+		\end{tabular}%
+	}
+\end{table}

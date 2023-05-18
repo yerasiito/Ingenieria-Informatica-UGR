@@ -1,0 +1,186 @@
+\input{preambulo.tex}
+%----------------------------------------------------------------------------------------
+%	TÍTULO Y DATOS DEL ALUMNO
+%----------------------------------------------------------------------------------------
+
+\title{Técnicas de los Sistemas Inteligentes\\ \quad\\
+	Práctica 2: Problemas con restricciones en Minizinc  \hspace{0.05cm} }   
+
+\author{Yeray López Ramírez	}                             
+
+\renewcommand*\contentsname{hola}
+
+\makeatletter
+\let\thetitle\@title
+\let\theauthor\@author
+\let\thedate\@date
+\makeatother
+
+%----------------------------------------------------------------------------------------
+% DOCUMENTO
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+\input{portada.tex}
+
+\newpage %inserta un salto de página
+\newcommand{\code}[1]{\colorbox{light-gray}{\textcolor{red}{\texttt{#1}}}}
+\newcommand{\high}[1]{\colorbox{light-gray}{\textcolor{yellow}{\texttt{#1}}}}
+\newcommand{\highg}[1]{\colorbox{light-gray}{\textcolor{green}{\texttt{#1}}}}
+
+\tableofcontents % para generar el índice de contenidos
+
+\listoffigures
+
+\listoftables
+
+\newpage
+
+%----------------------------------------------------------------------------------------
+%	Cuestión 1
+%----------------------------------------------------------------------------------------
+
+\section*{Descripción de la práctica}
+
+La práctica consiste en resolver 5 problemas con minizinc.
+
+%----------------------------------------------------------------------------------------
+%	Cuestión 2
+%----------------------------------------------------------------------------------------
+
+\section{Problema de la suma de conjuntos.}
+
+\noindent\fbox{%
+	\parbox{\textwidth}{\textbf{Enunciado:}
+		Sea un conjunto de n números enteros $S = \{S_1, S_2, ... , S_n\}$. Se desea dividir este conjunto $S$ en
+		dos subconjuntos disjuntos $S_1$ y $S_2$ (con $S_1 \cup S_2 = S, S_1 \cap S_2 = \emptyset$), de forma que la suma de los números en $S_1$ sea igual a la suma de los números en $S_2$.
+	}%
+}
+\subsection{Realice la codificación del problema anterior y complete la tabla.}
+
+\input{tabla1a.tex}
+
+Podemos observar que el segundo conjunto no es satisfactible ya que no existe ningún par de conjuntos que sumados den lo mismo. En el apartado c observé que la suma era 11 y 10 con $S_1=[5,6]$ y $S_2=[1,2,3,4]$.
+
+\subsection{Añade una columna que indique el número total de soluciones.}
+
+\input{tabla1b.tex}
+
+El número de soluciones son SIMÉTRICAS. La mitad de ellas son permutaciones de S1 y S2 por lo que el número de soluciones reales sería 1,0,7.
+
+\subsection{Modifique la codificación de forma que la diferencia entre la suma de S1 y S2 sea
+	mínima.}
+
+\input{tabla1c.tex}
+
+\section{Problema de la regla}
+\noindent\fbox{%
+	\parbox{\textwidth}{\textbf{Enunciado:}
+		Se tiene una regla de tamaño infinito a la que se desea realizar $m$ marcas en las posiciones
+		(enteras) $x_1, x_2, \cdots ,x_m$ , de forma que las marcas están ordenadas en orden creciente: $x_1 < x_2< \cdots < x_m$ , de forma que la distancia entre cualquier par de marcas es distinta de todas las demás
+		distancias, y de forma que la última marca $x_m$ es mínima. Por simplicidad, la primera marca se
+		coloca en $x_1 = 0$. Codifique este problema y complete la tabla.
+	}%
+}
+
+\input{tabla2.tex}
+
+A continuación, podemos observar cómo el número de marcas cambia en función del tamaño de \#marcas. Podemos notar que existe una tendencia más lineal en la posición de las marcas a medida que aumenta el tamaño de \#marcas. Por otro lado, el tiempo necesario para generar las marcas muestra un crecimiento exponencial, siendo especialmente lento cuando se alcanzan las 12 \#marcas.
+\begin{figure}[H]
+	\centering
+	\begin{minipage}[b]{0.45\textwidth} % Primera figura
+		\centering
+		\includegraphics[scale=0.55]{marcasgrafica.png}
+		\caption{Representación de la última marca en función del número de marcas}
+		\label{fig:graficaRegla}
+	\end{minipage}
+	\hfill % Espacio horizontal entre las dos figuras
+	\begin{minipage}[b]{0.45\textwidth} % Segunda figura
+		\centering
+		\includegraphics[scale=0.55]{marcasgrafica2.png}
+		\caption{Representación de la última marca en función del tiempo}
+		\label{fig:graficaRegla2}
+	\end{minipage}
+\end{figure}
+
+
+\section{Problema de los horarios}
+\noindent\fbox{%
+	\parbox{\textwidth}{\textbf{Enunciado:}
+		Se desea encontrar una asignación de horarios que satisfaga las siguientes condiciones:
+		\begin{enumerate}
+			\item  Existe un aula disponible en seis franjas consecutivas de 1h
+			\item Existen nueve asignaturas (A1..A9)
+			\item Las asignaturas {A1,A3,A4,A5,A8} deben impartirse en bloques de 2h consecutivas. El resto en bloques de 1h
+			\item Cada día solo se puede impartir un bloque
+			\item El profesor/a de cada asignatura es el siguiente: Prof1={A1,A3}; Prof2={A4,A5};
+			Prof3={A6,A9}; Prof4={A2,A7,A8}.
+			\item Cada profesor solo imparte un bloque al día excepto Prof4
+			\item Varios profesores con restricciones horarias
+			\item Varias asignaturas con restricciones diarias
+		\end{enumerate}
+		
+		¿Cuál es el número de soluciones válidas obtenidas? ¿Existen soluciones simétricas? En caso de que la codificación propuesta contenga soluciones simétricas, ¿cómo se podrían evitar y cuál es el número de soluciones (no simétricas) obtenido? Explique cómo se consigue la rotura de simetrías (variables y/o restricciones utilizadas para ello), y entregue la solución MZN sin simetrías.
+	}%
+}
+\quad \\ \quad \\
+\[Sin \ terminar\]
+
+\section{Problema de asignación de tareas}
+\noindent\fbox{%
+	\parbox{\textwidth}{\textbf{Enunciado:}
+		Se pide encontrar una asignación de tiempos de inicio a las tareas de la tabla de forma que se pueda construir la casa en el menor tiempo posible. Cada tarea la realiza un único trabajador, pero los tres trabajadores pueden estar trabajando al mismo tiempo en tres tareas diferentes. 
+	}%
+}
+\input{tablatareas.tex}
+
+\subsection{¿Cuál es la duración mínima de la construcción de la casa?}
+Para la codificación del problema se ha utilizado una matriz de duraciones en función de la tarea(filas) y el trabajador(columnas). Cada Tarea tiene asociada un Inicio, un Fin y un Trabajador que la realiza. 
+Tras aplicar todas las restricciones la duración mínima de construcción de la casa es de \textbf{17 días}. La última tarea en realizarse es la J (los remates).
+\input{tabla4.tex}
+\input{tablagant1.tex}
+
+\subsection{ ¿Qué tiempo tardarán, como mínimo, los cuatro trabajadores en finalizar la construcción?}
+\noindent\fbox{%
+	\parbox{\textwidth}{\textbf{Enunciado:}
+		Se dispone de un cuarto trabajador, que podrá ser asignado para apoyar a cualquier tarea/trabajador con duración mayor o igual a 2 días, y consigue reducir la duración de esta tarea en un día.
+	}%
+}
+\quad \\ \quad \\
+Para la codificación del nuevo trabajador de apoyo se ha añadido un vector de bool donde cada posición representa la tarea y su valor False/True si el trabajador está en esa tarea o no. Las restricciones del trabajador de apoyo es igual que la del resto de trabajadores.
+Tras aplicar los cambios del nuevo trabajador, la duración mínima de construcción de la casa es de \textbf{13 días}. La última tarea en realizarse es la J (los remates).
+
+\input{tabla4b.tex}
+\input{tablagant2.tex}
+
+\section{Problema sobre grafos}
+\noindent\fbox{%
+	\parbox{\textwidth}{\textbf{Enunciado:}
+		Encontrar el conjunto mínimo de nodos de un grafo, de forma que para todo nodo, o bien éste pertenece a dicho conjunto, o bien alguno de sus vecinos pertenece al mismo. Implemente una codificación en MiniZinc para resolver este problema, y complete la tabla, generando 3 grafos aleatorios para cada tamaño de grafo (con tres semillas distintas).
+	}%
+}
+\input{tablagrafos.tex}
+
+\begin{figure}[H] %con el [H] le obligamos a situar aquí la figura
+	\centering
+	\includegraphics[scale=0.7]{grafo0.png}
+	\caption{Representación del grafo con 10 nodos y semilla 0. Los nodos 1 y 5 son del conjunto mínimo}
+	\label{fig:grafo}
+\end{figure}
+
+\subsection{¿Diría que este problema es escalable, es decir, se puede abordar su resolución en grafos de un tamaño considerable? Razone su respuesta.}
+Observando los datos en la tabla, podemos ver que a medida que aumenta el número de nodos en el grafo, el número mínimo de nodos requeridos también aumenta, aunque no de manera lineal.\\
+
+
+Por ejemplo, para el caso de 10 nodos, se requieren 2 nodos mínimos, mientras que para 20 nodos se requieren 3.33 nodos (aproximadamente 3 nodos). A pesar de que el número de nodos se ha duplicado, la cantidad mínima de nodos requeridos no se duplica de manera proporcional. Esto nos sugiere que el problema podría ser escalable, al menos en número de soluciones.\\
+
+
+Sin embargo, a medida que el número de nodos aumenta el tiempo de ejecución aumenta exponencialmente, especialmente a partir de 40 nodos. De hecho, el tiempo de ejecución pasa de 10 segundos a más de 2 minutos para 50 y 60 nodos. Esto indica que el problema se vuelve más complejo y costoso computacionalmente a medida que se agregan más nodos, lo que hace que \code{NO} sea realmente \textbf{escalable en tiempo}.\\
+
+\subsection{Bibliografía}
+Toda la información obtenida ha sido de la documentación oficial de Minizinc \cite{minizinc} y de las diapositivas de clase \cite{mesejo}. Para dudas respecto a errores de codificación se ha recurrido a las páginas que todo el mundo bien conoce: stackoverflow \cite{stackoverflow} y chat \cite{chatgpt}.
+
+\bibliography{citas} %archivo citas.bib que contiene las entradas 
+\bibliographystyle{plain} % hay varias formas de citar
+
+\end{document}

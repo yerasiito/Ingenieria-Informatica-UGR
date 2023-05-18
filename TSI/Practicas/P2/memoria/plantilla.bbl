@@ -1,0 +1,19 @@
+\begin{thebibliography}{1}
+
+\bibitem{chatgpt}
+Open IA.
+\newblock \url{https://chat.openai.com/}.
+
+\bibitem{stackoverflow}
+Stack~Exchange Inc.
+\newblock \url{https://stackoverflow.com/questions/tagged/minizinc}.
+
+\bibitem{mesejo}
+Pablo~Mesejo Santiago.
+\newblock Presentación practica 2, 2023.
+
+\bibitem{minizinc}
+MiniZinc Team.
+\newblock \url{https://www.minizinc.org/}.
+
+\end{thebibliography}

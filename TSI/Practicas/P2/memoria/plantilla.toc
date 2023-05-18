@@ -1,0 +1,14 @@
+\babel@toc {spanish}{}\relax 
+\contentsline {section}{\numberline {1}Problema de la suma de conjuntos.}{3}{section.1}%
+\contentsline {subsection}{\numberline {1.a}Realice la codificación del problema anterior y complete la tabla.}{3}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.b}Añade una columna que indique el número total de soluciones.}{3}{subsection.1.2}%
+\contentsline {subsection}{\numberline {1.c}Modifique la codificación de forma que la diferencia entre la suma de S1 y S2 sea mínima.}{3}{subsection.1.3}%
+\contentsline {section}{\numberline {2}Problema de la regla}{4}{section.2}%
+\contentsline {section}{\numberline {3}Problema de los horarios}{5}{section.3}%
+\contentsline {section}{\numberline {4}Problema de asignación de tareas}{5}{section.4}%
+\contentsline {subsection}{\numberline {4.a}¿Cuál es la duración mínima de la construcción de la casa?}{6}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.b}¿Qué tiempo tardarán, como mínimo, los cuatro trabajadores en finalizar la construcción?}{6}{subsection.4.2}%
+\contentsline {section}{\numberline {5}Problema sobre grafos}{7}{section.5}%
+\contentsline {subsection}{\numberline {5.a}¿Diría que este problema es escalable, es decir, se puede abordar su resolución en grafos de un tamaño considerable? Razone su respuesta.}{7}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.b}Bibliografía}{8}{subsection.5.2}%
+\providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 

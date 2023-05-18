@@ -1,0 +1,39 @@
+% Please add the following required packages to your document preamble:
+% \usepackage{graphicx}
+% \usepackage[table,xcdraw]{xcolor}
+% If you use beamer only pass "xcolor=table" option, i.e. \documentclass[xcolor=table]{beamer}
+\begin{table}[H]
+	\centering
+	\caption{Minimizar suma de conjuntos disjuntos}
+	\label{tab:conjuntoc}
+	\resizebox{\textwidth}{!}{%
+		\begin{tabular}{|c|c|c|c|c|c|}
+			\hline
+			\rowcolor[HTML]{EFEFEF} 
+			Conjunto S &
+			S1 &
+			S2 &
+			\begin{tabular}[c]{@{}c@{}}Sum \\ S1\end{tabular} &
+			\begin{tabular}[c]{@{}c@{}}Sum\\ S2\end{tabular} &
+			Diff \\ \hline
+			\cellcolor[HTML]{FFFC9E}\begin{tabular}[c]{@{}c@{}}\{99,14,82,47,82,50,77,45,23,92,\\ 52,90,46,57,29,25,74,25,30,70\}\end{tabular} &
+			\{14 50 45 90 46 57 29 25 74 25 30 70\} &
+			\{99 82 47 82 77 23 92 52\} &
+			555 &
+			554 &
+			1 \\ \hline
+			\cellcolor[HTML]{FFFC9E}\begin{tabular}[c]{@{}c@{}}\{35,82,97,30,38,78,18,39,35,93,49,\\ 47,30,57,43,21,92,51,89,80\}\end{tabular} &
+			\cellcolor[HTML]{FFFFFF}\{35 35 49 57 43 21 92 51 89 80\} &
+			\cellcolor[HTML]{FFFFFF}\{82 97 30 38 78 18 39 93 47 30\} &
+			\cellcolor[HTML]{FFFFFF}552 &
+			552 &
+			0 \\ \hline
+			\cellcolor[HTML]{FFFC9E}\begin{tabular}[c]{@{}c@{}}\{60,8,11,2,49,69,87,15,62,72,89,14,\\ 76,63,45,92,74,80,11,2\}\end{tabular} &
+			\{8 11 15 14 76 63 45 92 74 80 11 2\} &
+			\{60 2 49 69 87 62 72 89\} &
+			491 &
+			490 &
+			1 \\ \hline
+		\end{tabular}%
+	}
+\end{table}
