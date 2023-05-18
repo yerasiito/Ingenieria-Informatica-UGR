@@ -49,27 +49,19 @@
 ;; Si el peso es elevado el riesgo de infarto es alto
 ;; Si el peso es muy elevado el riesgo de infarto es muy alto
 
-;; Definimos de las variables del sistema
-
-(deffacts variables_difusas
-(variable edad)
-(variable peso)
-(variable dosis)
-)
 
 ;;  Definimos los conjuntos difusos que usará el sistema
 
 (deffacts conjuntos_difusos
-(cd edad media 0 0 50 60)   ; aproximadamente menos de 55
 (cd edad avanzada 60 70 150 150)  ; aproximadamente mas de 65
 
-(cd peso medio 50 62 70 75)  ; aproximadamente entre 62 y 70
-(cd peso elevado 72 80 85 90)  ; aproximadamente entre 62 y 70
-(cd peso muy_elevado 90 110 300 300) ; aproximadamente mas de 105
+(cd peso elevado 90 100 110 120)  ; aproximadamente entre 62 y 70
+(cd peso muy_elevado 130 230 401 401) ; aproximadamente mas de 105
 
-(cd riesgo medio 4 5 5 6.5)    ; aproximadamente 5
+(cd riesgo bajo 2 2 2 2)    ; aproximadamente 2 (siempre hay riesgo de infarto)
+(cd riesgo medio 4 5 5 6)    ; aproximadamente 5
 (cd riesgo alto 8 10 10 12)     ; aproximadamente 10
-(cd riesgo muy_alto 17 20 20 25)     ; aproximadamente 20
+(cd riesgo muy_alto 15 30 50 50)     ; aproximadamente 20
 )
 
 ;; Definimos las reglas y las explicaciones asociadas
@@ -79,13 +71,13 @@
 (regla 1 consecuente riesgo medio)
 (regla 1 explicacion "Si la edad es avanzada, el riesgo de infarto es medio.")
 
-(regla 2 antecedente peso elevado)
-(regla 2 consecuente riesgo alto)
-(regla 2 explicacion "Si el peso es elevado, el riesgo de infarto es alto.")
-
 (regla 3 antecedente peso muy_elevado)
 (regla 3 consecuente riesgo muy_alto)
 (regla 3 explicacion "Si el peso es muy elevado, el riesgo de infarto es muy alto.")
+
+(regla 2 antecedente peso elevado)
+(regla 2 consecuente riesgo alto)
+(regla 2 explicacion "Si el peso es elevado, el riesgo de infarto es alto.")
 
 )
 
@@ -166,7 +158,6 @@
 (cd ?v ?l ?a ?b ?c ?d)
 =>
 (assert (fuzzy sumando_numerador ?v (* ?g1 (center_of_gravity ?a ?b ?c ?d))))
-(assert (fuzzy sumando_denominador ?v ?g1))
 )
 
 (defrule concrecion_numerador
@@ -178,26 +169,17 @@
 (retract ?f ?g)
 )
 
-(defrule concrecion_denominador
-(modulo calculo_fuzzy)
-?g<- (fuzzy denominador ?v ?x)
-?f <- (fuzzy sumando_denominador ?v ?y)
-=>
-(assert (fuzzy denominador ?v (max ?x ?y)))
-(retract ?f ?g)
-)
-
 (defrule respuesta
-(declare (salience -1))
-(modulo calculo_fuzzy)
-(fuzzy numerador ?v ?n)
-(fuzzy denominador ?v ?d)
-
-(test (> ?d 0))
+  (declare (salience -1))
+  (modulo calculo_fuzzy)
+  (fuzzy numerador ?v ?n)
 =>
-(assert (fuzzy valor_inferido ?v (/ ?n ?d)))
-(printout t "Aplicando esta(s) regla(s) el valor de " ?v " es " (/ ?n ?d) "%"  crlf)
-
+  (assert (fuzzy valor_inferido ?v ?n))
+  (if (= ?n 2) then
+    (printout t "Ninguna regla aplicada. El riesgo mínimo de infarto es " ?n "%"  crlf)
+  else
+    (printout t "Aplicando esta(s) regla(s) el valor de " ?v " es " ?n "%"  crlf)
+  )
 )
 
 
@@ -244,8 +226,7 @@
 (modulo calculo_fuzzy)
 (regla ? consecuente ?v ?)
 =>
-(assert (fuzzy numerador ?v 0))
-(assert (fuzzy denominador ?v 0))
+(assert (fuzzy numerador ?v 2))
 )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
