@@ -4,8 +4,9 @@
 #include <vector>
 #include "dataset.h"
 
+
 /** POR IMPLEMENTAR */
-std::vector<double> AGG(Dataset dataset);
+std::vector<double> AGG(Dataset dataset, int maxIters, double pcross);
 
 
 #endif

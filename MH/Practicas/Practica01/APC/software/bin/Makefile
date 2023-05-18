@@ -57,10 +57,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = "/datos/Todo/Universidad/3ºCurso/Segundo Cuatri/MH/Practicas/Practica01/APC/software"
+CMAKE_SOURCE_DIR = "/oreo/Todo/Universidad/3ºCurso/Segundo Cuatri/MH/Practicas/Practica01/APC/software"
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = "/datos/Todo/Universidad/3ºCurso/Segundo Cuatri/MH/Practicas/Practica01/APC/software/bin"
+CMAKE_BINARY_DIR = "/oreo/Todo/Universidad/3ºCurso/Segundo Cuatri/MH/Practicas/Practica01/APC/software/bin"
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -87,9 +87,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start "/datos/Todo/Universidad/3ºCurso/Segundo Cuatri/MH/Practicas/Practica01/APC/software/bin/CMakeFiles" "/datos/Todo/Universidad/3ºCurso/Segundo Cuatri/MH/Practicas/Practica01/APC/software/bin//CMakeFiles/progress.marks"
+	$(CMAKE_COMMAND) -E cmake_progress_start "/oreo/Todo/Universidad/3ºCurso/Segundo Cuatri/MH/Practicas/Practica01/APC/software/bin/CMakeFiles" "/oreo/Todo/Universidad/3ºCurso/Segundo Cuatri/MH/Practicas/Practica01/APC/software/bin//CMakeFiles/progress.marks"
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start "/datos/Todo/Universidad/3ºCurso/Segundo Cuatri/MH/Practicas/Practica01/APC/software/bin/CMakeFiles" 0
+	$(CMAKE_COMMAND) -E cmake_progress_start "/oreo/Todo/Universidad/3ºCurso/Segundo Cuatri/MH/Practicas/Practica01/APC/software/bin/CMakeFiles" 0
 .PHONY : all
 
 # The main clean target

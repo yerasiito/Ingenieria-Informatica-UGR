@@ -70,7 +70,8 @@ int main(int argc, char **argv)
             else if (algoritmo == "bl")
                 pesos = busquedaLocal(train); // bl.busquedaLocal(train, test);
             else
-                pesos = AGG(train);
+                pesos = AGG(train, 15000, 0.1); // Dataset, tamPoblacion, porcentajeCruce (genetico <<< memetico)
+                return 0;
             // Ejecutamos el clasificador 1NN
             clasificar(train, test, pesos, acierto_train, acierto_test, true);
 

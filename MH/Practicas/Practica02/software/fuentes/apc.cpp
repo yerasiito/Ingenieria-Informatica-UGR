@@ -1,11 +1,13 @@
 #include <algorithm>
 #include <iomanip>
 #include <cmath>
+#include "random.hpp"
 
 #include "apc.h"
 
 
 using namespace std;
+using Random = effolkronium::random_static;
 
 // Función para actualizar los pesos de las características
 void actualizar_pesos(const Ejemplo& inst, const Dataset& dataset, vector<double>& weights) {
@@ -162,6 +164,17 @@ vector<double> calcularRendimiento(int acierto_train, int acierto_test, Dataset 
     return rendimiento;
 }
 
+void Mov(vector<double> &w, int i, double varianza){
+    std::normal_distribution<double> distribution(0.0, sqrt(varianza));
+    double z = Random::get(distribution);
+    //Verificación de restricciones. Trunca w
+    if(w[i]+z > 1)
+        w[i] = 1;
+    else if(w[i]+z < 0)
+        w[i] = 0;
+    else
+        w[i] += z;
+}
 
 void imprimeRendimiento(vector<vector<double>> resultados){
     int n = resultados.size(), m = resultados[0].size();

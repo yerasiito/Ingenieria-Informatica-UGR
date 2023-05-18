@@ -5,7 +5,7 @@ set(CMAKE_CXX_FLAGS "-O2 -march=native -funroll-loops")
 project(practica1)
 
 # Agrega los archivos de origen
-add_executable(practica1 
+add_executable(practica2
   fuentes/main.cpp 
   fuentes/dataset.cpp 
   fuentes/apc.cpp

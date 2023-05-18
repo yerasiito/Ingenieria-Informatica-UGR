@@ -103,6 +103,14 @@ void imprimeRendimiento(std::vector<std::vector<double>> resultados);
 /***************************************PESOS***************************************/
 
 /**
+ * @brief Funcion de mutacion para generar vecinos
+ * @param w los pesos a mutar
+ * @param i el indice a mutar
+ * @param varianza la varianza de la distribucion normal
+*/
+void Mov(std::vector<double> &w, int i, double varianza);
+
+/**
  * @brief Imprime los pasos de cada particion
  * @param pesosT matriz con todos los pasos de cada particion
  */

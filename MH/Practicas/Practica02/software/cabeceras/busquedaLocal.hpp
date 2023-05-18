@@ -2,7 +2,6 @@
 #define BL_H
 
 #include <iostream>
-#include "random.hpp"
 #include "apc.h"
 using namespace std;
 using Random = effolkronium::random_static;
@@ -20,24 +19,6 @@ double funObjetivo(Dataset train, vector<double> pesos){
     clasificarTrain(train, pesos, aciertos);
     
     return calcularFitness(aciertos, train.numEjemplos(), pesos);
-}
-
-/**
- * @brief Funcion de mutacion para generar vecinos
- * @param w los pesos a mutar
- * @param i el indice a mutar
- * @param varianza la varianza de la distribucion normal
-*/
-void Mov(vector<double> &w, int i, double varianza){
-    std::normal_distribution<double> distribution(0.0, sqrt(varianza));
-    double z = Random::get(distribution);
-    //Verificación de restricciones. Trunca w
-    if(w[i]+z > 1)
-        w[i] = 1;
-    else if(w[i]+z < 0)
-        w[i] = 0;
-    else
-        w[i] += z;
 }
 
 /**
