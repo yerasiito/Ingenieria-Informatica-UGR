@@ -7,4 +7,7 @@
 *.zip
 *.pdf
 *.cmake
+*.idea
+*.vscode
 **/CMakeCache.txt
+**/cmake-build-debug
