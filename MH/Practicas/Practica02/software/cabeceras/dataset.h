@@ -46,6 +46,8 @@ class Dataset {
         */
         const Ejemplo &getEjemplo(int i) const;
 
+        const std::vector<Ejemplo> &getEjemplos() const;
+
         /**
          * @brief devuelve el número de ejemplos del conjunto de datos
          * @return el numero de ejemplos

@@ -71,6 +71,10 @@ const Ejemplo &Dataset::getEjemplo(int i) const{
     return ejemplos[i];
 }
 
+const vector<Ejemplo> &Dataset::getEjemplos() const{
+    return ejemplos;
+}
+
 int Dataset::numEjemplos() const{
     return ejemplos.size();
 }
@@ -121,11 +125,4 @@ void Dataset::dataPrint(){
 
 void Dataset::dimensionPrint(){
     cout << "Tamaño de matrix: " << numEjemplos() << "x" << numCaracteristicas() << endl;
-}
-
-//Método de cómputo 
-const Dataset Dataset::leave_one_out(int i) const{ 
-    Dataset loo = *this;
-    loo.ejemplos.erase(loo.ejemplos.begin() + i);
-    return loo;    
 }

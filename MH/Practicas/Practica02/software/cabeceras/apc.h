@@ -12,8 +12,7 @@
  * @param w son los pesos a aplicar a las distancias
  * @return la etiqueta predicha para el ejemplo
  */
-std::string clasificador1NN(Ejemplo test_ejemplo, Dataset training_set, std::vector<double> w);
-
+std::string clasificador1NN(const Dataset &train, const Ejemplo &test_ejemplo, const std::vector<double> &w, int leave_out=-1);
 /***********************************ALGORITMO DE GREEDY***********************************/
 /**
  * @brief Funcion para actualizar los pesos de las características
@@ -21,7 +20,7 @@ std::string clasificador1NN(Ejemplo test_ejemplo, Dataset training_set, std::vec
  * @param dataset el conjunto de datos a predecir
  * @param weights son los pesos que se obtienen de salida
  */
-void actualizar_pesos(const Ejemplo &inst, const Dataset &dataset, std::vector<double> &weights);
+void actualizar_pesos(const Ejemplo &inst, const Dataset &dataset, std::vector<double> &weights, int leave_out=-1);
 
 // Función para seleccionar las k características con los pesos más altos
 // std::vector<int> select_features(const std::vector<double>& weights, int k);
@@ -41,7 +40,7 @@ std::vector<double> greedy_relief(const Dataset &dataset);
  * @param pesos los pesos ponderados aplicados a la distancia
  * @param acierto_train el numero de aciertos al clasificar, variable de salida
  */
-void clasificarTrain(Dataset train, std::vector<double> pesos, int &acierto_train);
+void clasificarTrain(const Dataset &train, const std::vector<double> &pesos, int &acierto_train);
 
 /**
  * @brief Funcion para calcular los aciertos en test
@@ -50,7 +49,7 @@ void clasificarTrain(Dataset train, std::vector<double> pesos, int &acierto_trai
  * @param pesos los pesos ponderados aplicados a la distancia
  * @param acierto_test el numero de aciertos al clasificar, variable de salida
  */
-void clasificarTest(Dataset train, Dataset test, std::vector<double> pesos, int &acierto_test);
+void clasificarTest(const Dataset &train, const Dataset &test, const std::vector<double> &pesos, int &acierto_test);
 
 /**
  * @brief Función principal de clasificacion de los dataset de train y test
@@ -61,7 +60,7 @@ void clasificarTest(Dataset train, Dataset test, std::vector<double> pesos, int 
  * @param acierto_test el acierto de test de salida
  * @param tasa_train un booleano para determinar si calcular o no el tasa train, por defecto false
  */
-void clasificar(Dataset train, Dataset test, std::vector<double> pesos, int &acierto_train,
+void clasificar(const Dataset &train, const Dataset &test, const std::vector<double> &pesos, int &acierto_train,
                 int &acierto_test, bool tasa_train = false);
 
 /***************************************RENDIMIENTO***************************************/

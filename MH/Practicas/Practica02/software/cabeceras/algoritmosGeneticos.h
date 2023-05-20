@@ -6,7 +6,7 @@
 
 
 /** POR IMPLEMENTAR */
-std::vector<double> AGG(Dataset dataset, int maxIters, double pcross);
+std::vector<double> AGG(Dataset train, int maxIters, double pcross, int cruce);
 
-
+std::vector<double> AGE(Dataset train, int maxIters, double pcross, int cruce);
 #endif

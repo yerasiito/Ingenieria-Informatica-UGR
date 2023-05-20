@@ -59,13 +59,11 @@ double distancia(const Ejemplo &a, const Ejemplo &b, std::vector<double> w)
     for (int i = 0; i < a.caracteristicas.size(); i++)
     {
         // Si el peso es menor que 0.1, se ignora
-        if (w[i] < 0.1)
+        if (w[i] >= 0.1)
         {
-            continue;
+            // Se calcula la diferencia al cuadrado entre las dos características y se multiplica por el peso
+            dist += w[i] * pow(a.caracteristicas[i] - b.caracteristicas[i], 2);
         }
-
-        // Se calcula la diferencia al cuadrado entre las dos características y se multiplica por el peso
-        dist += w[i] * pow(a.caracteristicas[i] - b.caracteristicas[i], 2);
     }
 
     // Se devuelve la distancia euclídea final

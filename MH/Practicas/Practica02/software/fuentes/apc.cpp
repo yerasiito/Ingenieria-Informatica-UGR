@@ -10,7 +10,7 @@ using namespace std;
 using Random = effolkronium::random_static;
 
 // Función para actualizar los pesos de las características
-void actualizar_pesos(const Ejemplo& inst, const Dataset& dataset, vector<double>& weights) {
+void actualizar_pesos(const Ejemplo& inst, const Dataset& dataset, vector<double>& weights, int leave_out) {
     double amigo_dist = INFINITY;
     double enemigo_dist = INFINITY;
     int amigo_idx, enemigo_idx;
@@ -18,6 +18,9 @@ void actualizar_pesos(const Ejemplo& inst, const Dataset& dataset, vector<double
     // Calcular las distancias de la instancia actual a todos los ejemplos del dataset
     // Se utiliza la función distancia() con pesos igual a 1
     for (int i = 0; i < dataset.numEjemplos(); i++) {
+        if(i == leave_out)
+            continue;
+
         double dist = distancia(inst, dataset.getEjemplo(i), vector<double>(dataset.numCaracteristicas(),1)); //distancia sin ponderar
 
         // Si la etiqueta del ejemplo es igual a la de la instancia actual, es un "amigo"
@@ -52,7 +55,7 @@ vector<double> greedy_relief(const Dataset &dataset) {
     // Iteramos por cada ejemplo del dataset y actualizamos los pesos
     for (int i = 0; i < dataset.numEjemplos(); i++) {
         Ejemplo inst = dataset.getEjemplo(i);
-        actualizar_pesos(inst, dataset.leave_one_out(i), weights); // Actualizamos los pesos del ejemplo actual
+        actualizar_pesos(inst, dataset, weights, i); // Actualizamos los pesos del ejemplo actual
     }
     // Normalizamos los pesos
     double w_max = *max_element(weights.begin(), weights.end()); // Obtenemos el peso máximo
@@ -69,12 +72,16 @@ vector<double> greedy_relief(const Dataset &dataset) {
 
 
 // Funcion para clasificar un ejemplo dado un dataset
-string clasificador1NN(Ejemplo test_ejemplo, Dataset train, vector<double> w) {
+string clasificador1NN(const Dataset &train, const Ejemplo &test_ejemplo, const vector<double> &w, int leave_out) {
     int min_index = 0;  // Indice de la instancia con la distancia minima
     double min_distance = INFINITY;
 
     // Itera sobre todas las instancias del dataset de entrenamiento
     for (int i = 0; i < train.numEjemplos(); i++) {
+        // Ignora el mismo ejemplo
+        if(i==leave_out)
+            continue;
+
         double distance = distancia(test_ejemplo, train.getEjemplo(i), w); // Calcula la distancia entre el ejemplo de prueba y el ejemplo de entrenamiento i
         if (distance < min_distance) { // Actualiza el indice y la distancia
             min_index = i; 
@@ -86,7 +93,7 @@ string clasificador1NN(Ejemplo test_ejemplo, Dataset train, vector<double> w) {
 
 
 // Función principal para clasificar los datasets de train y test
-void clasificar(Dataset train, Dataset test, vector<double> pesos, int &acierto_train, int &acierto_test, bool tasa_train){
+void clasificar(const Dataset &train, const Dataset &test, const vector<double> &pesos, int &acierto_train, int &acierto_test, bool tasa_train){
     acierto_train = 0, acierto_test = 0;
     
     // La tasa de train es opcional
@@ -98,24 +105,25 @@ void clasificar(Dataset train, Dataset test, vector<double> pesos, int &acierto_
 }
 
 // Función auxiliar para clasificar el dataset de entrenamiento
-void clasificarTrain(Dataset train, vector<double> pesos, int &acierto_train){
+void clasificarTrain(const Dataset &train, const vector<double> &pesos, int &acierto_train){
     acierto_train = 0;
-    
+
     // Clasificar cada ejemplo del dataset de entrenamiento. Aplica leave one out
     for(int i = 0; i < train.numEjemplos(); i++){
-        string label_train = clasificador1NN(train.getEjemplo(i), train.leave_one_out(i), pesos);
+        string label_train = clasificador1NN(train, train.getEjemplo(i), pesos, i);
         if(label_train == train.getEjemplo(i).etiqueta)
             acierto_train++;
     }
+
 }
 
 // Función auxiliar para clasificar el dataset de test
-void clasificarTest(Dataset train, Dataset test, vector<double> pesos,int &acierto_test){
+void clasificarTest(const Dataset &train, const Dataset &test, const vector<double> &pesos,int &acierto_test){
     acierto_test = 0;
     
     // Clasificar cada ejemplo del dataset de test
     for(int i = 0; i < test.numEjemplos(); i++){
-        string label_test = clasificador1NN(test.getEjemplo(i), train, pesos);
+        string label_test = clasificador1NN(train, test.getEjemplo(i), pesos);
         if(label_test == test.getEjemplo(i).etiqueta)
             acierto_test++;
     }

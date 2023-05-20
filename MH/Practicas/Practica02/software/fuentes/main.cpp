@@ -9,7 +9,7 @@ vector<string> nombreDatasets = {"diabetes", "ozone-320", "spectf-heart"}; // Da
 
 int main(int argc, char **argv)
 {
-    int ficheros = 1;
+    int ficheros = 5;
     long int seed;
 
     if (argc <= 2)
@@ -31,13 +31,14 @@ int main(int argc, char **argv)
     if (argc != 1)
         algoritmo = argv[1];
     // Devuelve error en caso de pasar un parametro desconocido
-    if (algoritmo != "1-NN" && algoritmo != "greedy" && algoritmo != "bl")
+    if (algoritmo != "1-NN" && algoritmo != "greedy" && algoritmo != "bl" && algoritmo != "AGG" && algoritmo != "AGE")
     {
-        cerr << "Algoritmo " << argv[1] << " desconocido. Elige: 'sin parametro', greedy o bl.\n";
+        cerr << "Algoritmo " << argv[1] << " desconocido. Elige: 'sin parametro', greedy, bl o AGG.\n";
         return EXIT_FAILURE;
     }
 
     // Lee todos los dataset con sus respectivos ficheros
+    auto inicio = std::chrono::high_resolution_clock::now();
     while (!nombreDatasets.empty())
     {
         string fichero = nombreDatasets.front();      // Obtiene el primer elemento
@@ -69,9 +70,24 @@ int main(int argc, char **argv)
                 pesos = greedy_relief(train);
             else if (algoritmo == "bl")
                 pesos = busquedaLocal(train); // bl.busquedaLocal(train, test);
-            else
-                pesos = AGG(train, 15000, 0.1); // Dataset, tamPoblacion, porcentajeCruce (genetico <<< memetico)
-                return 0;
+            else if(algoritmo == "AGG"){
+                cout << "\n\n##############Ejecucion de AGG##############\n";
+                if(seed == 0)
+                    cout << "Aritmétrico lógico" << endl;
+                else
+                    cout << "BLX" << endl;
+                pesos = AGG(train, 15000, 0.1, seed); // Dataset, tamPoblacion, porcentajeCruce (genetico <<< memetico)
+            }
+            else if(algoritmo == "AGE"){
+                cout << "\n\n##############Ejecucion de AGE##############\n";
+                if(seed == 0)
+                    cout << "Aritmétrico lógico" << endl;
+                else
+                    cout << "BLX" << endl;
+
+                pesos = AGE(train, 15000, 0.1, seed); // Dataset, tamPoblacion, porcentajeCruce (genetico <<< memetico)
+            }
+
             // Ejecutamos el clasificador 1NN
             clasificar(train, test, pesos, acierto_train, acierto_test, true);
 
@@ -92,6 +108,12 @@ int main(int argc, char **argv)
         // imprimePesos(pesosParticiones);
 
         imprimePesoMedio(pesosMedios);
+
+        auto fin = std::chrono::high_resolution_clock::now();
+        // Calcular la duración en milisegundos
+        auto duracion = std::chrono::duration_cast<std::chrono::milliseconds>(fin - inicio);
+        // Mostrar la duración en milisegundos
+        std::cout << "El tiempo transcurrido: " << duracion.count() << " milisegundos" << std::endl;
     }
 
     return 0;
