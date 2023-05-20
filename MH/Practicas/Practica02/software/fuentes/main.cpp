@@ -1,3 +1,4 @@
+#include <iomanip>
 #include "random.hpp"
 #include "busquedaLocal.hpp"
 #include "algoritmosGeneticos.h"
@@ -16,15 +17,15 @@ int main(int argc, char **argv)
         cout << "Sin semilla fija" << endl;
     else
     {
-        seed = atoi(argv[2]);
+        seed = std::strtol(argv[2], nullptr, 10);
         Random::seed(seed);
         cout << "Usando semilla: " << seed << endl;
     }
 
     int acierto_train, acierto_test;
     string algoritmo = "1-NN";
-    vector<double> pesosMedios;
-    vector<vector<double>> rendimiento, pesosParticiones;
+    vector<double> pesosMedios, resultadosMedios;
+    vector<double> resultado;
     Dataset train, test;
 
     // Lee el algoritmo pasado por parametro (si se han pasado parametros)
@@ -38,14 +39,17 @@ int main(int argc, char **argv)
     }
 
     // Lee todos los dataset con sus respectivos ficheros
-    auto inicio = std::chrono::high_resolution_clock::now();
     while (!nombreDatasets.empty())
     {
         string fichero = nombreDatasets.front();      // Obtiene el primer elemento
         nombreDatasets.erase(nombreDatasets.begin()); // Lo saca del vector
 
         // Inicializar
-        rendimiento = {}, pesosParticiones = {}, pesosMedios = {};
+        resultado = {}, pesosMedios = {}, resultadosMedios = {};
+
+        // Imprimir cabecera tabla de resultados
+        std::cout << "--------------------------------------Clasificador (" << algoritmo << "):" << fichero << "-------------------------------------" << endl;
+        cout << "\nParticion\t" << "Tasa_clas_train[%]\t" << "Tasa_clas_test[%]\t" << "Tasa_red[%]\t" << "Fitness\t\t" << "Tiempo[s]" << endl;
 
         for (int i = 0; i < ficheros; i++)
         {
@@ -57,8 +61,11 @@ int main(int argc, char **argv)
             }
 
             // Inicializar variables
-            if (i == 0) // en la primera iteracion
+            if (i == 0) { // en la primera iteracion
                 pesosMedios.resize(train.numCaracteristicas(), 0);
+                resultadosMedios.resize(6);
+
+            }
             vector<double> pesos(train.numCaracteristicas(), 1); // en todas las iteraciones
 
             // Normalizamos los datos
@@ -76,7 +83,7 @@ int main(int argc, char **argv)
                     cout << "Aritmétrico lógico" << endl;
                 else
                     cout << "BLX" << endl;
-                pesos = AGG(train, 15000, 0.1, seed); // Dataset, tamPoblacion, porcentajeCruce (genetico <<< memetico)
+                pesos = AGG(train, 15000, 0.1, (int) seed); // Dataset, tamPoblacion, porcentajeCruce (genetico <<< memetico)
             }
             else if(algoritmo == "AGE"){
                 cout << "\n\n##############Ejecucion de AGE##############\n";
@@ -85,36 +92,66 @@ int main(int argc, char **argv)
                 else
                     cout << "BLX" << endl;
 
-                pesos = AGE(train, 15000, 0.1, seed); // Dataset, tamPoblacion, porcentajeCruce (genetico <<< memetico)
+                pesos = AGE(train, 15000, (int) seed); // Dataset, tamPoblacion, porcentajeCruce (genetico <<< memetico)
             }
 
             // Ejecutamos el clasificador 1NN
             clasificar(train, test, pesos, acierto_train, acierto_test, true);
 
-            // Guardamos los resultados en una matriz/tabla de rendimiento
-            rendimiento.push_back(calcularRendimiento(acierto_train, acierto_test, train, test, pesos, momentoInicio));
+            // Imprimimos los resultados de la ejecución
+            resultado = calcularRendimiento(acierto_train, acierto_test, train, test, pesos, momentoInicio);
+            imprimeRendimiento(i, resultado, resultadosMedios);
 
             // Guardamos los pesos medios para el final
             for (int j = 0; j < pesosMedios.size(); j++)
                 pesosMedios[j] += pesos[j];
 
-            pesosParticiones.push_back(pesos); // Para imprimirlos al final
         }
         /*Resultados del clasificador*/
-        std::cout << "--------------------------------------Clasificador (" << algoritmo << "):" << fichero << "-------------------------------------";
-        imprimeRendimiento(rendimiento); // Imprime la matriz/tabla de rendimiento
 
-        // //Imprime todos los pesos por particion
-        // imprimePesos(pesosParticiones);
-
-        imprimePesoMedio(pesosMedios);
-
-        auto fin = std::chrono::high_resolution_clock::now();
-        // Calcular la duración en milisegundos
-        auto duracion = std::chrono::duration_cast<std::chrono::milliseconds>(fin - inicio);
-        // Mostrar la duración en milisegundos
-        std::cout << "El tiempo transcurrido: " << duracion.count() << " milisegundos" << std::endl;
+        imprimeResultadosMedios(resultadosMedios, pesosMedios, ficheros);
     }
 
     return 0;
+}
+
+void imprimeRendimiento(int i, const vector<double> &resultados, vector<double> &mediaResultados){
+    int m = (int) resultados.size();
+
+    cout << i+1 << "\t\t";
+    // Imprime los resultados
+    for(int j = 0; j < m-1; j++){
+        // Imprime el valor actual con dos decimales
+        cout << fixed << setprecision(2) << resultados[j] << "\t\t";
+        if(j < 2)
+            cout << "\t";
+        mediaResultados[j] += resultados[j];
+    }
+
+    // Imprime el tiempo
+    cout << fixed << defaultfloat<< resultados[m-1] << "\t\t";
+    mediaResultados[m-1] += resultados[m-1];
+    cout << endl;
+}
+
+void imprimeResultadosMedios(const vector<double> &resultadosMedios, vector<double> &pesosT, int n){
+    int m = (int) resultadosMedios.size();
+
+    cout << "MEDIA" << "\t\t";
+    // Imprime los resultados medios
+    for(int j = 0; j < m-2; j++){
+        // Imprime el valor actual con dos decimales
+        cout << fixed << setprecision(2) << resultadosMedios[j]/(double)n << "\t\t";
+        if(j < 2)
+            cout << "\t";
+    }
+    // Imprime el tiempo medio
+    cout << fixed << defaultfloat<< resultadosMedios[m-2]/(double)n << "\t\t";
+
+    std::cout << "\nPesos medios:\n";
+    for(double & i : pesosT){
+        i /= 5;
+        std::cout << i << " ";
+    }
+    std::cout << endl << endl;
 }

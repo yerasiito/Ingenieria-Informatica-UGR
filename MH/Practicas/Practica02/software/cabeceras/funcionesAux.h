@@ -10,7 +10,7 @@
  * @param test conjunto de datos de test
  * @param k el indice de particion (el numero indica el test)
 */
-int leerFicheros(std::string fichero, Dataset &train, Dataset &test, int k);
+int leerFicheros(const std::string &fichero, Dataset &train, Dataset &test, const int &k);
 
 /**
  * @brief Función para calcular la distancia euclidiana ponderada entre dos instancias
@@ -19,7 +19,7 @@ int leerFicheros(std::string fichero, Dataset &train, Dataset &test, int k);
  * @param w los pesos ponderados
  * @return la distancia euclidiana ponderada entre ambas instancias
 */
-double distancia(const Ejemplo& a, const Ejemplo& b, std::vector<double> w);
+double distancia(const Ejemplo &a, const Ejemplo &b, const std::vector<double> &w);
 
 /**
  * @brief Función para normalizar los datos de entrenamiento y test

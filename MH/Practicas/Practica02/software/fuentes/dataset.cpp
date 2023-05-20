@@ -1,8 +1,6 @@
 #include <iostream>
 #include <sstream>
 #include <algorithm>
-#include <iomanip>
-
 #include "dataset.h"
 using namespace std;
 
@@ -50,7 +48,7 @@ int Dataset::read(ifstream &f){
 
         // Mete la ultima columna como etiqueta y la saca de los datos
         if(!excepcion){ 
-            e.etiqueta = e.caracteristicas.back();
+            e.etiqueta = (char) e.caracteristicas.back();
             e.caracteristicas.pop_back();
         }
 
@@ -76,15 +74,15 @@ const vector<Ejemplo> &Dataset::getEjemplos() const{
 }
 
 int Dataset::numEjemplos() const{
-    return ejemplos.size();
+    return (int) ejemplos.size();
 }
 
 int Dataset::numCaracteristicas() const{
-    return ejemplos[0].caracteristicas.size();
+    return (int) ejemplos[0].caracteristicas.size();
 }
 
 int Dataset::numEtiquetas() const{
-    return labelNames.size();
+    return (int) labelNames.size();
 }
 
 double &Dataset::getCaracteristica(int i, int j){
@@ -123,6 +121,6 @@ void Dataset::dataPrint(){
     cout << endl;
 }
 
-void Dataset::dimensionPrint(){
+void Dataset::dimensionPrint() const{
     cout << "Tamaño de matrix: " << numEjemplos() << "x" << numCaracteristicas() << endl;
 }

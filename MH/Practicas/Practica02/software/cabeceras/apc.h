@@ -20,7 +20,7 @@ std::string clasificador1NN(const Dataset &train, const Ejemplo &test_ejemplo, c
  * @param dataset el conjunto de datos a predecir
  * @param weights son los pesos que se obtienen de salida
  */
-void actualizar_pesos(const Ejemplo &inst, const Dataset &dataset, std::vector<double> &weights, int leave_out=-1);
+void actualizar_pesos(const Ejemplo &inst, const Dataset &dataset, std::vector<double> &weights, const int &leave_out=-1);
 
 // Función para seleccionar las k características con los pesos más altos
 // std::vector<int> select_features(const std::vector<double>& weights, int k);
@@ -70,7 +70,7 @@ void clasificar(const Dataset &train, const Dataset &test, const std::vector<dou
  * @param pesos los pesos del cual se calcula la tasa
  * @return la tasa de reduccion
  */
-double calcularTasaRed(std::vector<double> pesos);
+double calcularTasaRed(const std::vector<double> &pesos);
 
 /**
  * @brief Funcion para calcular el accuracy de un algoritmo
@@ -79,7 +79,7 @@ double calcularTasaRed(std::vector<double> pesos);
  * @param pesos los pesos ponderados
  * @return el valor de fitness en funcion de los parámetros dados
  */
-double calcularFitness(int acierto, int numEjemplos, std::vector<double> pesos);
+double calcularFitness(const int &acierto, const int &numEjemplos, const std::vector<double> &pesos);
 
 /**
  * @brief Función para calcular el rendimiento de los algoritmos tras clasificar con 1nn
@@ -91,13 +91,15 @@ double calcularFitness(int acierto, int numEjemplos, std::vector<double> pesos);
  * @param momentoInicio el tiempo de inicio del algoritmo
  * @return el vector con el rendimiento: tasa_clas_train, tasa_clas_test, tasa_red, fitness, tiempo
  */
-std::vector<double> calcularRendimiento(int acierto_train, int acierto_test, Dataset train, Dataset test,
-                                        std::vector<double> w, std::chrono::high_resolution_clock::time_point momentoInicio);
+std::vector<double> calcularRendimiento(int acierto_train, int acierto_test, const Dataset &train, const Dataset &test,
+                                        const std::vector<double> &w,
+                                        std::chrono::high_resolution_clock::time_point momentoInicio);
+
 /**
  * @brief Imprime la tabla de rendmiento
  * @param resultados la matriz de resultados calculada por calcularRendimiento
  */
-void imprimeRendimiento(std::vector<std::vector<double>> resultados);
+void imprimeRendimiento(int i, const std::vector<double> &resultados, std::vector<double> &mediaResultados);
 
 /***************************************PESOS***************************************/
 
@@ -107,18 +109,18 @@ void imprimeRendimiento(std::vector<std::vector<double>> resultados);
  * @param i el indice a mutar
  * @param varianza la varianza de la distribucion normal
 */
-void Mov(std::vector<double> &w, int i, double varianza);
+void Mov(std::vector<double> &w, const int &i, const double &varianza);
 
 /**
  * @brief Imprime los pasos de cada particion
  * @param pesosT matriz con todos los pasos de cada particion
  */
-void imprimePesos(std::vector<std::vector<double>> pesosP);
+void imprimePesos(const std::vector<std::vector<double>> &pesosP);
 
 /**
  * @brief Imprime el peso medio
  * @param pesosT el vector de pesos sumados de todas las particiones
  */
-void imprimePesoMedio(std::vector<double> pesosT);
+void imprimeResultadosMedios(const std::vector<double> &resultadosMedios, std::vector<double> &pesosT, int n);
 
 #endif

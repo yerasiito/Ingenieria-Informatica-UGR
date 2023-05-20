@@ -10,7 +10,7 @@
 const std::string path = "Instancias_APC/";
 
 // Función para leer los ficheros de datos
-int leerFicheros(std::string fichero, Dataset &train, Dataset &test, int k)
+int leerFicheros(const std::string &fichero, Dataset &train, Dataset &test, const int &k)
 {
     // Se comprueba que el fichero sea válido
     if (fichero != "diabetes" && fichero != "ozone-320" && fichero != "spectf-heart")
@@ -46,23 +46,26 @@ int leerFicheros(std::string fichero, Dataset &train, Dataset &test, int k)
         }
     }
 
-    // Si todo ha ido bien, se devuelve sucess
+    // Si ha ido bien, se devuelve sucess
     return EXIT_SUCCESS;
 }
 
-// Función para calcular la distancia euclídea
-double distancia(const Ejemplo &a, const Ejemplo &b, std::vector<double> w)
+double distancia(const Ejemplo &a, const Ejemplo &b, const std::vector<double> &w)
 {
-    double dist = 0;
+    double dist = 0.0;
+    const int numCaracteristicas = a.caracteristicas.size();
+    const double *ptrA = &a.caracteristicas[0];
+    const double *ptrB = &b.caracteristicas[0];
 
     // Se calcula la distancia euclídea teniendo en cuenta los pesos w de cada característica
-    for (int i = 0; i < a.caracteristicas.size(); i++)
+    for (int i = 0; i < numCaracteristicas; ++i)
     {
         // Si el peso es menor que 0.1, se ignora
         if (w[i] >= 0.1)
         {
             // Se calcula la diferencia al cuadrado entre las dos características y se multiplica por el peso
-            dist += w[i] * pow(a.caracteristicas[i] - b.caracteristicas[i], 2);
+            double diferencia = ptrA[i] - ptrB[i];
+            dist += w[i] * diferencia * diferencia;
         }
     }
 
@@ -70,16 +73,17 @@ double distancia(const Ejemplo &a, const Ejemplo &b, std::vector<double> w)
     return sqrt(dist);
 }
 
+
 // Función para normalizar los datos
 void normalizar(Dataset &train, Dataset &test)
 {
-    double car = 0;
+    double car;
     std::vector<double> min_atrib = {}, max_atrib = {};
 
     // Se busca el valor mínimo y máximo para cada atributo en los datasets de train y test
     for (int j = 0; j < train.numCaracteristicas(); j++)
     {
-        double min_car = INFINITY, max_car = -INFINITY;
+        double min_car = INFINITY, max_car = (double) -INFINITY;
 
         // Se busca el valor mínimo y máximo en el dataset de train
         for (int i = 0; i < train.numEjemplos(); i++)
