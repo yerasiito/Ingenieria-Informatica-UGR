@@ -1,8 +1,9 @@
 #ifndef BL_H
 #define BL_H
 
-#include <iostream>
 #include "apc.h"
+#include "busquedaLocal.h"
+
 using namespace std;
 using Random = effolkronium::random_static;
 
@@ -51,14 +52,14 @@ vector<int> mezclarIndices(int size){
  * @param train Dataset de entrenamiento.
  * @return Vector de pesos maximizados a la función objetivo.
  */
-vector<double> busquedaLocal(Dataset train){
+vector<double> busquedaLocal(Dataset train, vector<double> Sact = {}){
     int iter = 0, itervecinos = 0;
     int aciertos;
-    vector<double> Sact;
     bool mejora = true;
 
     // Generar vector inicial
-    generaSolucionInicial(Sact, train.numCaracteristicas());
+    if(Sact.empty())
+        generaSolucionInicial(Sact, train.numCaracteristicas());
 
     // Calcula objetivo
     double objetivoActual = funObjetivo(train, Sact);

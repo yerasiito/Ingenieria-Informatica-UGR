@@ -102,25 +102,7 @@ void clasificar(const Dataset &train, const Dataset &test, const vector<double> 
     
     // La tasa de train es opcional
     if(tasa_train) {
-        for (int i = 0; i < train.numEjemplos(); i++) {
-            int min_index = 0;  // Indice de la instancia con la distancia minima
-            double min_distance = INFINITY;
-
-            // Itera sobre todas las instancias del dataset
-            for (int j = 0; j < train.numEjemplos(); j++) {
-                // Leave one out
-                if(i == j)
-                    continue;
-
-                double distance = distancia(train.getEjemplo(i), train.getEjemplo(j), pesos); // Calcula la distancia entre el ejemplo de prueba y el ejemplo de entrenamiento i
-                if (distance < min_distance) { // Actualiza el indice y la distancia
-                    min_index = j;
-                    min_distance = distance;
-                }
-            }
-            if (train.getEjemplo(min_index).etiqueta == train.getEjemplo(i).etiqueta)
-                acierto_train++;
-        }
+        clasificarTrain(train, pesos, acierto_train);
     }
     
     // Clasificar el dataset de test
@@ -130,14 +112,25 @@ void clasificar(const Dataset &train, const Dataset &test, const vector<double> 
 // Función auxiliar para clasificar el dataset de entrenamiento
 void clasificarTrain(const Dataset &train, const vector<double> &pesos, int &acierto_train){
     acierto_train = 0;
+    for (int i = 0; i < train.numEjemplos(); i++) {
+        int min_index = 0;  // Indice de la instancia con la distancia minima
+        double min_distance = INFINITY;
 
-    // Clasificar cada ejemplo del dataset de entrenamiento. Aplica leave one out
-    for(int i = 0; i < train.numEjemplos(); i++){
-        string label_train = clasificador1NN(train, train.getEjemplo(i), pesos, i);
-        if(label_train == train.getEjemplo(i).etiqueta)
+        // Itera sobre todas las instancias del dataset
+        for (int j = 0; j < train.numEjemplos(); j++) {
+            // Leave one out
+            if(i == j)
+                continue;
+
+            double distance = distancia(train.getEjemplo(i), train.getEjemplo(j), pesos); // Calcula la distancia entre el ejemplo de prueba y el ejemplo de entrenamiento i
+            if (distance < min_distance) { // Actualiza el indice y la distancia
+                min_index = j;
+                min_distance = distance;
+            }
+        }
+        if (train.getEjemplo(min_index).etiqueta == train.getEjemplo(i).etiqueta)
             acierto_train++;
     }
-
 }
 
 // Función auxiliar para clasificar el dataset de test

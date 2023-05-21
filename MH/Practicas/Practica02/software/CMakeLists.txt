@@ -11,7 +11,7 @@ add_executable(practica2
   fuentes/apc.cpp
   fuentes/funcionesAux.cpp
   fuentes/algoritmosGeneticos.cpp
-)
+        cabeceras/busquedaLocal.h)
 
 # Agrega los archivos de encabezado
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/cabeceras)

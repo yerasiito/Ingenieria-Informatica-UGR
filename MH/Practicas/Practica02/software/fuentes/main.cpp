@@ -1,29 +1,36 @@
 #include <iomanip>
+#include <map>
 #include "random.hpp"
-#include "busquedaLocal.hpp"
+#include "busquedaLocal.cpp"
 #include "algoritmosGeneticos.h"
 
 using namespace std;
 using Random = effolkronium::random_static;
 
+vector<string> algoritmos { "oneNN", "Greedy", "BL"};
+vector<string> algoritmosGeneticos {"AGG", "AGE", "AM1"};
+vector<string> operadores {"Aritmetrico", "BLX"};
 vector<string> nombreDatasets = {"diabetes", "ozone-320", "spectf-heart"}; // Datasets a utilizar
+
+bool isInContainer(const std::vector<std::string>& container, std::string_view element) {
+    return std::find(container.begin(), container.end(), element) != container.end();
+}
+
+void showErrorUnknownAlgorithm(std::string_view algorithm) {
+    std::cerr << "Algoritmo '" << algorithm << "' desconocido. Elige: 'sin parametro', oneNN, Greedy, BL o AGG.\n";
+}
+
+void showErrorUnknownOperator(std::string_view op) {
+    std::cerr << "Operador '" << op << "' desconocido. Elige: 'sin parametro', Aritmetrico o BLX.\n";
+}
 
 int main(int argc, char **argv)
 {
     int ficheros = 5;
     long int seed;
 
-    if (argc <= 2)
-        cout << "Sin semilla fija" << endl;
-    else
-    {
-        seed = std::strtol(argv[2], nullptr, 10);
-        Random::seed(seed);
-        cout << "Usando semilla: " << seed << endl;
-    }
-
     int acierto_train, acierto_test;
-    string algoritmo = "1-NN";
+    string algoritmo = "oneNN", operador = "BLX";
     vector<double> pesosMedios, resultadosMedios;
     vector<double> resultado;
     Dataset train, test;
@@ -31,11 +38,44 @@ int main(int argc, char **argv)
     // Lee el algoritmo pasado por parametro (si se han pasado parametros)
     if (argc != 1)
         algoritmo = argv[1];
-    // Devuelve error en caso de pasar un parametro desconocido
-    if (algoritmo != "1-NN" && algoritmo != "greedy" && algoritmo != "bl" && algoritmo != "AGG" && algoritmo != "AGE")
-    {
-        cerr << "Algoritmo " << argv[1] << " desconocido. Elige: 'sin parametro', greedy, bl o AGG.\n";
+
+    bool isAlgoritmoAPC = isInContainer(algoritmos, algoritmo);
+    bool isAlgoritmoGenetico = isInContainer(algoritmosGeneticos, algoritmo);
+
+    if (!isAlgoritmoAPC && !isAlgoritmoGenetico) {
+        showErrorUnknownAlgorithm(algoritmo);
         return EXIT_FAILURE;
+    }
+
+    if (isAlgoritmoAPC) {
+        if (argc <= 2)
+            cout << "Semilla no especificada: aleatoria" << std::endl;
+        else {
+            seed = std::strtol(argv[2], nullptr, 10);
+            Random::seed(seed);
+            cout << "Usando semilla: " << seed << std::endl;
+        }
+    }
+
+    if (isAlgoritmoGenetico) {
+        if (argc <= 2) {
+            std::cout << "Sin parámetros. Usando semilla aleatoria y operador BLX" << std::endl;
+        } else {
+            operador = argv[2];
+            if (!isInContainer(operadores, operador)) {
+                showErrorUnknownOperator(operador);
+                return EXIT_FAILURE;
+            }
+            std::cout << "Usando operador: " << operador << std::endl;
+
+            if (argc > 3) {
+                seed = std::strtol(argv[3], nullptr, 10);
+                Random::seed(seed);
+                std::cout << "Usando semilla: " << seed << std::endl;
+            } else {
+                std::cout << "Semilla no especificada: aleatoria" << std::endl;
+            }
+        }
     }
 
     // Lee todos los dataset con sus respectivos ficheros
@@ -48,8 +88,11 @@ int main(int argc, char **argv)
         resultado = {}, pesosMedios = {}, resultadosMedios = {};
 
         // Imprimir cabecera tabla de resultados
-        std::cout << "--------------------------------------Clasificador (" << algoritmo << "):" << fichero << "-------------------------------------" << endl;
-        cout << "\nParticion\t" << "Tasa_clas_train[%]\t" << "Tasa_clas_test[%]\t" << "Tasa_red[%]\t" << "Fitness\t\t" << "Tiempo[s]" << endl;
+        std::cout << "--------------------------------------Clasificador (" << algoritmo;
+        if(isAlgoritmoGenetico)
+            cout << "-" << operador;
+        cout << "):" << fichero << "-------------------------------------" << endl;
+        cout << "Particion\t" << "Tasa_clas_train[%]\t" << "Tasa_clas_test[%]\t" << "Tasa_red[%]\t" << "Fitness\t\t" << "Tiempo[s]" << endl;
 
         for (int i = 0; i < ficheros; i++)
         {
@@ -73,27 +116,18 @@ int main(int argc, char **argv)
 
             // Calculamos los pesos segun el algoritmo pasado por parametro
             auto momentoInicio = chrono::high_resolution_clock::now(); // Contamos el tiempo de los algoritmos
-            if (algoritmo == "greedy")
+            if (algoritmo == "Greedy")
                 pesos = greedy_relief(train);
-            else if (algoritmo == "bl")
+            else if (algoritmo == "BL")
                 pesos = busquedaLocal(train); // bl.busquedaLocal(train, test);
             else if(algoritmo == "AGG"){
-                cout << "\n\n##############Ejecucion de AGG##############\n";
-                if(seed == 0)
-                    cout << "Aritmétrico lógico" << endl;
-                else
-                    cout << "BLX" << endl;
-                pesos = AGG(train, 15000, 0.1, (int) seed); // Dataset, tamPoblacion, porcentajeCruce (genetico <<< memetico)
+                pesos = AGG(train, 15000, 0.1, operador); // Dataset, tamPoblacion, porcentajeCruce (genetico <<< memetico)
             }
             else if(algoritmo == "AGE"){
-                cout << "\n\n##############Ejecucion de AGE##############\n";
-                if(seed == 0)
-                    cout << "Aritmétrico lógico" << endl;
-                else
-                    cout << "BLX" << endl;
-
-                pesos = AGE(train, 15000, (int) seed); // Dataset, tamPoblacion, porcentajeCruce (genetico <<< memetico)
+                pesos = AGE(train, 15000, operador); // Dataset, tamPoblacion, porcentajeCruce (genetico <<< memetico)
             }
+            else if(algoritmo == "AM1")
+                pesos = AM1(train, 15000, operador); // Dataset, tamPoblacion, porcentajeCruce (genetico <<< memetico)
 
             // Ejecutamos el clasificador 1NN
             clasificar(train, test, pesos, acierto_train, acierto_test, true);

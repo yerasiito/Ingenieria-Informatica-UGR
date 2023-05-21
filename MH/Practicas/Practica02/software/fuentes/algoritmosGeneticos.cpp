@@ -1,8 +1,8 @@
+#include <algorithm>
 #include "algoritmosGeneticos.h"
 #include "apc.h"
 #include "random.hpp"
-#include <algorithm>
-#include <chrono>
+#include "busquedaLocal.h"
 
 using namespace std;
 using Random = effolkronium::random_static;
@@ -53,6 +53,14 @@ public:
         poblacion[i] = individuo;
     }
 
+    void setIndividuoyFitness(int i, const vector<double> & individuo, double fitness){
+        if(poblacion[i] != individuo)
+            fitness_pop[i].second = false;
+
+        poblacion[i] = individuo;
+        fitness_pop[i].first = fitness;
+    }
+
     void nuevas_soluciones(int tamPoblacion, int numCaracteristicas){
 
         if(!poblacion.empty())
@@ -68,7 +76,7 @@ public:
         return i < fitness_pop.size() && fitness_pop[i].second;
     }
 
-    void calcularfitness_pop(const Dataset& train){
+    void calcularfitness_pop(const Dataset& train, int &iter){
         int acierto_train;
 
         for(int i = 0; i < fitness_pop.size(); i++){
@@ -78,6 +86,7 @@ public:
             clasificarTrain(train, poblacion[i], acierto_train);
             fitness_pop[i].first = calcularFitness(acierto_train, train.numEjemplos(), poblacion[i]);
             fitness_pop[i].second = true;
+            iter++;
         }
 
         // Obtener el peor fitness del vector
@@ -142,7 +151,7 @@ public:
         return poblacion[worstFitness];
     }
 
-    void etilismo(int betterFitness, const vector<double>& betterIndv){
+    void elitismo(int betterFitness, const vector<double>& betterIndv){
         setIndividuo(worstFitness, betterIndv); //Cambia el peor de newpop por el mejor de pop
         worstFitness = betterFitness;
     }
@@ -202,6 +211,15 @@ void aplicarTorneo(const Poblacion &pop, Poblacion &seleccionados){
     }
 }
 
+void checkPesos(vector<double> &peso){
+    for(int i = 0; i < peso.size(); i++){
+        if(peso[i] < 0.1)
+            peso[i] = 0;
+        if(peso[i] > 1)
+            peso[i] = 1;
+    }
+}
+
 // Devuelve 2 hijos
 vector<vector<double>> cruceAritmetrico(vector<double> padre1, vector<double> padre2){
     vector<vector<double>> hijos;
@@ -216,6 +234,7 @@ vector<vector<double>> cruceAritmetrico(vector<double> padre1, vector<double> pa
         hijos[0].push_back(gen1);
         hijos[1].push_back(gen2);
     }
+
     return hijos;
 }
 
@@ -244,9 +263,9 @@ vector<vector<double>> cruceBLX(vector<double> padre1, vector<double> padre2, fl
 }
 
 // cruce==0 ejecuta aritmétrico aleatorio, cruce>0 ejecuta BLX
-std::vector<double> AGG(const Dataset &train, const int &maxIters, const double &pcross, const int &cruce){
+std::vector<double> AGG(const Dataset &train, const int &maxIters, const double &pcross, const string& operador){
     double pmut = 0.1;
-    int tamPoblacion = 50;
+    int tamPoblacion = 50, iter = 0;
     int numCaracteristicas = train.numCaracteristicas();
 
     // Cual es el tamaño de la poblacion?
@@ -256,9 +275,7 @@ std::vector<double> AGG(const Dataset &train, const int &maxIters, const double 
     pop.nuevas_soluciones(tamPoblacion, numCaracteristicas); // Aleatorio
 
     // Calcular el fitness de la poblacion en train
-    pop.calcularfitness_pop(train);
-
-    int iter = tamPoblacion;
+    pop.calcularfitness_pop(train, iter);
 
     vector<double> sol1, sol2;
     vector<vector<double>> hijos;
@@ -274,7 +291,7 @@ std::vector<double> AGG(const Dataset &train, const int &maxIters, const double 
             sol1 = newpop.getIndividuo(i);
             sol2 = newpop.getIndividuo(i+1);
 
-            if(cruce == 0)
+            if(operador == "Aritmetrico")
                 hijos = cruceAritmetrico(sol1, sol2);
             else
                 hijos = cruceBLX(sol1, sol2);
@@ -295,16 +312,16 @@ std::vector<double> AGG(const Dataset &train, const int &maxIters, const double 
         }
 
         // Evaluacion
-        newpop.calcularfitness_pop(train);
+        for(int i = 0; i < newpop.numPoblacion(); i++)
+            checkPesos(newpop.getMIndividuo(i));
+
+        newpop.calcularfitness_pop(train, iter);
 
         // Etilismo, para no empeorar
         if (pop.getFitness(pop.getPosBest()) < newpop.getFitness(newpop.getPosBest())){
             int mejor = pop.getPosBest();
-            newpop.etilismo(mejor, pop.getIndividuo(mejor));
+            newpop.elitismo(mejor, pop.getIndividuo(mejor));
         }
-
-//        cout << iter << endl;
-        iter += newpop.numPoblacion();
 
         // Reemplazo
         pop.copy(newpop);
@@ -326,21 +343,25 @@ void reemplaza_peores(const vector<double>& sol1, double fit1, const vector<doub
 
     std::sort(mini_pop.rbegin(), mini_pop.rend());
 
-    if(mini_pop[0] == fit1)
-        pop.setIndividuo(worst, sol1);
-    else if(mini_pop[0] == fit2)
-        pop.setIndividuo(worst, sol2);
+    if(mini_pop[0] == fit1) {
+        pop.setIndividuoyFitness(worst, sol1, fit1);
+        if(mini_pop[1] == fit2) {
+            pop.setIndividuoyFitness(secondWorst, sol2, fit2);
 
-    if(mini_pop[1] == fit1)
-        pop.setIndividuo(worst, sol1);
-    else if(mini_pop[1] == fit2)
-        pop.setIndividuo(worst, sol2);
+        }
+    }
+    else if(mini_pop[0] == fit2) {
+        pop.setIndividuoyFitness(worst, sol2, fit2);
+        if(mini_pop[1] == fit1) {
+            pop.setIndividuoyFitness(secondWorst, sol1, fit1);
+        }
+    }
 }
 
 // cruce==0 ejecuta aritmétrico aleatorio, cruce>0 ejecuta BLX
-std::vector<double> AGE(const Dataset &train, const int &maxIters, const int &cruce){
+std::vector<double> AGE(const Dataset &train, const int &maxIters, const string& operador){
     double pmut = 0.1;
-    int tamPoblacion = 50;
+    int tamPoblacion = 50, iter = 0;
     int numCaracteristicas = train.numCaracteristicas();
 
     // Cual es el tamaño de la poblacion?
@@ -350,9 +371,8 @@ std::vector<double> AGE(const Dataset &train, const int &maxIters, const int &cr
     pop.nuevas_soluciones(tamPoblacion, numCaracteristicas); // Aleatorio
 
     // Calcular el fitness de la poblacion en train
-    pop.calcularfitness_pop(train);
+    pop.calcularfitness_pop(train, iter);
 
-    int iter = tamPoblacion;
     int posi1, posi2;
     vector<double> sol1, sol2;
     double fit1, fit2;
@@ -363,11 +383,10 @@ std::vector<double> AGE(const Dataset &train, const int &maxIters, const int &cr
         posi2 = pop.torneo_binario();
 
         // cruzo
-        if(cruce == 0)
+        if(operador == "Aritmetrico")
             hijos = cruceAritmetrico(pop.getIndividuo(posi1), pop.getIndividuo(posi2));
         else
             hijos = cruceBLX(pop.getIndividuo(posi1), pop.getIndividuo(posi2));
-
 
         sol1 = hijos[0];
         sol2 = hijos[1];
@@ -385,6 +404,9 @@ std::vector<double> AGE(const Dataset &train, const int &maxIters, const int &cr
 
 //        auto inicio = chrono::high_resolution_clock::now(); // Contamos el tiempo de los algoritmos
 
+        checkPesos(sol1);
+        checkPesos(sol2);
+
         // Evaluacion
         int acierto_train;
         clasificarTrain(train, sol1, acierto_train);
@@ -393,11 +415,72 @@ std::vector<double> AGE(const Dataset &train, const int &maxIters, const int &cr
         clasificarTrain(train, sol2, acierto_train);
         fit2 = calcularFitness(acierto_train, train.numEjemplos(), sol2);
 
-//        auto fin = std::chrono::high_resolution_clock::now();
-        // Calcular la duración en milisegundos
-//        auto duracion = std::chrono::duration_cast<std::chrono::milliseconds>(fin - inicio);
-        // Mostrar la duración en milisegundos
-//        std::cout << "El tiempo transcurrido: " << duracion.count() << " milisegundos" << std::endl;
+//        cout << iter << endl;
+        iter += 2;
+
+        // Reemplazo los 2 peores
+        reemplaza_peores(sol1, fit1, sol2, fit2, pop);
+    }
+
+    return pop.mejor();
+}
+
+std::vector<double> AM1(const Dataset &train, const int &maxIters, const string& operador){
+    double pmut = 0.1;
+    int tamPoblacion = 50, iter = 0;
+    int numCaracteristicas = train.numCaracteristicas();
+
+    // Cual es el tamaño de la poblacion?
+    Poblacion pop;
+
+    // Inicializar el vector
+    pop.nuevas_soluciones(tamPoblacion, numCaracteristicas); // Aleatorio
+
+    // Calcular el fitness de la poblacion en train
+    pop.calcularfitness_pop(train, iter);
+
+    int posi1, posi2;
+    vector<double> sol1, sol2;
+    double fit1, fit2;
+    vector<vector<double>> hijos;
+    int generaciones = 0;
+    while(iter < maxIters){
+        // Selección por torneo
+        posi1 = pop.torneo_binario();
+        posi2 = pop.torneo_binario();
+
+        // cruzo
+        if(operador == "Aritmetrico")
+            hijos = cruceAritmetrico(pop.getIndividuo(posi1), pop.getIndividuo(posi2));
+        else
+            hijos = cruceBLX(pop.getIndividuo(posi1), pop.getIndividuo(posi2));
+
+        sol1 = hijos[0];
+        sol2 = hijos[1];
+
+        // Mutacion
+        int posi;
+        if(Random::get(0.0, 1.0) <= pmut) {
+            posi = Random::get(1, pop.numCaracteristicas()); // Posicion random
+            Mov(sol1, posi ,0.8); //Mutacion
+        }
+        if(Random::get(0.0, 1.0) <= pmut) {
+            posi = Random::get(1, pop.numCaracteristicas()); // Posicion random
+            Mov(sol2, posi ,0.8); //Mutacion
+        }
+
+//        auto inicio = chrono::high_resolution_clock::now(); // Contamos el tiempo de los algoritmos
+
+        checkPesos(sol1);
+        checkPesos(sol2);
+
+        // Evaluacion
+        int acierto_train;
+        clasificarTrain(train, sol1, acierto_train);
+        fit1 = calcularFitness(acierto_train, train.numEjemplos(), sol1);
+
+        clasificarTrain(train, sol2, acierto_train);
+        fit2 = calcularFitness(acierto_train, train.numEjemplos(), sol2);
 
 //        cout << iter << endl;
         iter += 2;
@@ -405,7 +488,15 @@ std::vector<double> AGE(const Dataset &train, const int &maxIters, const int &cr
         // Reemplazo los 2 peores
         reemplaza_peores(sol1, fit1, sol2, fit2, pop);
 
+        generaciones++;
+        if(generaciones % 10 == 0){
+            for(int i = 0; i < pop.numPoblacion(); i++) {
+                busquedaLocal(train, pop.getMIndividuo(i));
+                iter++;
+            }
+        }
     }
 
     return pop.mejor();
 }
+
