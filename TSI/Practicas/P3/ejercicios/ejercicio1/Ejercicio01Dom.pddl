@@ -1,90 +1,69 @@
 (define (domain starcrfd1)
     (:requirements :strips :typing :fluents :negative-preconditions)
     (:types
-        Unidad Edificio Localizacion Recurso - object  
-        
+        Unidad Edificio Localizacion tipoRecurso - object
     )
     (:constants 
         VCE - Unidad
-        CentroDeMando - Edificio
-        Barracones - Edificio
-        Minerales Gas - Recurso
+        CentroDeMando Barracones - Edificio
+        Minerales Gas - tipoRecurso
     )
     (:predicates
-        ;; Un edificio o Unidad esta en una Localizacion
-        (EdificioEn ?e - Edificio ?l - Localizacion)
+        ;; 1. Un edificio o Unidad esta en una Localizacion concreta
+        (EdificioEn ?e - Edificio ?l - Localizacion) ; QUE UNA ENTIDAD CUALQUIERA ESTÉ LOCALIZADA EN UN SITIO CONCRETO. UNIFICAR AMBOS PREDICADOS
         (UnidadEn ?u - Unidad ?l - Localizacion)
-        ;; Tipo de Edificio
-        (EsEdificio ?e ?y - Edificio)
-        ;; Tipo de Unidad
-        (EsUnidad ?u ?y - Unidad)
-        ;; Existe un camino entre dos localizaciones
+
+        ;; 2. Existe un camino entre dos localizaciones
         ;; Conectar dos localizaciones para formar el grid
         (Conectado ?l1 - Localizacion ?l2 - Localizacion)
-        ;; Asignar un nodo de un recurso concreto a una localizacion
-        (HayRecurso ?r - Recurso ?l - Localizacion)
-        ;; Tipo de Recurso
-        (EsRecurso ?r ?y - Recurso)
-        ;; VCE extrae un recurso
-        (Extrayendo ?v - Unidad)
-        ;; Recurso necesario para construir un Edificio
-        (EdificioNecesita ?e - Edificio ?r - Recurso)
-        ;; VCE esta construyendo
-        (Construyendo ?v - Unidad)
         
+        ;; No se necesita para el ejercicio
+        ;; (Construido ?e - Edificio)
+
+        ;; 4. Asignar un nodo de un recurso concreto a una localizacion concreta
+        (HayDepositoEn ?tR - tipoRecurso ?l - Localizacion) ; NO HACE FALTA INSTANCIAR NINGUN RECURSO
         
-    )
-    (:functions
-        (AlmacenRecursos ?r - Recurso)
+        ;; 5. VCE extrae un tipo de recurso
+        (estaExtrayendo ?v - Unidad)
+        (ExtrayendoRecurso ?r - tipoRecurso)
+
+        ;; Tipo de Edificio
+        (EsEdificio ?e ?tE - Edificio)
+        ;; Tipo de Unidad
+        (EsUnidad ?v ?tV - Unidad); EsUnidad VCE1 VCE
     )
     
+    ;; Navegar: mueve una unidad entre dos localizaciones
+    ;; Parámetros: Unidad, Localizacion Origen, Localizacion destino
     (:action Navegar
-        :parameters (?v - Unidad ?tV - Unidad ?lactual - Localizacion ?ldest - Localizacion)
+        :parameters (?v - Unidad ?lorig - Localizacion ?ldest - Localizacion)
         :precondition
             (and
-                (UnidadEn ?v ?lactual)
-                (Conectado ?lactual ?ldest)
-                (EsUnidad ?v ?tV)
+                (UnidadEn ?v ?lorig)
+                (Conectado ?lorig ?ldest)
             )
         :effect
             (and
                 (UnidadEn ?v ?ldest)
-                (not (UnidadEn ?v ?lactual))
+                (not (UnidadEn ?v ?lorig))
             )
     )
 
+    ;; Asignar: asigna un VCE a un nodo recurso
+    ;; Parámetros: Unidad, Recurso, Tipo de Recurso, Localización del recurso
     (:action Asignar
-        :parameters (?v - Unidad ?r - Recurso ?tR - Recurso ?l - Localizacion)
+        :parameters (?v - Unidad ?l - Localizacion ?tR - tipoRecurso)
         :precondition
             (and
-                (HayRecurso ?r ?l)
-                (EsRecurso ?r ?tR)
-                (not (Extrayendo ?v))
+                (HayDepositoEn ?tR ?l)
                 (UnidadEn ?v ?l)
+                (EsUnidad ?v VCE)
+                (not (estaExtrayendo ?v))
             )
         :effect
             (and
-                (Extrayendo ?v)
-                (increase (AlmacenRecursos ?tR) 1)
+                (estaExtrayendo ?v)
+                (ExtrayendoRecurso ?tR)
             )
     )
-
-    (:action Construir
-        :parameters (?v - Unidad ?e - Edificio ?l - Localizacion ?tE - Edificio ?tR - Recurso)
-        :precondition
-            (and
-                (EsEdificio ?e ?tE)
-                (UnidadEn ?v ?l)
-                (EdificioNecesita ?tE ?tR)
-                (not (Construyendo ?v))
-                (not (EdificioEn ?e ?l))
-                (>= (AlmacenRecursos ?tR) 1)
-            )
-        :effect
-            (and
-                (EdificioEn ?e ?l)
-                (decrease (AlmacenRecursos ?tR) 1)
-            )
-    )   
-    
 )
