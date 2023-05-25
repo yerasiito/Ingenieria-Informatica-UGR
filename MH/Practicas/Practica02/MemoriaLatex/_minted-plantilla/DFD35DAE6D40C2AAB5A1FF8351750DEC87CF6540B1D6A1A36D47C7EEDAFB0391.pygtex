@@ -1,0 +1,11 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n}{Input}\PYG{p}{(}\PYG{n}{Vector}\PYG{+w}{ }\PYG{n}{características}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}A\PYGZdq{}}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{Conjunto}\PYG{+w}{ }\PYG{n}{Entrenamiento}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}T\PYGZdq{}}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{pesos}\PYG{+w}{ }\PYG{n}{W}\PYG{p}{)}
+\PYG{n}{Inicio}
+\PYG{+w}{    }\PYG{n}{Inicializar}\PYG{+w}{ }\PYG{n}{min\PYGZus{}distancia}\PYG{p}{(}\PYG{n}{INFINITY}\PYG{p}{)}\PYG{+w}{ }\PYG{n}{y}\PYG{+w}{ }\PYG{n}{min\PYGZus{}index}\PYG{p}{(}\PYG{l+m+mi}{\PYGZhy{}1}\PYG{p}{)}
+\PYG{+w}{    }\PYG{n}{Para}\PYG{+w}{ }\PYG{n}{cada}\PYG{+w}{ }\PYG{n}{vector}\PYG{+w}{ }\PYG{n}{B}\PYG{+w}{ }\PYG{n}{en}\PYG{+w}{ }\PYG{n}{T}
+\PYG{+w}{        }\PYG{n}{distancia}\PYG{+w}{ }\PYG{o}{\PYGZlt{}\PYGZhy{}}\PYG{+w}{ }\PYG{n}{DISTANCIA\PYGZus{}EUCLIDEA}\PYG{p}{(}\PYG{n}{A}\PYG{p}{,}\PYG{n}{B}\PYG{p}{,}\PYG{n}{W}\PYG{p}{)}
+\PYG{+w}{        }\PYG{n}{Si}\PYG{+w}{ }\PYG{n}{distancia}\PYG{+w}{ }\PYG{n}{es}\PYG{+w}{ }\PYG{n}{menor}\PYG{+w}{ }\PYG{n}{que}\PYG{+w}{ }\PYG{n}{min\PYGZus{}distancia}
+\PYG{+w}{            }\PYG{n}{entonces}\PYG{+w}{ }\PYG{n}{min\PYGZus{}index}\PYG{+w}{ }\PYG{o}{\PYGZlt{}\PYGZhy{}}\PYG{+w}{ }\PYG{n}{T}\PYG{p}{.}\PYG{n}{indice}\PYG{+w}{ }\PYG{n}{y}\PYG{+w}{ }\PYG{n}{min\PYGZus{}distancia}\PYG{+w}{ }\PYG{o}{\PYGZlt{}\PYGZhy{}}\PYG{+w}{ }\PYG{n}{distancia}
+\PYG{+w}{     }\PYG{n}{DEVOLVER}\PYG{p}{(}\PYG{n}{T}\PYG{p}{.}\PYG{n}{GET\PYGZus{}ETIQUETA}\PYG{p}{(}\PYG{n}{min\PYGZus{}index}\PYG{p}{))}
+\PYG{n}{Fin}
+\end{Verbatim}
