@@ -10,8 +10,7 @@
     )
     (:predicates
         ;; 1. Un edificio o Unidad esta en una Localizacion concreta
-        (EdificioEn ?e - Edificio ?l - Localizacion) ; QUE UNA ENTIDAD CUALQUIERA ESTÉ LOCALIZADA EN UN SITIO CONCRETO. UNIFICAR AMBOS PREDICADOS
-        (UnidadEn ?u - Unidad ?l - Localizacion)
+        (EntidadEn ?e - object ?l - Localizacion) ; QUE UNA ENTIDAD CUALQUIERA ESTÉ LOCALIZADA EN UN SITIO CONCRETO. UNIFICAR AMBOS PREDICADOS
 
         ;; 2. Existe un camino entre dos localizaciones
         ;; Conectar dos localizaciones para formar el grid
@@ -39,13 +38,13 @@
         :parameters (?v - Unidad ?lorig - Localizacion ?ldest - Localizacion)
         :precondition
             (and
-                (UnidadEn ?v ?lorig)
+                (EntidadEn ?v ?lorig)
                 (Conectado ?lorig ?ldest)
             )
         :effect
             (and
-                (UnidadEn ?v ?ldest)
-                (not (UnidadEn ?v ?lorig))
+                (EntidadEn ?v ?ldest)
+                (not (EntidadEn ?v ?lorig))
             )
     )
 
@@ -56,7 +55,7 @@
         :precondition
             (and
                 (HayDepositoEn ?tR ?l)
-                (UnidadEn ?v ?l)
+                (EntidadEn ?v ?l)
                 (EsUnidad ?v VCE)
                 (not (estaExtrayendo ?v))
             )

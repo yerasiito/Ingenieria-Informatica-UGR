@@ -74,10 +74,10 @@
 
         ;; CentroDeMando en loc1_1
         (EsEdificio CentroDeMando1 CentroDeMando) ;; Se establece el tipo de edificio
-        (EdificioEn CentroDeMando1 loc1_1)
+        (EntidadEn CentroDeMando1 loc1_1)
         ;; Unidad VCE en loc1_1
         (EsUnidad VCE1 VCE) ;; Se establece el tipo de la Unidad
-        (UnidadEn VCE1 loc1_1)
+        (EntidadEn VCE1 loc1_1)
 
         ;; Nodos de mineral en el mapa
         (HayDepositoEn Minerales loc2_4)
