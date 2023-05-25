@@ -1,0 +1,6 @@
+1. Modularizar el sistema de viajes de clips.
+2. Implementar el congreso en protegé
+3. Logica por defecto: Animales (vuela o no)
+4. Factores de certeza: averia del coche
+5. Razonamiento difuso (hecho)
+6. Probabilidades (hecho)
