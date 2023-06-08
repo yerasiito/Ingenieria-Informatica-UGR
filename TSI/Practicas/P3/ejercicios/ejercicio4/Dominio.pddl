@@ -4,7 +4,7 @@
         Unidad tipoUnidad Edificio tipoEdificio Localizacion tipoRecurso - object
     )
     (:constants 
-        VCE - tipoUnidad
+        VCE Marine Soldado - tipoUnidad
         CentroDeMando Barracones Extractor - tipoEdificio
         Minerales Gas - tipoRecurso
     )
@@ -29,10 +29,16 @@
         (esTipoUnidad ?u - unidad ?t - tipoUnidad)
 
         ; Materiales que el edificio necesita
-        (necesita ?te - tipoEdificio ?tr - tipoRecurso)
+        (necesita ?to - object ?tr - tipoRecurso)
 
         ; Si un edificio está construido
         (construido ?e - Edificio)
+
+        ; Donde se recluta la unidad
+        (recluta ?u - tipoUnidad ?te - tipoEdificio)
+
+        ; Ya esté reclutada
+        (reclutada ?u)
     )
     
     ;; Navegar: mueve una unidad entre dos localizaciones
@@ -40,10 +46,7 @@
     (:action Navegar
         :parameters (?u - Unidad ?lorig - Localizacion ?ldest - Localizacion)
         :precondition
-            (and
-                ; La localizacion de destino no es igual a la de origen
-                (not (= ?lorig ?ldest))
-                
+            (and                
                 ; La unidad está libre
                 (libre ?u)
                 
@@ -119,7 +122,7 @@
     (:action Construir
       :parameters (?u - Unidad ?e - Edificio ?l - Localizacion)
       :precondition
-         (and
+        (and
             ; La unidad está libre
             (libre ?u)
 
@@ -144,13 +147,55 @@
                     )
             )
             
-         )
+        )
       :effect
-         (and
+        (and
             ; Se construye dicho edificio
             (construido ?e)
             ; Se construye el edificio
             (en ?e ?l)
-         )
-   )
+        )
+    )
+    
+    (:action Reclutar
+      :parameters (?e - Edificio ?u - Unidad ?l - Localizacion)
+      :precondition
+        (and
+            
+            ; Está construido el edificio necesario
+            (construido ?e)
+            (not (Reclutada ?u))
+            ; Esta libre la unidad
+            (libre ?u)
+
+            ; La unidad necesita recursos especificos de su tipo
+            (forall (?tr - tipoRecurso)
+                    (imply
+                        ; Si el tipo de unidad necesita el recurso
+                        (exists (?tu - tipoUnidad)
+                            (and 
+                                (esTipoUnidad ?u ?tu)
+                                (necesita ?tu ?tr)
+                            )
+                        )
+                        ; Entonces tiene que estar disponible dicho recurso
+                        (generando ?tr)
+                    )
+            )
+            ; La unidad se recluta en un edificio concreto
+            (exists (?te - tipoEdificio ?tu - tipoUnidad)
+                (and
+                    (esTipoEdificio ?e ?te)
+                    (esTipoUnidad ?u ?tu)
+                    (recluta ?tu ?te)
+                    (en ?e ?l)
+                )   
+            )
+        )
+    :effect
+        (and
+            (en ?u ?l)
+            (Reclutada ?u)
+        )
+    )
 )

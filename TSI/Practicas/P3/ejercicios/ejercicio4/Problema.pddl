@@ -18,6 +18,8 @@
         loc4_3
         loc4_4 - Localizacion
         VCE1 VCE2 VCE3 - Unidad
+        Marine1 Marine2 - Unidad
+        Soldado1 - Unidad
         CentroDeMando1 Extractor1 Barracones1 - Edificio
     )
     (:init
@@ -74,7 +76,7 @@
         (Conectado loc4_4 loc3_4)
 
         ;; Nodos de mineral en el mapa
-        (en Minerales loc2_4)
+        (en Minerales loc2_2)
         (en Minerales loc4_4)
         (en Gas loc1_5)
 
@@ -90,22 +92,42 @@
         ;; CentroDeMando en loc1_1
         (esTipoEdificio CentroDeMando1 CentroDeMando)
         (necesita CentroDeMando Minerales)
-        (en CentroDeMando loc1_1)
+        (en CentroDeMando1 loc1_1)
         (construido CentroDeMando1)
         
-        ; ;; Unidad VCE en loc1_1
-        (EsTipoUnidad VCE1 VCE) ;; Se establece el tipo de la Unidad
-        (EsTipoUnidad VCE2 VCE) ;; Se establece el tipo de la Unidad
-        (EsTipoUnidad VCE3 VCE) ;; Se establece el tipo de la Unidad
+        ;; Unidades
+        ; Recursos necesarios
+        (necesita VCE Minerales)
+        (necesita Marine Minerales)
+        (necesita Soldado Minerales)
+        (necesita Soldado Gas)
+        
+        ; Donde se reclutan
+        (recluta VCE CentroDeMando)
+        (recluta Marine Barracones)
+        (recluta Soldado Barracones)
+
+        (esTipoUnidad VCE1 VCE) ;; Se establece el tipo de la Unidad
+        (esTipoUnidad VCE2 VCE) ;; Se establece el tipo de la Unidad
+        (esTipoUnidad VCE3 VCE) ;; Se establece el tipo de la Unidad
         (en VCE1 loc1_1) ;; Se establece localizacion de la Unidad
-        (en VCE2 loc1_1) ;; Se establece localizacion de la Unidad
-        (en VCE3 loc1_1) ;; Se establece localizacion de la Unidad
         (libre VCE1)
         (libre VCE2)
         (libre VCE3)
+        (libre Marine1)
+        (libre Marine2)
+        (libre Soldado1)
+
+        (esTipoUnidad Marine1 Marine)
+        (esTipoUnidad Marine2 Marine)
+        (esTipoUnidad Soldado1 Soldado)
     )
     (:goal
-        ; (ExtrayendoRecurso Gas)
-        (en Barracones1 loc3_4)
+        (and
+            (en Barracones1 loc3_3)  
+            (en Marine1 loc3_1)
+            (en Marine2 loc2_4)
+            (en Soldado1 loc1_2)          
+        )
     )
 )
