@@ -17,8 +17,9 @@
         loc4_2
         loc4_3
         loc4_4 - Localizacion
+        VCE1 VCE2 - Unidad
         CentroDeMando1 - Edificio
-        VCE1 - Unidad
+        Extractor1 - Edificio
     )
     (:init
         ;; Mapa
@@ -71,19 +72,28 @@
 
         (Conectado loc4_4 loc4_3)
         (Conectado loc4_4 loc1_5)
-
-        ;; CentroDeMando en loc1_1
-        (EsEdificio CentroDeMando1 CentroDeMando) ;; Se establece el tipo de edificio
-        (EntidadEn CentroDeMando1 loc1_1)
-        ;; Unidad VCE en loc1_1
-        (EsUnidad VCE1 VCE) ;; Se establece el tipo de la Unidad
-        (EntidadEn VCE1 loc1_1)
+        (Conectado loc4_4 loc3_4)
 
         ;; Nodos de mineral en el mapa
-        (HayDepositoEn Minerales loc2_4)
-        (HayDepositoEn Minerales loc4_4)
+        (en Minerales loc2_4)
+        (en Minerales loc4_4)
+        (en Gas loc1_5)
+
+        ;; Extractor necesita -> Minerales
+        (esTipoEdificio Extractor1 Extractor)
+        (necesita Extractor Minerales)
+
+        ;; CentroDeMando en loc1_1
+        (esTipoEdificio CentroDeMando1 CentroDeMando)
+        (en CentroDeMando1 loc1_1)
+        
+        ;; Unidad VCE en loc1_1
+        (esTipoUnidad VCE1 VCE) ;; Se establece el tipo de la Unidad
+        (esTipoUnidad VCE2 VCE) ;; Se establece el tipo de la Unidad
+        (en VCE1 loc1_1) ;; Se establece localizacion de la Unidad
+        (en VCE2 loc1_1) ;; Se establece localizacion de la Unidad
     )
     (:goal
-        (ExtrayendoRecurso Minerales)
+        (ExtrayendoRecurso Gas)
     )
 )
