@@ -4,13 +4,13 @@
 %----------------------------------------------------------------------------------------
 
 \title{
-	Práctica 2.b \\\vspace{1cm}
-	Técnicas de Búsqueda Local y Algoritmos Greedy
-	para el Problema del Aprendizaje de Pesos en
-	Características \vspace{1cm} \\
+	Práctica 3.b \\\vspace{1cm}
+	Técnicas de Búsqueda basadas en Trayectorias para el
+	Problema del Aprendizaje de Pesos en Características
+ \vspace{1cm} \\
 	El problema del Aprendizaje de Pesos en Características (APC)	\vspace{1cm} \\
-	Algoritmos Genéticos \\
-	Algoritmos Meméticos \hspace{1cm} 
+	Algoritmos BMB, ILS, VNS, ES e ILS-ES
+	\hspace{1cm} 
  }   
 
 \author{Yeray López Ramírez	}                             
@@ -160,78 +160,40 @@ Fin
 
 La función READ de cada conjunto de datos se encarga de leer el fichero $f$ e integrarlo en la estructura. Se ignoran todos los comentarios y se leen los datos como una matriz de Ejemplos.\\
 
-\subsection{Algoritmos de Búsqueda}
+\subsection{Algoritmos de Trayectoria}
+Un algoritmo basado en trayectorias, también conocido como algoritmo de búsqueda de trayectorias, es un enfoque de resolución de problemas que se centra en encontrar una trayectoria o camino óptimo en un espacio de búsqueda.\\
 
-Para la aplicación de los algoritmos al problema de APC, se utilizó el algoritmo Greedy RELIEF y la Búsqueda Local Primer Mejor. A continuación, se describirán brevemente cada uno de estos algoritmos y su aplicación al problema.
+Este tipo de algoritmo se utiliza principalmente en problemas de optimización, donde se busca encontrar la mejor solución dentro de un conjunto de posibles soluciones. La idea es explorar el espacio de búsqueda de manera iterativa, moviéndose de un estado a otro, evaluando la calidad de cada estado y eligiendo la mejor opción en función de un criterio objetivo.\\
 
-\begin{itemize}
-	\item El algoritmo Greedy RELIEF genera un vector de pesos basado en las distancias de cada ejemplo a su amigo más cercano y a su enemigo más cercano, con el objetivo de incrementar el peso en aquellas características que mejor separan a ejemplos que son enemigos entre sí, y reducir el peso en aquellas características que separan ejemplos que son amigos entre sí. 
-	
-	\item Por otro lado, el algoritmo BL utiliza una representación real basada en un vector de pesos que indica la importancia de cada característica. La función objetivo combina medidas de precisión y complejidad del clasificador 1-NN diseñado con el vector de pesos, y el objetivo es maximizar esta función mediante la exploración de vecindarios generados mediante movimientos de cambio por mutación normal.
-\end{itemize}
+La exploración de la trayectoria se realiza a través de movimientos sucesivos entre estados adyacentes en el espacio de búsqueda. Estos movimientos pueden ser determinados por una heurística específica o una mutación aleatoria de la población que guíe la búsqueda hacia soluciones prometedoras y no atascarse en óptimos locales.\\
 
-\subsubsection{Algoritmo Greedy}
+Los algoritmos de trayectoria se diferencian de otros enfoques de optimización en que no exploran exhaustivamente todo el espacio de búsqueda, sino que se centran en una trayectoria particular que conduce a una solución óptima. Esto permite reducir el tiempo de búsqueda y encontrar soluciones aceptables en problemas complejos con grandes espacios de búsqueda.\\
 
-En el caso del algoritmo \textbf{Greedy}, se utilizó una variante llamada \textbf{RELIEF}, que es una versión mejorada del algoritmo original. RELIEF utiliza pesos adaptativos para cada característica, y se calcula la importancia de cada característica en base a la contribución que hace a la selección correcta de vecinos. La vecindad se define como el conjunto de instancias más cercanas en cada clase, y se utiliza una función de distancia euclidiana para medir la similitud entre instancias. La implementación en pseudocódigo del \textbf{algoritmo Greedy}:
-\begin{minted}{c++}
-Input(Dataset "D")
-Inicio
-    Inicializar pesos(0, N_CARACTERISTICAS(D))
-    Para cada Ejemplo "E" en D
-        ACTUALIZAR_PESOS(E, LEAVE_ONE_OUT(D, POS(E)), W)
-    pesos <- NORMALIZAR(W)
-    DEVOLVER(pesos)
-Fin
-\end{minted}
-No debemos olvidar que estamos en la representación [0,1] así que es necesario normalizar los pesos antes de terminar. Se truncan los pesos negativos a 0 y se dividen el resto de pesos entre el peso máximo.
+Algunos ejemplos de algoritmos basados en trayectorias incluyen la búsqueda local (Búsqueda Local Reiterada, ILS), la búsqueda multiarranque básico (BMB), Búsqueda de vecindad variable (VNS),  el enfriamiento simulado (ES) y su versión iterativa (ILS-ES). Estos algoritmos tienen diferentes estrategias de búsqueda y características específicas que los hacen adecuados para diferentes tipos de problemas y requisitos de optimización.
 
-Importante notar además que al actualizar los pesos estamos aplicando el LEAVE\_ONE\_OUT para evitar compararse consigo mismo. El método ACTUALIZAR\_PESOS se encarga de encontrar el \code{amigo} y el \code{enemigo} de cada ejemplo del conjunto de datos y actualizar los pesos en consecuencia. Su funcionamiento es el siguiente:
-
-\begin{minted}{c++}
-Input(Ejemplo "inst", Conjunto de Datos "D", Vector de pesos "W")
-Inicio
-    Inicializar adist, edist <- 0
-    Para cada ejemplo "E" del conjunto "D"
-         dist <- DISTANCIA_EUCLIDEA(E, inst, W)
-         Si E.etiqueta == inst.etiqueta
-             entonces si dist es menor que adist
-             	adist <- dist
-             	aindice <- D.indice
-         sino E.etiqueta != inst.etiqueta
-             entonces si dist es menor que edist
-                 edist <- dist
-                 eindice <- D.indice
-     Para cada peso wi en W
-          wi = wi + |inst[i] - D[eindice, i]| - |inst[i] - D[aindice, i]|
-          
-     DEVOLVER(W)
-Fin
-\end{minted}
-
-\subsubsection{Algoritmo de Búsqueda Local}
-
+\subsubsection{Búsqueda Local}
 En el algoritmo de \textbf{búsqueda local} la solución inicial se generó de forma aleatoria utilizando una distribución uniforme en [0, 1], y el movimiento de cambio por mutación normal Mov(W,s) se utilizó como esquema de generación de vecinos en la Búsqueda Local. En cada iteración de la Búsqueda Local, se mutó una componente i del vector de pesos en un orden aleatorio distinto para cada solución, hasta que se alcanzó una solución mejor o se modificaron todas las posiciones una vez sin conseguir una mejora. Se implementa de la siguiente forma:
 \begin{minted}{text}
 Input(Conjunto de datos "Train")
 Inicio
-    GENERAR_SOLUCION_INICIAL(Wact, Train.NUMERO_CARACTERÍSTICAS)
-    objetivoActual <- FUN_OBJETIVO(Train, Wact)
-    Inicializar iteraciones, iter_vecinos = 0, W = Wact
-    Mientras que iter_vecinos < 20*Sact.SIZE y iteraciones menor que 15,000
-        Vec_indices <- GENERAR_VECINDARIO(W.SIZE)
-        Inicializar bool mejora <- false
-        Para cada i en Vec_indices y mientras no haya mejora
-            GENERAR_VECINO(W, i, 0.8)
-            objetivo <- FUN_OBJETIVO(Train, W)
-            Si el objetivo es mayor que el actual
-                Inicializar iter_vecinos = 0
-                objetivoActual <- objetivo
-                Wact = W
-                mejora = true
-            iter_vecinos+1
-        iter+1
-    	
-    DEVOLVER(Wact)
+GENERAR_SOLUCION_INICIAL(Wact, Train.NUMERO_CARACTERÍSTICAS)
+objetivoActual <- FUN_OBJETIVO(Train, Wact)
+Inicializar iteraciones, iter_vecinos = 0, W = Wact
+Mientras que iter_vecinos < 20*Sact.SIZE y iteraciones menor que 15,000
+Vec_indices <- GENERAR_VECINDARIO(W.SIZE)
+Inicializar bool mejora <- false
+Para cada i en Vec_indices y mientras no haya mejora
+GENERAR_VECINO(W, i, 0.8)
+objetivo <- FUN_OBJETIVO(Train, W)
+Si el objetivo es mayor que el actual
+Inicializar iter_vecinos = 0
+objetivoActual <- objetivo
+Wact = W
+mejora = true
+iter_vecinos+1
+iter+1
+
+DEVOLVER(Wact)
 \end{minted}
 A continuación se describe con detalle los esquemas:
 \begin{itemize}
@@ -241,320 +203,192 @@ A continuación se describe con detalle los esquemas:
 	\begin{minted}{c++}
 Input(Pesos "W", indice "i", valor de "media" = 0, valor de" varianza" = 0.8)
 Inicio
-     z <- DISTRIBUCION_NORMAL(0, SQRT(varianza))
-     Si Wi + z es mayor a 1
-          TRUNCAR(Wi, 1)
-     Si Wi + z es menor a 0
-          TRUNCAR(Wi, 0)
-     Si no
-          Wi <- Wi + z
-     DEVOLVER(W)
+z <- DISTRIBUCION_NORMAL(0, SQRT(varianza))
+Si Wi + z es mayor a 1
+TRUNCAR(Wi, 1)
+Si Wi + z es menor a 0
+TRUNCAR(Wi, 0)
+Si no
+Wi <- Wi + z
+DEVOLVER(W)
 	\end{minted}
-
-\item Criterio de aceptación: se cumple cuando el objetivo del vecino generado es mayor que el actual, lo controlamos con el valor de mejora.
+	
+	\item Criterio de aceptación: se cumple cuando el objetivo del vecino generado es mayor que el actual, lo controlamos con el valor de mejora.
 \end{itemize}
 
-\subsection{Algoritmos genéticos}
-Para la segunda parte de la práctica se han utilizado los algoritmos Genéticos (Generacional y Estacionario) y los algoritmos Meméticos. 
+\subsection{Algoritmo de Búsqueda Multiarranque Básica}
+La búsqueda multiarranque básica es un enfoque utilizado en problemas de optimización que busca mejorar la calidad de las soluciones encontradas mediante la exploración de múltiples arranques o puntos iniciales.\\
 
-Los algoritmos genéticos tienen un enfoque de optimización que se inspira en la evolución biológica para resolver problemas complejos. Estos algoritmos se basan en una población de individuos que representan las posibles soluciones a nuestro problema. A través de iteraciones sucesivas, los individuos evolucionan y se mejoran mediante la aplicación de operadores genéticos como la selección, el cruce y la mutación:\\
+En lugar de comenzar la búsqueda desde un único punto inicial, la búsqueda multiarranque básica realiza múltiples arranques desde diferentes puntos iniciales de manera aleatoria. Cada arranque se considera como una ejecución independiente del algoritmo de búsqueda, lo que permite explorar diferentes regiones del espacio de búsqueda y evitar quedar atrapado en óptimos locales.\\
 
-\textbf{Operador de selección}: ambos algoritmos utilizan el Torneo Binario como procedimiento de selección. Dicho torneo consiste en elegir aleatoriamente 2 individuos de la población y devolver el mejor de los dos (el que tenga mayor valor de fitness). Su codificación general es:
-	
-	\begin{algorithm}[H]
-	\SetKwFunction{Selection}{TorneoBinario}
-	\SetKwInOut{Input}{Entrada}
-	\SetKwInOut{Output}{Salida}
-	
-	\Input{población}
-	\Output{individuo seleccionado}
-	
-	\BlankLine
-	\Selection{población}:
-	\BlankLine
-	seleccionado1 = elegir individuo aleatorio de la población;
-	seleccionado2 = elegir individuo aleatorio de la población;
-	
-	\BlankLine
-	\If{fitness(seleccionado[0]) > fitness(seleccionado[1])}{
-		mejorIndividuo = seleccionado[0];
-	}
-	\Else{
-		mejorIndividuo = seleccionado[1];
-	}
-	\BlankLine
-	\Return mejorIndividuo;
-\end{algorithm}
-\quad\\\quad\\
-	\textbf{Operador de Cruce}: es un algoritmo por el cual 2 individuos ''padres'' de la poblacion son mezclados entre sí para generar 2 ''hijos''. Para nuestro problema se han utilizado 2 operadores de cruce distintos:
-	
-	\begin{itemize}
-	\item \textbf{Operador Aritmétrico Aleatorio}: es un operador que combina dos individuos seleccionados utilizando una combinación lineal ponderada. En lugar de utilizar un parametro $\alpha$ fijo, este operador asigna un $\alpha$ aleatorio en cada ejecución y realiza una combinación lineal ponderada con dicho parámetro de ambos padres para generar un nuevo individuo. Su codificación general es:
-	\end{itemize}
+El proceso de búsqueda multiarranque básica se puede describir en los siguientes pasos:
 
+\begin{enumerate}
+\item \textbf{Generación de pesos iniciales:} Se generan múltiples pesos iniciales de manera aleatoria.
+
+\item \textbf{Aplicación del algoritmo de búsqueda:} Para cada punto inicial, se ejecuta un algoritmo de búsqueda (en nuestro caso, búsqueda local) para encontrar una solución localmente óptima o mejorar la solución actual.
+
+\item \textbf{Evaluación y selección de la mejor solución:} Se evalúan las soluciones encontradas en cada arranque y se selecciona la mejor solución obtenida como resultado final.
+
+\item \textbf{Criterio de parada: } Se establece un criterio de parada para determinar cuándo finalizar el proceso de búsqueda, como un número máximo de iteraciones o un límite de tiempo. En nuestro caso se establece un máximo de 15000 iteraciones totales (1000 en cada ejecución de búsqueda local). El pseudocódigo sería:
+
+
+\end{enumerate}
+
+La búsqueda multiarranque básica es especialmente útil cuando el espacio de búsqueda es complejo y existen múltiples óptimos locales. Al explorar diferentes puntos iniciales, existe una mayor probabilidad de encontrar soluciones de mayor calidad y evitar quedar atrapado en óptimos locales subóptimos.
 
 \begin{algorithm}[H]
-	\SetKwFunction{CruceAritmeticoAleatorio}{CruceAritmeticoAleatorio}
+	\SetKwFunction{BMB}{BMB}
 	\SetKwInOut{Input}{Entrada}
 	\SetKwInOut{Output}{Salida}
 	
-	\Input{padre1, padre2, factor $\alpha$ de cruce}
-	\Output{hijo1, hijo2}
+	\Input{Dataset entrenamiento, vector Sact, iter, maxiter}
+	\Output{mejorObjetivo}
 	
 	\BlankLine
-	\CruceAritmeticoAleatorio{padre1, padre2}:
+	\BMB{Dataset train, vector Sact, iter, maxiter}:
 	\BlankLine
-	\For{i = 1 to numero total de caracteristicas}{
-		factor de cruce $\alpha$ = generar numero aleatorio en rango [0.0, 1.0];\\
-		peso1 = $\alpha \cdot$ padre1[i] + ($1- \alpha \cdot$) padre2[i]; \\
-		peso2 = $\alpha \cdot$ padre2[i] + ($1- \alpha \cdot$) padre1[i]; 
-		\BlankLine
-		hijo1[i] = peso1; \\
-		hijo2[i] = peso2;
-	}
+	i = 0	
 	\BlankLine
-	\Return hijo1, hijo2\;
-\end{algorithm}
-\quad\\
-\begin{itemize}
-	\item \textbf{Operador BLX} (Blend Crossover): Este operador combina dos individuos ''padres'' utilizando una mezcla lineal ponderada, pero a diferencia del cruce aritmético aleatorio, la mezcla se realiza en un rango aleatorio específico alrededor de los valores de los padres (entre 0.0 y 1.0). Su codificación general es:
-\end{itemize}
-
-\begin{algorithm}[H]
-	\SetKwFunction{CruceBLX}{CruceBLX}
-	\SetKwInOut{Input}{Entrada}
-	\SetKwInOut{Output}{Salida}
-	
-	\Input{padre1, padre2, factor $\alpha$ de cruce}
-	\Output{hijo1, hijo2}
-	
-	\BlankLine
-	\CruceBLX{padre1, padre2, factor $\alpha$ de cruce}:
-	\BlankLine
-	\For{i = 1 to numero de caracteristicas}{
-		min\_valor = min(padre1[i], padre2[i])\;
-		max\_valor = max(padre1[i], padre2[i])\;
-		\BlankLine
-		rango = factor de mezcla * (max\_valor - min\_valor)\;
-		\BlankLine
-		min\_rango = min\_valor - rango\;
-		max\_rango = max\_valor + rango\;
-		\BlankLine
-		hijo1[i] = generar número aleatorio en el rango [min\_rango, max\_rango]\;
-		hijo2[i] = generar número aleatorio en el rango [min\_rango, max\_rango]\;
-	}
-	\BlankLine
-	\Return hijo1, hijo2\;
-\end{algorithm}
-\quad\\\quad\\
-\textbf{Operador de Mutación}: se encarga de introducir cambios aleatorios en los individuos seleccionados. Es importante para mantener la diversidad genética en la población y evitar que el algoritmo se estanque en óptimos locales. Su codificación general es:\\
-\begin{algorithm}[H]
-	\SetKwFunction{Mutacion}{Mutacion}
-	\SetKwInOut{Input}{Entrada}
-	\SetKwInOut{Output}{Salida}
-	
-	\Input{individuo, posAMutar}
-	\Output{individuo mutado}
-	
-	\BlankLine
-	\Mutacion{individuo, posicion a mutar}:
-	\BlankLine
-	valorAMutar = generar distribucion aleatoria (media=0, varianza=sqrt(0.8));\\
-	individuo[posAMutar] += z;\\
-	comprobarRepresentacion(0,1);\\
-	\BlankLine
-	\Return individuo mutado\;
-\end{algorithm}
-\quad\\\quad\\
-
-El operador de mutación tiene una tasa de 0.1 de mutar lo que significa que es que se ejecutará solo con el 10\% de la población aleatoriamente. En pseudocódigo se haría:\\
-\begin{algorithm}[H]
-	\SetKwFunction{aplicarMutacion}{aplicarMutacion}
-	\SetKwInOut{Input}{Entrada}
-	\SetKwInOut{Output}{Salida}
-	
-	\Input{poblacion, tasa de mutación}
-	\Output{poblacion mutada}
-	
-	\BlankLine
-	\aplicarMutacion{poblacion, tasa de mutación}:
-	\BlankLine
-	\For{i = 1 to tamanio de poblacion * tasa de mutacion}{
-			individuoAMutar = generar numero aleatorio de rango [0, tamanio de la poblacion]; \\
-			posAMutar = generar numero aleatorio de rango [0, numero de caracteristicas];
-			\BlankLine
-			Mutacion(individuo[individuoAMutar], posAMutar); 
-	}
-	\BlankLine
-	\Return Poblacion mutada\;
-\end{algorithm}
-\quad\\
-
-\textbf{Operador de Reemplazamiento}: determina cómo se actualiza la población en cada generación. Su función es seleccionar los individuos que formarán parte de la nueva generación, reemplazando a los individuos menos aptos de la generación anterior. Este operador es lo que diferencia PRINCIPALMENTE a los dos algoritmos genéticos: 
-\begin{itemize}
-\item Si reemplaza a toda su población en cada generación es un Algoritmo Genético Generacional (AGG). Usa Elitismo de dos para conservar al mejor individuo de la generación. Su codificación general sería:
-\end{itemize}
-
-
-\begin{algorithm}[H]
-	\SetKwFunction{ElitismoDos}{ElitismoDos}
-	\SetKwInOut{Input}{Entrada}
-	\SetKwInOut{Output}{Salida}
-	
-	\Input{población actual, población nueva}
-	\Output{población actualizada}
-	
-	\BlankLine
-	\ElitismoDos{población actual, población nueva}:
-	\BlankLine
-	mejorFitActual = obtener mejor fitness de poblacion actual
-	mejorFitNueva = obtener mejor fitness de poblacion nueva
-	
-	\If{mejorFitNueva > mejorFitActual}{
-		worst = posicion peor fitness pop nueva\;
-		individuo poblacion nueva[worst] = mejor individuo pop actual\;
-		fitness de la población nueva[worst] = mejorFitActual\;
-	}
-	\BlankLine
-	\Return población nueva\;
-\end{algorithm}
-\quad\\
-
-\begin{itemize}
-\item Si reemplaza solo a parte de la población (a los peores) estamos ante un Algoritmo Genético Estacionario (AGE).  Usa Elitismo de cuatro para conservar a los mejores individuos de la generación. Su codificación general sería:
-\end{itemize}
-\begin{algorithm}[H]
-	\SetKwFunction{ElitismoCuatro}{ElitismoCuatro}
-	\SetKwInOut{Input}{Entrada}
-	\SetKwInOut{Output}{Salida}
-	
-	\Input{población actual}
-	\Output{población actualizada}
-	
-	\BlankLine
-	\ElitismoCuatro{población actual, individuo1, individuo2}:
-	\BlankLine
-	peor = obtener posicion y peor fitness de la poblacion;\\
-	segundoPeor = obtener posicion y fitness segundo peor fitness de la poblacion;\\
-	candidato1 = obtener posicion y fitness individuo1;\\
-	candidato2 = obtener posicion y fitness individuo1;\\
-	\BlankLine
-	candidatos = \{candidato1.fitness, candidato2.fitness, peor.fitness, segundoPeor.fitness\};\\
-	ordenar candidatos de mayor a menor fitness;\\
-	\BlankLine
-	mejor = candidatos[0].posicion;\\
-	segundoMejor = candidatos[1].posicion; \\
-	\BlankLine
-	poblacion[peor.posicion] = poblacion[mejor.posicion];\\
-	poblacion[segundoPeor.posicion] = poblacion[segundoMejor.posicion]; 
-	\BlankLine
-	\Return población actualizada\;
-\end{algorithm}
-\quad \\
-A continuación, se describirán brevemente cada uno de estos algoritmos y su aplicación al problema.
-
-\subsubsection{Algoritmo Genético Generacional(AGG)}
-	El Algoritmo Genético Generacional (AGG) es un enfoque de optimización inspirado en la evolución biológica por el cual en cada iteración, todos los individuos de la población anterior son sustituidos por la actual.\\
-	
-	El proceso evolutivo en un algoritmo genético generacional involucra los operadores genéticos previamente definidos.  A continuación, se describe brevemente el proceso del algoritmo genético generacional:
-	\begin{itemize}
-		\item La selección se realiza con Torneo Binario. Se ejecuta tantas veces como individuos haya en la población.
-		\item El cruce puede realizarse mediante CA o BLX. Se aplica con el 70\% aleatorio de la población.
-		\item La mutación se aplica con el 10\% aleatorio de los individuos y será así con todos los algoritmos.
-		\item En el reemplazamiento aplica el elitismo de dos para conservar a los mejores y no empeorar.
-	\end{itemize}
-	
-	En un AGG la nueva generación reemplaza por completo a la generación anterior. Esto implica que solo los individuos de la nueva generación participarán en la siguiente iteración del algoritmo. A medida que avanza el algoritmo, la calidad promedio de los individuos en cada generación puede mejorar, ya que los mejores individuos tienen más probabilidades de ser seleccionados y transmitir sus características a las generaciones futuras.
-	
-	Su implementación en pseudocódigo sería:\\
-	\begin{algorithm}[H]
-		\SetKwFunction{AGG}{AGG}
-		\SetKwInOut{Input}{Entrada}
-		\SetKwInOut{Output}{Salida}
+	\While{i \ < \ iter}{
+		% Generar aleatoria
+		Sact = generarVectorAleatorio(0,1)
 		
-		\Input{Dataset entrenamiento, maximo Iters, pmut, pcruce, operadorCruce}
-		\Output{mejor individuo}
+		% Evaluar BL
+		objetivo = busquedaLocal(train, Sact, maxiter/iter)\;
 		
-		\BlankLine
-		\AGG{Dataset entrenamiento, maximo Iters, pmut, pcruce, operadorCruce=CA/BLX}:
-		\BlankLine
-		Poblacion pop = generar poblacion aleatoria;\\
-		funcionObjetivo(train);\\
-		iter++;\\
-		
-		\While{iter < maximoIters}{
-			\For{i=0 to tamanio de poblacion}{
-				nueva poblacion = torneoBinario(poblacion)
-			}
-			
-			\For{i=0 to tamanio poblacion * pcross}{
-				padre1 = poblacion nueva[i];\\
-				padre2 = poblacion nueva[i+1];\\
-				\BlankLine
-				hijo1,hijo2 = operadorCruce(padre1, padre2);
-				\BlankLine
-				poblacion nueva[i] = hijo1;\\
-				poblacion nueva[i+1]=hijo2;\\
-			}
-			
-			aplicarMutacion(poblacion nueva, pmut)\\
-			
-			fitness = funcionObjetivo(train);\\
-			iter++;\\
-			elitismoDos(poblacion, poblacion nueva);\\
-			
-			poblacion = nueva poblacion;
-			
-			
+		% Guardar si es mejor
+		\If{objetivo \ > \ mejorObjetivo}{
+			mejorS = Sact\;
+			mejorObjetivo = objetivo\;
 		}
-		\Return mejor individuo\;
-	\end{algorithm}
+		
+		i++\;
+	}
 	
-\subsubsection{Algoritmo Genético Estacionario(AGE)}
-El Algoritmo Genético Estacionario (AGE) es un enfoque de optimización inspirado en la evolución biológica por el cual en cada iteración, los dos mejores individuos de la poblacion anterior sustituyen a los peores de la actual hasta alcanzar el número máximo de iteraciones deseado.\\
+	\Return{mejorObjetivo}\;
+\end{algorithm}
 
-El proceso evolutivo en un algoritmo genético estacionario involucra los operadores genéticos previamente definidos.  A continuación, se describe brevemente el proceso del algoritmo:
-\begin{itemize}
-	\item La selección se realiza mediante Torneo Binario que se aplica dos veces en cada generación.
-	\item El cruce puede realizarse mediante CA o BLX. Se aplica siempre con los dos individuos obtenidos.
-	\item La mutación se aplica con el 10\% aleatorio de los individuos y será así con todos los algoritmos.
-	\item En el reemplazamiento aplica el elitismo de cuatro para conservar a los mejores y no empeorar.
-\end{itemize}
+\subsection{Búsqueda Local Iterativa}
+La búsqueda local iterativa es una estrategia de optimización que se utiliza para mejorar una solución inicial mediante iteraciones locales. Consiste en realizar modificaciones locales en la solución actual y evaluar si estas modificaciones conducen a una mejora en la función objetivo.\\
 
-En un AGE los individuos generados en el torneo binario reemplazarán a los peores de la generación anterior siempre y cuando lo mejoren. Esto implica que solo los individuos de la nueva generación participarán en la siguiente iteración del algoritmo. A medida que avanza el algoritmo, la calidad promedio de los individuos en cada generación puede mejorar, ya que los mejores individuos tienen más probabilidades de ser seleccionados y transmitir sus características a las generaciones futuras.\\
+En la búsqueda local iterativa, se parte de una solución inicial y se aplica un operador de vecindad que genera soluciones vecinas mediante pequeñas modificaciones en la solución actual. Luego, se evalúa cada solución vecina generada y se selecciona la mejor solución como la nueva solución actual. Este proceso se repite en iteraciones sucesivas, utilizando siempre la mejor solución encontrada hasta el momento.\\
 
-Su implementación en pseudocódigo sería:\\
+La diferencia principal entre la BMB y la ILS radica en la generación de soluciones iniciales. Mientras que en la búsqueda local iterativa se parte de una única solución inicial y se realiza la mejora iterativa, en la búsqueda multiarranque básica se generan múltiples soluciones iniciales de forma aleatoria y se aplican búsquedas locales independientes a cada una de ellas. Esto permite explorar diferentes regiones del espacio de búsqueda y aumentar las posibilidades de encontrar una solución de mayor calidad global, al escapar de posibles óptimos locales y abordar diferentes configuraciones iniciales.\\
+
 \begin{algorithm}[H]
-	\SetKwFunction{AGE}{AGE}
+	\SetKwFunction{ILS}{ILS}
 	\SetKwInOut{Input}{Entrada}
 	\SetKwInOut{Output}{Salida}
 	
-	\Input{Dataset entrenamiento, maximo Iters, pmut, operadorCruce}
-	\Output{mejor individuo}
+	\Input{Dataset train, solución inicial Sact, iteraciones iter, máximas iteraciones maxiter}
+	\Output{Mejor objetivo encontrado}
 	
 	\BlankLine
-	\AGE{Dataset entrenamiento, maximo Iters, pmut, operadorCruce=CA/BLX}:
-	\BlankLine
-	Poblacion pop = generar poblacion aleatoria;\\
-	funcionObjetivo(train);\\
-	iter++;\\
+	\ILS{Dataset train, solución inicial Sact, iteraciones iter, máximas iteraciones maxiter}:
+	\BlankLine	
 	
-	\While{iter < maximoIters}{
-		individuo1 = torneoBinario(poblacion);\\
-		individuo2 = torneoBinario(poblacion);
-		\BlankLine
-		sol1,sol2 = operadorCruce(individuo1, individuo2);\\
-		
-		aplicarMutacion(poblacion, pmut)\\
-		
-		fitness = funcionObjetivo(train);\\
-		iter++;\\
-		elitismoCuatro(poblacion, sol1, sol2);\\		
+	\tcp{Al menos 2 mutaciones}
+	mutaciones = 0.10 * numCaracterísticas\\
+	\If{mutaciones < \ 2}{
+		mutaciones = 2
 	}
-	\Return mejor individuo\;
+	
+	generaSolucionInicial(S, numCaracteristicas)
+	
+	objetivo = busquedaLocal(entrenamiento, S, iter, maxiter)
+	\BlankLine
+	mejorS = S\\
+	mejorObjetivo = objetivo\\
+	\While{i \ < \ iter}{
+		\For{ j = 0; j < mutaciones; j++}{
+			S = mutacion(Sact, Random(0, n), $\sigma$)\;
+		}
+		objetivo = busquedaLocal(train, S, maxiter/iter)\;
+		
+		\If{objetivo \ > \ mejorObjetivo}{
+			mejorObjetivo = objetivo\;
+			mejorS = S\;
+		}
+		i++\;
+		iter = 0\;
+	}
+	
+	\Return{mejorObjetivo}\;
 \end{algorithm}
 
-\newpage
+\subsection{Algoritmo de Búsqueda de Vecindad Variable}
+Variable Neighborhood Search (VNS) es un algoritmo de búsqueda local que combina la exploración de múltiples vecindarios en busca de soluciones óptimas. La idea principal detrás de VNS es explorar diferentes estructuras vecinas de una solución actual para superar los óptimos locales y encontrar soluciones de mejor calidad.\\
+
+El algoritmo VNS se compone de los siguientes pasos:\\
+\begin{algorithm}[H]
+	\SetKwFunction{VNS}{VNS}
+	\SetKwInOut{Input}{Entrada}
+	\SetKwInOut{Output}{Salida}
+	
+	\Input{Dataset train, solución inicial Sact, iteraciones iter, máximas iteraciones maxiter, atributos k}
+	\Output{Mejor objetivo encontrado}
+	
+	\BlankLine
+	\VNS{Dataset train, solución inicial Sact, iteraciones iter, máximas iteraciones maxiter, atributos k}:
+	\BlankLine	
+	
+	\tcp{Al menos 2 mutaciones}
+	mutaciones = 0.10 * numCaracterísticas\\
+	\If{mutaciones < \ 2}{
+		mutaciones = 2
+	}
+	
+	generaSolucionInicial(S, numCaracteristicas)
+	
+	objetivo = busquedaLocal(entrenamiento, S, iter, maxiter)
+	\BlankLine
+	mejorS = S\\
+	mejorObjetivo = objetivo\\
+	\While{i \ < \ iter}{
+		\For{ j = 0; j < mutaciones; j++}{
+			S = mutacion(Sact, Random(0, n), $\sigma$, k)\;
+		}
+		objetivo = busquedaLocal(train, S, maxiter/iter, k)\;
+		
+		\If{objetivo \ > \ mejorObjetivo}{
+			mejorObjetivo = objetivo\;
+			mejorS = S\;
+			k=1
+		}
+		\If{k $\leq$ KMAX}{
+			k++;
+		}
+		\Else{
+			k = 1;
+		}
+		
+		i++\;
+		iter = 0\;
+	}
+	
+	\Return{mejorS}\;
+\end{algorithm}
+
+\begin{enumerate}
+\item Seleccionar una solución inicial aleatoria.
+\item Definir un conjunto de vecindarios o estructuras de vecindad. Cada vecindario representa un conjunto de soluciones cercanas a la solución actual.
+\item Iterar hasta que se cumpla un criterio de parada:
+\begin{enumerate}
+	\item Seleccionar un vecindario aleatoriamente.
+	\item  Aplicar una búsqueda local en el vecindario seleccionado para mejorar la solución actual.
+	\item  Si se encuentra una solución mejor, actualizar la solución actual.
+	\item  Si no se encuentra una solución mejor, cambiar al siguiente vecindario en el conjunto de vecindarios.
+\end{enumerate}
+
+\item Repetir el paso 3 hasta alcanzar el criterio de parada.
+\end{enumerate}
+La principal diferencia entre VNS y otros algoritmos de búsqueda local es la exploración de múltiples vecindarios. Al cambiar entre diferentes vecindarios, VNS puede evitar quedar atrapado en óptimos locales al explorar nuevas estructuras vecinas. Esto permite una mayor capacidad de exploración y una mayor probabilidad de encontrar soluciones de mejor calidad.\\
+
+\subsection{Algoritmo de Enfriamiento Simulado}
+
+\subsection{Algoritmo de Búsqueda Local Iterativa - con ESs}
+
 
 \subsection{Algoritmos Meméticos}
 Un algoritmo memético es una variante del algoritmo genético que combina principios de la evolución biológica con el aprendizaje cultural. Este enfoque híbrido busca aprovechar la capacidad de los algoritmos genéticos para explorar y explotar el espacio de búsqueda, al mismo tiempo que incorpora mecanismos de mejora basados en el conocimiento adquirido a lo largo de las generaciones. \\
@@ -567,118 +401,6 @@ La idea principal detrás de los algoritmos meméticos es que la mejora local pu
 
 En resumen, un algoritmo memético combina la exploración global y la explotación local al integrar una búsqueda local en un algoritmo genético. 
 
-\subsubsection{Algoritmo Memético Todos (AM-All)}
-El Algoritmo Memético Todos(AMM-All) es un método por el cual se aplica el algoritmo genético generacional convencional y se aplica búsqueda local a toda la población cada cierto número de iteraciones.\\
-
-En un AM-All la nueva generación reemplaza por completo a la generación anterior ya que es un AGG modificado. Esto implica que solo los individuos de la nueva generación participarán en la siguiente iteración del algoritmo. A medida que avanza el algoritmo, la calidad promedio de los individuos en cada generación puede mejorar, ya que los mejores individuos tienen más probabilidades de ser seleccionados y transmitir sus características a las generaciones futuras.\\
-
-Su implementación en pseudocódigo sería:
-
-\begin{algorithm}[H]
-	\SetKwFunction{AMAll}{AM-All}
-	\SetKwInOut{Input}{Entrada}
-	\SetKwInOut{Output}{Salida}
-	
-	\Input{Dataset entrenamiento, maximo Iters, pmut, pcruce}
-	\Output{mejor individuo}
-	
-	\BlankLine
-	\AMAll{Dataset entrenamiento, maximo Iters, pmut, pcruce}:
-	\BlankLine
-	Poblacion pop = generar poblacion aleatoria;\\
-	funcionObjetivo(train);\\
-	iter++;\\
-	
-	\While{iter < maximoIters}{
-		\For{i=0 to tamanio de poblacion}{
-			nueva poblacion = torneoBinario(poblacion)
-		}
-		
-		\For{i=0 to tamanio poblacion * pcross}{
-			padre1 = poblacion nueva[i];\\
-			padre2 = poblacion nueva[i+1];\\
-			\BlankLine
-			hijo1,hijo2 = operadorBLX(padre1, padre2);
-			\BlankLine
-			poblacion nueva[i] = hijo1;\\
-			poblacion nueva[i+1]=hijo2;\\
-		}
-		
-		aplicarMutacion(poblacion nueva, pmut)\\
-		
-		fitness = funcionObjetivo(train);\\
-		iter++;\\
-		elitismoDos(poblacion, poblacion nueva);\\
-		
-		poblacion = nueva poblacion; \\
-		
-		maxBL = 2* numero de carecteristicas; \\
-		\If{generacion \%10 == 0}{
-			\For{i=0 to tamanio poblacion and iter < maxIters}{
-				fitness = busquedaLocal(train, individuo[i], it, maxBL);\\
-				iter += it;
-			}
-		}
-	}
-	\Return{mejor individuo}
-\end{algorithm}
-
-\subsubsection{Algoritmo Memético Random (AM-Rand)}
-El Algoritmo Memético Random (AMM-Rand) es un método por el cual se aplica el algoritmo genético generacional convencional y se aplica búsqueda local a un 10 \% aleatorio de individuos cierto número de iteraciones.\\
-
-En un AM-Rand la nueva generación reemplaza por completo a la generación anterior ya que es un AGG modificado. Esto implica que solo los individuos de la nueva generación participarán en la siguiente iteración del algoritmo. A medida que avanza el algoritmo, la calidad promedio de los individuos en cada generación puede mejorar, ya que los mejores individuos tienen más probabilidades de ser seleccionados y transmitir sus características a las generaciones futuras.\\
-
-Su implementación en pseudocódigo sería:
-
-\begin{algorithm}[H]
-	\SetKwFunction{AMAll}{AM-Randl}
-	\SetKwInOut{Input}{Entrada}
-	\SetKwInOut{Output}{Salida}
-	
-	\Input{Dataset entrenamiento, maximo Iters, pmut, pcruce}
-	\Output{mejor individuo}
-	
-	\BlankLine
-	\AMAll{Dataset entrenamiento, maximo Iters, pmut, pcruce}:
-	\BlankLine
-	Poblacion pop = generar poblacion aleatoria;\\
-	funcionObjetivo(train);\\
-	iter++;\\
-	
-	\While{iter < maximoIters}{
-		\For{i=0 to tamanio de poblacion}{
-			nueva poblacion = torneoBinario(poblacion)
-		}
-		
-		\For{i=0 to tamanio poblacion * pcross}{
-			padre1 = poblacion nueva[i];\\
-			padre2 = poblacion nueva[i+1];\\
-			\BlankLine
-			hijo1,hijo2 = operadorBLX(padre1, padre2);
-			\BlankLine
-			poblacion nueva[i] = hijo1;\\
-			poblacion nueva[i+1]=hijo2;\\
-		}
-		
-		aplicarMutacion(poblacion nueva, pmut)\\
-		
-		fitness = funcionObjetivo(train);\\
-		iter++;\\
-		elitismoDos(poblacion, poblacion nueva);\\
-		
-		poblacion = nueva poblacion; \\
-		
-		maxBL = 2* numero de carecteristicas; \\
-		\If{generacion \%10 == 0}{
-			\For{i=0 to tamanio poblacion * pmut and iter < maxIters}{
-				idxAleatorio = obtener numero aleatorio en el rango [0, tamanio poblacion];\\
-				fitness = busquedaLocal(train, individuo[idxAleatorio], it, maxBL);\\
-				iter += it;
-			}
-		}
-	}
-	\Return{mejor individuo}
-\end{algorithm}
 
 \subsubsection{Algoritmo Memético Mejores (AM-Best)}
 El Algoritmo Memético Mejor(AMM-Best) es un método por el cual se aplica el algoritmo genético generacional convencional y se aplica búsqueda local al 10\% mejor de la población cada cierto número de iteraciones.\\

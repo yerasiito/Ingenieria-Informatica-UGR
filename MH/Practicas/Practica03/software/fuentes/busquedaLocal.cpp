@@ -1,46 +1,35 @@
 #include "apc.h"
 #include "busquedaLocal.h"
-#include "apc.h"
 #include "random.hpp"
 
 using namespace std;
 using Random = effolkronium::random_static;
 
-/**
- * @brief Genera la solucion inicial mediante la funcion random
- * @param pesos los pesos a inicializar, es de salida
- * @param numCaracteristicas el numero de caracteristicas del dataset
-*/
 void generaSolucionInicial(vector<double> &pesos, int numCaracteristicas){
     pesos = Random::get<std::vector>(0.0, 1.0, numCaracteristicas);
 }
 
-/**
- * @brief Genera y mezcla los indices dado un tamaño
- * @param size el tamaño del vector de indices
- * @return el vector de indices mezclado
-*/
-vector<int> mezclarIndices(int size){
+void mezclarkIndices(vector<int> &indices, int maxrango, int k){
     // Definir lista de índices aleatorios
-    std::vector<int> indices(size);
-    for (int i = 0; i < size; i++) {
-        indices[i] = i;
-    }
-    Random::shuffle(indices);
+    std::vector<int> idx(maxrango);
+    indices.clear();
+    // Para cada atributo crea un vector de indices
+    for (int i = 0; i < k; i++) {
+        iota(idx.begin(), idx.end(), 0);
+        Random::shuffle(idx);
 
-    return indices;
+        //Concatenar
+        indices.insert(indices.begin(), idx.begin(), idx.end());
+
+    }
 }
 
-/**
- * @brief Función que implementa el algoritmo de búsqueda local.
- * @param train Dataset de entrenamiento.
- * @return Vector de pesos maximizados a la función objetivo.
- */
-double busquedaLocal(const Dataset &train, vector<double> &Sact, int &iter, int maxiter){
+double busquedaLocal(const Dataset &train, vector<double> &Sact, int maxiter, int k){
+    int iter = 0;
     int generacion = 0;
     bool mejora;
 
-    // Generar vector inicial
+    // Generar vector inicial si Sact está vacío
     if(Sact.empty()) {
         generaSolucionInicial(Sact, train.numCaracteristicas());
     }
@@ -50,20 +39,28 @@ double busquedaLocal(const Dataset &train, vector<double> &Sact, int &iter, int 
     iter++;
 
     vector<double> S = Sact;
-    vector<int> indices;
-    double objetivo = 0;
+    vector<int> kindices, indices;
 
+    double objetivo = 0;
+    int n = S.size();
+
+    vector<int>::iterator itIdx,fin;
     // Bucle principal del algoritmo
-    while(generacion < 20*Sact.size() && iter < maxiter){
+    while(generacion < 20*n && iter < maxiter){
         // Generar índices de vecindario
-        indices = mezclarIndices(S.size());
+        mezclarkIndices(indices, n, k); // genera k vecindarios
+
+        // Inicio de indice de mutacion
+        itIdx = indices.begin();
 
         mejora = false;
-
         // Bucle para generar vecinos
-        for(int i = 0; !mejora && i < indices.size(); i++){
-            // Generar vecino
-            Mov(S,indices[i],0.8);
+        while(!mejora && itIdx < indices.end()){
+            // Obtener indices de mutacion segun k atributos
+            fin = (itIdx + k > indices.end()) ? indices.end() : itIdx + k;
+
+            // Generar vecino con k atributos mutados
+            Mov(S, {itIdx, fin}, VARIANZA);
 
             // Calcular objetivo tras mutacion
             objetivo = funObjetivo(train, S);
@@ -79,9 +76,9 @@ double busquedaLocal(const Dataset &train, vector<double> &Sact, int &iter, int 
                 S = Sact;
 
             generacion++;
+            itIdx += k;
         }
     }
-
     // Devolver la solución encontrada
     return objetivoActual;
 }

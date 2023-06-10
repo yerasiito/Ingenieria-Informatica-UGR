@@ -3,6 +3,8 @@
 
 #include <chrono>
 #include "funcionesAux.h"
+
+inline float VARIANZA = 0.3;
 /**************************************CLASIFICADOR**************************************/
 
 /**
@@ -117,7 +119,16 @@ double funObjetivo(const Dataset &train, const std::vector<double> &pesos);
  * @param i el indice a mutar
  * @param varianza la varianza de la distribucion normal
 */
-void Mov(std::vector<double> &w, const int &i, const double &varianza);
+void Mov(std::vector<double> &w, const std::vector<int> &idx, const double &varianza);
+
+/**
+ * @brief Igual que mov pero devuelve una copia. Es mas ineficiente
+ * @param w vector de pesos
+ * @param idx Indices de atributos a mutar
+ * @param varianza
+ * @return
+ */
+std::vector<double> cMov(const std::vector<double> &w, const std::vector<int> &idx, const double &varianza);
 
 /**
  * @brief Imprime los pasos de cada particion

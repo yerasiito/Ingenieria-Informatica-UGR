@@ -10,10 +10,9 @@ add_executable(practica3
   fuentes/dataset.cpp 
   fuentes/apc.cpp
   fuentes/funcionesAux.cpp
-  fuentes/algoritmosGeneticos.cpp
-  fuentes/busquedaLocal.cpp
+        fuentes/busquedaLocal.cpp
   fuentes/algoritmosTrayectoria.cpp
-)
+  fuentes/enfriamientoSimulado.cpp)
 
 # Agrega los archivos de encabezado
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/cabeceras)

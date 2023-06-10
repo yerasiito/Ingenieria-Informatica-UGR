@@ -129,29 +129,29 @@ practica3/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/practica3.dir/build.make CMakeFiles/practica3.dir/build
 .PHONY : practica3/fast
 
-fuentes/algoritmosGeneticos.o: fuentes/algoritmosGeneticos.cpp.o
-.PHONY : fuentes/algoritmosGeneticos.o
+fuentes/algoritmosTrayectoria.o: fuentes/algoritmosTrayectoria.cpp.o
+.PHONY : fuentes/algoritmosTrayectoria.o
 
 # target to build an object file
-fuentes/algoritmosGeneticos.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/practica3.dir/build.make CMakeFiles/practica3.dir/fuentes/algoritmosGeneticos.cpp.o
-.PHONY : fuentes/algoritmosGeneticos.cpp.o
+fuentes/algoritmosTrayectoria.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/practica3.dir/build.make CMakeFiles/practica3.dir/fuentes/algoritmosTrayectoria.cpp.o
+.PHONY : fuentes/algoritmosTrayectoria.cpp.o
 
-fuentes/algoritmosGeneticos.i: fuentes/algoritmosGeneticos.cpp.i
-.PHONY : fuentes/algoritmosGeneticos.i
+fuentes/algoritmosTrayectoria.i: fuentes/algoritmosTrayectoria.cpp.i
+.PHONY : fuentes/algoritmosTrayectoria.i
 
 # target to preprocess a source file
-fuentes/algoritmosGeneticos.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/practica3.dir/build.make CMakeFiles/practica3.dir/fuentes/algoritmosGeneticos.cpp.i
-.PHONY : fuentes/algoritmosGeneticos.cpp.i
+fuentes/algoritmosTrayectoria.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/practica3.dir/build.make CMakeFiles/practica3.dir/fuentes/algoritmosTrayectoria.cpp.i
+.PHONY : fuentes/algoritmosTrayectoria.cpp.i
 
-fuentes/algoritmosGeneticos.s: fuentes/algoritmosGeneticos.cpp.s
-.PHONY : fuentes/algoritmosGeneticos.s
+fuentes/algoritmosTrayectoria.s: fuentes/algoritmosTrayectoria.cpp.s
+.PHONY : fuentes/algoritmosTrayectoria.s
 
 # target to generate assembly for a file
-fuentes/algoritmosGeneticos.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/practica3.dir/build.make CMakeFiles/practica3.dir/fuentes/algoritmosGeneticos.cpp.s
-.PHONY : fuentes/algoritmosGeneticos.cpp.s
+fuentes/algoritmosTrayectoria.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/practica3.dir/build.make CMakeFiles/practica3.dir/fuentes/algoritmosTrayectoria.cpp.s
+.PHONY : fuentes/algoritmosTrayectoria.cpp.s
 
 fuentes/apc.o: fuentes/apc.cpp.o
 .PHONY : fuentes/apc.o
@@ -225,6 +225,30 @@ fuentes/dataset.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/practica3.dir/build.make CMakeFiles/practica3.dir/fuentes/dataset.cpp.s
 .PHONY : fuentes/dataset.cpp.s
 
+fuentes/enfriamientoSimulado.o: fuentes/enfriamientoSimulado.cpp.o
+.PHONY : fuentes/enfriamientoSimulado.o
+
+# target to build an object file
+fuentes/enfriamientoSimulado.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/practica3.dir/build.make CMakeFiles/practica3.dir/fuentes/enfriamientoSimulado.cpp.o
+.PHONY : fuentes/enfriamientoSimulado.cpp.o
+
+fuentes/enfriamientoSimulado.i: fuentes/enfriamientoSimulado.cpp.i
+.PHONY : fuentes/enfriamientoSimulado.i
+
+# target to preprocess a source file
+fuentes/enfriamientoSimulado.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/practica3.dir/build.make CMakeFiles/practica3.dir/fuentes/enfriamientoSimulado.cpp.i
+.PHONY : fuentes/enfriamientoSimulado.cpp.i
+
+fuentes/enfriamientoSimulado.s: fuentes/enfriamientoSimulado.cpp.s
+.PHONY : fuentes/enfriamientoSimulado.s
+
+# target to generate assembly for a file
+fuentes/enfriamientoSimulado.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/practica3.dir/build.make CMakeFiles/practica3.dir/fuentes/enfriamientoSimulado.cpp.s
+.PHONY : fuentes/enfriamientoSimulado.cpp.s
+
 fuentes/funcionesAux.o: fuentes/funcionesAux.cpp.o
 .PHONY : fuentes/funcionesAux.o
 
@@ -282,9 +306,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... practica3"
-	@echo "... fuentes/algoritmosGeneticos.o"
-	@echo "... fuentes/algoritmosGeneticos.i"
-	@echo "... fuentes/algoritmosGeneticos.s"
+	@echo "... fuentes/algoritmosTrayectoria.o"
+	@echo "... fuentes/algoritmosTrayectoria.i"
+	@echo "... fuentes/algoritmosTrayectoria.s"
 	@echo "... fuentes/apc.o"
 	@echo "... fuentes/apc.i"
 	@echo "... fuentes/apc.s"
@@ -294,6 +318,9 @@ help:
 	@echo "... fuentes/dataset.o"
 	@echo "... fuentes/dataset.i"
 	@echo "... fuentes/dataset.s"
+	@echo "... fuentes/enfriamientoSimulado.o"
+	@echo "... fuentes/enfriamientoSimulado.i"
+	@echo "... fuentes/enfriamientoSimulado.s"
 	@echo "... fuentes/funcionesAux.o"
 	@echo "... fuentes/funcionesAux.i"
 	@echo "... fuentes/funcionesAux.s"

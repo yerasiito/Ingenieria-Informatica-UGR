@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Arch Linux) (preloaded format=pdflatex 2023.4.11)  21 MAY 2023 23:38
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Arch Linux) (preloaded format=pdflatex 2023.6.7)  10 JUN 2023 03:23
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -1287,9 +1287,6 @@ Package tocbasic Info: Using my definition of `\numberline' on input line 13.
 Package tocbasic Info: Using my definition of `\numberline' on input line 14.
 Package tocbasic Info: Using my definition of `\numberline' on input line 15.
 Package tocbasic Info: Using my definition of `\numberline' on input line 16.
-Package tocbasic Info: Using my definition of `\numberline' on input line 17.
-Package tocbasic Info: Using my definition of `\numberline' on input line 18.
-Package tocbasic Info: Using my definition of `\numberline' on input line 19.
 )
 \tf@toc=\write7
 \openout7 = `plantilla.toc'.
@@ -1407,218 +1404,187 @@ Underfull \hbox (badness 10000) in paragraph at lines 161--162
  []
 
 [6]
-\openout3 = `plantilla.pyg'.
-
-
-(./_minted-plantilla/72BD4CD9C51B823176363FB756C3E14287CF6540B1D6A1A36D47C7EEDA
-FB0391.pygtex)
-\openout3 = `plantilla.pyg'.
-
-
-(./_minted-plantilla/597F0191EDA547CE5071F5E5B547EF1787CF6540B1D6A1A36D47C7EEDA
-FB0391.pygtex) [7]
-\openout3 = `plantilla.pyg'.
-
-
-(./_minted-plantilla/DF550C631FEBA1EB75FA1E30DC5E9C116740ED40CB1C80FA013C913467
-5D118A.pygtex) [8]
-\openout3 = `plantilla.pyg'.
-
-
-(./_minted-plantilla/9BC76D83F5D575B78EF5B3E53A29C5CD87CF6540B1D6A1A36D47C7EEDA
-FB0391.pygtex)
-Underfull \hbox (badness 10000) in paragraph at lines 260--261
+Underfull \hbox (badness 10000) in paragraph at lines 164--165
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 288--290
+Underfull \hbox (badness 10000) in paragraph at lines 166--167
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 168--169
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 170--171
+
+ []
+
+\openout3 = `plantilla.pyg'.
+
+
+(./_minted-plantilla/83E0DFAFC18B307BC49079D368F8C4806740ED40CB1C80FA013C913467
+5D118A.pygtex) [7]
+\openout3 = `plantilla.pyg'.
+
+
+(./_minted-plantilla/F53164CB74D1E9E98761B854A68DE43187CF6540B1D6A1A36D47C7EEDA
+FB0391.pygtex)
+Underfull \hbox (badness 10000) in paragraph at lines 220--221
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 222--223
+
+ []
+
+[8]
+Underfull \hbox (badness 10000) in paragraph at lines 273--274
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 275--276
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 277--278
 
  []
 
 [9]
-Underfull \hbox (badness 10000) in paragraph at lines 318--319
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 349--367
+Underfull \hbox (badness 10000) in paragraph at lines 321--322
 
  []
 
 [10]
-Underfull \hbox (badness 10000) in paragraph at lines 368--369
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 368--369
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 391--392
+Underfull \hbox (badness 10000) in paragraph at lines 386--387
 
  []
 
 [11]
-Underfull \hbox (badness 10000) in paragraph at lines 421--422
+Underfull \hbox (badness 10000) in paragraph at lines 390--391
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 457--458
-
- []
-
-[12]
-Underfull \hbox (badness 10000) in paragraph at lines 514--515
-
- []
-
-[13]
-Underfull \hbox (badness 10000) in paragraph at lines 524--525
-
- []
-
-[14]
-Underfull \hbox (badness 10000) in paragraph at lines 560--561
+Underfull \hbox (badness 10000) in paragraph at lines 392--393
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 562--563
+Underfull \hbox (badness 10000) in paragraph at lines 394--395
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 564--565
+Underfull \hbox (badness 10000) in paragraph at lines 402--403
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 571--572
+Underfull \hbox (badness 10000) in paragraph at lines 404--405
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 573--574
+Underfull \hbox (badness 10000) in paragraph at lines 406--407
+
+ []
+
+[12] [13]
+Underfull \hbox (badness 10000) in paragraph at lines 463--464
+
+ []
+
+<imagenes//resumen.png, id=252, 1151.80313pt x 778.40813pt>
+File: imagenes//resumen.png Graphic file (type png)
+<use imagenes//resumen.png>
+Package pdftex.def Info: imagenes//resumen.png  used on input line 470.
+(pdftex.def)             Requested size: 484.33705pt x 327.32115pt.
+[14 <./imagenes//resumen.png (PNG copy)>]
+Underfull \hbox (badness 10000) in paragraph at lines 500--502
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 503--505
 
  []
 
 [15]
-Underfull \hbox (badness 10000) in paragraph at lines 627--628
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 629--630
-
- []
-
-[16]
-Underfull \hbox (badness 10000) in paragraph at lines 684--685
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 686--687
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 688--689
-
- []
-
-[17] [18]
-Underfull \hbox (badness 10000) in paragraph at lines 745--746
-
- []
-
-<imagenes//resumen.png, id=369, 1151.80313pt x 778.40813pt>
-File: imagenes//resumen.png Graphic file (type png)
-<use imagenes//resumen.png>
-Package pdftex.def Info: imagenes//resumen.png  used on input line 752.
-(pdftex.def)             Requested size: 484.33705pt x 327.32115pt.
-[19 <./imagenes//resumen.png (PNG copy)>]
-Underfull \hbox (badness 10000) in paragraph at lines 782--784
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 785--787
-
- []
-
-[20]
-<imagenes//greedy.png, id=396, 816.04875pt x 636.87938pt>
+<imagenes//greedy.png, id=279, 816.04875pt x 636.87938pt>
 File: imagenes//greedy.png Graphic file (type png)
 <use imagenes//greedy.png>
-Package pdftex.def Info: imagenes//greedy.png  used on input line 806.
+Package pdftex.def Info: imagenes//greedy.png  used on input line 524.
 (pdftex.def)             Requested size: 484.33705pt x 378.00043pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 810--811
+Underfull \hbox (badness 10000) in paragraph at lines 528--529
 
  []
 
-[21 <./imagenes//greedy.png (PNG copy)>] (./tabla1nn.tex)
-Underfull \hbox (badness 10000) in paragraph at lines 817--818
+[16 <./imagenes//greedy.png (PNG copy)>] (./tabla1nn.tex)
+Underfull \hbox (badness 10000) in paragraph at lines 535--536
 
  []
 
 (./tablagreedy.tex)
-Underfull \hbox (badness 10000) in paragraph at lines 823--824
+Underfull \hbox (badness 10000) in paragraph at lines 541--542
 
  []
 
-(./tablaBL.tex) [22]
-Underfull \hbox (badness 10000) in paragraph at lines 828--829
+(./tablaBL.tex) [17]
+Underfull \hbox (badness 10000) in paragraph at lines 546--547
 
  []
 
 (./tablaFinal.tex)
-Underfull \hbox (badness 10000) in paragraph at lines 834--835
+Underfull \hbox (badness 10000) in paragraph at lines 552--553
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 836--837
+Underfull \hbox (badness 10000) in paragraph at lines 554--555
 
  []
 
-(./tablaAGG-CA.tex) [23]
-Underfull \hbox (badness 10000) in paragraph at lines 841--842
+(./tablaAGG-CA.tex) [18]
+Underfull \hbox (badness 10000) in paragraph at lines 559--560
 
  []
 
 (./tablaAGG-BLX.tex)
-Underfull \hbox (badness 10000) in paragraph at lines 846--847
+Underfull \hbox (badness 10000) in paragraph at lines 564--565
 
  []
 
-(./tablaAGE-CA.tex) [24] (./tablaAGE-BLX.tex) (./tablaAM-All.tex) [25]
+(./tablaAGE-CA.tex) [19] (./tablaAGE-BLX.tex) (./tablaAM-All.tex) [20]
 (./tablaAM-Rand.tex) (./tablaAM-Best.tex) (./tablaFinal2.tex)
-Underfull \hbox (badness 10000) in paragraph at lines 872--873
+Underfull \hbox (badness 10000) in paragraph at lines 590--591
 
  []
 
-[26]
-Underfull \hbox (badness 10000) in paragraph at lines 884--885
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 886--887
+[21]
+Underfull \hbox (badness 10000) in paragraph at lines 602--603
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 888--889
+Underfull \hbox (badness 10000) in paragraph at lines 604--605
 
  []
 
-[27] (./plantilla.bbl
+
+Underfull \hbox (badness 10000) in paragraph at lines 606--607
+
+ []
+
+[22] (./plantilla.bbl
 Underfull \hbox (badness 3792) in paragraph at lines 13--17
 []\T1/futs/m/n/10.95 Wout Meg-che-len-brink.  [][]$\T1/cmtt/m/n/10.95 https : /
  / www . ru . nl / publish / pages / 769526 / relief-[]based _ feature _
@@ -1630,7 +1596,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 19--23
 C % 20para % 20tareas % 20logisticas %
  []
 
-) [28] (./plantilla.aux
+) [23] (./plantilla.aux
 LaTeX Info: Redefining \. on input line 25.
 LaTeX Info: Redefining \% on input line 25.
 )
@@ -1640,13 +1606,13 @@ runsystem(rm plantilla.pyg)...executed.
 
  ) 
 Here is how much of TeX's memory you used:
- 31523 strings out of 476025
- 610411 string characters out of 5796532
+ 31393 strings out of 476025
+ 607730 string characters out of 5796533
  1924388 words of memory out of 5000000
- 51035 multiletter control sequences out of 15000+600000
+ 51008 multiletter control sequences out of 15000+600000
  579977 words of font info for 101 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 114i,18n,109p,10626b,799s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 114i,18n,109p,10626b,799s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/share/texmf-dist/fonts/type1/public/fourier/fourier-mex.pfb></usr/share
 /texmf-dist/fonts/type1/public/fourier/fourier-mlit.pfb></usr/share/texmf-dist/
 fonts/type1/public/fourier/fourier-ms.pfb></usr/share/texmf-dist/fonts/type1/ad
@@ -1658,10 +1624,10 @@ sfsx1095.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfsx1200.pfb></
 usr/share/texmf-dist/fonts/type1/public/cm-super/sfsx1440.pfb></usr/share/texmf
 -dist/fonts/type1/public/cm-super/sftt1000.pfb></usr/share/texmf-dist/fonts/typ
 e1/public/cm-super/sftt1095.pfb>
-Output written on plantilla.pdf (28 pages, 919802 bytes).
+Output written on plantilla.pdf (23 pages, 903897 bytes).
 PDF statistics:
- 627 PDF objects out of 1000 (max. 8388607)
- 560 compressed objects within 6 object streams
- 273 named destinations out of 1000 (max. 500000)
- 172 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 480 PDF objects out of 1000 (max. 8388607)
+ 419 compressed objects within 5 object streams
+ 176 named destinations out of 1000 (max. 500000)
+ 148 words of extra memory for PDF output out of 10000 (max. 10000000)
 

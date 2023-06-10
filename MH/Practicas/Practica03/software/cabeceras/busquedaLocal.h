@@ -13,14 +13,17 @@ void generaSolucionInicial(std::vector<double> &pesos, int numCaracteristicas);
  * @param size el tamaño del vector de indices
  * @return el vector de indices mezclado
 */
-std::vector<int> mezclarIndices(int size);
+void mezclarkIndices(std::vector<int> &indices, int size, int k=1);
 
 /**
  * @brief Función que implementa el algoritmo de búsqueda local.
  * @param train Dataset de entrenamiento.
- * @param Sact Vector de salida, pesos maximixados a la función objetivo
- * @return objetivo máximo alcanzado
+ * @param Sact Vector de pesos a aplicar
+ * @param iter Cuanta el numero de llamadas a funcion objetivo
+ * @param maxiter Maximo de iteraciones
+ * @param k Número de atributos a mutar
+ * @return Vector de pesos maximizados a la función objetivo.
  */
-double busquedaLocal(const Dataset &train, std::vector<double> &Sact, int &iter, int maxiter);
+double busquedaLocal(const Dataset &train, std::vector<double> &Sact, int maxiter, int k=1);
 
 #endif

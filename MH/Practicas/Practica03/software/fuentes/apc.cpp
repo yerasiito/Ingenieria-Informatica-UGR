@@ -188,12 +188,6 @@ vector<double> calcularRendimiento(int acierto_train, int acierto_test, const Da
     return rendimiento;
 }
 
-/**
- * @brief Funcion objetivo a MAXIMIZAR, maximiza el fitness
- * @param train el dataset de entrenamiento a evaluar
- * @param pesos los valores ponderados para la distancia
- * @return el calculo del fitness
-*/
 double funObjetivo(const Dataset &train, const vector<double> &pesos){
     int acierto_train = 0;
 
@@ -222,15 +216,42 @@ double funObjetivo(const Dataset &train, const vector<double> &pesos){
     return calcularFitness(acierto_train, train.numEjemplos(), pesos);
 }
 
-
-void Mov(vector<double> &w, const int &i, const double &varianza){
+void Mov(vector<double> &w, const vector<int> &idx, const double &varianza){
     std::normal_distribution<double> distribution(0.0, sqrt(varianza));
-    double z = Random::get(distribution);
-    //Verificación de restricciones. Trunca w
-    if(w[i]+z > 1)
-        w[i] = 1;
-    else if(w[i]+z < 0)
-        w[i] = 0;
-    else
-        w[i] += z;
+    double z;
+
+    // Muta para cada indice aleatorio
+    for(auto i : idx){
+        z = Random::get(distribution);
+
+        //Verificación de restricciones. Trunca wMut
+        if(w[i]+z > 1)
+            w[i] = 1;
+        else if(w[i]+z < 0)
+            w[i] = 0;
+        else {
+            w[i] += z;
+        }
+    }
+}
+
+vector<double> cMov(const vector<double> &w, const vector<int> &idx, const double &varianza){
+    vector<double> wMut = w;
+    std::normal_distribution<double> distribution(0.0, sqrt(varianza));
+    double z;
+
+    // Muta para cada indice aleatorio
+    for(auto i : idx){
+        z = Random::get(distribution);
+
+        //Verificación de restricciones. Trunca wMut
+        if(wMut[i]+z > 1)
+            wMut[i] = 1;
+        else if(wMut[i]+z < 0)
+            wMut[i] = 0;
+        else
+            wMut[i] += z;
+    }
+
+    return wMut;
 }

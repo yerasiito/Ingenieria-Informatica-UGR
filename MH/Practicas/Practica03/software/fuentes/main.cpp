@@ -2,13 +2,16 @@
 #include <map>
 #include "random.hpp"
 #include "busquedaLocal.h"
-#include "algoritmosGeneticos.h"
 #include "algoritmosTrayectoria.h"
+#include "enfriamientoSimulado.h"
 
 using namespace std;
 using Random = effolkronium::random_static;
 
 int MAX_ITER = 15000;
+int MAX_ITER_BL = 1000;
+int MAX_ITER_TRAY = 15;
+
 vector<string> algoritmos { "oneNN", "Greedy", "BL"};
 vector<string> algoritmosGeneticos {"AGG", "AGE", };
 vector<string> algoritmosMemeticos {"AM-All", "AM-Rand", "AM-Best"};
@@ -30,7 +33,7 @@ void showErrorUnknownOperator(std::string_view op) {
 
 int main(int argc, char **argv)
 {
-    int ficheros = 5, iter=0;
+    int ficheros = 5;
     long int seed;
     double pcross = 0.7; // porcentaje de cruce AGG y AM
 
@@ -45,16 +48,14 @@ int main(int argc, char **argv)
         algoritmo = argv[1];
 
     bool isAlgoritmoAPC = isInContainer(algoritmos, algoritmo);
-    bool isAlgoritmoGenetico = isInContainer(algoritmosGeneticos, algoritmo);
-    bool isAlgoritmoMemetico = isInContainer(algoritmosMemeticos, algoritmo);
     bool isAlgoritmoTrayectoria = isInContainer(algoritmosTrayectoria, algoritmo);
 
-    if (!isAlgoritmoAPC && !isAlgoritmoGenetico && !isAlgoritmoMemetico && !isAlgoritmoTrayectoria) {
+    if (!isAlgoritmoAPC && !isAlgoritmoTrayectoria) {
         showErrorUnknownAlgorithm(algoritmo);
         return EXIT_FAILURE;
     }
 
-    if (isAlgoritmoAPC || isAlgoritmoMemetico || isAlgoritmoTrayectoria) {
+    if (isAlgoritmoAPC || isAlgoritmoTrayectoria) {
         if (argc <= 2)
             cout << "Semilla no especificada: aleatoria" << std::endl;
         else {
@@ -63,28 +64,6 @@ int main(int argc, char **argv)
             cout << "Usando semilla: " << seed << std::endl;
         }
     }
-
-    if (isAlgoritmoGenetico) {
-        if (argc <= 2) {
-            std::cout << "Sin parámetros. Usando semilla aleatoria y operador BLX" << std::endl;
-        } else {
-            operador = argv[2];
-            if (!isInContainer(operadores, operador)) {
-                showErrorUnknownOperator(operador);
-                return EXIT_FAILURE;
-            }
-            std::cout << "Usando operador: " << operador << std::endl;
-
-            if (argc > 3) {
-                seed = std::strtol(argv[3], nullptr, 10);
-                Random::seed(seed);
-                std::cout << "Usando semilla: " << seed << std::endl;
-            } else {
-                std::cout << "Semilla no especificada: aleatoria" << std::endl;
-            }
-        }
-    }
-
     // Lee todos los dataset con sus respectivos ficheros
     while (!nombreDatasets.empty())
     {
@@ -96,8 +75,6 @@ int main(int argc, char **argv)
 
         // Imprimir cabecera tabla de resultados
         std::cout << "--------------------------------------Clasificador (" << algoritmo;
-        if(isAlgoritmoGenetico)
-            cout << "-" << operador;
         cout << "):" << fichero << "-------------------------------------" << endl;
         cout << "Particion\t" << "Tasa_clas_train[%]\t" << "Tasa_clas_test[%]\t" << "Tasa_red[%]\t" << "Fitness\t\t" << "Tiempo[s]" << endl;
 
@@ -117,7 +94,6 @@ int main(int argc, char **argv)
 
             }
             vector<double> pesos(train.numCaracteristicas(), 1); // en todas las iteraciones
-            iter = 0;
 
             // Normalizamos los datos
             normalizar(train, test);
@@ -128,24 +104,24 @@ int main(int argc, char **argv)
                 pesos = greedy_relief(train);
             else if (algoritmo == "BL") {
                 pesos.clear();
-                busquedaLocal(train, pesos, iter, MAX_ITER); // bl.busquedaLocal(train, test);
+                busquedaLocal(train, pesos, MAX_ITER); // bl.busquedaLocal(train, test);
             }
-            else if(algoritmo == "AGG"){
-                pesos = AGG(train, MAX_ITER, pcross, operador); // Dataset, tamPoblacion, porcentajeCruce
-            }
-            else if(algoritmo == "AGE"){
-                pesos = AGE(train, MAX_ITER, operador); // Dataset, tamPoblacion, porcentajeCruce
-            }
-            else if(algoritmo == "AM-All")
-                pesos = AM_All(train, MAX_ITER, pcross, operador); // Dataset, tamPoblacion, porcentajeCruce
-            else if(algoritmo == "AM-Rand")
-                pesos = AM_Rand(train, MAX_ITER, pcross, operador); // Dataset, tamPoblacion, porcentajeCruce
-            else if(algoritmo == "AM-Best")
-                pesos = AM_Best(train, MAX_ITER, pcross, operador); // Dataset, tamPoblacion, porcentajeCruce
             else if(algoritmo == "BMB")
-                pesos = BMB();
+                BMB(train, pesos, MAX_ITER_TRAY, MAX_ITER_BL);
+            else if(algoritmo == "ILS")
+                ILS(train, pesos, MAX_ITER_TRAY, MAX_ITER_BL);
+            else if(algoritmo == "VNS")
+                VNS(train, pesos, MAX_ITER_TRAY, MAX_ITER_BL);
+            else if(algoritmo == "ES") {
+                pesos.clear();
+                ES(train, pesos, MAX_ITER);
+            }
+            else if(algoritmo == "ILS-ES") {
+                ILS_ES(train, pesos, MAX_ITER_TRAY, MAX_ITER_BL);
+            }
+
             // Ejecutamos el clasificador 1NN
-            clasificar(train, test, pesos, acierto_train, acierto_test, true);
+            clasificar(train, test, pesos, acierto_train, acierto_test);
 
             // Imprimimos los resultados de la ejecución
             resultado = calcularRendimiento(acierto_train, acierto_test, train, test, pesos, momentoInicio);
@@ -154,7 +130,6 @@ int main(int argc, char **argv)
             // Guardamos los pesos medios para el final
             for (int j = 0; j < pesosMedios.size(); j++)
                 pesosMedios[j] += pesos[j];
-
         }
         /*Resultados del clasificador*/
 

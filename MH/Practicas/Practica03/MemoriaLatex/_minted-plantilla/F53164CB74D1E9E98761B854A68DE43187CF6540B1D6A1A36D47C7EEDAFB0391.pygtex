@@ -1,0 +1,12 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n}{Input}\PYG{p}{(}\PYG{n}{Pesos}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}W\PYGZdq{}}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{indice}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}i\PYGZdq{}}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{valor}\PYG{+w}{ }\PYG{n}{de}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}media\PYGZdq{}}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{valor}\PYG{+w}{ }\PYG{n}{de}\PYG{l+s}{\PYGZdq{} varianza\PYGZdq{}}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mf}{0.8}\PYG{p}{)}
+\PYG{n}{Inicio}
+\PYG{n}{z}\PYG{+w}{ }\PYG{o}{\PYGZlt{}\PYGZhy{}}\PYG{+w}{ }\PYG{n}{DISTRIBUCION\PYGZus{}NORMAL}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{SQRT}\PYG{p}{(}\PYG{n}{varianza}\PYG{p}{))}
+\PYG{n}{Si}\PYG{+w}{ }\PYG{n}{Wi}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{n}{z}\PYG{+w}{ }\PYG{n}{es}\PYG{+w}{ }\PYG{n}{mayor}\PYG{+w}{ }\PYG{n}{a}\PYG{+w}{ }\PYG{l+m+mi}{1}
+\PYG{n}{TRUNCAR}\PYG{p}{(}\PYG{n}{Wi}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{)}
+\PYG{n}{Si}\PYG{+w}{ }\PYG{n}{Wi}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{n}{z}\PYG{+w}{ }\PYG{n}{es}\PYG{+w}{ }\PYG{n}{menor}\PYG{+w}{ }\PYG{n}{a}\PYG{+w}{ }\PYG{l+m+mi}{0}
+\PYG{n}{TRUNCAR}\PYG{p}{(}\PYG{n}{Wi}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{)}
+\PYG{n}{Si}\PYG{+w}{ }\PYG{n}{no}
+\PYG{n}{Wi}\PYG{+w}{ }\PYG{o}{\PYGZlt{}\PYGZhy{}}\PYG{+w}{ }\PYG{n}{Wi}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{n}{z}
+\PYG{n}{DEVOLVER}\PYG{p}{(}\PYG{n}{W}\PYG{p}{)}
+\end{Verbatim}
