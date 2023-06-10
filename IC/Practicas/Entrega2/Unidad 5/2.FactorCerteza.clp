@@ -100,7 +100,7 @@
 
 ;;; R2: SI NO gira el motor ENTONCES problema con el starter con certeza 0,8
 (defrule R2
-   (FactorCerteza gira_motor si ?f1)
+   (FactorCerteza gira_motor no ?f1)
    (test (> ?f1 0) )
 =>
    (assert (FactorCerteza problema_starter si (encadenado ?f1 0.8) ) )
@@ -113,7 +113,7 @@
    (test (> ?f1 0) )
 =>
    (assert (FactorCerteza problema_bateria si (encadenado ?f1 0.9) ) )
-   (printout t "R1: bateria '0.9" crlf)
+   (printout t "R3: bateria '0.9" crlf)
 )
 
 ;;; R4: SI hay gasolina en el deposito ENTONCES el motor obtiene gasolina con certeza 0,9
@@ -122,7 +122,7 @@
    (test (> ?f1 0) )
 =>
    (assert (FactorCerteza motor_llega_gasolina si (encadenado ?f1 0.9) ) )
-   (printout t "R1: motor_llega_gasolina '0.9" crlf)
+   (printout t "R4: motor_llega_gasolina '0.9" crlf)
 )
 
 ;;; R5: SI hace intentos de arrancar ENTONCES problema con el starter con certeza -0,6
@@ -131,7 +131,7 @@
    (test (> ?f1 0) )
 =>
    (assert (FactorCerteza problema_starter si (encadenado ?f1 -0.6) ) )
-   (printout t "R1: starter '-0.6" crlf)
+   (printout t "R5: starter '-0.6" crlf)
 )
 
 ;;; R6: SI hace intentos de arrancar ENTONCES problema con la batería 0,5
@@ -140,7 +140,7 @@
    (test (> ?f1 0) )
 =>
    (assert (FactorCerteza problema_bateria si (encadenado ?f1 0.5) ) )
-   (printout t "R1: bateria '0.5" crlf)
+   (printout t "R6: bateria '0.5" crlf)
 )
 
 
@@ -154,7 +154,6 @@
       (bind ?resp (read))
    )
    (assert (Evidencia hace_intentos_arrancar ?resp))
-   (assert (Imprimir))
 )
 
 (defrule pregunta_gasolina_en_deposito
@@ -166,7 +165,6 @@
       (bind ?resp (read))
    )
    (assert (Evidencia hay_gasolina_en_deposito ?resp))
-   (assert (Imprimir))
 )
 
 (defrule pregunta_encienden_luces
@@ -178,7 +176,6 @@
       (bind ?resp (read))
    )
    (assert (Evidencia encienden_las_luces ?resp))
-   (assert (Imprimir))
 )
 
 (defrule pregunta_gira_motor
@@ -190,39 +187,66 @@
       (bind ?resp (read))
    )
    (assert (Evidencia gira_motor ?resp))
-   (assert (Imprimir))
    (assert (Analisis))
 )
 
-(defrule limpiar_certezas
-   (declare (salience -9))
-   ?ev <- (Evidencia ?e ?r)
-   ?fac <- (FactorCerteza ?e ?r ?v)
-   =>
-      (retract ?ev)
-      (retract ?fac)
+(defrule checkStarter
+(declare (salience -1))
+(not (FactorCerteza problema_starter $? $?))
+=>
+(assert (FactorCerteza problema_starter no 0))
 )
 
-(defrule imprimir
-   (declare (salience 1))
-   ?imprimir <- (Imprimir)
+(defrule checkBujia
+(declare (salience -1))
+(not (FactorCerteza problema_bujias $? $?))
+=>
+(assert (FactorCerteza problema_bujias no 0))
+)
+
+(defrule checkBateria
+(declare (salience -1))
+(not (FactorCerteza problema_bateria $? $?))
+=>
+(assert (FactorCerteza problema_bateria no 0))
+)
+
+(defrule checkMotor
+(declare (salience -1))
+(not (FactorCerteza motor_llega_gasolina $? $?))
+=>
+(assert (FactorCerteza motor_llega_gasolina no 0))
+)
+
+(defrule mayorCerteza
+   ?a <- (Analisis)
    (FactorCerteza problema_starter ?sn ?v)
    (FactorCerteza problema_bujias ?sn1 ?v1)
    (FactorCerteza problema_bateria ?sn2 ?v2)
    (FactorCerteza motor_llega_gasolina ?sn3 ?v3)
 =>
-   (printout t "Problema starter " ?sn ?v crlf)
-   (printout t "Problema bujias " ?sn1 ?v1 crlf)
-   (printout t "Problema bateria " ?sn2 ?v2 crlf)
-   (printout t "Motor llega gasolina " ?sn3 ?v3 crlf)
-   (retract ?imprimir)
+   (assert (MayorCerteza (max ?v ?v1 ?v2 ?v3)))
+)
+
+(defrule imprimir
+   ?a <- (Analisis)
+   (FactorCerteza problema_starter ?sn ?v)
+   (FactorCerteza problema_bujias ?sn1 ?v1)
+   (FactorCerteza problema_bateria ?sn2 ?v2)
+   (FactorCerteza motor_llega_gasolina ?sn3 ?v3)
+   (MayorCerteza ?valor)
+   (FactorCerteza ?motivo ?s ?valor)
+=>
+   (printout t crlf "Problema starter " ?v crlf)
+   (printout t "Problema bujias " ?v1 crlf)
+   (printout t "Problema bateria " ?v2 crlf)
+   (printout t "Motor llega gasolina " ?v3 crlf)
 )
 
 (defrule Analisis
-   (declare (salience -10))
    ?a <- (Analisis)
-   ?cer <- (FactorCerteza ?h si ?f)
+   (MayorCerteza ?maximo)
+   (FactorCerteza ?h ?s ?maximo)
 =>
-   (printout t "El problema es " ?h " con certeza " ?f crlf)
-   (retract ?a)
+   (printout t "El problema es " ?h " con certeza " ?maximo crlf)
 )

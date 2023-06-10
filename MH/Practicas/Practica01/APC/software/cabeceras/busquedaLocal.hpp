@@ -85,6 +85,7 @@ vector<double> busquedaLocal(Dataset train){
     vector<double> S = Sact;
     double objetivo = 0;
 
+    auto momentoInicio = chrono::high_resolution_clock::now(); // Contamos el tiempo de los algoritmos
     // Bucle principal del algoritmo
     while(itervecinos < 20*Sact.size() && iter < 15000){
         // Generar índices de vecindario
@@ -114,6 +115,9 @@ vector<double> busquedaLocal(Dataset train){
         }
         iter++;
     }
+    auto momentoFin = chrono::high_resolution_clock::now();
+    chrono::milliseconds tiempo = chrono::duration_cast<chrono::milliseconds>(momentoFin - momentoInicio);
+    cout << "Tiempo BMB: " << double(tiempo.count())/1000.0 << " Iters: " << iter << endl;
 
     // Devolver la solución encontrada
     return Sact;

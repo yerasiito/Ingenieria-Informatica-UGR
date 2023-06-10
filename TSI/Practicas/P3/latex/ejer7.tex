@@ -1,0 +1,19 @@
+% Please add the following required packages to your document preamble:
+% \usepackage{graphicx}
+% \usepackage[table,xcdraw]{xcolor}
+% If you use beamer only pass "xcolor=table" option, i.e. \documentclass[xcolor=table]{beamer}
+\begin{table}[H]
+	\centering
+	\caption{Resultados del ejercicio 7}
+	\label{tab:ejercicio7}
+	\resizebox{0.5\textwidth}{!}{%
+		\begin{tabular}{|c|c|c|}
+			\hline
+			\rowcolor[HTML]{EFEFEF} 
+			\textbf{ejercicio}                                     & \textbf{Nºacciones} & \textbf{Tiempo(s)} \\ \hline
+			\cellcolor[HTML]{DAE8FC}\textbf{6 (sin restringir)}    & 61                  & 2.70               \\ \hline
+			\cellcolor[HTML]{DAE8FC}\textbf{6 (restringido <= 28)} & 58                  & 298.56             \\ \hline
+			\cellcolor[HTML]{DAE8FC}\textbf{6 (proven unsolvable)} & {\color[HTML]{FE0000} unsolvable} & $\infty$ \\ \hline
+		\end{tabular}%
+	}
+\end{table}
