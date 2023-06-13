@@ -1,7 +1,7 @@
 #!/bin/bash
 #cmake ..
 #make
-
+#./practica3 BL 1
 ./practica3 BMB 1 
 ./practica3 ILS 1
 ./practica3 VNS 1

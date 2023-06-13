@@ -1,70 +1,109 @@
 % Please add the following required packages to your document preamble:
-% \usepackage{multirow}
+% \usepackage{graphicx}
 % \usepackage[table,xcdraw]{xcolor}
 % If you use beamer only pass "xcolor=table" option, i.e. \documentclass[xcolor=table]{beamer}
 \begin{table}[H]
 	\centering
-	\caption{Resultados globales en el problema del APC												
-	}
+	\caption{Resultados obtenidos por la BMB y los algoritmos de Trayectoria en el problema del APC}
 	\label{tab:final}
 	\resizebox{\textwidth}{!}{%
-		\begin{tabular}{ccccccccccccc}
-			&
-			\multicolumn{4}{c}{\cellcolor[HTML]{C0C0C0}\textbf{Diabetes}} &
-			\multicolumn{4}{c}{\cellcolor[HTML]{C0C0C0}\textbf{Ozone}} &
-			\multicolumn{4}{c}{\cellcolor[HTML]{C0C0C0}\textbf{Spectf-heart}} \\
-			\multirow{-2}{*}{} &
-			\cellcolor[HTML]{DAE8FC}\textit{\textbf{\%\_clas}} &
-			\cellcolor[HTML]{DAE8FC}\textit{\textbf{\%\_red}} &
-			\cellcolor[HTML]{DAE8FC}\textit{\textbf{Agr.}} &
-			\cellcolor[HTML]{DAE8FC}\textbf{T} &
-			\cellcolor[HTML]{DAE8FC}\textit{\textbf{\%\_clas}} &
-			\cellcolor[HTML]{DAE8FC}\textit{\textbf{\%\_red}} &
-			\cellcolor[HTML]{DAE8FC}\textit{\textbf{Agr.}} &
-			\cellcolor[HTML]{DAE8FC}\textbf{T} &
-			\cellcolor[HTML]{DAE8FC}\textit{\textbf{\%\_clas}} &
-			\cellcolor[HTML]{DAE8FC}\textit{\textbf{\%\_red}} &
-			\cellcolor[HTML]{DAE8FC}\textit{\textbf{Agr.}} &
-			\cellcolor[HTML]{DAE8FC}\textbf{T} \\ \cline{2-13} 
-			\multicolumn{1}{c|}{\cellcolor[HTML]{C0C0C0}\textbf{1-NN}} &
-			\multicolumn{1}{c|}{68.36} &
-			\multicolumn{1}{c|}{0.00} &
-			\multicolumn{1}{c|}{{\color[HTML]{FE0000} 54.69}} &
-			\multicolumn{1}{c|}{0.0082} &
-			\multicolumn{1}{c|}{80.31} &
-			\multicolumn{1}{c|}{0.00} &
-			\multicolumn{1}{c|}{{\color[HTML]{FE0000} 64.25}} &
-			\multicolumn{1}{c|}{0.003} &
-			\multicolumn{1}{c|}{85.38} &
-			\multicolumn{1}{c|}{0.00} &
-			\multicolumn{1}{c|}{{\color[HTML]{FE0000} 68.31}} &
-			\multicolumn{1}{c|}{0.0026} \\ \cline{2-13} 
-			\multicolumn{1}{c|}{\cellcolor[HTML]{C0C0C0}\textbf{REL.}} &
-			\multicolumn{1}{c|}{67.71} &
-			\multicolumn{1}{c|}{5.00} &
-			\multicolumn{1}{c|}{{\color[HTML]{FE0000} 55.17}} &
-			\multicolumn{1}{c|}{0.028} &
-			\multicolumn{1}{c|}{76.56} &
-			\multicolumn{1}{c|}{5.83} &
-			\multicolumn{1}{c|}{{\color[HTML]{FE0000} 62.42}} &
-			\multicolumn{1}{c|}{0.03} &
-			\multicolumn{1}{c|}{85.08} &
-			\multicolumn{1}{c|}{0.00} &
-			\multicolumn{1}{c|}{{\color[HTML]{FE0000} 68.07}} &
-			\multicolumn{1}{c|}{0.026} \\ \cline{2-13} 
-			\multicolumn{1}{c|}{\cellcolor[HTML]{C0C0C0}\textbf{BL}} &
-			\multicolumn{1}{c|}{69.28} &
-			\multicolumn{1}{c|}{70.00} &
-			\multicolumn{1}{c|}{{\color[HTML]{FE0000} 69.42}} &
-			\multicolumn{1}{c|}{12} &
+		\begin{tabular}{c|cccc|cccc|cccc|}
+			\cline{2-13}
+			\multicolumn{1}{l|}{\textbf{}} &
+			\multicolumn{4}{c|}{\textbf{Diabetes}} &
+			\multicolumn{4}{c|}{\textbf{Ozone}} &
+			\multicolumn{4}{c|}{\textbf{Spectf-heart}} \\ \cline{2-13} 
+			\multicolumn{1}{l|}{\textbf{}} &
+			\multicolumn{1}{c|}{\textbf{\%\_clas}} &
+			\multicolumn{1}{c|}{\textbf{\%\_red}} &
+			\multicolumn{1}{c|}{\textbf{Fit.}} &
+			\textbf{T{[}s{]}} &
+			\multicolumn{1}{c|}{\textbf{\%\_clas}} &
+			\multicolumn{1}{c|}{\textbf{\%\_red}} &
+			\multicolumn{1}{c|}{\textbf{Fit.}} &
+			\textbf{T{[}s{]}} &
+			\multicolumn{1}{c|}{\textbf{\%\_clas}} &
+			\multicolumn{1}{c|}{\textbf{\%\_red}} &
+			\multicolumn{1}{c|}{\textbf{Fit.}} &
+			\textbf{T{[}s{]}} \\ \hline
+			\multicolumn{1}{|c|}{\textbf{BL}} &
+			\multicolumn{1}{c|}{69.66} &
+			\multicolumn{1}{c|}{62.50} &
+			\multicolumn{1}{c|}{68.23} &
+			1.8 &
+			\multicolumn{1}{c|}{79.69} &
+			\multicolumn{1}{c|}{37.78} &
+			\multicolumn{1}{c|}{71.31} &
+			16 &
+			\multicolumn{1}{c|}{84.51} &
+			\multicolumn{1}{c|}{48.18} &
+			\multicolumn{1}{c|}{77.25} &
+			6.3 \\ \hline
+			\multicolumn{1}{|c|}{\textbf{BMB}} &
+			\multicolumn{1}{c|}{67.19} &
+			\multicolumn{1}{c|}{67.50} &
+			\multicolumn{1}{c|}{67.26} &
+			22 &
 			\multicolumn{1}{c|}{78.44} &
-			\multicolumn{1}{c|}{39.44} &
-			\multicolumn{1}{c|}{{\color[HTML]{FE0000} 70.64}} &
-			\multicolumn{1}{c|}{32} &
-			\multicolumn{1}{c|}{82.52} &
-			\multicolumn{1}{c|}{52.27} &
-			\multicolumn{1}{c|}{{\color[HTML]{FE0000} 76.47}} &
-			\multicolumn{1}{c|}{15} \\ \cline{2-13} 
-		\end{tabular}
+			\multicolumn{1}{c|}{46.67} &
+			\multicolumn{1}{c|}{72.08} &
+			72 &
+			\multicolumn{1}{c|}{84.82} &
+			\multicolumn{1}{c|}{62.73} &
+			\multicolumn{1}{c|}{80.40} &
+			56 \\ \hline
+			\multicolumn{1}{|c|}{\textbf{ES}} &
+			\multicolumn{1}{c|}{68.49} &
+			\multicolumn{1}{c|}{65.00} &
+			\multicolumn{1}{c|}{67.79} &
+			69 &
+			\multicolumn{1}{c|}{77.81} &
+			\multicolumn{1}{c|}{58.33} &
+			\multicolumn{1}{c|}{73.92} &
+			82 &
+			\multicolumn{1}{c|}{83.93} &
+			\multicolumn{1}{c|}{60.45} &
+			\multicolumn{1}{c|}{79.24} &
+			58 \\ \hline
+			\multicolumn{1}{|c|}{\textbf{ILS}} &
+			\multicolumn{1}{c|}{68.36} &
+			\multicolumn{1}{c|}{67.50} &
+			\multicolumn{1}{c|}{68.19} &
+			20 &
+			\multicolumn{1}{c|}{80.94} &
+			\multicolumn{1}{c|}{51.94} &
+			\multicolumn{1}{c|}{75.14} &
+			89 &
+			\multicolumn{1}{c|}{83.95} &
+			\multicolumn{1}{c|}{66.36} &
+			\multicolumn{1}{c|}{80.43} &
+			58 \\ \hline
+			\multicolumn{1}{|c|}{{\color[HTML]{FE0000} \textbf{ILS-ES}}} &
+			\multicolumn{1}{c|}{66.29} &
+			\multicolumn{1}{c|}{75.00} &
+			\multicolumn{1}{c|}{68.03} &
+			71 &
+			\multicolumn{1}{c|}{81.56} &
+			\multicolumn{1}{c|}{56.11} &
+			\multicolumn{1}{c|}{{\color[HTML]{00009B} \textbf{76.47}}} &
+			94 &
+			\multicolumn{1}{c|}{85.95} &
+			\multicolumn{1}{c|}{69.55} &
+			\multicolumn{1}{c|}{{\color[HTML]{00009B} \textbf{82.67}}} &
+			68 \\ \hline
+			\multicolumn{1}{|c|}{\textbf{VNS}} &
+			\multicolumn{1}{c|}{66.54} &
+			\multicolumn{1}{c|}{75.00} &
+			\multicolumn{1}{c|}{{\color[HTML]{00009B} \textbf{68.24}}} &
+			23 &
+			\multicolumn{1}{c|}{78.75} &
+			\multicolumn{1}{c|}{45.00} &
+			\multicolumn{1}{c|}{72.00} &
+			87 &
+			\multicolumn{1}{c|}{85.38} &
+			\multicolumn{1}{c|}{51.36} &
+			\multicolumn{1}{c|}{78.58} &
+			56 \\ \hline
+		\end{tabular}%
 	}
 \end{table}

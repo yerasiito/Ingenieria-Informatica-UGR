@@ -216,6 +216,154 @@ DEVOLVER(W)
 	\item Criterio de aceptación: se cumple cuando el objetivo del vecino generado es mayor que el actual, lo controlamos con el valor de mejora.
 \end{itemize}
 
+\newpage
+
+\subsection{Algoritmo de Enfriamiento Simulado}
+El algoritmo de enfriamiento simulado (Simulated Annealing) es una técnica de búsqueda por trayectoria utilizada para encontrar soluciones aproximadas a problemas de optimización combinatoria. Está inspirado en el proceso de enfriamiento de los materiales en metalurgia.\\
+
+El algoritmo se basa en la idea de explorar el espacio de búsqueda permitiendo movimientos a soluciones vecinas, incluso si estas soluciones empeoran la función objetivo. Este enfoque permite evitar quedarse atrapado en óptimos locales y explorar regiones del espacio de búsqueda que podrían contener soluciones mejores.\\
+
+Inicialmente, se utiliza una alta temperatura que permite aceptar soluciones empeorantes con una cierta probabilidad. A medida que avanza el algoritmo, la temperatura se reduce gradualmente, lo que disminuye la probabilidad de aceptar soluciones empeorantes y hace que el algoritmo converja hacia una solución óptima o cercana a ella.\\
+
+Para aplicar el algoritmo debemos calcular varias componentes:
+
+\begin{itemize}
+ \item Temperatura inicial: debemos calcular la $t_0$ usando la siguiente fórmula:
+ \begin{figure}[H]
+ 	\[
+ 	T_{0}= \frac{\mu \cdot C(S_0)}{-ln(\varphi)} 
+ 	\]
+ 	\caption{Fijar temperatura}
+ \end{figure}
+ donde:
+ \begin{itemize}
+ 	\item $\mu$: es un valor 0.3 calculado experimentalmente.
+ 	\item $C(S_0)$ es el fitness de la solución inicial.
+ 	\item $\phi$ es un valor 0.2 que determina la probabilidad de obtener una solución peor.
+ \end{itemize}
+ 
+ Debemos asegurarnos de que no sea inferior a la temperatura final ($t_f=10^{-4}$) por ello si se diera el caso de que $t_0 < t_f$ lo que se haría es reducir más la temperatura final hasta cumplir la condición. En el pseudocódigo se llama \code{FijarTemperaturaZero(fitness)} que es tal cual la fórmula previa + condición para $t_f > t_0$.
+ 
+ \item Calcular la beta: en el mecanismo de enfriamiento se requiere calcular la tasa de enfriamiento $\beta$ tal que:
+ \begin{figure}[H]
+ 	\[
+ 	\beta = \frac{T_0 - T_f}{M \cdot T_0 \cdot T_f}
+ 	\]
+ 	\caption{Calcular beta}
+ \end{figure}
+ donde:
+ \begin{itemize}
+ 	\item M: es el número de evaluaciones totales entre el número de vecinos $\frac{MAX\_EVAL}{MAX\_VECINOS}$.
+ 	\item $T_0$: es la temperatura inicial previamente calculada.
+ 	\item $T_f$: es la temperatura final, por defecto $10^{-4}$
+ \end{itemize}
+ En el pseudocódigo se llama a \code{CalculoBeta} que aplica la fórmula previa.
+ 
+ \item Calcular el mecanismo de enfriamiento: es el método que simula el enfriamiento de la temperatura. La formula se define como:
+ \begin{figure}[H]
+ 	\[
+ 	t_{k+1}= \frac{T_k}{1+ \beta \cdot T_k} 
+ 	\]
+ 	\caption{Mecanismo de Enfriamiento}
+ \end{figure}
+ 
+ donde:
+ \begin{itemize}
+ 	\item $t_{k+1}$: es la nueva temperatura a calcular.
+ 	\item $t_k$: es la temperatura actual.
+ 	\item $\beta$: es la tasa de enfriamiento que previamente hemos calculado.
+ \end{itemize}
+\end{itemize}
+
+Una vez definidas las componentes necesarias, a continuación se detalla los criterios y variables globales utilizados. 
+Las variables globales utilizadas son:
+\begin{itemize}
+	\item $MAX\_VECINOS = 10 \cdot n$
+	\item $MAX\_EXITOS = 0.1\cdot MAX\_VECINOS$
+	\item $MAX\_ITER = 15000$
+\end{itemize}
+Para controlar las condiciones de los bucles interno y externo se definen dos criterios de parada:
+
+\begin{itemize}
+	
+	\item Condición de parada general: el algoritmo finaliza su ejecución en el bucle exterior cuando cumple cualquiera de las dos condiciones siguientes:
+	$$ evaluaciones \geq MAX\_ITER \textbf{ o } vecinosAceptados == 0 $$
+	
+	\item Condición de enfriamiento: controla el bucle interno de enfriamiento finalizando cuando cumple cualquiera de las 2 condiciones siguientes:
+	$$ numeroVecinos \geq MAX\_VECINOS \textbf{ o } vecinosAceptados \geq MAX\_EXITOS $$
+\end{itemize}
+
+El pseudocódigo final se detalla en la siguiente página.
+
+\newpage
+
+\begin{algorithm}[H]
+	\caption{Búsqueda de Enfriamiento Simulado(ES)}
+	\SetKwInOut{Input}{Entrada}
+	\SetKwInOut{Output}{Salida}
+	
+	\Input{Dataset train, solución inicial Sact, size maxiterES}
+	\Output{Mejor objetivo encontrado}	
+	\BlankLine
+	
+	S $\leftarrow$ generaSolucionInicial(S, n)\;
+	\BlankLine
+	\tcp{Guardar el mejor}
+	fS $\leftarrow$ funObjetivo(train, S) \; 
+	fBest $\leftarrow$ fS\;
+	
+	\BlankLine
+	t $\leftarrow$ FijarTemperaturaZero(fBest)\;
+	beta $\leftarrow$ CalculoBeta(t)\;
+	eval $\leftarrow$ 0\;
+	\BlankLine
+	parada $\leftarrow$ false\;
+	\While{!parada} {
+		vecinos $\leftarrow$ 0\;
+		aceptados $\leftarrow$ 0\;
+		enfriamiento $\leftarrow$ False\;
+		
+		\BlankLine
+		\tcp{Bucle interno L(T)}
+		\While{!enfriamiento} {
+			\tcp{Generar vecino}
+			Sprima $\leftarrow$ Mov(S, Random(0, n), $\sigma$)\; 
+			vecinos $\leftarrow$ vecinos +1\;
+			\BlankLine
+			\tcp{Calcular objetivo tras mutación}
+			fPrima = funObjetivo(train, Sprima)\;
+			eval $\leftarrow$ eval +1\;  
+			\BlankLine
+			\tcp{Calcular diferencia}
+			incrementoF $\leftarrow$ fPrima - fS\;
+			
+			\BlankLine
+			\tcp{Maximizar}
+			u $\leftarrow$ Random(0.0, 1.0)\;
+			\If{incrementoF \ >\ 0.0 \textbf{or} u \ $\leq$ exp(incrementoF / t)} {
+				S $\leftarrow$ Sprima\;  
+				fS $\leftarrow$ fPrima\;
+				aceptados $\leftarrow$ aceptados + 1\; 
+				
+				\If{fS\ >\ fBest} {
+					Sact $\leftarrow$ S\;
+					fBest $\leftarrow$ fS\;
+				}
+			}
+			enfriamiento $\leftarrow$ CondicionEnfriamiento(vecinos, aceptados) \;
+		}
+		\tcp{Cauchu modificado}
+		t $\leftarrow$ MecanismoEnfriamientoG(t, beta); 
+		eval $\leftarrow$ eval +1; 
+		parada $\leftarrow$ CondicionParadaES(eval, aceptados);
+	}
+	\BlankLine
+	return fBest;
+	
+	
+	
+\end{algorithm}
+
 \subsection{Algoritmo de Búsqueda Multiarranque Básica}
 La búsqueda multiarranque básica es un enfoque utilizado en problemas de optimización que busca mejorar la calidad de las soluciones encontradas mediante la exploración de múltiples arranques o puntos iniciales.\\
 
@@ -230,44 +378,41 @@ El proceso de búsqueda multiarranque básica se puede describir en los siguient
 
 \item \textbf{Evaluación y selección de la mejor solución:} Se evalúan las soluciones encontradas en cada arranque y se selecciona la mejor solución obtenida como resultado final.
 
-\item \textbf{Criterio de parada: } Se establece un criterio de parada para determinar cuándo finalizar el proceso de búsqueda, como un número máximo de iteraciones o un límite de tiempo. En nuestro caso se establece un máximo de 15000 iteraciones totales (1000 en cada ejecución de búsqueda local). El pseudocódigo sería:
-
-
+\item \textbf{Criterio de parada: } Se establece un criterio de parada para determinar cuándo finalizar el proceso de búsqueda, como un número máximo de iteraciones o un límite de tiempo. En nuestro caso se establece un máximo de 15 iteraciones de BMB + 1000 en cada ejecución de búsqueda local. 
 \end{enumerate}
 
-La búsqueda multiarranque básica es especialmente útil cuando el espacio de búsqueda es complejo y existen múltiples óptimos locales. Al explorar diferentes puntos iniciales, existe una mayor probabilidad de encontrar soluciones de mayor calidad y evitar quedar atrapado en óptimos locales subóptimos.
+La búsqueda multiarranque básica es especialmente útil cuando el espacio de búsqueda es complejo y existen múltiples óptimos locales. Al explorar diferentes puntos iniciales, existe una mayor probabilidad de encontrar soluciones de mayor calidad y evitar quedar atrapado en óptimos locales subóptimos. El pseudocódigo sería:
 
 \begin{algorithm}[H]
-	\SetKwFunction{BMB}{BMB}
+	\caption{Búsqueda Multiarranque Básica (BMB)}
 	\SetKwInOut{Input}{Entrada}
 	\SetKwInOut{Output}{Salida}
 	
-	\Input{Dataset entrenamiento, vector Sact, iter, maxiter}
+	\Input{Dataset entrenamiento, vector Sact, size maxiterBMB, size maxiterBL}
 	\Output{mejorObjetivo}
 	
-	\BlankLine
-	\BMB{Dataset train, vector Sact, iter, maxiter}:
-	\BlankLine
-	i = 0	
-	\BlankLine
-	\While{i \ < \ iter}{
+	iter $\leftarrow$ 0	\;
+	\tcp{Algoritmo BMB}
+	\While{iter \ < \ maxiterBMB}{
 		% Generar aleatoria
-		Sact = generarVectorAleatorio(0,1)
+		Sact $\leftarrow$ generarVectorAleatorio(0,1)
 		
 		% Evaluar BL
-		objetivo = busquedaLocal(train, Sact, maxiter/iter)\;
+		objetivo $\leftarrow$ busquedaLocal(train, Sact, maxiterBL)\;
 		
 		% Guardar si es mejor
 		\If{objetivo \ > \ mejorObjetivo}{
-			mejorS = Sact\;
-			mejorObjetivo = objetivo\;
+			mejorS $\leftarrow$ Sact\;
+			mejorObjetivo $\leftarrow$ objetivo\;
 		}
 		
-		i++\;
+		iter $\leftarrow$ iter +1
 	}
 	
 	\Return{mejorObjetivo}\;
 \end{algorithm}
+
+\newpage
 
 \subsection{Búsqueda Local Iterativa}
 La búsqueda local iterativa es una estrategia de optimización que se utiliza para mejorar una solución inicial mediante iteraciones locales. Consiste en realizar modificaciones locales en la solución actual y evaluar si estas modificaciones conducen a una mejora en la función objetivo.\\
@@ -277,206 +422,162 @@ En la búsqueda local iterativa, se parte de una solución inicial y se aplica u
 La diferencia principal entre la BMB y la ILS radica en la generación de soluciones iniciales. Mientras que en la búsqueda local iterativa se parte de una única solución inicial y se realiza la mejora iterativa, en la búsqueda multiarranque básica se generan múltiples soluciones iniciales de forma aleatoria y se aplican búsquedas locales independientes a cada una de ellas. Esto permite explorar diferentes regiones del espacio de búsqueda y aumentar las posibilidades de encontrar una solución de mayor calidad global, al escapar de posibles óptimos locales y abordar diferentes configuraciones iniciales.\\
 
 \begin{algorithm}[H]
-	\SetKwFunction{ILS}{ILS}
+	\caption{Búsqueda Local Iterativa (ILS)}
 	\SetKwInOut{Input}{Entrada}
 	\SetKwInOut{Output}{Salida}
 	
-	\Input{Dataset train, solución inicial Sact, iteraciones iter, máximas iteraciones maxiter}
-	\Output{Mejor objetivo encontrado}
-	
-	\BlankLine
-	\ILS{Dataset train, solución inicial Sact, iteraciones iter, máximas iteraciones maxiter}:
-	\BlankLine	
-	
+	\Input{Dataset train, solución inicial Sact, size maxiterILS, size maxiterBL}
+	\Output{Mejor objetivo encontrado}	
+
+	mutaciones $\leftarrow$ 0.10 * n\;
 	\tcp{Al menos 2 mutaciones}
-	mutaciones = 0.10 * numCaracterísticas\\
 	\If{mutaciones < \ 2}{
-		mutaciones = 2
+		mutaciones $\leftarrow$ 2
 	}
 	
-	generaSolucionInicial(S, numCaracteristicas)
+	S $\leftarrow$ generaSolucionInicial(S, n)
 	
-	objetivo = busquedaLocal(entrenamiento, S, iter, maxiter)
+	objetivo $\leftarrow$ busquedaLocal(train, S, maxiterBL)\;
+	\tcp{Inicializar mejores}
+	mejorS $\leftarrow$ S\;
+	mejorObjetivo $\leftarrow$ objetivo\;
 	\BlankLine
-	mejorS = S\\
-	mejorObjetivo = objetivo\\
-	\While{i \ < \ iter}{
-		\For{ j = 0; j < mutaciones; j++}{
-			S = mutacion(Sact, Random(0, n), $\sigma$)\;
-		}
-		objetivo = busquedaLocal(train, S, maxiter/iter)\;
+	\tcp{Algoritmo ILS}
+	iter $\leftarrow$ 0\;
+	\While{i \ < \ maxiterILS}{
+		\tcp{Operador ILS}
+		idxAtribs $\leftarrow$ generarIndicesAleatorios(S, 0,n)\;
+		S $\leftarrow$ mutacion(Sact, idxAtribs, $\sigma$)\;
+\BlankLine
+		objetivo $\leftarrow$ busquedaLocal(train, S, maxiterBL)\;
 		
 		\If{objetivo \ > \ mejorObjetivo}{
-			mejorObjetivo = objetivo\;
-			mejorS = S\;
+			mejorObjetivo $\leftarrow$ objetivo\;
+			mejorS $\leftarrow$ S\;
 		}
-		i++\;
-		iter = 0\;
+		i $\leftarrow$ i+1\;
+		iter $\leftarrow$ 0\;
+	}
+	
+	\Return{mejorObjetivo}\;
+\end{algorithm}
+
+\subsection{Algoritmo de Búsqueda Local Iterativa - con ES}
+Al realizar la búsqueda iterativa con enfriamiento simulado en lugar de utilizar la búsqueda local, se introduce un componente adicional de exploración global en el proceso de optimización. Mientras que la búsqueda local se enfoca en realizar modificaciones locales en la solución actual, el enfriamiento simulado permite realizar movimientos más grandes y explorar diferentes regiones del espacio de búsqueda.\\
+
+A diferencia de la búsqueda local, que puede quedar atrapada en óptimos locales, el enfriamiento simulado tiene la capacidad de escapar de mínimos locales y explorar soluciones potencialmente mejores. Esto se logra mediante el uso de la temperatura, que permite aceptar soluciones subóptimas en las primeras etapas del algoritmo, con la esperanza de encontrar soluciones aún mejores en etapas posteriores.\\
+
+La búsqueda iterativa con enfriamiento simulado ofrece un equilibrio entre la exploración y la explotación en el proceso de optimización. Permite explorar de manera más amplia el espacio de búsqueda en las primeras etapas, buscando soluciones prometedoras, y luego se enfoca en explotar las regiones más prometedoras a medida que la temperatura disminuye. Su implementación es exactamente igual que la busqueda local iterativa pero cambiando la búsqueda local por el algoritmo de enfriamiento simulado:
+\begin{algorithm}[H]
+	\caption{Búsqueda Local Iterativa (ILS)}
+	\SetKwInOut{Input}{Entrada}
+	\SetKwInOut{Output}{Salida}
+	
+	\Input{Dataset train, solución inicial Sact, size maxiterILS, size maxiterES}
+	\Output{Mejor objetivo encontrado}	
+	
+	mutaciones $\leftarrow$ 0.10 * n\;
+	\BlankLine
+	\tcp{Al menos 2 mutaciones}
+	\If{mutaciones < \ 2}{
+		mutaciones $\leftarrow$ 2
+	}
+	
+	S $\leftarrow$ generaSolucionInicial(S, n)
+	
+	objetivo $\leftarrow$ ES(train, S, maxiterES)\;
+	\BlankLine
+	\tcp{Inicializar mejores}
+	mejorS $\leftarrow$ S\;
+	mejorObjetivo $\leftarrow$ objetivo\;
+	\BlankLine
+	\tcp{Algoritmo ILS-ES}
+	iter $\leftarrow$ 0\;
+	\While{i \ < \ maxiterILS}{
+		\tcp{Operador ILS}
+		idxAtribs $\leftarrow$ generarIndicesAleatorios(S, 0,n)\;
+		S $\leftarrow$ mutacion(Sact, idxAtribs, $\sigma$)\;
+		\BlankLine
+		
+		objetivo $\leftarrow$ ES(train, S, maxiterES)\;
+		
+		\If{objetivo \ > \ mejorObjetivo}{
+			mejorObjetivo $\leftarrow$ objetivo\;
+			mejorS $\leftarrow$ S\;
+		}
+		i $\leftarrow$ i+1\;
+		iter $\leftarrow$ 0\;
 	}
 	
 	\Return{mejorObjetivo}\;
 \end{algorithm}
 
 \subsection{Algoritmo de Búsqueda de Vecindad Variable}
-Variable Neighborhood Search (VNS) es un algoritmo de búsqueda local que combina la exploración de múltiples vecindarios en busca de soluciones óptimas. La idea principal detrás de VNS es explorar diferentes estructuras vecinas de una solución actual para superar los óptimos locales y encontrar soluciones de mejor calidad.\\
+Variable Neighborhood Search (VNS) es un algoritmo de búsqueda local que combina la exploración de múltiples vecindarios en busca de soluciones óptimas. La idea principal detrás de VNS es explorar diferentes estructuras vecinas de una solución actual para superar los óptimos locales y encontrar soluciones de mejor calidad. El proceso de mutación seguido ha sido iterar hasta que se cumpla un criterio de parada:
+\begin{enumerate}
+	\item Seleccionar un vecindario aleatoriamente. 
+	\item  Aplicar una búsqueda local en el vecindario seleccionado para mejorar la solución actual. Según el vecindario k utilizado se mutan 1,2 o 3 atributos de forma circular.
+	\item  Si encuentra una solución mejor, actualizar la solución actual. Vuelve al primer vecindario k=1.
+	\item  Si no encuentra una solución mejor, cambia al siguiente vecindario del conjunto de vecindarios  k++.
+\end{enumerate}
 
-El algoritmo VNS se compone de los siguientes pasos:\\
 \begin{algorithm}[H]
-	\SetKwFunction{VNS}{VNS}
+	\caption{Búsqueda en Vecindad Variable (VNS)}
 	\SetKwInOut{Input}{Entrada}
 	\SetKwInOut{Output}{Salida}
 	
-	\Input{Dataset train, solución inicial Sact, iteraciones iter, máximas iteraciones maxiter, atributos k}
+	\Input{Dataset train, solución inicial Sact,  size maxiterVNS, size maxiterBL}
 	\Output{Mejor objetivo encontrado}
 	
-	\BlankLine
-	\VNS{Dataset train, solución inicial Sact, iteraciones iter, máximas iteraciones maxiter, atributos k}:
-	\BlankLine	
+	k $\leftarrow$ 1\; 
 	
 	\tcp{Al menos 2 mutaciones}
-	mutaciones = 0.10 * numCaracterísticas\\
+	mutaciones $\leftarrow$ 0.10 * n\;
 	\If{mutaciones < \ 2}{
-		mutaciones = 2
+		mutaciones $\leftarrow$ 2
 	}
 	
-	generaSolucionInicial(S, numCaracteristicas)
+	generaSolucionInicial(S, n)\;
+	objetivo $\leftarrow$ busquedaLocal(train, S, maxiterBL, k)\;
+	\tcp{Inicializar mejores}
+	mejorS $\leftarrow$ S\;
+	mejorObjetivo = objetivo\;
 	
-	objetivo = busquedaLocal(entrenamiento, S, iter, maxiter)
-	\BlankLine
-	mejorS = S\\
-	mejorObjetivo = objetivo\\
-	\While{i \ < \ iter}{
-		\For{ j = 0; j < mutaciones; j++}{
-			S = mutacion(Sact, Random(0, n), $\sigma$, k)\;
-		}
-		objetivo = busquedaLocal(train, S, maxiter/iter, k)\;
+	\tcp{Algoritmo VNS}
+	iter $\leftarrow$ 0\;
+	\While{iter \ < \ maxiterVNS}{
+		idxAtribs $\leftarrow$ generarIndicesAleatorios(S, 0,n)\;
+		S $\leftarrow$ mutacion(Sact, idxAtribs, $\sigma$,k)\;
+		objetivo $\leftarrow$ busquedaLocal(train, S, maxiterBL, k)\;
 		
 		\If{objetivo \ > \ mejorObjetivo}{
-			mejorObjetivo = objetivo\;
-			mejorS = S\;
-			k=1
+			mejorObjetivo $\leftarrow$ objetivo\;
+			mejorS $\leftarrow$ S\;
+			k$\leftarrow$1
 		}
 		\If{k $\leq$ KMAX}{
-			k++;
+			k $\leftarrow$ k+1;
 		}
 		\Else{
-			k = 1;
+			k $\leftarrow$ 1;
 		}
 		
-		i++\;
-		iter = 0\;
+		iter $\leftarrow$ 0\;
 	}
 	
-	\Return{mejorS}\;
+	\Return{mejorObjetivo}\;
 \end{algorithm}
 
-\begin{enumerate}
-\item Seleccionar una solución inicial aleatoria.
-\item Definir un conjunto de vecindarios o estructuras de vecindad. Cada vecindario representa un conjunto de soluciones cercanas a la solución actual.
-\item Iterar hasta que se cumpla un criterio de parada:
-\begin{enumerate}
-	\item Seleccionar un vecindario aleatoriamente.
-	\item  Aplicar una búsqueda local en el vecindario seleccionado para mejorar la solución actual.
-	\item  Si se encuentra una solución mejor, actualizar la solución actual.
-	\item  Si no se encuentra una solución mejor, cambiar al siguiente vecindario en el conjunto de vecindarios.
-\end{enumerate}
-
-\item Repetir el paso 3 hasta alcanzar el criterio de parada.
-\end{enumerate}
 La principal diferencia entre VNS y otros algoritmos de búsqueda local es la exploración de múltiples vecindarios. Al cambiar entre diferentes vecindarios, VNS puede evitar quedar atrapado en óptimos locales al explorar nuevas estructuras vecinas. Esto permite una mayor capacidad de exploración y una mayor probabilidad de encontrar soluciones de mejor calidad.\\
 
-\subsection{Algoritmo de Enfriamiento Simulado}
-
-\subsection{Algoritmo de Búsqueda Local Iterativa - con ESs}
-
-
-\subsection{Algoritmos Meméticos}
-Un algoritmo memético es una variante del algoritmo genético que combina principios de la evolución biológica con el aprendizaje cultural. Este enfoque híbrido busca aprovechar la capacidad de los algoritmos genéticos para explorar y explotar el espacio de búsqueda, al mismo tiempo que incorpora mecanismos de mejora basados en el conocimiento adquirido a lo largo de las generaciones. \\
-
-En un algoritmo memético, además de los componentes tradicionales de un algoritmo genético, se incorpora un proceso de aprendizaje o mejora local llamado operador memético. Este operador se aplica a los individuos seleccionados de la población para refinar aún más sus soluciones y aumentar su calidad.\\
-
-El operador memético que vamos a utilizar es la Búsqueda Local Primer Mejor.\\
-
-La idea principal detrás de los algoritmos meméticos es que la mejora local puede llevar a soluciones más óptimas y acelerar la convergencia del algoritmo, especialmente cuando se tienen regiones prometedoras en el espacio de búsqueda. Los operadores meméticos ayudan a explotar estas regiones y pueden adaptarse según las características específicas del problema.
-
-En resumen, un algoritmo memético combina la exploración global y la explotación local al integrar una búsqueda local en un algoritmo genético. 
-
-
-\subsubsection{Algoritmo Memético Mejores (AM-Best)}
-El Algoritmo Memético Mejor(AMM-Best) es un método por el cual se aplica el algoritmo genético generacional convencional y se aplica búsqueda local al 10\% mejor de la población cada cierto número de iteraciones.\\
-
-Para conseguirlo el método utilizado ha sido el de ordenar un vector de fitness de mayor a menor y extraido el primer 10\% del vector.\\
-
-En un AM-Best la nueva generación reemplaza por completo a la generación anterior ya que es un AGG modificado. Esto implica que solo los individuos de la nueva generación participarán en la siguiente iteración del algoritmo. A medida que avanza el algoritmo, la calidad promedio de los individuos en cada generación puede mejorar, ya que los mejores individuos tienen más probabilidades de ser seleccionados y transmitir sus características a las generaciones futuras.\\
-
-Su implementación en pseudocódigo sería:
-
-\begin{algorithm}[H]
-	\SetKwFunction{AMAll}{AM-All}
-	\SetKwInOut{Input}{Entrada}
-	\SetKwInOut{Output}{Salida}
-	
-	\Input{Dataset entrenamiento, maximo Iters, pmut, pcruce}
-	\Output{mejor individuo}
-	
-	\BlankLine
-	\AMAll{Dataset entrenamiento, maximo Iters, pmut, pcruce}:
-	\BlankLine
-	Poblacion pop = generar poblacion aleatoria;\\
-	funcionObjetivo(train);\\
-	iter++;\\
-	
-	\While{iter < maximoIters}{
-		\For{i=0 to tamanio de poblacion}{
-			nueva poblacion = torneoBinario(poblacion)
-		}
-		
-		\For{i=0 to tamanio poblacion * pcross}{
-			padre1 = poblacion nueva[i];\\
-			padre2 = poblacion nueva[i+1];\\
-			\BlankLine
-			hijo1,hijo2 = operadorBLX(padre1, padre2);
-			\BlankLine
-			poblacion nueva[i] = hijo1;\\
-			poblacion nueva[i+1]=hijo2;\\
-		}
-		
-		aplicarMutacion(poblacion nueva, pmut)\\
-		
-		fitness = funcionObjetivo(train);\\
-		iter++;\\
-		elitismoDos(poblacion, poblacion nueva);\\
-		
-		poblacion = nueva poblacion; \\
-		
-		maxBL = 2* numero de carecteristicas; \\
-		\If{generacion \%10 == 0}{
-			mejores = obtener (tamanio poblacion *pmut) individuos con mejor fitness
-			\For{i=0 to tamanio mejores and iter < maxIters}{
-				fitness = busquedaLocal(train, mejores[i], it, maxBL);\\
-				iter += it;
-			}
-		}
-	}
-	\Return{mejor individuo}
-\end{algorithm}
-
-\newpage
-
 \section{Procedimiento de desarrollo}
-Se ha desarrollado la práctica en C++ usando VScode.  Se usa el random.hpp y el CMakeLists.txt de prácticas, los pseudocódigos de teoría y prácticas. Lo que falta se toma de Internet, la mayoría de Stackoverflow \cite{Stackoverflow}, geekforgeeks \cite{greekforgeeks} y chatgpt \cite{chatgpt}. \\
+Se ha desarrollado la práctica en C++ usando CLion.  Se usa el random.hpp y el CMakeLists.txt de prácticas, las diapositivas de teoría y prácticas \cite{prado}. Lo que falta se toma de Internet, la mayoría de Stackoverflow \cite{Stackoverflow}, geekforgeeks \cite{greekforgeeks} y chatgpt \cite{chatgpt}. \\
 
 El procedimiento de desarrollo ha sido:
 \begin{itemize}
-	\item Lectura y búsqueda de información tanto en el material de teoría y prácticas como de Internet. En la figura \ref{fig:mi_imagen} se puede ver el resumen:
-	\begin{figure}[h]
-		\centering
-		\includegraphics[width=\textwidth]{resumen.png}
-		\caption{Estudio del problema}
-		\label{fig:mi_imagen}
-	\end{figure}
+	\item Lectura y búsqueda de información tanto en el material de teoría y prácticas como de Internet.
 
-	\item Una vez se tiene claros los conceptos, creamos un nuevo directorio practicas1 con el material de prácticas. Creamos los directorios src, headers y reusamos el CMakeLists.txt y el random.hpp de tools.zip. Creamos un fichero .cpp y .h por algoritmo (esto cambiará) y el main.cpp. Los metemos en sus respectivos directorios y abrimos VScode.
+	\item Una vez se tiene claros los conceptos, creamos un nuevo directorio practicas3 con el material de prácticas. Creamos los directorios src, headers y reusamos el CMakeLists.txt y el random.hpp de tools.zip. Creamos un fichero .cpp y .h por algoritmo (esto cambiará) y el main.cpp. Los metemos en sus respectivos directorios y abrimos VScode.
 	
 	\item Primero vamos a definir una estructura de datos que será la base de todo el funcionamiento. En mi caso se abstraen los ejemplos en un Struct y se usa una clase Dataset para integrar vectores de ejemplos. Hardcodeamos una matriz de ejemplo y probamos hasta que funcione.
 	
@@ -485,131 +586,306 @@ El procedimiento de desarrollo ha sido:
 	
 	\item Llegados a este punto ya podemos empezar a implementar los métodos. Se implementarán en orden de dificultad y dependencia:
 	\begin{enumerate}
-		\item Algoritmo 1NN
-		\item Algoritmo Greedy RELIEF
-		\item Algoritmo Búsqueda Local Primer Mejor
-		\item Algoritmo Genéticos: generacional y luego estacionario
-		\item Algoritmos Meméticos: all, random y por último AM-best.
+		\item Algoritmo BMB
+		\item Algoritmo ILS
+		\item Algoritmo VNS
+		\item Algoritmo ES
+		\item Algoritmos ILS-ES
 	\end{enumerate}
-	Para verificar el correcto funcionamiento del algoritmo 1NN y la lectura de datos se ha recurrido a la  \href{https://mh2223.danimolina.net/testsol.html}{web de la asignatura} y junto a la ayuda de geeksforgeeks.org\cite{greekforgeeks}, una página muy recomendada para implementación de multitud algoritmos y problemas, se puede implementar el 1-NN sencillamente. 
 	
-	\item Una vez tenemos el clasificador pasamos a la implementación de Greedy y la BL. El pseudocódigo proporcionado de Greedy junto a la explicación del mismo en prácticas es suficiente para implementarlo aunque he consultado en la Universidad de Radboud \cite{runl} una tesis sobre la aplicación de algoritmos RELIEF en bioinformática. En cambio para la búsqueda Local, el pseudocódigo de teoría es insuficiente por lo que he recurrido nuevamente a Internet. Encontré un documento de la Universidad de la Laguna sobre sistemas Inteligentes \cite{ull}. En la página 43 encontramos un pseudocódigo más completo y del que nos basaremos para implementarlo. Para modular el código se ha utilizado los esquemas dados en el guión de prácticas.
+	\item Para la implementación del algoritmo BMB se ha mirado la diapositiva de teoría y el guión. Basta con meter la búsqueda local en bucle por lo que se realiza de forma sencilla.
 	
-	\item Para la implementación de los algoritmos genéticos podemos usar el repositorio de innovaMH \cite{innovaMH} proporcionado por Daniel Molina. Levantando docker localmente y observando la parte2.jl se entiende perfectamente y con gran detalle como implementar los algoritmos genéticos. 
+	\item Para la implementación del ILS es recomendable utilizar el pseudocódigo de las diapositivas del seminario. Implementar el operador de mutación es reutilizar el de la búsqueda local y aplicarlo en cada iteración de la búsqueda antes de llamar a la busqueda local en sí. Se muta el 10\% de las características. Se ha consultado \cite{ull}
 	
-	\item Para la implementación de los algoritmos meméticos he recurrido al seminario y guión que junto a los algoritmos genéticos ya implementados podemos completarlos sin dificultad.
+	\item La implementación del VNS sigue un procedimiento similar a ILS por lo que se reaprovecha el operador de mutación y se modifica la búsqueda local para que pueda mutar múltiples atributos. Se ha consultado en \cite{runl}
+	
+	\item El algoritmo más complicado de implementar con diferencia es el enfriamiento simulado. Las diapositivas de teoría, seminario y lo apuntado en clase no era del todo suficiente para completar el algoritmo. Se recurre a fuentes externas como \cite{greekforgeeks}. Muy recomendable. Lo más tedioso es entender como funcionan las condiciones de parada y no equivocarse con las fórmulas.
+	
+	\item Por contraparte el más sencillo de hacer es el ILS-ES. Se copia el procedimiento del ILS original y se cambia la búsqueda local por enfriamiento simulado.
 \end{itemize}
 
 \section{Experimentos}
 El formato de ejecución de la práctica es:\\
-\code{./practica1 <Algoritmo>  \  <Semilla(\textit{opcional})>}\\
-
-Para los algoritmos GENÉTICOS se le añade como parámetro el operador:\\
-\code{./practica1 <Algoritmo>  \  <Operador(\textit{BLX por defecto})> \ <Semilla(\textit{opcional})>}\\
-
-Donde:
-\begin{itemize}
-	\item \code{<Algoritmo>} puede ser: 'sin parametro/vacio', 'oneNN', 'Greedy', 'BL', 'AGG', 'AGE', 'AM-All', 'AM-Rand', 'AM-Best'.
-	
-	\item \code{<Operador>} puede ser: 'sin parametro/vacio', 'Aritmetrico', 'BLX'.
-	\item \code{<Semilla>} puede ser cualquier número.
-\end{itemize}
-
+$$\code{./practica1 <Algoritmo>  \  <Semilla(\textit{opcional})>}$$\\
+donde los algoritmos aceptados son: 1-NN (o sin parámetro), BL, BMB, ILS, VNS, ILS-ES.
 Por ejemplo:
 \begin{itemize}
-	\item \code{./practica1 }: ejecutará la práctica con el clasificador 1-NN.
-	\item \code{./practica1 AM-Rand}: ejecutará la práctica con el clasificador 1-NN mejorado con el Algoritmo Memético Aleatorio, operador BLX y semilla aleatoria.
-	\item \code{./practica1 AGG Aritmetrico}: ejecutará la práctica con el clasificador 1-NN mejorado con el Algoritmo Genético Generacional, operador Aritmetrico y semilla aleatoria.
-	\item \code{./practica1 AGE BLX 1}: ejecutará la práctica con el clasificador 1-NN mejorado con el Algoritmo Genético Estacionario, operador BLX y semilla 1.
-\end{itemize}
-
-\begin{figure}[h]
+	\item \code{./practica3 }: ejecutará la práctica con el clasificador 1-NN.
+	\item \code{./practica3 BL}: ejecutará la práctica con el clasificador 1-NN mejorado con la búsqueda Local y semilla aleatoria.
+	\item \code{./practica3 ILS 0}: ejecutará la práctica con el clasificador 1-NN mejorado con el Algoritmo de Búsqueda Iterativo y semilla 0.
+\begin{figure}[H]
 	\centering
-	\includegraphics[width=\textwidth]{greedy.png}
-	\caption{Ejecución de Greedy}
+	\includegraphics[width=0.75\textwidth]{bl.png}
+	\caption{Ejecución de BL}
 	\label{fig:greedy}
 \end{figure}
-Nota: Se añade la tasa\_clas de entrenamiento para comparar en la web. Se puede desactivar quitando el parámetro \code{true} en la linea 142 en main.cpp. Para la ejecución de las tablas siguientes se ha desactivado para mejorar los tiempos. \\
+Nota: Se añade la tasa\_clas de entrenamiento para comparar en la web. Se puede desactivar quitando el parámetro \code{true} en la linea 142 en main.cpp. Para la ejecución de las tablas siguientes se ha desactivado para mejorar los tiempos. 
+\end{itemize}
+
 
 \subsection{Resultados algoritmos de búsqueda}
-Las tablas que se presentan a continuación corresponden a resultados obtenidos por tres algoritmos (1NN, greedy y BL) aplicados al problema del Aprendizaje de Pesos en Características (APC) en tres conjuntos de datos diferentes (Diabetes, Ozone y Spectf-heart). Cada tabla muestra los porcentajes de clasificación, reducción del número de características, fitness y tiempo de ejecución para cada partición del conjunto de datos. Se busca comparar la eficacia de ambos algoritmos en términos de calidad de la solución y tiempo de ejecución.
-
-\input{tabla1nn.tex}
-
-En la tabla \ref{tab:1nn} se puede observar que los resultados de clasificación son bastante buenos con un porcentaje de clasificación correcta de hasta el 85\% en spectf-heart. El porcentaje de reducción en el número de características es del 0\% ya que no se aplica ninguna selección de características.\\
-
-Los valores de fitness oscilan entre 54,69 y 68,31, lo que indica que el algoritmo no ha encontrado necesariamente las soluciones óptimas para todos los conjuntos de datos. Por último, los tiempos de ejecución son bastante bajos, con valores inferiores a 0,01 segundos para todos los conjuntos de datos y particiones.
-
-\input{tablagreedy.tex}
-
-En la tabla \ref{tab:Greedy} se observa que la media de los fitness obtenidos para cada conjunto de datos varía entre 55.17 y 68.07, lo que indica que el algoritmo es capaz de encontrar soluciones de igual calidad que el 1NN.\\
-
-La diferencia está en que el \% de reducción en el número de características seleccionadas varía entre 0\% y 12.5\%, lo que significa que el algoritmo no siempre es capaz de reducir significativamente el número de características sin comprometer el rendimiento del modelo. Esto se debe a que Greedy maximiza la tasa\_clas, no el fitness al completo por lo que no tiende a reducir. Al igual que el 1NN, los tiempos son rápidos.
+Las tablas que se presentan a continuación corresponden a resultados obtenidos por seis algoritmos (BL, BMB, ILS, VNS, ES, ILS-ES) aplicados al problema del Aprendizaje de Pesos en Características (APC) en tres conjuntos de datos diferentes (Diabetes, Ozone y Spectf-heart). Cada tabla muestra los porcentajes de clasificación, reducción del número de características, fitness y tiempo de ejecución para cada partición del conjunto de datos. Se busca comparar la eficacia de ambos algoritmos en términos de calidad de la solución y tiempo de ejecución.
 
 \input{tablaBL.tex}
-Al analizar los resultados de la tabla \ref{tab:bl}, se observa que el algoritmo BL obtiene mejores resultados que el algoritmo Greedy y 1-NN en términos de fitness para todas las particiones y conjuntos de datos. Además, el porcentaje de reducción es significativamente mayor en promedio para el algoritmo BL, lo que sugiere que el número de características seleccionadas es menor en comparación con el algoritmo Greedy.\\
+La búsqueda local es un enfoque determinista y su rendimiento depende en gran medida de la calidad de la solución inicial y de la exploración del espacio de búsqueda local. Si la solución inicial está cerca de una solución óptima local, la búsqueda local puede converger rápidamente a una solución de alta calidad. Sin embargo, existe el riesgo de quedarse atrapado en óptimos locales y no explorar soluciones mejores en regiones distantes del espacio de búsqueda.\\
 
-Sin embargo, podemos observar el alto coste computacional que supone ejecutar la búsqueda. Los tiempos multiplican por cientos al de Greedy y 1NN.
+En comparación con otros algoritmos, como BMB (Búsqueda Multiarranque Básica), ILS (Búsqueda Local Iterativa), VNS (Variable Neighborhood Search), ES (Enfriamiento Simulado) e ILS-ES (Búsqueda Local Iterativa + Enfriamiento Simulado), la búsqueda local tiene la ventaja de ser simple y fácil de implementar. Sin embargo, puede ser más propensa a quedar atrapada en óptimos locales y puede no ser tan eficiente en la exploración global del espacio de búsqueda. Los otros algoritmos mencionados utilizan estrategias adicionales, como la diversificación de soluciones y la exploración de múltiples vecindarios, para superar esta limitación y buscar soluciones de mayor calidad.\\
+
+De los resultados tendremos en cuenta principalmente el rendimiento medio de la búsqueda local:
+\begin{itemize}
+	\item clasificación: la clasificación obtenida por la BL es de 69.66, 79.69 y 84.51 en cada dataset de diabetes, ozone y spect-heart respectivamente. Veremos que tan bien clasifican los algoritmos de trayectoria.
+	\item Reducción: la reducción obtenida por la BL es de 65\%, 35.83\% y 46.82\% para cada dataset respectivamente. Comprobaremos si reducen más o menos los algoritmos de trayectoria.
+	\item Fitness: el fitness obtenido por la BL es de 68.23, 71.31 y 77.25 respectivamente. En los siguientes resultados se comprobará si son mejores o peores resultados.
+	\item Tiempo: observaremos como el tiempo de ejecución de la BL es la más baja frente a todos los demás algoritmos. Es lógica ya que el resto se dedican a explorar más el dominio del problema mediante sucesiones de iteraciones de algoritmos de búsqueda.
+\end{itemize}
+
+\subsection{Resultados Algoritmos de Trayectoria}
+
+\input{tablaBMB.tex}
+Vamos a comparar los resultados con la Búsqueda Local en función de cada dataset:
+
+\begin{enumerate}
+\item Diabetes: 
+\begin{itemize}
+\item BL tiene un mejor rendimiento en términos de porcentaje de clasificación (69.66\%) en comparación con BMB (67.19\%).
+\item Ambos algoritmos obtienen el mismo porcentaje de reducción de 62.50\%.
+\item BL obtiene un mejor fitness (68.23) en comparación con BMB (67.26).
+\item BL es considerablemente más rápido en términos de tiempo de ejecución, requiriendo solo 1.8 segundos en promedio, mientras que BMB requiere 22 segundos.
+\end{itemize}
+
+\item Ozone:
+\begin{itemize}
+\item BL muestra un mejor rendimiento en términos de porcentaje de clasificación (79.69\%) en comparación con BMB (78.44\%).
+\item BMB logra una mayor reducción en el número de características utilizadas, con un porcentaje de reducción promedio de 46.67\%, mientras que BL logra 37.78\%.
+\item BMB obtiene un mejor fitness (72.08) en comparación con BL (71.31).
+\item BL es más rápido en términos de tiempo de ejecución, requiriendo 16 segundos en promedio, mientras que BMB requiere 72 segundos.
+\end{itemize}
+
+\item Spectf-heart:
+\begin{itemize}
+	\item Ambos algoritmos obtienen resultados de clasificación similares, con BL y BMB alcanzando un porcentaje de clasificación promedio de 84.51\% y 84.82\%, respectivamente.
+	\item BMB logra una mayor reducción en el número de características utilizadas, con un porcentaje de reducción promedio de 62.73\%, mientras que BL logra 48.18\%.
+	\item BMB obtiene un mejor fitness (80.40) en comparación con BL (77.25).
+	\item BL es más rápido en términos de tiempo de ejecución, requiriendo 6.3 segundos en promedio, mientras que BMB requiere 56 segundos.
+\end{itemize}
+
+\end{enumerate}
+
+Resumidamente, al menos según los resultados, la Búsqueda Local (BL) muestra un mejor rendimiento en términos de clasificación y tiempo de ejecución en los conjuntos de datos Diabetes y Ozone. Lo cual tiene sentido ya que estamos ejecutando 15 veces la búsqueda local, aumentando el tiempo sensiblemente. Sin embargo, en el conjunto de datos Spectf-heart, aunque BL es más rápido, Búsqueda Multiarranque Básica (BMB) obtiene un mejor fitness y logra una mayor reducción en el número de características utilizadas.
+
+\input{tablaILS.tex}
+
+Al comparar los resultados de Búsqueda Local (BL) y Búsqueda Local Iterada (ILS) en los diferentes conjuntos de datos, podemos observar lo siguiente:
+
+\begin{enumerate}
+	
+\item Diabetes:
+
+\begin{itemize}
+\item BL tiene un mejor rendimiento en términos de porcentaje de clasificación (69.66\%) en comparación con ILS (68.36\%).
+\item  ILS reduce un 5\% más que la BL (67.50\% vs 62.50\%).
+\item  Ambos algoritmos obtienen un fitness muy similar (68.23).
+\item  ILS es sensiblemente más lento en términos de tiempo de ejecución, requiriendo 20 segundos en promedio, mientras que BL requiere 1.8 segundos. Es lógico ya que se llama 15 veces a la búsqueda local.
+\end{itemize}
+
+\item Ozone:
+
+\begin{itemize}
+	\item ILS muestra un mejor rendimiento en términos de porcentaje de clasificación (80.94\%) en comparación con BL (79.69\%).
+ \item ILS logra una mayor reducción en el número de características utilizadas, con un porcentaje de reducción promedio de 51.94\%, mientras que BL logra 37.78\%.
+ \item ILS obtiene un mejor fitness (75.14) en comparación con BL (71.31).
+ \item BL es más rápido en términos de tiempo de ejecución, requiriendo 16 segundos en promedio, mientras que ILS requiere 89 segundos.
+\end{itemize}
+
+\item Spectf-heart:
+
+\begin{itemize}
+	\item BL muestra un mejor rendimiento en términos de porcentaje de clasificación (84.51\%)en comparación con ILS (83.95\%).
+
+ \item ILS logra una mayor reducción en el número de características utilizadas, con un porcentaje de reducción promedio de 66.36\%, mientras que BL logra 48.18\%.
+
+\item  ILS obtiene un mejor fitness (80.43) en comparación con BL (77.25).
+
+\item  BL es más rápido en términos de tiempo de ejecución, requiriendo 6.3 segundos en promedio, mientras que ILS requiere 58 segundos.
+\end{itemize}
+Según los resultados obtenidos, la Búsqueda Local Iterada (ILS) muestra un mejor rendimiento en términos de clasificación en los conjuntos de datos Ozone y Spectf-heart, mientras que la Búsqueda Local (BL) es mejor en el conjunto de datos Diabetes. Sin embargo, BL es más rápida en términos de tiempo de ejecución en todos los conjuntos de datos. ILS logra una mayor reducción y mejores fitness en los conjuntos de datos Ozone y Spectf-heart.
+
+\end{enumerate}
+
+\input{tablaVNS.tex}
+Al comparar los resultados de Búsqueda Local (BL) y Búsqueda por Vecindarios Variables (VNS) en los diferentes conjuntos de datos, podemos observar lo siguiente:
+
+\begin{enumerate}
+\item Diabetes:
+\begin{itemize}
+\item	BL obtiene un porcentaje de clasificación mejor (69.66\%) en comparación con VNS (66.54\%).
+\item	VNS logra una reducción del 75.00\% en el número de características utilizadas, mientras que BL logra 62.50\%.
+\item	Ambos algoritmos tienen prácticamente el mismo fitness (68.23).
+\item	VNS es más lento en términos de tiempo de ejecución, requiriendo 23 segundos en promedio, mientras que BL requiere 1.8 segundos.
+\end{itemize}
+
+\item Ozone:
+\begin{itemize}
+\item BL muestra un mejor rendimiento en términos de porcentaje de clasificación (79.69\%) en comparación con VNS (78.75\%).
+\item VNS logra una mayor reducción en el número de características utilizadas, con un porcentaje de reducción promedio de 45.00\%, mientras que BL logra 37.78\%.
+\item VNS obtiene un ligeramente mejor fitness (72.00) en comparación con BL (71.31).
+\item BL es más rápido en términos de tiempo de ejecución, requiriendo 16 segundos en promedio, mientras que VNS requiere 87 segundos.
+\end{itemize}
+
+
+\item Spectf-heart:
+\begin{itemize}
+\item VNS muestra un mejor rendimiento en términos de porcentaje de clasificación (85.38\%) en comparación con BL (84.51\%).
+\item VNS logra una mayor reducción en el número de características utilizadas, con un porcentaje de reducción promedio de 51.36\%, mientras que BL logra 48.18\%.
+\item VNS obtiene un mejor fitness (78.58) en comparación con BL (77.25).
+\item BL es más rápido en términos de tiempo de ejecución, requiriendo 6.3 segundos en promedio, mientras que VNS requiere 56 segundos.
+\end{itemize}
+
+\end{enumerate}
+
+Resumidamente, la Búsqueda Local (BL) muestra un mejor rendimiento en términos de clasificación en los conjuntos de datos Diabetes y Ozone, mientras que la Búsqueda por Vecindarios Variables (VNS) es mejor en el conjunto de datos Spectf-heart. Sin embargo, BL es más rápida en términos de tiempo de ejecución en todos los conjuntos de datos. VNS logra una mayor reducción y mejores fitness en los conjuntos de datos Ozone y Spectf-heart.
+
+\input{tablaES.tex}
+Al comparar los resultados de Búsqueda Local (BL) y Enfriamiento Simulado (ES) en los diferentes conjuntos de datos, podemos observar lo siguiente:
+
+\begin{enumerate}
+	\item Diabetes:
+	\begin{itemize}
+\item BL obtiene un porcentaje de clasificación ligeramente mejor (69.66\%) en comparación con ES (68.49\%).
+\item  Ambos algoritmos logran la misma reducción en el número de características utilizadas, con un porcentaje de reducción de 62.50\%.
+\item BL obtiene un mejor fitness (68.23) en comparación con ES (67.79).
+\item BL es más rápido en términos de tiempo de ejecución, requiriendo 1.8 segundos en promedio, mientras que ES requiere 69 segundos.
+	\end{itemize}
+
+\item Ozone:
+\begin{itemize}
+\item BL muestra un mejor rendimiento en términos de porcentaje de clasificación (79.69\%) en comparación con ES (77.81\%).
+\item ES logra una reducción del 58.33\% en el número de características utilizadas, mientras que BL se queda una reducción del 37.78\% .
+\item ES obtiene un mejor fitness (73.92) en comparación con BL (72.00).
+\item BL es más rápido en términos de tiempo de ejecución, requiriendo 16 segundos en promedio, mientras que ES requiere 82 segundos.
+\end{itemize}
+
+\item Spectf-heart:
+\begin{itemize}
+\item BL muestra un mejor rendimiento en términos de porcentaje de clasificación (84.51\%)en comparación con ES (83.93\%).
+\item ES consigue una reducción considerablemente mayor (60.45\%) en comparación a BL (48.18\%)
+\item ES obtiene un mejor fitness (79.24) en comparación con BL (77.25).
+\item BL es más rápido en términos de tiempo de ejecución, requiriendo 6.3 segundos en promedio, mientras que ES requiere 82 segundos.
+\end{itemize}
+
+Concluimos que la Búsqueda Local (BL) muestra un mejor rendimiento en términos de clasificación en los conjuntos de datos Diabetes y Ozone, mientras que el Enfriamiento Simulado (ES) es mejor en el conjunto de datos Spectf-heart. BL también es más rápido en tiempo de ejecución en todos los conjuntos de datos. Sin embargo, ES logra una mayor reducción en el número de características utilizadas y mejores fitness en los conjuntos de datos Ozone y Spectf-heart.
+
+\end{enumerate}
+\input{tablaILSES.tex}
+
+Al comparar los resultados de Búsqueda Local (BL) y Búsqueda Local Iterada con Enfriamiento Simulado (ILS-ES) en los diferentes conjuntos de datos, podemos observar lo siguiente:
+
+\begin{enumerate}
+
+\item Diabetes:
+
+\begin{itemize}
+\item BL obtiene un porcentaje de clasificación ligeramente mejor (69.66\%) en comparación con ILS-ES (66.29\%).
+\item ES-ILS consigue una reducción considerablemente mayor (75.00\%) en comparación a BL (62.50\%)
+\item ILS-ES muestra un ligeramente peor fitness (68.03) en comparación con BL (68.23).
+\item ILS-ES es más lento en términos de tiempo de ejecución, requiriendo 71 segundos en promedio, mientras que BL requiere 1.8 segundos.
+\end{itemize}
+
+\item Ozone:
+
+\begin{itemize}
+\item BL muestra un mejor rendimiento en términos de porcentaje de clasificación (79.69\%) en comparación con ILS-ES (81.56\%).
+\item BL logra una reducción del 37.78\% en el número de características utilizadas, mientras que ILS-ES logra una reducción del 56.11\%.
+\item ILS-ES obtiene un mejor fitness (76.47) en comparación con BL (72.00).
+\item ILS-ES es más lento en términos de tiempo de ejecución, requiriendo 94 segundos en promedio, mientras que BL requiere 16 segundos.
+\end{itemize}
+
+
+
+\item Spectf-heart:
+
+\begin{itemize}
+\item ILS-ES muestra un mejor rendimiento en términos de porcentaje de clasificación (85.95\%) en comparación con BL (84.51\%).
+\item Ambos algoritmos logran una reducción similar en el número de características utilizadas, con BL y ILS-ES alcanzando 48.18\% y 69.55\%, respectivamente.
+\item ILS-ES obtiene un mejor fitness (82.67) en comparación con BL (77.25).
+\item ILS-ES es más lento en términos de tiempo de ejecución, requiriendo 68 segundos en promedio, mientras que BL requiere 6.3 segundos.
+\end{itemize}
+
+
+\end{enumerate}
+
+En conclusión, la Búsqueda Local (BL) muestra un mejor rendimiento en términos de clasificación en el conjunto de datos Diabetes, mientras que la Búsqueda Local Iterada con Enfriamiento Simulado (ILS-ES) es mejor en los conjuntos de datos Ozone y Spectf-heart. ILS-ES logra una mayor reducción en el número de características utilizadas y mejores fitness en los conjuntos de datos Ozone y Spectf-heart. Sin embargo, BL es más rápido en tiempo de ejecución en todos los conjuntos de datos.
 
 \input{tablaFinal.tex}
 
-En la tabla \ref{tab:final} se presentan los resultados globales para los tres algoritmos en los tres conjuntos de datos. En general, el \textbf{algoritmo BL} tuvo un mejor rendimiento en términos de porcentaje de reducción y agregación, aunque tuvo una reducción de dimensiones más alta. El algoritmo 1-NN es el mejor en términos de porcentaje de clasificación, pero no es capaz de reducir la dimensionalidad del conjunto de datos. Por otro lado, el algoritmo RELIEF tuvo un desempeño inferior en comparación con BL, aunque logró reducir algo la dimensionalidad del conjunto de datos.\\
+Para analizar los resultados, podemos comparar los algoritmos en términos de las tasas de clasificación (\%\_clas) y las tasas de reducción (\%\_red), así como el tiempo requerido (T[s]) para obtener los resultados:
+	
+\begin{enumerate}
+\item Clasificación: En términos de clasificación, la BL obtiene el mejor resultado en el conjuntos de datos de diabetes. Mientras que en el conjunto de datos ozone y spectf-heart, los algoritmos ILS-ES y VNS muestra el mejor rendimiento.
 
-En cuanto a los conjuntos de datos individuales, en Diabetes, los tres algoritmos lograron un rendimiento similar en términos de porcentaje de clasificación y agregación, aunque BL tuvo la reducción de dimensionalidad más alta. En Ozone, BL tuvo un mejor rendimiento que 1-NN y RELIEF en términos de porcentaje de clasificación y agregación, pero también tuvo una reducción de dimensionalidad más alta. En Spectf-heart, BL también tuvo un mejor rendimiento en comparación con 1-NN y RELIEF, aunque tuvo una reducción de dimensionalidad más alta.\\
+\item Reducción: En cuanto a la reducción, los algoritmos ILS-ES y ES logran los mejores resultados en los tres conjuntos de datos: diabetes, ozone y spectf-heart. Estos algoritmos son capaces de reducir eficazmente el número de características sin perder mucha información.
 
-\subsection{Resultados Algoritmos Genéticos y Meméticos}
+\item Fitness: En términos de fitness, los algoritmos ILS e ILS-ES obtienen los mejores resultados en los conjuntos de datos diabetes, ozone y spectf-heart.  Estos algoritmos logran encontrar soluciones que son altamente representativas y de alta calidad en términos de clasificación y reducción simultáneamente.
 
-\input{tablaAGG-CA.tex}
-En la tabla \ref{tab:AGG_CA} se puede observar que los resultados de clasificación son bastante buenos con un porcentaje de clasificación correcta de hasta el 85\% en spectf-heart. El porcentaje de reducción en el número de características es del 45\% aproximadamente aunque en diabetes reduce mucho mientras que el resto se queda en 30\%.\\
+\item Tiempo: En cuanto al tiempo de ejecución, los algoritmos BL y VNS son los más rápidos en los tres conjuntos de datos: diabetes, ozone y spectf-heart. Mientras que el ES y el ILS-ES son los más lentos dado el tiempo que se necesita para que los algoritmos enfríen.
 
-Los valores de fitness oscilan entre 63,52 y 74,62, lo que indica que el algoritmo no ha encontrado necesariamente las soluciones óptimas para todos los conjuntos de datos. Por último, los tiempos de ejecución son considerablemente altos en comparación a los algoritmos previos, de unos 50 segundos por partición.
+\end{enumerate}
 
-\input{tablaAGG-BLX.tex}
-En la tabla \ref{tab:AGG_BLX} se puede observar que los resultados de clasificación han bajado respecto antes pero ha aumentado la reducción sensiblemente. El porcentaje de reducción en el número de características es del 50\% aproximadamente aunque en diabetes reduce mucho mientras que el resto se queda en 40\%.\\
+En resumen:
 
-Los valores de fitness oscilan entre 63,62 y 74,23, lo que indica que el operador de cruce no ha mejorado prácticamente EN MI CASO aunque debería ser algo mejor que el Aritmétrico aleatorio. Por último, los tiempos de ejecución son similares al anterior.
+\begin{enumerate}
+\item Busqueda Multiarranque Basica (BMB):
 
-\input{tablaAGE-CA.tex}
-En la tabla \ref{tab:AGE_CA} se puede observar que los resultados de clasificación vuelven a ser altos como en el AGG, de un 84,51\% el que más. El porcentaje de reducción en el número de características es menor, de un 20\% para ozone y heart aunque en diabetes reduce un 60\%. Considero que los porcentajes de reducción son algo más bajos de lo que esperaba realmente pues debería reducir igual o más que el AGG.
+\begin{itemize}
+	\item BMB es un algoritmo de búsqueda local que utiliza múltiples arranques aleatorios para explorar diferentes soluciones iniciales.
+\item  El algoritmo se basa en la mejora iterativa de soluciones, realizando movimientos locales para mejorar la calidad de la solución.
+\item En términos de clasificación, BMB obtiene resultados competitivos, pero ligeramente inferiores en comparación con otros algoritmos en los conjuntos de datos analizados.
+\item La reducción de características lograda por BMB varía según el conjunto de datos, aunque en general es moderada.
+\end{itemize}
 
-Los valores de fitness oscilan entre 66,80 y 72,06, lo que indica que el algoritmo AGE no ha mejorado EN MI CASO aunque debería ser algo mejor que el AGG debido a la reducción. Por último, los tiempos de ejecución son sensiblemente más altos aunque aún asumibles de ejecutar.
+\item Búsqueda local iterativa (ILS):
+\begin{itemize}
+\item  ILS es un algoritmo que realiza una búsqueda local en una solución inicial y luego introduce perturbaciones para escapar de los óptimos locales y explorar diferentes regiones del espacio de soluciones.
+\item  El enfoque iterativo de ILS permite refinar y mejorar gradualmente la solución a medida que avanza el algoritmo.
+\item  ILS muestra un rendimiento sólido en términos de clasificación en los conjuntos de datos evaluados, obteniendo porcentajes altos.
+\item En cuanto a la reducción de características, ILS también logra resultados competitivos y consistentes en los conjuntos de datos.
+\end{itemize}
 
-\input{tablaAGE-BLX.tex}
-En la tabla \ref{tab:AGE_BLX} se puede observar que los resultados de clasificación vuelven a ser altos, de un 83,95\% el que más. El porcentaje de reducción en el número de características es menor, de un 20\% para ozone aunque en diabetes reduce un 65\%. Igual que con AGG, considero que el operador BLX no mejora EN MI CASO pero debería ser igual o mejor que el CA.
 
-Los valores de fitness oscilan entre 65,81 y 72,98, lo que indica que el algoritmo AGE no ha mejorado EN MI CASO aunque debería ser algo mejor que el AGG debido a la reducción. Por último, los tiempos de ejecución son razonables, menos de un minuto.
+\item Búsqueda de Vecindad Variable (VNS):
+\begin{itemize}
+\item VNS es un algoritmo que combina movimientos locales y perturbaciones para explorar diferentes vecindarios y escapar de los óptimos locales.
+\item Utiliza una estrategia de vecindades variables para aumentar la diversidad de las soluciones exploradas.
+\item En términos de clasificación, VNS muestra buenos resultados, aunque puede ser ligeramente inferior a otros algoritmos en algunos conjuntos de datos.
+\item La reducción de características alcanzada por VNS varía según el conjunto de datos, mostrando resultados inconsistentes en comparación con ILS-ES e ILS.
+\end{itemize}
 
-\input{tablaAM-All.tex}
-En la tabla \ref{tab:AM_ALL} se puede observar que los resultados de clasificación vuelven a ser altos, de un 83,94\% el que más. Esta vez el porcentaje de reducción es condirable para diabetes y heart aunque ozone se resiste.
 
-Los valores de fitness oscilan entre 66,64 y 79,15, lo que indica que el algoritmo AM ha mejorado respecto a todos los anteriores lo cual es lógico ya que afina los pesos mediante la búsqueda local. Por último, los tiempos de ejecución son de los más bajos de todos, unos 47 segundos.
+\item Enfriamiento Simulado (ES):
+\begin{itemize}
+\item ES es un algoritmo basado en la analogía del enfriamiento de un sistema físico para buscar soluciones óptimas en un espacio de búsqueda.
+\item El algoritmo acepta movimientos que empeoran la solución actual con una cierta probabilidad, lo que le permite escapar de óptimos locales.
+\item En términos de clasificación, ES tiene resultados moderados, pero generalmente muestra un rendimiento inferior en comparación con otros algoritmos.
+\item La reducción de características lograda por ES es variable y depende del conjunto de datos.
 
-\input{tablaAM-Rand.tex}
-En la tabla \ref{tab:AM_RAND} se puede observar que los resultados de clasificación y reducción se muy similares al memético con todo. Mejora el fitness en Ozone y heart pero lo empeora en Diabetes. Por último, los tiempos de ejecución son razonables, dentro del minuto por partición.
+\end{itemize}
 
-\input{tablaAM-Best.tex}
-En la tabla \ref{tab:AM_BEST} se puede observar que las mejores tasas de clasificación y reducción de todos los algoritmos vistos hasta ahora. Se llega a alcanzar una tasa de clasificación del 86,53\% y una de reducción del 64,55\% con un fitness máximo de 82,13.
+\item Hibridación ILS con ES (ILS-ES):
+\begin{itemize}
+\item ILS-ES combina los enfoques de ILS y ES para aprovechar las fortalezas de ambos algoritmos.
+\item El algoritmo utiliza la estrategia de perturbación de ILS para diversificar las soluciones y la aceptación de movimientos empeorantes de ES para escapar de óptimos locales.
+\item ILS-ES muestra resultados prometedores en términos de clasificación en los conjuntos de datos analizados, logrando los porcentajes más altos en general.
+\item Además, ILS-ES es capaz de lograr una reducción significativa en el número de características utilizadas para la clasificación, lo que indica su capacidad para identificar un subconjunto relevante de características que influyen en el proceso de clasificación.
 
-\input{tablaFinal2.tex}
- A continuación, se presenta un análisis exhaustivo considerando las tasas de clasificación y reducción, así como el fitness y tiempo de ejecución:\\
- 
- La tasa Agr. es un factor crucial en el análisis de los algoritmos, ya que representa el fitness o medida de calidad del desempeño de los mismos. Un alto valor de tasa Agr. indica que el algoritmo ha logrado un buen equilibrio entre la precisión de clasificación y la reducción de características, lo cual es deseable en problemas de clasificación. Al analizar las tasas Agr. en los diferentes conjuntos de datos y algoritmos, podemos observar lo siguiente:
- 
- \begin{itemize}
- 	\item Conjunto de datos Diabetes: Los algoritmos AGG-CA y AM-(10,0.1m) obtienen las tasas Agr. más altas en este conjunto de datos. Esto indica que logran un rendimiento sobresaliente al considerar tanto la precisión de clasificación como la reducción de características. Los algoritmos AGG-BLX, AGE-BLX y AGE-CA también muestran tasas Agr. competitivas.
- 	
- 	\item Conjunto de datos Ozone: Nuevamente, los algoritmos AGG-CA y AM-(10,0.1m) destacan al obtener las tasas Agr. más altas en este conjunto de datos. Esto sugiere que estos algoritmos logran un buen equilibrio entre precisión y reducción de características. Los algoritmos AGG-BLX, AGE-BLX y AGE-CA también obtienen tasas Agr. significativas.
- 	
- 	\item Conjunto de datos Spectf-heart: En este conjunto de datos, el algoritmo AM-(10,1.0) se destaca al lograr la tasa Agr. más alta. Esto implica que el algoritmos ha obtenido un buen desempeño tanto en la precisión de clasificación como en la reducción de características. Los algoritmos AGG-CA, AGG-BLX, AGE-BLX y AGE-CA también exhiben tasas Agr. notables en este conjunto de datos.
- \end{itemize}
+\item Sin embargo, es importante destacar que ILS-ES tiende a tener tiempos de ejecución más largos en comparación con otros algoritmos, especialmente en conjuntos de datos más grandes. Esto se debe a la naturaleza iterativa y la hibridación de ILS-ES, que implica una mayor cantidad de cálculos y exploración del espacio de soluciones.
+\end{itemize}
 
-Tasa de clasificación: La tasa de clasificación indica qué tan bien los algoritmos predicen correctamente las etiquetas de clase en los conjuntos de datos. Se puede observar que los algoritmos AGG-CA y AM-(10,0.1m) obtienen las tasas de clasificación más altas en la mayoría de los conjuntos de datos, siendo especialmente buenos en el conjunto Spectf-heart. Estos algoritmos superan al clasificador 1NN, que se considera como referencia (basado en el algoritmo de clasificación one nearest neighbor). Sin embargo, se observa que algunos algoritmos, como BL y AGE-CA, también logran tasas de clasificación competitivas en ciertos conjuntos de datos.\\
+En conclusión, los algoritmos BMB, ILS, VNS, ES e ILS-ES son enfoques de optimización utilizados para abordar problemas de clasificación en conjuntos de datos específicos. Cada algoritmo tiene sus fortalezas y debilidades en términos de clasificación, reducción de características y tiempo de ejecución.
 
-Tasa de reducción: La tasa de reducción muestra qué tan bien los algoritmos pueden reducir la dimensionalidad de los conjuntos de datos, eliminando características irrelevantes o redundantes. Los algoritmos AM-(10,0.1) y AM-(10,0.1m) obtienen las tasas de reducción más altas en general, lo que indica que son efectivos para reducir la dimensionalidad de los conjuntos de datos. Esto significa que pueden seleccionar características relevantes y eliminar características redundantes, lo que puede mejorar el desempeño general del clasificador.\\
+ILS-ES se destaca como la mejor opción, ya que logra altos porcentajes de clasificación y reducción de características en los conjuntos de datos analizados. Sin embargo, se debe considerar el equilibrio entre el rendimiento y el tiempo de ejecución, así como realizar una evaluación más amplia en diferentes conjuntos de datos para obtener conclusiones más sólidas sobre la eficacia relativa de los algoritmos.
+\end{enumerate}
 
-Tiempo de ejecución: El tiempo de ejecución es otro factor a considerar, ya que indica la eficiencia computacional de los algoritmos. Los algoritmos basados en algoritmos genéticos (AGG-BLX, AGG-CA, AGE-BLX y AGE-CA) generalmente requieren más tiempo de ejecución en comparación con otros algoritmos, debido a la naturaleza iterativa y la manipulación de poblaciones. Por otro lado, los algoritmos basados en algoritmos meméticos (AM-(10,1.0), AM-(10,0.1) y AM-(10,0.1m)) también pueden requerir un tiempo de ejecución considerable debido a la aplicación de la búsqueda local en toda la población o en una parte de ella. Los algoritmos BL y RELIEF, que se basan en la búsqueda local, también pueden tener un tiempo de ejecución significativo dependiendo del tamaño de la población.\\
-
-En resumen, los resultados muestran que los algoritmos AGG-CA y AM-(10,0.1m) logran altas tasas de clasificación en general, mientras que los algoritmos AM-(10,0.1) y AM-(10,0.1m) obtienen altas tasas de reducción. Sin embargo, es importante tener en cuenta el tiempo de ejecución, ya que los algoritmos basados en algoritmos genéticos y meméticos suelen requerir más tiempo para converger. Dependiendo de las necesidades del problema y los recursos disponibles, se puede seleccionar el algoritmo que mejor se ajuste a los requisitos de rendimiento y tiempo de ejecución.
+\newpage
 
 \bibliography{citas} %archivo citas.bib que contiene las entradas 
 \bibliographystyle{plain} % hay varias formas de citar

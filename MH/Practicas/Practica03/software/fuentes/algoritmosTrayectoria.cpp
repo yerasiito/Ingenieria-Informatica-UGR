@@ -18,8 +18,9 @@ double BMB(const Dataset &train, std::vector<double> &Sact, int maxiterBMB, int 
 
     // Algoritmo BMB, aplicar BL con pesos random hasta maxiterBMB
     while(i < maxiterBMB){
-        // La busqueda local ya genera un vector aleatorio internamente
-        // S = Random::get<std::vector>(0.0, 1.0, n);
+        // La busqueda local ya genera un vector aleatorio internamente si está vacio
+        S.clear();
+//         S = Random::get<std::vector>(0.0, 1.0, train.numCaracteristicas());
 
         // Evaluar BL
         objetivo = busquedaLocal(train, S, maxiterBL);
@@ -167,7 +168,7 @@ double ILS_ES(const Dataset &train, std::vector<double> &Sact, int maxiterILS, i
     generaSolucionInicial(S, n);
 
     // Obtener primer mejor
-    objetivo = busquedaLocal(train, S, maxiterES);
+    objetivo = ES(train, S, maxiterES);
 
     // Guardar mejor
     Sact = S;

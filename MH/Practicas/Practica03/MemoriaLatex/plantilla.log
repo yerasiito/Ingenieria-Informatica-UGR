@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Arch Linux) (preloaded format=pdflatex 2023.6.7)  10 JUN 2023 03:23
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Arch Linux) (preloaded format=pdflatex 2023.6.7)  11 JUN 2023 04:50
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -1297,6 +1297,8 @@ LaTeX Info: Redefining \. on input line 1.
 LaTeX Info: Redefining \% on input line 1.
 Package tocbasic Info: Using my definition of `\numberline' on input line 2.
 Package tocbasic Info: Using my definition of `\numberline' on input line 3.
+Package tocbasic Info: Using my definition of `\numberline' on input line 4.
+Package tocbasic Info: Using my definition of `\numberline' on input line 5.
 )
 \tf@lof=\write8
 \openout8 = `plantilla.lof'.
@@ -1311,11 +1313,6 @@ Package tocbasic Info: Using my definition of `\numberline' on input line 5.
 Package tocbasic Info: Using my definition of `\numberline' on input line 6.
 Package tocbasic Info: Using my definition of `\numberline' on input line 7.
 Package tocbasic Info: Using my definition of `\numberline' on input line 8.
-Package tocbasic Info: Using my definition of `\numberline' on input line 9.
-Package tocbasic Info: Using my definition of `\numberline' on input line 10.
-Package tocbasic Info: Using my definition of `\numberline' on input line 11.
-Package tocbasic Info: Using my definition of `\numberline' on input line 12.
-Package tocbasic Info: Using my definition of `\numberline' on input line 13.
 )
 \tf@lot=\write9
 \openout9 = `plantilla.lot'.
@@ -1432,171 +1429,111 @@ Underfull \hbox (badness 10000) in paragraph at lines 170--171
 
 
 (./_minted-plantilla/F53164CB74D1E9E98761B854A68DE43187CF6540B1D6A1A36D47C7EEDA
-FB0391.pygtex)
-Underfull \hbox (badness 10000) in paragraph at lines 220--221
-
- []
-
-
+FB0391.pygtex) [8]
 Underfull \hbox (badness 10000) in paragraph at lines 222--223
 
  []
 
-[8]
-Underfull \hbox (badness 10000) in paragraph at lines 273--274
+
+Underfull \hbox (badness 10000) in paragraph at lines 224--225
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 275--276
+Underfull \hbox (badness 10000) in paragraph at lines 226--227
 
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 277--278
-
- []
-
-[9]
-Underfull \hbox (badness 10000) in paragraph at lines 321--322
-
- []
-
-[10]
-Underfull \hbox (badness 10000) in paragraph at lines 386--387
+LaTeX Font Info:    Trying to load font information for TS1+futs on input line 
+240.
+(/usr/share/texmf-dist/tex/latex/fourier/ts1futs.fd
+File: ts1futs.fd 2003/09/14 Fontinst v1.801 font definitions for TS1/futs.
+) [9] [10]
+Underfull \hbox (badness 10000) in paragraph at lines 368--369
 
  []
 
 [11]
-Underfull \hbox (badness 10000) in paragraph at lines 390--391
+Underfull \hbox (badness 10000) in paragraph at lines 370--371
+
+ []
+
+[12]
+Underfull \hbox (badness 10000) in paragraph at lines 418--419
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 392--393
+Underfull \hbox (badness 10000) in paragraph at lines 420--421
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 394--395
+Underfull \hbox (badness 10000) in paragraph at lines 422--423
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 402--403
+Underfull \hbox (badness 10000) in paragraph at lines 466--467
 
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 404--405
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 406--407
+[13]
+Underfull \hbox (badness 10000) in paragraph at lines 468--469
 
  []
 
-[12] [13]
-Underfull \hbox (badness 10000) in paragraph at lines 463--464
-
- []
-
-<imagenes//resumen.png, id=252, 1151.80313pt x 778.40813pt>
-File: imagenes//resumen.png Graphic file (type png)
-<use imagenes//resumen.png>
-Package pdftex.def Info: imagenes//resumen.png  used on input line 470.
-(pdftex.def)             Requested size: 484.33705pt x 327.32115pt.
-[14 <./imagenes//resumen.png (PNG copy)>]
-Underfull \hbox (badness 10000) in paragraph at lines 500--502
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 503--505
+[14]
+Underfull \hbox (badness 10000) in paragraph at lines 571--572
 
  []
 
 [15]
-<imagenes//greedy.png, id=279, 816.04875pt x 636.87938pt>
-File: imagenes//greedy.png Graphic file (type png)
-<use imagenes//greedy.png>
-Package pdftex.def Info: imagenes//greedy.png  used on input line 524.
-(pdftex.def)             Requested size: 484.33705pt x 378.00043pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 528--529
+Underfull \hbox (badness 10000) in paragraph at lines 574--575
 
  []
 
-[16 <./imagenes//greedy.png (PNG copy)>] (./tabla1nn.tex)
-Underfull \hbox (badness 10000) in paragraph at lines 535--536
+[16]
+Underfull \hbox (badness 10000) in paragraph at lines 608--609
 
  []
 
-(./tablagreedy.tex)
-Underfull \hbox (badness 10000) in paragraph at lines 541--542
+<imagenes//bl.png, id=296, 861.2175pt x 657.95813pt>
+File: imagenes//bl.png Graphic file (type png)
+<use imagenes//bl.png>
+Package pdftex.def Info: imagenes//bl.png  used on input line 618.
+(pdftex.def)             Requested size: 363.25278pt x 277.5252pt.
+[17] (./tablaBL.tex)
+Underfull \hbox (badness 10000) in paragraph at lines 630--631
 
  []
 
-(./tablaBL.tex) [17]
-Underfull \hbox (badness 10000) in paragraph at lines 546--547
+[18 <./imagenes//bl.png (PNG copy)>]
+Underfull \hbox (badness 10000) in paragraph at lines 632--633
 
  []
 
-(./tablaFinal.tex)
-Underfull \hbox (badness 10000) in paragraph at lines 552--553
-
+(./tablaBMB.tex) [19] (./tablaILS.tex) [20] (./tablaVNS.tex) [21]
+(./tablaES.tex) [22] (./tablaILSES.tex) [23]
+Overfull \hbox (8.77841pt too wide) in paragraph at lines 789--790
+[]\T1/futs/m/n/10.95 ES-ILS con-si-gue una re-duc-ción con-si-de-ra-ble-men-te 
+ma-yor (75.00$ $%) en com-pa-ra-ción a BL (62.50$ $%) 
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 554--555
-
- []
-
-(./tablaAGG-CA.tex) [18]
-Underfull \hbox (badness 10000) in paragraph at lines 559--560
-
- []
-
-(./tablaAGG-BLX.tex)
-Underfull \hbox (badness 10000) in paragraph at lines 564--565
-
- []
-
-(./tablaAGE-CA.tex) [19] (./tablaAGE-BLX.tex) (./tablaAM-All.tex) [20]
-(./tablaAM-Rand.tex) (./tablaAM-Best.tex) (./tablaFinal2.tex)
-Underfull \hbox (badness 10000) in paragraph at lines 590--591
-
- []
-
-[21]
-Underfull \hbox (badness 10000) in paragraph at lines 602--603
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 604--605
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 606--607
-
- []
-
-[22] (./plantilla.bbl
-Underfull \hbox (badness 3792) in paragraph at lines 13--17
-[]\T1/futs/m/n/10.95 Wout Meg-che-len-brink.  [][]$\T1/cmtt/m/n/10.95 https : /
- / www . ru . nl / publish / pages / 769526 / relief-[]based _ feature _
+(./tablaFinal.tex) [24] [25] [26] (./plantilla.bbl
+Overfull \hbox (65.5374pt too wide) in paragraph at lines 8--12
+[]\T1/futs/m/n/10.95 Jason Brown-lee.  [][]$\T1/cmtt/m/n/10.95 https : / / mach
+inelearningmastery . com / iterated-[]local-[]search-[]from-[]scratch-[]in-[]py
+thon/$[][]\T1/futs/m/n/10.95 ,
  []
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 19--23
-\T1/cmtt/m/n/10.95 20inteligente % 2C % 20basado % 20en % 20metaheuristicas % 2
-C % 20para % 20tareas % 20logisticas %
+[]\T1/futs/m/n/10.95 Pierre Han-sen.  [][]$\T1/cmtt/m/n/10.95 https : / / www .
+ researchgate . net / publication / 306084902 _ Variable _
  []
 
-) [23] (./plantilla.aux
+) [27] (./plantilla.aux
 LaTeX Info: Redefining \. on input line 25.
 LaTeX Info: Redefining \% on input line 25.
 )
@@ -1606,13 +1543,13 @@ runsystem(rm plantilla.pyg)...executed.
 
  ) 
 Here is how much of TeX's memory you used:
- 31393 strings out of 476025
- 607730 string characters out of 5796533
- 1924388 words of memory out of 5000000
- 51008 multiletter control sequences out of 15000+600000
- 579977 words of font info for 101 fonts, out of 8000000 for 9000
+ 31635 strings out of 476025
+ 611939 string characters out of 5796533
+ 1878388 words of memory out of 5000000
+ 51213 multiletter control sequences out of 15000+600000
+ 588613 words of font info for 105 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 114i,18n,109p,10626b,799s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 114i,21n,109p,10626b,799s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/share/texmf-dist/fonts/type1/public/fourier/fourier-mex.pfb></usr/share
 /texmf-dist/fonts/type1/public/fourier/fourier-mlit.pfb></usr/share/texmf-dist/
 fonts/type1/public/fourier/fourier-ms.pfb></usr/share/texmf-dist/fonts/type1/ad
@@ -1624,10 +1561,10 @@ sfsx1095.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfsx1200.pfb></
 usr/share/texmf-dist/fonts/type1/public/cm-super/sfsx1440.pfb></usr/share/texmf
 -dist/fonts/type1/public/cm-super/sftt1000.pfb></usr/share/texmf-dist/fonts/typ
 e1/public/cm-super/sftt1095.pfb>
-Output written on plantilla.pdf (23 pages, 903897 bytes).
+Output written on plantilla.pdf (27 pages, 595603 bytes).
 PDF statistics:
- 480 PDF objects out of 1000 (max. 8388607)
- 419 compressed objects within 5 object streams
- 176 named destinations out of 1000 (max. 500000)
- 148 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 534 PDF objects out of 1000 (max. 8388607)
+ 470 compressed objects within 5 object streams
+ 224 named destinations out of 1000 (max. 500000)
+ 143 words of extra memory for PDF output out of 10000 (max. 10000000)
 

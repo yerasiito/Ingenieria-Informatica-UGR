@@ -1,0 +1,36 @@
+Para ejecutar el proyecto sigue los siguientes pasos:
+1. Ir a bin
+2. Ejecutar: cmake .. && make
+3. El ejecutable se llama practica1, puede ejecutarlo de 4 formas:
+    - ./practica1 :ejecutará el algoritmo 1NN sin mejora
+    - ./practica1 BL :ejecutará el algoritmo de busqueda local con semilla aleatoria
+    - ./practica1 ILS 1:ejecutará la busqueda local iterativa con semilla 1
+
+El algoritmo de busquedaLocal se encuentra en fuentes/busquedaLocal.cpp
+BMB, VNS, ILS, ILS-ES se encuentran el fichero fuentes/algoritmosTrayectoria.cpp
+ES se encuentra en enframientoSimulado.cpp
+
+Descripción de cada fichero:
+- main.cpp: contiene el programa principal. Desde ahí se llaman a todos los algoritmos.
+- dataset.cpp: define la estructura de datos.
+    Struct Ejemplo{
+        vector<double> caracteristicas;
+        string etiqueta;
+    }
+    class Dataset{
+        vector<Ejemplo> ejemplos;
+        vector<string> nombreEtiquetas;
+    }
+    Además de funciones de lectura de datos, consulta y modificación
+
+- apc.cpp: define los métodos
+    - de greedy (actualizarpesos y greedy_relief)
+    - el clasificador 1NN y clasificar
+    - el calculo del fitness, reduccion y rendimiento.
+    - la impresión de datos
+- funcionesAux.cpp: define funciones extra, algunas utilizadas por todos los algoritmos
+    - la funcion leerFicheros, lee todos los ficheros dado un nombre
+    - la distancia euclidea
+    - la funcion de normalizacion de datos
+
+- random.hpp: se incluye de tools.zip. Se utiliza para la búsqueda local.

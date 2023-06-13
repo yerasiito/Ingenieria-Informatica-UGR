@@ -4,26 +4,27 @@
 Jeff Atwood.
 \newblock \url{https://stackoverflow.com/}.
 
+\bibitem{ull}
+Jason Brownlee.
+\newblock
+  \url{https://machinelearningmastery.com/iterated-local-search-from-scratch-in-python/},
+  consultado el 2 de Junio de 2023.
+
 \bibitem{greekforgeeks}
 GeeksforGeeks.
-\newblock \url{https://www.geeksforgeeks.org/k-nearest-neighbours/}, consultado
-  el 4 de Abril de 2023.
+\newblock \url{https://www.geeksforgeeks.org/simulated-annealing/}, consultado
+  el 1 de Junio de 2023.
 
 \bibitem{runl}
-Wout Megchelenbrink.
+Pierre Hansen.
 \newblock
-  \url{https://www.ru.nl/publish/pages/769526/relief-based_feature_selection_in_bioinformatics_-_wout_megchelenbrink.pdf},
-  consultado el 5 de Abril de 2023.
+  \url{https://www.researchgate.net/publication/306084902_Variable_neighborhood_search_basics_and_variants},
+  consultado el 27 de Mayo de 2023.
 
-\bibitem{ull}
-José Alberto~Pérez Melián.
-\newblock
-  \url{https://riull.ull.es/xmlui/bitstream/handle/915/631/Sistema%20inteligente%2C%20basado%20en%20metaheuristicas%2C%20para%20tareas%20logisticas%20en%20situaciones%20de%20emergencia.pdf?sequence=1&isAllowed=y},
-  consultado el 7 de Abril de 2023.
-
-\bibitem{innovaMH}
+\bibitem{prado}
 Daniel Molina.
-\newblock \url{https://codeberg.org/dmolina/innovaMH}.
+\newblock Diapositivas de seminario-teoria
+  \url{https://pradogrado2223.ugr.es/}.
 
 \bibitem{chatgpt}
 OpenAI.
