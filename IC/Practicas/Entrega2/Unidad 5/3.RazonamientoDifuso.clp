@@ -55,10 +55,10 @@
 (deffacts conjuntos_difusos
 (cd edad avanzada 60 70 150 150)  ; aproximadamente mas de 65
 
-(cd peso elevado 90 100 110 120)  ; aproximadamente entre 62 y 70
+(cd peso elevado 85 100 110 120)  ; aproximadamente entre 62 y 70
 (cd peso muy_elevado 130 230 401 401) ; aproximadamente mas de 105
 
-(cd riesgo bajo 2 2 2 2)    ; aproximadamente 2 (siempre hay riesgo de infarto)
+(cd riesgo bajo 1 1 1 1)    ; aproximadamente 1 (siempre hay riesgo de infarto)
 (cd riesgo medio 4 5 5 6)    ; aproximadamente 5
 (cd riesgo alto 8 10 10 12)     ; aproximadamente 10
 (cd riesgo muy_alto 15 30 50 50)     ; aproximadamente 20

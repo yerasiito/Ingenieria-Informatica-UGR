@@ -95,7 +95,7 @@
    (test (and (> ?f1 0) (> ?f2 0))) 
    =>
    (assert (FactorCerteza problema_bujias si (encadenado (* ?f1 ?f2) 0.7)))
-   (printout t "R1: bujias '0.7" crlf)
+   ; (printout t "R1: bujias '0.7" crlf)
 )
 
 ;;; R2: SI NO gira el motor ENTONCES problema con el starter con certeza 0,8
@@ -104,7 +104,7 @@
    (test (> ?f1 0) )
 =>
    (assert (FactorCerteza problema_starter si (encadenado ?f1 0.8) ) )
-   (printout t "R2: starter '0.8" crlf)
+   ; (printout t "R2: starter '0.8" crlf)
 )
 
 ;;; R3: SI NO encienden las luces ENTONCES problemas con la batería con certeza 0,9
@@ -113,7 +113,7 @@
    (test (> ?f1 0) )
 =>
    (assert (FactorCerteza problema_bateria si (encadenado ?f1 0.9) ) )
-   (printout t "R3: bateria '0.9" crlf)
+   ; (printout t "R3: bateria '0.9" crlf)
 )
 
 ;;; R4: SI hay gasolina en el deposito ENTONCES el motor obtiene gasolina con certeza 0,9
@@ -122,7 +122,7 @@
    (test (> ?f1 0) )
 =>
    (assert (FactorCerteza motor_llega_gasolina si (encadenado ?f1 0.9) ) )
-   (printout t "R4: motor_llega_gasolina '0.9" crlf)
+   ; (printout t "R4: motor_llega_gasolina '0.9" crlf)
 )
 
 ;;; R5: SI hace intentos de arrancar ENTONCES problema con el starter con certeza -0,6
@@ -131,7 +131,7 @@
    (test (> ?f1 0) )
 =>
    (assert (FactorCerteza problema_starter si (encadenado ?f1 -0.6) ) )
-   (printout t "R5: starter '-0.6" crlf)
+   ; (printout t "R5: starter '-0.6" crlf)
 )
 
 ;;; R6: SI hace intentos de arrancar ENTONCES problema con la batería 0,5
@@ -140,54 +140,7 @@
    (test (> ?f1 0) )
 =>
    (assert (FactorCerteza problema_bateria si (encadenado ?f1 0.5) ) )
-   (printout t "R6: bateria '0.5" crlf)
-)
-
-
-;;;;; PREGUNTAS AL USUARIO SOBRE EL COCHE ;;;;;
-(defrule pregunta_intentos_arrancar
-=>
-   (printout t "Hace intentos de arrancar? (si|no)" crlf)
-   (bind ?resp (read))
-   (while (and (not (eq ?resp si)) (not (eq ?resp no)))
-      (printout t "Valor Incorrecto. Introduce un valor (si|no: " )
-      (bind ?resp (read))
-   )
-   (assert (Evidencia hace_intentos_arrancar ?resp))
-)
-
-(defrule pregunta_gasolina_en_deposito
-=>
-   (printout t "Hay gasolina en el deposito? (Si|No)" crlf)
-   (bind ?resp (read))
-   (while (and (not (eq ?resp si)) (not (eq ?resp no)))
-      (printout t "Valor Incorrecto. Introduce un valor (si|no: " )
-      (bind ?resp (read))
-   )
-   (assert (Evidencia hay_gasolina_en_deposito ?resp))
-)
-
-(defrule pregunta_encienden_luces
-=>
-   (printout t "Las luces encienden? (Si|No)" crlf)
-   (bind ?resp (read))
-   (while (and (not (eq ?resp si)) (not (eq ?resp no)))
-      (printout t "Valor Incorrecto. Introduce un valor (si|no: " )
-      (bind ?resp (read))
-   )
-   (assert (Evidencia encienden_las_luces ?resp))
-)
-
-(defrule pregunta_gira_motor
-=>
-   (printout t "El motor gira? (Si|No)" crlf)
-   (bind ?resp (read))
-   (while (and (not (eq ?resp si)) (not (eq ?resp no)))
-      (printout t "Valor Incorrecto. Introduce un valor (si|no: " )
-      (bind ?resp (read))
-   )
-   (assert (Evidencia gira_motor ?resp))
-   (assert (Analisis))
+   ; (printout t "R6: bateria '0.5" crlf)
 )
 
 (defrule checkStarter
@@ -218,18 +171,72 @@
 (assert (FactorCerteza motor_llega_gasolina no 0))
 )
 
+;;;;; PREGUNTAS AL USUARIO SOBRE EL COCHE ;;;;;
+
+;; Pregunta 1: Intenta arrancar?
+(defrule pregunta_intentos_arrancar
+=>
+   (printout t "Hace intentos de arrancar? (si|no)" crlf)
+   (bind ?resp (read))
+   (while (and (not (eq ?resp si)) (not (eq ?resp no)))
+      (printout t "Valor Incorrecto. Introduce un valor (si|no: " )
+      (bind ?resp (read))
+   )
+   (assert (Evidencia hace_intentos_arrancar ?resp))
+)
+
+;; Pregunta 2: Hay gasolina en el depósito?
+(defrule pregunta_gasolina_en_deposito
+=>
+   (printout t "Hay gasolina en el deposito? (si|no)" crlf)
+   (bind ?resp (read))
+   (while (and (not (eq ?resp si)) (not (eq ?resp no)))
+      (printout t "Valor Incorrecto. Introduce un valor (si|no: " )
+      (bind ?resp (read))
+   )
+   (assert (Evidencia hay_gasolina_en_deposito ?resp))
+)
+
+;; Pregunta 3: Encienden las luces?
+(defrule pregunta_encienden_luces
+=>
+   (printout t "Las luces encienden? (si|no)" crlf)
+   (bind ?resp (read))
+   (while (and (not (eq ?resp si)) (not (eq ?resp no)))
+      (printout t "Valor Incorrecto. Introduce un valor (si|no: " )
+      (bind ?resp (read))
+   )
+   (assert (Evidencia encienden_las_luces ?resp))
+)
+
+;; Pregunta 4: Gira el motor?
+(defrule pregunta_gira_motor
+=>
+   (printout t "El motor gira? (si|no)" crlf)
+   (bind ?resp (read))
+   (while (and (not (eq ?resp si)) (not (eq ?resp no)))
+      (printout t "Valor Incorrecto. Introduce un valor (si|no: " )
+      (bind ?resp (read))
+   )
+   (assert (Evidencia gira_motor ?resp))
+   (assert (Generar_respuesta))
+)
+
+;; Calcula la mayor certeza de todos los problemas
 (defrule mayorCerteza
-   ?a <- (Analisis)
+   ?a <- (Generar_respuesta)
    (FactorCerteza problema_starter ?sn ?v)
    (FactorCerteza problema_bujias ?sn1 ?v1)
    (FactorCerteza problema_bateria ?sn2 ?v2)
    (FactorCerteza motor_llega_gasolina ?sn3 ?v3)
 =>
    (assert (MayorCerteza (max ?v ?v1 ?v2 ?v3)))
+   (assert (Imprimir))
 )
 
+;; Imprime las certezas de cada problema
 (defrule imprimir
-   ?a <- (Analisis)
+   ?i <- (Imprimir)
    (FactorCerteza problema_starter ?sn ?v)
    (FactorCerteza problema_bujias ?sn1 ?v1)
    (FactorCerteza problema_bateria ?sn2 ?v2)
@@ -237,16 +244,41 @@
    (MayorCerteza ?valor)
    (FactorCerteza ?motivo ?s ?valor)
 =>
-   (printout t crlf "Problema starter " ?v crlf)
+   (printout t crlf "Certezas: ")
+   (printout t crlf"###########################"crlf)
+   (printout t "Problema starter " ?v crlf)
    (printout t "Problema bujias " ?v1 crlf)
    (printout t "Problema bateria " ?v2 crlf)
    (printout t "Motor llega gasolina " ?v3 crlf)
+   (printout t "###########################" crlf crlf)
+   (retract ?i)
 )
 
-(defrule Analisis
-   ?a <- (Analisis)
+;; Imprime la mayor certeza obtenida a partir de la información dada por el usuario
+(defrule Respuesta
+   ?a <- (Generar_respuesta)
    (MayorCerteza ?maximo)
    (FactorCerteza ?h ?s ?maximo)
-=>
-   (printout t "El problema es " ?h " con certeza " ?maximo crlf)
+   =>
+   (if (eq ?maximo 0)
+      then
+      (printout t "No se ha encontrado ningún problema válido en la base de datos." crlf)
+      else
+      (switch ?h
+         (case motor_llega_gasolina then
+            (printout t "Podemos afirmar que llega gasolina con una certeza de " ?maximo crlf)
+         )
+         (case problema_starter then
+            (printout t "Se concluye que hay un problema en el starter con una certeza de " ?maximo crlf)
+         )
+         (case problema_bujias then
+            (printout t "Se ha concluido que hay un problema en las bujías con una certeza de " ?maximo crlf)
+         )
+         (case problema_bateria then
+            (printout t "Podemos afirmar que hay un problema en la batería con una certeza de " ?maximo crlf)
+         )
+      )
+   )
+   (retract ?a)
 )
+

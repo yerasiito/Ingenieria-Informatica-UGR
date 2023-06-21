@@ -1,0 +1,681 @@
+<?xml version="1.0"?>
+<Ontology xmlns="http://www.w3.org/2002/07/owl#"
+     xml:base="http://www.semanticweb.org/ylope/ontologies/2023/5/untitled-ontology-6"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     ontologyIRI="http://www.semanticweb.org/ylope/ontologies/2023/5/untitled-ontology-6">
+    <Prefix name="" IRI="http://www.semanticweb.org/ylope/ontologies/2023/5/untitled-ontology-6/"/>
+    <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#"/>
+    <Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace"/>
+    <Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#"/>
+    <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#"/>
+    <Prefix name="untitled-ontology-6" IRI="http://www.semanticweb.org/ylope/ontologies/2023/5/untitled-ontology-6#"/>
+    <Declaration>
+        <Class IRI="#Actividad"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Alojamiento"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Apartamento"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Atracciones"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Autobus"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Avion"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Camping"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Ciudad"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Cliente"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Coche"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Deportes"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Destino"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Duracion"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Hotel"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Invierno"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Montaña"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Museo"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Otoño"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Pais"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Playa"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Primavera"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Senderismo"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Temporada"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Transporte"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Tren"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Verano"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Viaje"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Viaje_Deportivo"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Viaje_Familiar"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Viaje_de_Aventura"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Viaje_de_Negocios"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Viaje_de_Ocio"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Voluntariado"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#esActividadDe"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#esAlojamientoDe"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#esCiudadDe"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#esTipoDeActividad"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#esTransporteDe"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#esViajeDe"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#interesadoEn"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#ocurreEnTemporada"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#tieneActividad"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#tieneAlojamiento"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#tieneDestino"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#tieneDuracion"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#tienePresupuesto"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#utilizaTransporte"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#descripcion"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#duracionTotal"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#estado_civil"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#fechaFin"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#fechaInicio"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#nombre"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#nombreActividad"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#nombreAlojamiento"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#nombreCiudad"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#nombreCliente"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#nombreDestino"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#nombreViaje"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#precio"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#precioActividad"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#precioAlojamiento"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#precioTransporte"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#precioViaje"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#Cliente1"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#actividad1"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#alojamiento1"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#destino1"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#transporte1"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#viaje1"/>
+    </Declaration>
+    <EquivalentClasses>
+        <Class IRI="#Atracciones"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#esTipoDeActividad"/>
+            <Class IRI="#Actividad"/>
+        </ObjectSomeValuesFrom>
+    </EquivalentClasses>
+    <SubClassOf>
+        <Class IRI="#Apartamento"/>
+        <Class IRI="#Alojamiento"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Autobus"/>
+        <Class IRI="#Transporte"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Avion"/>
+        <Class IRI="#Transporte"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Camping"/>
+        <Class IRI="#Alojamiento"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Ciudad"/>
+        <Class IRI="#Destino"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Coche"/>
+        <Class IRI="#Transporte"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Deportes"/>
+        <Class IRI="#Actividad"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Hotel"/>
+        <Class IRI="#Alojamiento"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Invierno"/>
+        <Class IRI="#Temporada"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Montaña"/>
+        <Class IRI="#Destino"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Museo"/>
+        <Class IRI="#Actividad"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Otoño"/>
+        <Class IRI="#Temporada"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Pais"/>
+        <Class IRI="#Destino"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Playa"/>
+        <Class IRI="#Destino"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Primavera"/>
+        <Class IRI="#Temporada"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Senderismo"/>
+        <Class IRI="#Actividad"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Tren"/>
+        <Class IRI="#Transporte"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Verano"/>
+        <Class IRI="#Temporada"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Viaje_Deportivo"/>
+        <Class IRI="#Viaje"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Viaje_Familiar"/>
+        <Class IRI="#Viaje"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Viaje_de_Aventura"/>
+        <Class IRI="#Viaje"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Viaje_de_Negocios"/>
+        <Class IRI="#Viaje"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Viaje_de_Ocio"/>
+        <Class IRI="#Viaje"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Voluntariado"/>
+        <Class IRI="#Actividad"/>
+    </SubClassOf>
+    <ClassAssertion>
+        <Class IRI="#Atracciones"/>
+        <NamedIndividual IRI="#actividad1"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Hotel"/>
+        <NamedIndividual IRI="#alojamiento1"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Ciudad"/>
+        <NamedIndividual IRI="#destino1"/>
+    </ClassAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#interesadoEn"/>
+        <NamedIndividual IRI="#Cliente1"/>
+        <NamedIndividual IRI="#viaje1"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#esActividadDe"/>
+        <NamedIndividual IRI="#actividad1"/>
+        <NamedIndividual IRI="#viaje1"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#esAlojamientoDe"/>
+        <NamedIndividual IRI="#alojamiento1"/>
+        <NamedIndividual IRI="#viaje1"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#esViajeDe"/>
+        <NamedIndividual IRI="#destino1"/>
+        <NamedIndividual IRI="#viaje1"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#esTransporteDe"/>
+        <NamedIndividual IRI="#transporte1"/>
+        <NamedIndividual IRI="#viaje1"/>
+    </ObjectPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#nombre"/>
+        <NamedIndividual IRI="#Cliente1"/>
+        <Literal>Yeray</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#nombreActividad"/>
+        <NamedIndividual IRI="#actividad1"/>
+        <Literal>Warner Bros</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#precioActividad"/>
+        <NamedIndividual IRI="#actividad1"/>
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">10</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#nombreAlojamiento"/>
+        <NamedIndividual IRI="#alojamiento1"/>
+        <Literal>Las Maravillas</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#precioAlojamiento"/>
+        <NamedIndividual IRI="#alojamiento1"/>
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#decimal">50</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#nombreCiudad"/>
+        <NamedIndividual IRI="#destino1"/>
+        <Literal>Madrid</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#nombreViaje"/>
+        <NamedIndividual IRI="#viaje1"/>
+        <Literal>Visitia Guiada a Madrid</Literal>
+    </DataPropertyAssertion>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="#esViajeDe"/>
+        <ObjectProperty abbreviatedIRI="owl:topObjectProperty"/>
+    </SubObjectPropertyOf>
+    <InverseObjectProperties>
+        <ObjectProperty IRI="#esActividadDe"/>
+        <ObjectProperty IRI="#tieneActividad"/>
+    </InverseObjectProperties>
+    <InverseObjectProperties>
+        <ObjectProperty IRI="#esAlojamientoDe"/>
+        <ObjectProperty IRI="#tieneAlojamiento"/>
+    </InverseObjectProperties>
+    <InverseObjectProperties>
+        <ObjectProperty IRI="#esTransporteDe"/>
+        <ObjectProperty IRI="#utilizaTransporte"/>
+    </InverseObjectProperties>
+    <InverseObjectProperties>
+        <ObjectProperty IRI="#esViajeDe"/>
+        <ObjectProperty IRI="#tieneDestino"/>
+    </InverseObjectProperties>
+    <FunctionalObjectProperty>
+        <ObjectProperty IRI="#esActividadDe"/>
+    </FunctionalObjectProperty>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#esCiudadDe"/>
+        <Class IRI="#Ciudad"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#esTipoDeActividad"/>
+        <Class IRI="#Actividad"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#interesadoEn"/>
+        <Class IRI="#Cliente"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#ocurreEnTemporada"/>
+        <Class IRI="#Viaje"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#tieneActividad"/>
+        <Class IRI="#Viaje"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#tieneAlojamiento"/>
+        <Class IRI="#Viaje"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#tieneDestino"/>
+        <Class IRI="#Viaje"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#tieneDuracion"/>
+        <Class IRI="#Viaje"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#tienePresupuesto"/>
+        <Class IRI="#Viaje"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#utilizaTransporte"/>
+        <Class IRI="#Viaje"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#esCiudadDe"/>
+        <Class IRI="#Destino"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#esTipoDeActividad"/>
+        <Class IRI="#Atracciones"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#esTipoDeActividad"/>
+        <Class IRI="#Deportes"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#esTipoDeActividad"/>
+        <Class IRI="#Museo"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#esTipoDeActividad"/>
+        <Class IRI="#Senderismo"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#esTipoDeActividad"/>
+        <Class IRI="#Voluntariado"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#interesadoEn"/>
+        <Class IRI="#Viaje"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#ocurreEnTemporada"/>
+        <Class IRI="#Temporada"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#tieneActividad"/>
+        <Class IRI="#Actividad"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#tieneAlojamiento"/>
+        <Class IRI="#Alojamiento"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#tieneDestino"/>
+        <Class IRI="#Destino"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#tieneDuracion"/>
+        <Class IRI="#Duracion"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#utilizaTransporte"/>
+        <Class IRI="#Transporte"/>
+    </ObjectPropertyRange>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#descripcion"/>
+        <DataProperty abbreviatedIRI="owl:topDataProperty"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#fechaFin"/>
+        <DataProperty IRI="#fechaFin"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#fechaFin"/>
+        <DataProperty IRI="#fechaInicio"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#fechaFin"/>
+        <DataProperty abbreviatedIRI="owl:topDataProperty"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#nombreActividad"/>
+        <DataProperty IRI="#nombre"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#nombreAlojamiento"/>
+        <DataProperty IRI="#nombre"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#nombreCiudad"/>
+        <DataProperty IRI="#nombre"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#nombreCliente"/>
+        <DataProperty IRI="#nombre"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#nombreDestino"/>
+        <DataProperty IRI="#nombre"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#nombreViaje"/>
+        <DataProperty IRI="#nombre"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#precioActividad"/>
+        <DataProperty IRI="#precio"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#precioAlojamiento"/>
+        <DataProperty IRI="#precio"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#precioTransporte"/>
+        <DataProperty IRI="#precio"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#precioViaje"/>
+        <DataProperty IRI="#precio"/>
+    </SubDataPropertyOf>
+    <DataPropertyDomain>
+        <DataProperty IRI="#descripcion"/>
+        <Class IRI="#Actividad"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#descripcion"/>
+        <Class IRI="#Alojamiento"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#descripcion"/>
+        <Class IRI="#Destino"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#descripcion"/>
+        <Class IRI="#Viaje"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#duracionTotal"/>
+        <Class IRI="#Duracion"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#estado_civil"/>
+        <Class IRI="#Cliente"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#fechaFin"/>
+        <Class IRI="#Duracion"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#fechaInicio"/>
+        <Class IRI="#Duracion"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#nombreActividad"/>
+        <Class IRI="#Actividad"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#nombreCliente"/>
+        <Class IRI="#Cliente"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#nombreDestino"/>
+        <Class IRI="#Destino"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#precioActividad"/>
+        <Class IRI="#Actividad"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#precioAlojamiento"/>
+        <Class IRI="#Alojamiento"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#precioTransporte"/>
+        <Class IRI="#Transporte"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#precioViaje"/>
+        <Class IRI="#Viaje"/>
+    </DataPropertyDomain>
+    <DataPropertyRange>
+        <DataProperty IRI="#precioViaje"/>
+        <Datatype abbreviatedIRI="xsd:integer"/>
+    </DataPropertyRange>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#alojamiento1</IRI>
+        <Literal>Hotel en Madrid</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#ocurreEnTemporada</IRI>
+        <Literal>Establece la relación entre un viaje y la temporada en la cual se lleva a cabo ese viaje</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#tieneActividad</IRI>
+        <Literal>Indica las actividades específicas que se pueden realizar durante un viaje en particular.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#tieneAlojamiento</IRI>
+        <Literal>Establece la relación entre un viaje y el alojamiento asociado a ese viaje</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#tieneDestino</IRI>
+        <Literal>Establece la relación entre un viaje y un destino, indicando qué destinos están asociados con un viaje en particular.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#tieneDuracion</IRI>
+        <Literal>Establece la relación entre un viaje y la duración total de ese viaje</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#tienePresupuesto</IRI>
+        <Literal>Indica el presupuesto asociado a un viaje en particular</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#utilizaTransporte</IRI>
+        <Literal>Indica el medio de transporte utilizado para un viaje en particular</Literal>
+    </AnnotationAssertion>
+</Ontology>
+
+
+
+<!-- Generated by the OWL API (version 4.5.25.2023-02-15T19:15:49Z) https://github.com/owlcs/owlapi -->
+

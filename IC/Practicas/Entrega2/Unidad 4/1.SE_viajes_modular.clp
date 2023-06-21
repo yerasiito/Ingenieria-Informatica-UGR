@@ -1,10 +1,15 @@
 ;;;; REALIZADO POR: Yeray Lopez Ramirez ;;;;;
-;;;;           DNI: 26050768W		    ;;;;;
+;;;;           DNI: 26050768W		       ;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;                                                EJERCICIO 3 DE LA PRACTICA 1                                                    ;;
+;;                                                EJERCICIO 1 DE LA PRACTICA 2                                                    ;;
 ;;                    Diseniar un Sistema Experto que asesore a un cliente en una agencia de viaje                                ;;
 ;;                sobre qué destino elegir de forma que el sistema actúe tal y como lo hariais vosotros                           ;;
+;;                                                                                                                                ;;
+;;                                                   MODIFICADO con modulos:                                                      ;;
+;;                                        modulo Preguntar: realiza preguntas al usuario                                          ;;
+;;                                        modulo Decidir: decide el viaje adecuado a partir de la informacion obtenida            ;;
+;;                                        modulo Ofrecer: ofrece el viaje decidido                                                ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
@@ -20,21 +25,21 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; CREACION DE VIAJES ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Los viajes se crean en la regla Viajes donde crean todos los hechos con los viajes que ofrece la agencia. Se parte del         ;;
 ;; deftemplate original pero se añaden nuevas caracteristicas:                                                                    ;;
-;; - publico: adulto mayor                                                                                                        ;;
+;; - edad: adulta mayor                                                                                                           ;;
 ;; - numero: una varias                                                                                                           ;;
 ;; - temporada (sustituye a dia_salida): invierno verano intermedia                                                               ;;
 ;; - lugar: rural urbano intermedio                                                                                               ;;
-;; - ubicacion: nacional europeo internacional daigual                                                                            ;;
+;; - ubicacion: nacional europeo internacional cualquiera                                                                         ;;
 ;; - tipo: playa montania interior                                                                                                ;;
 ;; - actividad: familiar deportivo negocios voluntariado                                                                          ;;
 ;; Se han creado 20 viajes con mas o menos sentido y con variedad. Están ordenados de mayor a menor beneficio para la agencia. Se ;;
 ;; eligirá el que de mayor beneficio y que se ajuste al usuario.                                                                  ;;
-;; No tienen porque cumplirse todas las condiciones de viaje, al elegir la opcion "daigual" se ignora esa caracteristica.         ;;
-;; He visto la necesidad de realizar varias simplificaciones aunque a vista de usuario no se percibe:
-;; 1. La edad podia ser joven tambien pero se excluian actividades de adulto que eran validas
+;; No tienen porque cumplirse todas las condiciones de viaje, al elegir la opcion "cualquiera" se ignora esa caracteristica.      ;;
+;; He visto la necesidad de realizar varias simplificaciones aunque a vista de usuario no se percibe:                             ;;
+;; 1. La edad podia ser joven tambien pero se excluian actividades de adulto que eran validas                                     ;;
 ;; 2. El numero distinguia entre solo, pareja, familia o amigos pero se simplifica a uno/varios para facilitar la recomendacion   ;;
-;; 3. La temporada primavera y otoño se consideran intermedia.
-;; Aparte se hacen deducciones que se describen en el siguiente apartado.
+;; 3. La temporada primavera y otoño se consideran intermedia.                                                                    ;;
+;; Aparte se hacen deducciones que se describen en el siguiente apartado.                                                         ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; RECOMENDACION DE VIAJES ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -47,7 +52,7 @@
 ;;    pasar de asserts de solo destinos ademas de que es eso, un prototipo.                                                       ;;
 ;;                                                                                                                                ;;
 ;; Para recomendar se toma el siguiente procedimiento:                                                                            ;;
-;; 1. La edad: se preguntará de forma numérica y se transformará en adulto o mayor. Inicialmente podía ser joven pero se          ;;
+;; 1. La edad: se preguntará de forma numérica y se transformará en adulta o mayor. Inicialmente podía ser joven pero se          ;;
 ;;        simplificó para facilitar la recomendación                                                                              ;;
 ;;    Los Viajes serán ofrecidos o bien para adultos o para mayores por lo que se eligiran según la edad dada. No es rechazable.  ;;
 ;;                                                                                                                                ;;
@@ -62,16 +67,16 @@
 ;; 3. La temporada: se preguntará la estacion que desea al usuario aunque se simplificará sin que lo note.                        ;;
 ;;       - Si eliges primavera u otoño se simplificarán con estación intermedia, esto permite una mejor recomendación.            ;;
 ;;       - Se respetará si es invierno o verano.                                                                                  ;;
-;;       - Se da la posibilidad de "daigual", en este caso se ignora la temporada al elegir el destino.                           ;;
+;;       - Se da la posibilidad de "cualquiera", en este caso se ignora la temporada al elegir el destino.                        ;;
 ;;    La mayoría de viajes ofertados son en verano o intermedias así que invierno puede ser dificil de recomendar.                ;;
 ;;    Se puede rechazar.                                                                                                          ;;
 ;; 4. El presupuesto: se preguntara la cantidad directamente. El sistema comparará si el precio de cada viaje es menor al         ;;
 ;;       dinero que pone el usuario. Se pide un minimo de 100€ aunque recomiendo poner sobre 600€-700€                            ;;
 ;;    Es rechazable, por si el destino es muy caro.                                                                               ;;
 ;; 5. (Depende) Si has elegido compania = solo o amigos entonces te hara una quinta pregunta sobre el tipo de viaje               ;;
-;;    Se podra elegir entre: deportivo | negocios | voluntariado o daigual.                                                       ;;
-;;    Cada viaje contiene una actividad especifica que determinara de forma clave la recomendacion. En caso de elegir daigual, se ;;
-;;    elegira el viaje sin tener en cuenta su actividad.                                                                          ;;
+;;    Se podra elegir entre: deportivo | negocios | voluntariado o cualquiera.                                                    ;;
+;;    Cada viaje contiene una actividad especifica que determinara de forma clave la recomendacion. En caso de elegir cualquiera, ;;
+;;    se elegira el viaje sin tener en cuenta su actividad.                                                                       ;;
 ;;                                                                                                                                ;;
 ;; Llegados a este punto el sistema puede llegar a 2 estados:                                                                     ;;
 ;;    1. Que te recomiende un viaje. Te mostrara el motivo completo de eleccion y si deseas aceptar el destino.                   ;;
@@ -93,7 +98,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;ELECCION DE VIAJES;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; La eleccion de viajes se encarga el metodo decideViaje. Mediante un bucle (ahora explicare porque) recorre todos los Viajes    ;;
 ;; que tiene la agencia y los compara con los datos del usuario. Se busca que coincida la caracteristica con el dato del usuario  ;;
-;; o se salta la caracteristica si es daigual. La incertidumbre da mayor libertad al sistema de recomendar.                       ;;
+;; o se salta la caracteristica si es cualquiera. La incertidumbre da mayor libertad al sistema de recomendar.                    ;;
 ;;                                                                                                                                ;;
 ;; El primer viaje que cumpla los requisitos sera el de mayor beneficio de la agencia asi que se lo ofrece directamente.          ;;
 ;; El motivo dado seran las propiedades del viaje que se justifican con los datos proporcionados por el usuario                   ;;
@@ -111,9 +116,9 @@
     (slot destino 
         (type STRING)
     )
-    (slot publico
+    (slot edad
         (type SYMBOL)
-        (allowed-symbols adulto mayor) ; joven simplificado como adulto
+        (allowed-symbols adulta mayor cualquiera) ; joven simplificado como adulta
     )
     (slot numero
         (type SYMBOL)
@@ -121,11 +126,11 @@
     )
     (slot temporada
         (type SYMBOL)
-        (allowed-symbols invierno verano intermedia) ; otonio y primavera simplificadas como intermedia
+        (allowed-symbols invierno verano intermedia cualquiera) ; otonio y primavera simplificadas como intermedia
     )
     (slot transporte
         (type SYMBOL)
-        (allowed-symbols barco avion tren autobus coche) ;; autobus y coche se consideran de forma identica
+        (allowed-symbols barco avion tren autobus coche cualquiera) ;; autobus y coche se consideran de forma identica
     )
     (slot duracion
         (type SYMBOL)
@@ -133,19 +138,19 @@
     )
     (slot lugar
         (type SYMBOL)
-        (allowed-symbols rural urbano intermedio) ; intermedio funciona igual que daigual/nose. Acepta rural y urbano
+        (allowed-symbols rural urbano intermedio) ; intermedio funciona igual que cualquiera. Acepta rural y urbano
     )
     (slot ubicacion
         (type SYMBOL)
-        (allowed-symbols nacional europeo internacional daigual) ; nacional infiere transporte coche, europeo infiere transporte tren, internacional infiere transporte avion.
+        (allowed-symbols nacional europeo internacional) ; nacional infiere transporte coche, europeo infiere transporte tren, internacional infiere transporte avion.
     )
     (slot tipo
         (type SYMBOL)
-        (allowed-symbols playa montania interior daigual) ; daigual permite ignorar la caracteristica 
+        (allowed-symbols playa montania interior cualquiera) ; cualquiera permite ignorar la caracteristica 
     )
     (slot actividad
         (type SYMBOL)
-        (allowed-symbols familiar deportivo negocios voluntariado) ; las parejas y familias infieren actividad familiar (inicialmente parejas=romantico)
+        (allowed-symbols familiar deportivo negocios voluntariado cualquiera) ; las parejas y familias infieren actividad familiar (inicialmente parejas=romantico)
     )
     (slot precio
         (type NUMBER) ; Se evalue que el precio < presupuesto
@@ -159,59 +164,57 @@
 
 ;; Se crean hechos con los viajes programados, estan ordenados por BENEFICIO DE LA AGENCIA. >>> BEFINICIO PRIMERO ;;
 ;; La mitad han sido generados mediante IA (es mas original que yo) y revisados manualmente.
-(defrule Viajes
-   (declare(salience 100))
-=>
-(assert (Viaje (codigo MX) (destino "Cancún, México") (publico adulto) (numero varias) (temporada verano) (transporte avion) 
-               (duracion corta) (lugar urbano) (ubicacion internacional) (tipo playa) (actividad familiar) (precio 600) (beneficio_agencia alto)))
+(deffacts Viajes
+   (Viaje (codigo MX) (destino "Cancún, México") (edad adulta) (numero varias) (temporada verano) (transporte avion) 
+                  (duracion corta) (lugar urbano) (ubicacion internacional) (tipo playa) (actividad familiar) (precio 600) (beneficio_agencia alto))
 
-(assert (Viaje (codigo AU) (destino "Sydney, Australia") (publico adulto) (numero una) (temporada verano) (transporte avion) 
-               (duracion larga) (lugar urbano) (ubicacion internacional) (tipo playa) (actividad voluntariado) (precio 300) (beneficio_agencia alto)))
+   (Viaje (codigo AU) (destino "Sydney, Australia") (edad adulta) (numero una) (temporada verano) (transporte avion) 
+                  (duracion larga) (lugar urbano) (ubicacion internacional) (tipo playa) (actividad voluntariado) (precio 300) (beneficio_agencia alto))
 
-(assert (Viaje (codigo ES04) (destino "Granada, Espania") (publico mayor) (numero una) (temporada invierno) (transporte autobus) (duracion corta)
-               (lugar urbano) (ubicacion nacional) (tipo montania) (actividad deportivo) (precio 100) (beneficio_agencia alto))) 
+   (Viaje (codigo ES04) (destino "Granada, Espania") (edad cualquiera) (numero una) (temporada invierno) (transporte autobus) (duracion corta)
+                  (lugar urbano) (ubicacion nacional) (tipo montania) (actividad deportivo) (precio 100) (beneficio_agencia alto))
 
-(assert (Viaje (codigo JP) (destino "Tokio, Japón") (publico adulto) (numero una) (temporada intermedia) (transporte avion) 
-               (duracion larga) (lugar urbano) (ubicacion internacional) (actividad negocios) (tipo interior) (precio 400) (beneficio_agencia alto)))
+   (Viaje (codigo JP) (destino "Tokio, Japón") (edad adulta) (numero una) (temporada intermedia) (transporte avion) 
+                  (duracion larga) (lugar urbano) (ubicacion internacional) (actividad negocios) (tipo interior) (precio 400) (beneficio_agencia alto))
 
-(assert (Viaje (codigo IT) (destino "Toscana, Italia") (publico mayor) (numero varias) (temporada verano) (transporte tren) (duracion corta)
-               (lugar rural) (ubicacion europeo) (tipo montania) (actividad familiar) (precio 1000) (beneficio_agencia alto)))
+   (Viaje (codigo IT) (destino "Toscana, Italia") (edad mayor) (numero varias) (temporada verano) (transporte tren) (duracion corta)
+                  (lugar rural) (ubicacion europeo) (tipo montania) (actividad familiar) (precio 1000) (beneficio_agencia alto))
 
-(assert (Viaje (codigo CA) (destino "Vancouver, Canadá") (publico adulto) (numero una) (temporada invierno) (transporte avion) 
-               (duracion corta) (lugar urbano) (ubicacion internacional) (tipo interior) (actividad deportivo) (precio 600) (beneficio_agencia medio)))
+   (Viaje (codigo CA) (destino "Vancouver, Canadá") (edad cualquiera) (numero una) (temporada invierno) (transporte avion) 
+                  (duracion corta) (lugar urbano) (ubicacion internacional) (tipo interior) (actividad deportivo) (precio 600) (beneficio_agencia medio))
 
-(assert (Viaje (codigo FR) (destino "París, Francia") (publico adulto) (numero varias) (temporada intermedia) (transporte tren)
-               (duracion corta) (lugar urbano) (ubicacion europeo) (tipo interior) (precio 300) (actividad familiar) (beneficio_agencia medio)))
+   (Viaje (codigo FR) (destino "París, Francia") (edad adulta) (numero varias) (temporada intermedia) (transporte tren)
+                  (duracion corta) (lugar urbano) (ubicacion europeo) (tipo interior) (precio 300) (actividad familiar) (beneficio_agencia medio))
 
-(assert (Viaje (codigo TH) (destino "Phuket, Tailandia") (publico adulto) (numero una) (temporada verano) (transporte avion) 
-               (duracion larga) (lugar rural) (ubicacion internacional) (tipo playa) (precio 700) (actividad voluntariado) (beneficio_agencia medio)))
+   (Viaje (codigo TH) (destino "Phuket, Tailandia") (edad adulta) (numero una) (temporada verano) (transporte avion) 
+                  (duracion larga) (lugar rural) (ubicacion internacional) (tipo playa) (precio 700) (actividad voluntariado) (beneficio_agencia medio))
 
-(assert (Viaje (codigo ES00) (destino "Cantabria, Espania") (publico mayor) (numero una) (temporada invierno) (transporte autobus) 
-               (duracion media) (lugar urbano) (ubicacion nacional) (tipo montania) (actividad negocios) (precio 200) (beneficio_agencia bajo)))
-               
-(assert (Viaje (codigo ES01) (destino "Valencia, Espania") (publico adulto) (numero una) (temporada verano) (transporte coche) 
-               (duracion corta) (lugar urbano) (ubicacion nacional) (tipo interior) (actividad negocios) (precio 400) (beneficio_agencia medio)))
+   (Viaje (codigo ES00) (destino "Cantabria, Espania") (edad mayor) (numero una) (temporada invierno) (transporte autobus) 
+                  (duracion media) (lugar urbano) (ubicacion nacional) (tipo montania) (actividad negocios) (precio 200) (beneficio_agencia bajo))
+                  
+   (Viaje (codigo ES01) (destino "Valencia, Espania") (edad adulta) (numero una) (temporada verano) (transporte coche) 
+                  (duracion corta) (lugar urbano) (ubicacion nacional) (tipo interior) (actividad negocios) (precio 400) (beneficio_agencia medio))
 
-(assert (Viaje (codigo GR) (destino "Islas Griegas") (publico mayor) (numero una) (temporada intermedia) (transporte barco) (duracion corta) 
-               (lugar rural) (ubicacion europeo) (tipo playa) (actividad voluntariado) (precio 400) (beneficio_agencia alto)))
+   (Viaje (codigo GR) (destino "Islas Griegas") (edad cualquiera) (numero una) (temporada intermedia) (transporte barco) (duracion corta) 
+                  (lugar rural) (ubicacion europeo) (tipo playa) (actividad voluntariado) (precio 400) (beneficio_agencia alto))
 
-(assert (Viaje (codigo CU) (destino "La habana, Cuba") (publico adulto) (numero varias) (temporada invierno) (transporte barco) (duracion larga)
-               (lugar rural) (ubicacion internacional) (tipo playa) (actividad familiar) (precio 500) (beneficio_agencia medio)))
+   (Viaje (codigo CU) (destino "La habana, Cuba") (edad cualquiera) (numero varias) (temporada invierno) (transporte barco) (duracion larga)
+                  (lugar rural) (ubicacion internacional) (tipo playa) (actividad familiar) (precio 500) (beneficio_agencia medio))
 
-(assert (Viaje (codigo ES05) (destino "Santiago de Compostela, Espania") (publico adulto) (numero una) (temporada intermedia) (transporte autobus)
-               (duracion corta) (lugar rural) (ubicacion nacional) (tipo interior) (actividad deportivo) (precio 200) (beneficio_agencia bajo)))
+   (Viaje (codigo ES05) (destino "Santiago de Compostela, Espania") (edad cualquiera) (numero una) (temporada intermedia) (transporte autobus)
+                  (duracion corta) (lugar rural) (ubicacion nacional) (tipo interior) (actividad deportivo) (precio 200) (beneficio_agencia bajo))
 
-(assert (Viaje (codigo PE) (destino "Lima, Perú") (publico adulto) (numero una) (temporada verano) (transporte avion) (duracion larga) 
-               (lugar urbano) (ubicacion internacional) (tipo playa) (actividad voluntariado) (precio 600) (beneficio_agencia bajo)))
+   (Viaje (codigo PE) (destino "Lima, Perú") (edad adulta) (numero una) (temporada verano) (transporte avion) (duracion larga) 
+                  (lugar urbano) (ubicacion internacional) (tipo playa) (actividad voluntariado) (precio 600) (beneficio_agencia bajo))
 
-(assert (Viaje (codigo UG) (destino "Kampala, Uganda") (publico adulto) (numero una) (temporada verano) (transporte avion) (duracion larga)
-              (lugar rural) (ubicacion internacional) (tipo interior) (actividad voluntariado) (precio 400) (beneficio_agencia bajo)))
+   (Viaje (codigo UG) (destino "Kampala, Uganda") (edad adulta) (numero una) (temporada verano) (transporte avion) (duracion larga)
+               (lugar rural) (ubicacion internacional) (tipo interior) (actividad voluntariado) (precio 400) (beneficio_agencia bajo))
 
-(assert (Viaje (codigo ES02) (destino "Asturias, Espania") (publico mayor) (numero una) (temporada invierno) (transporte autobus)
-               (duracion larga) (lugar rural) (ubicacion nacional) (tipo interior) (actividad deportivo) (precio 500) (beneficio_agencia bajo)))
+   (Viaje (codigo ES02) (destino "Asturias, Espania") (edad cualquiera) (numero una) (temporada invierno) (transporte autobus)
+                  (duracion larga) (lugar rural) (ubicacion nacional) (tipo interior) (actividad deportivo) (precio 500) (beneficio_agencia bajo))
 
-(assert (Viaje (codigo ES03) (destino "Ceuta, Espania") (publico adulto) (numero varias) (temporada verano) (transporte barco)
-               (duracion corta) (lugar intermedio) (ubicacion nacional) (tipo playa) (actividad familiar) (precio 100) (beneficio_agencia bajo)))
+   (Viaje (codigo ES03) (destino "Ceuta, Espania") (edad adulta) (numero varias) (temporada verano) (transporte barco)
+                  (duracion corta) (lugar intermedio) (ubicacion nacional) (tipo playa) (actividad familiar) (precio 100) (beneficio_agencia bajo))
 )
 
 ;;;; Si se ha creado el deffacts Viajero para crear un hecho de este tipo es (Viajero (edad ?m) ... (tipo_de_destino ?p))
@@ -247,19 +250,22 @@
 )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; EL SISTEMA EMPIEZA AQUI ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;----------------------------------------Modulo Preguntar--------------------------------------;;
 (defrule Da_bienvenida
   (declare (salience 100))
 =>
   (printout t "Sistema de Asesoramiento de Destinos. Hay una gran variedad a elegir así que" crlf)
-  (printout t "se haran una serie de preguntas para poder recomendar la mejor eleccion." crlf )
-  (assert (OfertaRecibida no)) ;; Será la condición de parada del programa
-  (assert (Decidido no))
+  (printout t "se haran una serie de preguntas para poder recomendar la mejor eleccion." crlf crlf )
+  (assert (modulo Preguntar))
+  (assert (Aceptada no)) ;; Criterio de parada
 )
 
 ;;;;; REGLAS PARA HACER PREGUNTAS ;;;;;
 
 ;; ¿Edad? ;;
 (defrule pregunta_edad
+   (modulo Preguntar)
    (not (Viajero edad ?))
 =>
    (printout t "¿Cual es tu edad? (NUMERO)): ")
@@ -272,17 +278,19 @@
 )
 ;; Infiere edad ;;
 ;; Los adultos se consideran menor de 50 y mayores a partir de 50, espero no herir a nadie ;;
-(defrule valorar_edad_adulto
-?h <- (e ?e)
-(test (<= ?e 50))
+(defrule valorar_edad_adulta
+   (modulo Preguntar)
+   ?h <- (e ?e)
+   (test (<= ?e 50))
 =>
-   (assert (Viajero edad adulto)) 
+   (assert (Viajero edad adulta)) 
    (retract ?h)
 )
 
 (defrule valorar_edad_mayor
-?h <- (e ?e)
-(test (> ?e 50))
+   (modulo Preguntar)
+   ?h <- (e ?e)
+   (test (> ?e 50))
 =>
    (assert (Viajero edad mayor)) 
    (retract ?h)
@@ -291,9 +299,10 @@
 ;; ¿Compania? ;;
 ;; El usuario percibe que puede elegir pero realmente su respuesta sera simplificada a una/varias personas.
 (defrule pregunta_compania
+   (modulo Preguntar)
    (not (Viajero compania ?))
 =>
-   (printout t "¿Cuantos viajan? (solo|pareja|familia|amigos): ")
+   (printout t "Como viajas? (solo|pareja|familia|amigos): ")
    (bind ?resp (read))
    (while (and (not (eq ?resp solo)) (not (eq ?resp pareja)) (not (eq ?resp familia)) (not (eq ?resp amigos)))
       (printout t "Valor Incorrecto. Introduce un valor (solo|pareja|familia|amigos): ")
@@ -305,6 +314,7 @@
 ; Simplifica la respuesta e infiere actividad familiar para las parejas y familias
 ; Inicialmente la mayoria de la informacion no es obligatoria y se omite
 (defrule deduce_compania
+   (modulo Preguntar)
    (and(not(Viajero compania una)) (not(Viajero compania varias)))
    ?r <- (Viajero compania ?comp)
    =>
@@ -320,11 +330,11 @@
    )
 
    ; Inialmente se parte de la minima informacion, luego segun rechace se le preguntan cosas específicas
-   (assert (Viajero transporte daigual))
+   (assert (Viajero transporte cualquiera))
    (assert (Viajero duracion_de_viaje media))
-   (assert (Viajero ubicacion_geografica daigual))
+   (assert (Viajero ubicacion_geografica cualquiera))
    (assert (Viajero lugar_de_destino intermedio))
-   (assert (Viajero tipo_destino daigual))
+   (assert (Viajero tipo_destino cualquiera))
 
    (retract ?r)
 
@@ -334,12 +344,13 @@
 ;; ¿Temporada? ;;
 ;; Elegir entre primavera/otonio da como resultado intermedia pero al usuario le damos a elegir
 (defrule pregunta_temporada
+   (modulo Preguntar)
    (not (Viajero temporada ?))
 =>
-   (printout t "¿En que temporada quieres viajar? (invierno|primavera|verano|otonio|daigual): ")
+   (printout t "¿En que temporada quieres viajar? (invierno|primavera|verano|otonio|cualquiera): ")
    (bind ?resp (read))
-   (while (and (not (eq ?resp invierno)) (not (eq ?resp primavera)) (not (eq ?resp verano)) (not (eq ?resp otonio)) (not (eq ?resp daigual)))
-      (printout t "Valor Incorrecto. Introduce un valor (invierno|primavera|verano|otonio|daigual): ")
+   (while (and (not (eq ?resp invierno)) (not (eq ?resp primavera)) (not (eq ?resp verano)) (not (eq ?resp otonio)) (not (eq ?resp cualquiera)))
+      (printout t "Valor Incorrecto. Introduce un valor (invierno|primavera|verano|otonio|cualquiera): ")
       (bind ?resp (read))
    )
    
@@ -354,12 +365,13 @@
 ;; Se le pregunta la actividad que desea realizar en el viaje. Es muy determinante ya que son muchas opciones y cierra las
 ;; recomendaciones enormemente por lo que se procedera a preguntarle el presupuesto directamente
 (defrule actividad_viaje
+   (modulo Preguntar)
    (not (Viajero actividad ?))
 =>
-   (printout t "¿Como te gustan los viajes? (deportivo|negocios|voluntariado|daigual): ")
+   (printout t "Que tipo de actividad te gustaría realizar? (deportivo|negocios|voluntariado|cualquiera): ")
    (bind ?resp (read))
-   (while (and (not (eq ?resp deportivo)) (not (eq ?resp negocios)) (not (eq ?resp voluntariado)) (not (eq ?resp daigual)))
-      (printout t "Valor Incorrecto. Introduce un valor (deportivo|negocios|voluntariado|daigual): ")
+   (while (and (not (eq ?resp deportivo)) (not (eq ?resp negocios)) (not (eq ?resp voluntariado)) (not (eq ?resp cualquiera)))
+      (printout t "Valor Incorrecto. Introduce un valor (deportivo|negocios|voluntariado|cualquiera): ")
       (bind ?resp (read))
    )
 
@@ -369,12 +381,13 @@
 ;; ¿Transporte? ;;
 ;; El autobus se considera igual que el coche, se le da sensacion de eleccion al usuario
 (defrule pregunta_transporte
+   (modulo Preguntar)
    (not (Viajero transporte ?))
 =>
-   (printout t "¿En qué transporte te gustaría viajar? (barco|avion|tren|coche|autobus|daigual)): ")
+   (printout t "¿En qué transporte te gustaría viajar? (barco|avion|tren|coche|autobus|cualquiera)): ")
    (bind ?resp (read))
    (while (and (not (eq ?resp barco)) (not (eq ?resp avion)) (not (eq ?resp tren)) (not (eq ?resp coche)) (not (eq ?resp autobus)) (not (eq ?resp daigual)))
-      (printout t "Valor Incorrecto. Introduce un valor (barco|avion|tren|coche|autbous|daigual): ")
+      (printout t "Valor Incorrecto. Introduce un valor (barco|avion|tren|coche|autbous|cualquiera): ")
       (bind ?resp (read))
    )
    ; Flexibilizar datos, sino es muy dificil recomendar
@@ -389,6 +402,7 @@
 ;; Infiere hechos de ubicacion segun el transporte
 ; Si elige un coche lo normal es que busque destinos nacionales, un tren para los europeos e internacional para el avion y el barco
 (defrule deduce_transporte
+   (modulo Preguntar)
    (Viajero transporte ?trans)
    =>
    (if
@@ -407,13 +421,14 @@
 ; Solo si no sabe que transporte coger
 ;; Si o si se inferira el transporte y la ubicacion ya que son importantes
 (defrule preguntar_ubicacion
+   (modulo Preguntar)
    (not (Viajero ubicacion_geografica ?))
-   ?r <- (Viajero transporte daigual)
+   ?r <- (Viajero transporte cualquiera)
 =>
-   (printout t "¿Te gustaría ir al extranjero? (si|no|daigual): ")
+   (printout t "¿Te gustaría ir al extranjero? (si|no|cualquiera): ")
    (bind ?resp (read))
-   (while (and (not (eq ?resp si)) (not (eq ?resp no)) (not (eq ?resp daigual)))
-      (printout t "Valor Incorrecto. Introduce un valor (si|no|daigual): " )
+   (while (and (not (eq ?resp si)) (not (eq ?resp no)) (not (eq ?resp cualquiera)))
+      (printout t "Valor Incorrecto. Introduce un valor (si|no|cualquiera): " )
       (bind ?resp (read))
    )
    (if
@@ -442,7 +457,7 @@
    )
    ; Si no sabe ni el transporte ni donde ir le ponemos internacional y con avion que da mas posibilidad de recomendar
    (if
-      (eq ?resp daigual) then
+      (eq ?resp cualquiera) then
          (assert (Viajero ubicacion_geografica internacional))
          (assert (Viajero transporte avion))
    )
@@ -454,6 +469,7 @@
 ;; Duracion de viaje?
 ;; Pregunta un numero. Como minimo 2 dias
 (defrule pregunta_duracion_de_viaje
+   (modulo Preguntar)
    (not (Viajero duracion_de_viaje ?))
 =>
    (printout t "¿Cuanto tiempo quieres viajar? (en dias): ")
@@ -467,24 +483,27 @@
 
 ;; Infiere la duracion [0-7] corta, [8-30] media y +30 es larga
 (defrule valorar_duracion_corta
-?h <- (d ?d)
-(test (<= ?d 7))
+   (modulo Preguntar)
+   ?h <- (d ?d)
+   (test (<= ?d 7))
 =>
    (assert (Viajero duracion_de_viaje corto)) 
    (retract ?h)
 )
 
 (defrule valorar_duracion_medio
-?h <- (d ?d)
-(test (and (> ?d 7) (<= ?d 30)))
+   (modulo Preguntar)
+   ?h <- (d ?d)
+   (test (and (> ?d 7) (<= ?d 30)))
 =>
    (assert (Viajero duracion_de_viaje medio)) 
    (retract ?h)
 )
 
 (defrule valorar_duracion_larga
-?h <- (d ?d)
-(test (> ?d 30))
+   (modulo Preguntar)
+   ?h <- (d ?d)
+   (test (> ?d 30))
 =>
    (assert (Viajero duracion_de_viaje largo)) 
    (retract ?h)
@@ -492,6 +511,7 @@
 
 ;; ¿Lugar de destino?
 (defrule pregunta_lugar_de_destino
+   (modulo Preguntar)
    (not (Viajero lugar_de_destino ?))
 =>
    (printout t "¿Que lugar prefieres? (rural|urbano|intermedio): ")
@@ -505,12 +525,13 @@
 
 ;; ¿Tipo de destino?
 (defrule pregunta_tipo_destino
+   (modulo Preguntar)
    (not (Viajero tipo_destino ?))
 =>
-   (printout t "¿Qué zona geográfica te gusta? (playa|montania|interior|daigual): ")
+   (printout t "¿Qué zona geográfica te gusta? (playa|montania|cualquiera): ")
    (bind ?resp (read))
-   (while (and (not (eq ?resp playa)) (not (eq ?resp montania)) (not (eq ?resp interior)) (not (eq ?resp daigual)))
-      (printout t "Valor Incorrecto. Introduce un valor (playa|montania|interior|daigual): ")
+   (while (and (not (eq ?resp playa)) (not (eq ?resp montania)) (not (eq ?resp cualquiera)))
+      (printout t "Valor Incorrecto. Introduce un valor (playa|montania|cualquiera): ")
       (bind ?resp (read))
    )
    (assert (Viajero tipo_destino ?resp))
@@ -518,6 +539,7 @@
 
 ;; ¿Presupuesto? ;;
 (defrule pregunta_presupuesto
+   ?m <- (modulo Preguntar)
    (not (Viajero presupuesto ?))
 =>
    (printout t "¿Cual es tu presupuesto? (NUMERO)[>100€, recomiendo 600€]: ")
@@ -527,20 +549,32 @@
       (bind ?resp (read))
    )
    (assert (Viajero presupuesto ?resp))
+   (retract ?m) ;; Termina el modulo Preguntar
+   (assert (modulo Decidir)) ;; Empieza el modulo de decision
 )
 
+;; En caso de rechazar y volver a preguntar pasa al modulo de decidir al terminar la pregunta
+(defrule volver_a_ofrecer
+   (declare (salience -1))
+   ?m <- (modulo Preguntar)
+=>
+   (retract ?m)
+   (assert (modulo Decidir))
+)
+
+;;----------------------------------------Modulo Decidir--------------------------------------;;
 ;; Funcion principal de decision de viaje, explicada al principio
 ;; 1. Recibe datos del usuario
 ;; 2. Para cada viaje:
-;;    2.1 - Compara cada hecho. Ignora los daigual
+;;    2.1 - Compara cada hecho. Ignora los cualquiera
 ;;    2.2 - Genera un viaje Adecuado y sale del bucle
 (defrule decideViaje
-   ; Que no haya otro destino decidido ya
-   ?dec <- (Decidido no)
+   ?m <- (modulo Decidir)
+
    ; Obtenemos datos del viajero
    (Viajero edad ?edad) ; joven, media, mayor
    (Viajero compania ?compania) ; una, varias
-   (Viajero temporada ?temporada) ; invierno, primavera, verano, otonio, daigual
+   (Viajero temporada ?temporada) ; invierno, primavera, verano, otonio, cualquiera
    (Viajero duracion_de_viaje ?duracion) ; corto, medio, largo
    (Viajero presupuesto ?presupuesto) ; numero
    (Viajero lugar_de_destino ?lugardedestino) ; rural, urbano, intermedio
@@ -549,32 +583,29 @@
    (Viajero actividad ?actividad) ; Playa, montania, interior
 =>
    (do-for-all-facts ((?v1 Viaje))
-         ; Condiciones presupuesto>publico>numero>temporada>duracion>ubicacion>
-         (and (>= ?presupuesto ?v1:precio) ; No admite incertidumbre
-              (eq ?edad ?v1:publico) ; No admite incertidumbre
+         ; Condiciones presupuesto>edad>numero>temporada>duracion>ubicacion>
+         (and (>= ?presupuesto ?v1:precio) ; No admite incertidumbre, no van a pagar más del presupuesto dado
+              (or(eq ?edad ?v1:edad) (eq ?v1:edad cualquiera)) ; Puede dirigirse a diferentes publicos de edad
               (eq ?compania ?v1:numero) ; No admite incertidumbre
-              (or(eq ?temporada ?v1:temporada)(eq ?temporada intermedia) (eq ?temporada daigual)) ; Informacion parcial
+              (or(eq ?temporada ?v1:temporada) (eq ?temporada cualquiera)) ; Informacion parcial
               (or(eq ?duracion ?v1:duracion) (eq ?duracion media)) ; Los de duracion media admiten corta/larga
               (or (eq ?lugardedestino ?v1:lugar) (eq ?lugardedestino intermedio)) ; Los de destino intermedio admiten rurales/urbanos
-              (or(eq ?ubicacion ?v1:ubicacion) (eq ?ubicacion daigual)) ; Informacion parcial
-              (or(eq ?tipodestino ?v1:tipo) (eq ?tipodestino daigual)) ; Informacion parcial
-              (or (eq ?actividad ?v1:actividad) (eq ?actividad daigual))) ; Informacion parcial
+              (or(eq ?ubicacion ?v1:ubicacion) (eq ?ubicacion cualquiera)) ; Informacion parcial
+              (or(eq ?tipodestino ?v1:tipo) (eq ?tipodestino cualquiera)) ; Informacion parcial
+              (or (eq ?actividad ?v1:actividad) (eq ?actividad cualquiera))) ; Informacion parcial
            (assert (Adecuado (codigo ?v1:codigo)
             (motivo (str-cat 
-"""El presupuesto es de """ ?v1:precio """€ y se dispone de """ ?presupuesto """€.
-Se recomienda para """ ?edad """.
-Va dirigido a """ ?v1:numero """ persona/s.
-El destino se ofrece para """ ?v1:temporada """.
-La duracion estipulada es """ ?v1:duracion """.
-El lugar de destino es """ ?v1:lugar """.
-Es un destino """ ?v1:ubicacion """.
-El destino ofrece una zona de """ ?v1:tipo """.
-Se pueden realizar actividades de """ ?v1:actividad
+"""El precio de viaje es """ ?v1:precio """€.
+Este viaje va dirigido a personas de edad """ ?edad """.
+Perfecto para """ ?v1:numero """ persona/s.
+El destino está disponible durante la temporada de """ ?temporada """.
+El viaje es de duración """ ?v1:duracion """. Se sitúa en un ambiente """ ?v1:lugar """.
+El destino es """ ?v1:ubicacion """. Hay """ ?v1:tipo """ impresionantes para disfrutar.
+El lugar ofrece una amplia variedad de actividades del tipo """ ?v1:actividad
 ))
             (experto "D. Experto Yerasito")))
-
-            (assert (Decidido si))
-            (retract ?dec)
+            (retract ?m)
+            (assert (modulo Ofrecer))
             (break)
    )
 )
@@ -583,63 +614,72 @@ Se pueden realizar actividades de """ ?v1:actividad
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; RECOMENDACIONES POR DEFECTO: POR TRANSPORTE ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defrule consejo_por_defecto_barco
    (declare (salience -1))
-   (Decidido no)
+
+   ?m <- (modulo Decidir)
    (Viajero transporte barco)
-   ?cr <- (OfertaRecibida no)
 =>
    (printout t "En tu caso ha sido dificil elegir un viaje en concreto." crlf)
    (printout t "Quizas la solucion sea un crucero sobre el Atlántico y elegir el país que más te guste." crlf)
-   (retract ?cr)
-   (assert (OfertaRecibida si))
+
+   (retract ?m)
+   (assert (Aceptada si))
+   (assert (modulo Ofrecer))
 )
 
 (defrule consejo_por_defecto_avion
    (declare (salience -1))
-   (Decidido no)
+
+   ?m <- (modulo Decidir)
    (Viajero transporte avion)
-   ?cr <- (OfertaRecibida no)
+
 =>
    (printout t "En tu caso ha sido dificil elegir un viaje en concreto." crlf)
    (printout t "Quizas la solucion sea coger varios vuelos por el mundo y elegir el país que más te guste." crlf)
-   (retract ?cr)
-   (assert (OfertaRecibida si))
+
+   (retract ?m)
+   (assert (Aceptada si))
+   (assert (modulo Ofrecer))
 )
 
 (defrule consejo_por_defecto_tren
    (declare (salience -1))
-   (Decidido no)
+
+   ?m <- (modulo Decidir)
    (Viajero transporte tren)
-   ?cr <- (OfertaRecibida no)
 =>
    (printout t "En tu caso ha sido dificil elegir un viaje en concreto." crlf)
    (printout t "Quizas la solucion sea coger el tren y visitar diferentes ciudades Europeas." crlf)
    (printout t "Seguro que encuentras algún destino que te guste." crlf)
-   (retract ?cr)
-   (assert (OfertaRecibida si))
+   
+   (retract ?m)
+   (assert (Aceptada si))
+   (assert (modulo Ofrecer))
 )
 
 (defrule consejo_por_defecto_coche
    (declare (salience -1))
-   (Decidido no)
+   
+   ?m <- (modulo Decidir)
    (Viajero transporte coche)
-   ?cr <- (OfertaRecibida no)
 =>
    (printout t "En tu caso ha sido dificil elegir un viaje en concreto." crlf)
    (printout t "Quizas la solucion sea coger el coche y visitar diferentes ciudades y pueblos de Espania." crlf)
    (printout t "Seguro que encuentras algún destino que te guste." crlf)
-   (retract ?cr)
-   (assert (OfertaRecibida si))
+   
+   (retract ?m)
+   (assert (Aceptada si))
+   (assert (modulo Ofrecer))
 )
 
 ;; Si el programa llega hasta aqui sin una respuesta
 (defrule consejo_por_defecto
-   (declare (salience -1))
-   (Decidido no)
-   ?cr <- (OfertaRecibida no)
+   (declare (salience -2))
+   ?m <- (modulo Decidir)
+   ?cr <- (Aceptada no)
 =>
    (printout t crlf "Oh vaya, que mala suerte :(" crlf)
    (printout t "En tu caso no he sido capaz de recomendarte un viaje en concreto." crlf)
-   (printout t "Deseas probar suerte cambiando los datos? (si|no): ")
+   (printout t "Deseas probar suerte cambiando tus preferencias? (si|no): ")
    (bind ?resp (read))
    (while (and (not (eq ?resp si)) (not (eq ?resp no)))
       (printout t "Valor Incorrecto. Introduce un valor (si|no): " )
@@ -649,26 +689,32 @@ Se pueden realizar actividades de """ ?v1:actividad
       (eq ?resp si) then
          (assert(Adecuado (codigo null) (motivo "") (experto "Clips")))
          (assert (Aceptada no)) ; El hecho es como si rechazara, pregunta el motivo de rechazo
+         (assert (OfertaRecibida si))
    )
    (if 
       (eq ?resp no) then
          (printout t "Sentimos mucho no poder ayudarle. Esperemos volverle a ver pronto!" crlf)
+      (assert (Aceptada si))
    )
-   (retract ?cr)
-   (assert (OfertaRecibida si))
+
+   (retract ?m)
+   (assert (modulo Ofrecer))
 )
+
+;;----------------------------------------Modulo Ofrecer--------------------------------------;;
 
 ;; Se imprime un consejo ;;
 (defrule ofrece_destino
    (declare (salience 9000))
-   ?cr <- (OfertaRecibida no)
-   ?dec <- (Decidido si)
+   (modulo Ofrecer)
+   ?acept <- (Aceptada no)
+
    (Adecuado (codigo ?el) (motivo ?texto) (experto ?experto))
    (Viaje (codigo ?el) (destino ?r))
 =>
    (printout t "---------------------------------------------------------------------------" crlf)
    (printout t ?experto " te aconseja el Destino: " ?r "." crlf)
-   (printout t crlf "Motivos: " ?texto "." crlf)
+   (printout t crlf ?texto crlf)
    (printout t "---------------------------------------------------------------------------" crlf)
    (printout t crlf "Aceptas el destino? ")
    (bind ?resp (read))
@@ -676,16 +722,18 @@ Se pueden realizar actividades de """ ?v1:actividad
       (printout t "Valor Incorrecto. Introduce un valor (si|no): " )
       (bind ?resp (read))
    )
+   (retract ?acept)
    (assert (Aceptada ?resp) ) ;; Guarda si rechaza
-   (retract ?cr)
-   (retract ?dec)
    (assert (OfertaRecibida si))
 )
 
 ; Sugiera al usuario elegir el motivo a rechazar y manda el motivo a rechazar. La siguiente regla se encarga de efectuar el rechazo
 (defrule MotivoRechazo
    (declare (salience 9000))
+   (modulo Ofrecer)
    (Aceptada no)
+   (OfertaRecibida si)
+
    ?adec <- (Adecuado (codigo ?el) (motivo ?mot) (experto ?expt))
 =>
    (printout t "¿Cuál es tu motivo de rechazo? Elige una" crlf)
@@ -714,6 +762,10 @@ Se pueden realizar actividades de """ ?v1:actividad
       (eq ?motivo zona) then 
       (bind ?motivo tipo_destino)
    )
+   (if 
+      (eq ?motivo actividad) then 
+      (bind ?motivo actividad)
+   )
 
    (assert (MotivoRechazo ?motivo)) ; Hecho con el motivo de rechazo: tiempo, tipo, dinero, etc.
    (retract ?adec)
@@ -722,32 +774,38 @@ Se pueden realizar actividades de """ ?v1:actividad
 ;; Gestiona el motivo que se rechaza, eso hace que le pregunte al usuario unicamente por lo que se rechaza
 (defrule reofrecer
    (declare (salience 9000))
-   ?motv <- (MotivoRechazo ?motivo)
+   ?m <- (modulo Ofrecer)
+
    ?of <- (OfertaRecibida si)
+
+   ?motv <- (MotivoRechazo ?motivo)
+
    ?resp <- (Viajero ?motivo ?valor) ; Ej. Se rechaza el tiempo (volveria a preguntar la duracion del viaje)
-   ?r <- (Aceptada no)
 =>
    (printout t "Se rechaza " ?motivo " " ?valor crlf)
    (retract ?of) 
    (retract ?resp)
-   (retract ?r)
    (retract ?motv)
    (assert (Decidido no))
    (assert (OfertaRecibida no))
+
+   (retract ?m)
+   (assert (modulo Preguntar))
 )
 
 ; Se despide amablemente
 (defrule Despedida
    (declare (salience 9000))
+   ?m <- (modulo Ofrecer)
    ?r <- (Aceptada si)
-   ?of <- (OfertaRecibida si)
    (Adecuado (codigo ?el) (motivo ?texto) (experto ?experto))
    (Viaje (codigo ?el) (beneficio_agencia ?ben))
 =>
-   (printout t "Gracias por contactar con nosotros! Disfrute del viaje." crlf)
+   (printout t crlf "Gracias por contactar con nosotros! Disfrute del viaje." crlf crlf)
    (printout t "-------------------Vista para la agencia----------------------" crlf)
    (printout t "El beneficio obtenido para la agencia es " ?ben crlf)
    (printout t "--------------------------------------------------------------" crlf)
+   
    (retract ?r)
-   (retract ?of)
+   (retract ?m)
 )

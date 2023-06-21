@@ -1,0 +1,46 @@
+This is BibTeX, Version 0.99d (TeX Live 2023/Arch Linux)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: plantilla.aux
+The style file: plain.bst
+Database file #1: citas.bib
+You've used 2 entries,
+            2118 wiz_defined-function locations,
+            505 strings with 4437 characters,
+and the built_in function-call counts, 486 in all, are:
+= -- 40
+> -- 26
+< -- 0
++ -- 10
+- -- 8
+* -- 22
+:= -- 85
+add.period$ -- 4
+call.type$ -- 2
+change.case$ -- 10
+chr.to.int$ -- 0
+cite$ -- 2
+duplicate$ -- 14
+empty$ -- 45
+format.name$ -- 8
+if$ -- 101
+int.to.chr$ -- 0
+int.to.str$ -- 2
+missing$ -- 0
+newline$ -- 11
+num.names$ -- 4
+pop$ -- 20
+preamble$ -- 1
+purify$ -- 8
+quote$ -- 0
+skip$ -- 18
+stack$ -- 0
+substring$ -- 10
+swap$ -- 2
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 8
+warning$ -- 0
+while$ -- 4
+width$ -- 3
+write$ -- 18
