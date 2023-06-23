@@ -1,0 +1,110 @@
+% Please add the following required packages to your document preamble:
+% \usepackage{graphicx}
+% \usepackage[table,xcdraw]{xcolor}
+% If you use beamer only pass "xcolor=table" option, i.e. \documentclass[xcolor=table]{beamer}
+\begin{table}[H]
+	\centering
+	\caption{Resultados obtenidos por el algoritmo AGG-BLX en el problema del APC}
+	\label{tab:AGG_BLX}
+	\resizebox{\textwidth}{!}{%
+		\begin{tabular}{ccccccccccccc}
+			\rowcolor[HTML]{D9D9D9} 
+			\multicolumn{1}{l}{\cellcolor[HTML]{FFFFFF}\textbf{}} &
+			\multicolumn{4}{c}{\cellcolor[HTML]{D9D9D9}\textbf{Diabetes}} &
+			\multicolumn{4}{c}{\cellcolor[HTML]{D9D9D9}\textbf{Ozone}} &
+			\multicolumn{4}{c}{\cellcolor[HTML]{D9D9D9}\textbf{Spectf-heart}} \\
+			\rowcolor[HTML]{CFE2F3} 
+			\multicolumn{1}{l}{\cellcolor[HTML]{FFFFFF}\textbf{}} &
+			\textbf{\%\_clas} &
+			\textbf{\%\_red} &
+			\textbf{Fit.} &
+			\textbf{T[s]} &
+			\textbf{\%\_clas} &
+			\textbf{\%\_red} &
+			\textbf{Fit.} &
+			\textbf{T[s]} &
+			\textbf{\%\_clas} &
+			\textbf{\%\_red} &
+			\textbf{Fit.} &
+			\textbf{T[s]} \\ \cline{2-13} 
+			\multicolumn{1}{c|}{\cellcolor[HTML]{D9D9D9}\textbf{1}} &
+			\multicolumn{1}{c|}{72.08} &
+			\multicolumn{1}{c|}{50.00} &
+			\multicolumn{1}{c|}{67.66} &
+			\multicolumn{1}{c|}{68} &
+			\multicolumn{1}{c|}{76.56} &
+			\multicolumn{1}{c|}{37.50} &
+			\multicolumn{1}{c|}{68.75} &
+			\multicolumn{1}{c|}{78} &
+			\multicolumn{1}{c|}{81.43} &
+			\multicolumn{1}{c|}{47.73} &
+			\multicolumn{1}{c|}{74.69} &
+			\multicolumn{1}{c|}{54} \\ \cline{2-13} 
+			\multicolumn{1}{c|}{\cellcolor[HTML]{D9D9D9}\textbf{2}} &
+			\multicolumn{1}{c|}{73.38} &
+			\multicolumn{1}{c|}{50.00} &
+			\multicolumn{1}{c|}{68.70} &
+			\multicolumn{1}{c|}{68} &
+			\multicolumn{1}{c|}{84.38} &
+			\multicolumn{1}{c|}{36.11} &
+			\multicolumn{1}{c|}{74.72} &
+			\multicolumn{1}{c|}{79} &
+			\multicolumn{1}{c|}{82.86} &
+			\multicolumn{1}{c|}{38.64} &
+			\multicolumn{1}{c|}{74.01} &
+			\multicolumn{1}{c|}{55} \\ \cline{2-13} 
+			\multicolumn{1}{c|}{\cellcolor[HTML]{D9D9D9}\textbf{3}} &
+			\multicolumn{1}{c|}{63.64} &
+			\multicolumn{1}{c|}{50.00} &
+			\multicolumn{1}{c|}{60.91} &
+			\multicolumn{1}{c|}{67} &
+			\multicolumn{1}{c|}{76.56} &
+			\multicolumn{1}{c|}{41.67} &
+			\multicolumn{1}{c|}{69.58} &
+			\multicolumn{1}{c|}{83} &
+			\multicolumn{1}{c|}{91.43} &
+			\multicolumn{1}{c|}{40.91} &
+			\multicolumn{1}{c|}{81.32} &
+			\multicolumn{1}{c|}{55} \\ \cline{2-13} 
+			\multicolumn{1}{c|}{\cellcolor[HTML]{D9D9D9}\textbf{4}} &
+			\multicolumn{1}{c|}{48.70} &
+			\multicolumn{1}{c|}{87.50} &
+			\multicolumn{1}{c|}{56.46} &
+			\multicolumn{1}{c|}{67} &
+			\multicolumn{1}{c|}{73.44} &
+			\multicolumn{1}{c|}{34.72} &
+			\multicolumn{1}{c|}{65.69} &
+			\multicolumn{1}{c|}{78} &
+			\multicolumn{1}{c|}{81.43} &
+			\multicolumn{1}{c|}{36.36} &
+			\multicolumn{1}{c|}{72.42} &
+			\multicolumn{1}{c|}{56} \\ \cline{2-13} 
+			\multicolumn{1}{c|}{\cellcolor[HTML]{D9D9D9}\textbf{5}} &
+			\multicolumn{1}{c|}{58.55} &
+			\multicolumn{1}{c|}{87.50} &
+			\multicolumn{1}{c|}{64.34} &
+			\multicolumn{1}{c|}{68} &
+			\multicolumn{1}{c|}{84.38} &
+			\multicolumn{1}{c|}{33.33} &
+			\multicolumn{1}{c|}{74.17} &
+			\multicolumn{1}{c|}{76} &
+			\multicolumn{1}{c|}{76.81} &
+			\multicolumn{1}{c|}{36.36} &
+			\multicolumn{1}{c|}{68.72} &
+			\multicolumn{1}{c|}{54} \\ \cline{2-13} 
+			\multicolumn{1}{c|}{\cellcolor[HTML]{FFFF00}\textbf{M}} &
+			\multicolumn{1}{c|}{\textbf{63.27}} &
+			\multicolumn{1}{c|}{\textbf{65.00}} &
+			\multicolumn{1}{c|}{\textbf{63.62}} &
+			\multicolumn{1}{c|}{\textbf{68}} &
+			\multicolumn{1}{c|}{\textbf{79.06}} &
+			\multicolumn{1}{c|}{\textbf{36.67}} &
+			\multicolumn{1}{c|}{\textbf{70.58}} &
+			\multicolumn{1}{c|}{\textbf{79}} &
+			\multicolumn{1}{c|}{\textbf{82.79}} &
+			\multicolumn{1}{c|}{\textbf{40.00}} &
+			\multicolumn{1}{c|}{\textbf{74.23}} &
+			\multicolumn{1}{c|}{\textbf{55}} \\ \cline{2-13} 
+		\end{tabular}%
+	}
+\end{table}

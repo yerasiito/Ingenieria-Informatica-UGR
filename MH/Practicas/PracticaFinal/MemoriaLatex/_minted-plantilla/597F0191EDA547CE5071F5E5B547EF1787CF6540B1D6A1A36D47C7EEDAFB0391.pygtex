@@ -1,0 +1,20 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n}{Input}\PYG{p}{(}\PYG{n}{Ejemplo}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}inst\PYGZdq{}}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{Conjunto}\PYG{+w}{ }\PYG{n}{de}\PYG{+w}{ }\PYG{n}{Datos}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}D\PYGZdq{}}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{Vector}\PYG{+w}{ }\PYG{n}{de}\PYG{+w}{ }\PYG{n}{pesos}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}W\PYGZdq{}}\PYG{p}{)}
+\PYG{n}{Inicio}
+\PYG{+w}{    }\PYG{n}{Inicializar}\PYG{+w}{ }\PYG{n}{adist}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{edist}\PYG{+w}{ }\PYG{o}{\PYGZlt{}\PYGZhy{}}\PYG{+w}{ }\PYG{l+m+mi}{0}
+\PYG{+w}{    }\PYG{n}{Para}\PYG{+w}{ }\PYG{n}{cada}\PYG{+w}{ }\PYG{n}{ejemplo}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}E\PYGZdq{}}\PYG{+w}{ }\PYG{n}{del}\PYG{+w}{ }\PYG{n}{conjunto}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}D\PYGZdq{}}
+\PYG{+w}{         }\PYG{n}{dist}\PYG{+w}{ }\PYG{o}{\PYGZlt{}\PYGZhy{}}\PYG{+w}{ }\PYG{n}{DISTANCIA\PYGZus{}EUCLIDEA}\PYG{p}{(}\PYG{n}{E}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{inst}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{W}\PYG{p}{)}
+\PYG{+w}{         }\PYG{n}{Si}\PYG{+w}{ }\PYG{n}{E}\PYG{p}{.}\PYG{n}{etiqueta}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{n}{inst}\PYG{p}{.}\PYG{n}{etiqueta}
+\PYG{+w}{             }\PYG{n}{entonces}\PYG{+w}{ }\PYG{n}{si}\PYG{+w}{ }\PYG{n}{dist}\PYG{+w}{ }\PYG{n}{es}\PYG{+w}{ }\PYG{n}{menor}\PYG{+w}{ }\PYG{n}{que}\PYG{+w}{ }\PYG{n}{adist}
+\PYG{+w}{             	}\PYG{n}{adist}\PYG{+w}{ }\PYG{o}{\PYGZlt{}\PYGZhy{}}\PYG{+w}{ }\PYG{n}{dist}
+\PYG{+w}{             	}\PYG{n}{aindice}\PYG{+w}{ }\PYG{o}{\PYGZlt{}\PYGZhy{}}\PYG{+w}{ }\PYG{n}{D}\PYG{p}{.}\PYG{n}{indice}
+\PYG{+w}{         }\PYG{n}{sino}\PYG{+w}{ }\PYG{n}{E}\PYG{p}{.}\PYG{n}{etiqueta}\PYG{+w}{ }\PYG{o}{!=}\PYG{+w}{ }\PYG{n}{inst}\PYG{p}{.}\PYG{n}{etiqueta}
+\PYG{+w}{             }\PYG{n}{entonces}\PYG{+w}{ }\PYG{n}{si}\PYG{+w}{ }\PYG{n}{dist}\PYG{+w}{ }\PYG{n}{es}\PYG{+w}{ }\PYG{n}{menor}\PYG{+w}{ }\PYG{n}{que}\PYG{+w}{ }\PYG{n}{edist}
+\PYG{+w}{                 }\PYG{n}{edist}\PYG{+w}{ }\PYG{o}{\PYGZlt{}\PYGZhy{}}\PYG{+w}{ }\PYG{n}{dist}
+\PYG{+w}{                 }\PYG{n}{eindice}\PYG{+w}{ }\PYG{o}{\PYGZlt{}\PYGZhy{}}\PYG{+w}{ }\PYG{n}{D}\PYG{p}{.}\PYG{n}{indice}
+\PYG{+w}{     }\PYG{n}{Para}\PYG{+w}{ }\PYG{n}{cada}\PYG{+w}{ }\PYG{n}{peso}\PYG{+w}{ }\PYG{n}{wi}\PYG{+w}{ }\PYG{n}{en}\PYG{+w}{ }\PYG{n}{W}
+\PYG{+w}{          }\PYG{n}{wi}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{wi}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{o}{|}\PYG{n}{inst}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{n}{D}\PYG{p}{[}\PYG{n}{eindice}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{i}\PYG{p}{]}\PYG{o}{|}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{o}{|}\PYG{n}{inst}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{n}{D}\PYG{p}{[}\PYG{n}{aindice}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{i}\PYG{p}{]}\PYG{o}{|}
+
+\PYG{+w}{     }\PYG{n}{DEVOLVER}\PYG{p}{(}\PYG{n}{W}\PYG{p}{)}
+\PYG{n}{Fin}
+\end{Verbatim}
