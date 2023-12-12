@@ -4,13 +4,9 @@
 %----------------------------------------------------------------------------------------
 
 \title{
-	Práctica 2.b \\\vspace{1cm}
-	Técnicas de Búsqueda Local y Algoritmos Greedy
-	para el Problema del Aprendizaje de Pesos en
-	Características \vspace{1cm} \\
-	El problema del Aprendizaje de Pesos en Características (APC)	\vspace{1cm} \\
-	Algoritmos Genéticos \\
-	Algoritmos Meméticos \hspace{1cm} 
+	\Huge{Práctica Final} \\\vspace{1cm}
+	{Nuevos modelos bioinspirados para el Aprendizaje de Pesos en Características \vspace{1cm} \\
+	Sheep Flocks Heredity Model (SFHM)}\hspace{1cm} 
  }   
 
 \author{Yeray López Ramírez	}                             
@@ -46,330 +42,188 @@
 %	Cuestión 1
 %----------------------------------------------------------------------------------------
 
-\section{Descripción del problema}
-El problema del Aprendizaje de Pesos en Características (APC) consiste en encontrar una combinación ponderada de un conjunto de características que maximice la precisión de un clasificador y minimice su complejidad. En este problema, se busca determinar la importancia relativa de cada característica para mejorar la eficiencia computacional y la precisión del modelo. El objetivo es encontrar un vector de pesos que asigne valores más altos a las características más importantes y valores más bajos a las características menos relevantes, y que permita eliminar aquellas características que no aporten información relevante para la tarea de clasificación. \\
+\section{Resumen}
+La metaheurística propuesta, conocida como ``A new evolutionary algorithm based on sheep flocks heredity models'' (Un nuevo algoritmo evolutivo basado en el modelo de herencia de rebaños de ovejas.), introduce el concepto de Operación Genética Multi-etapa (Multi-Stage Genetic Operation) para mejorar la exploración y explotación de soluciones en el proceso de optimización.
 
-En otras palabras, el APC busca determinar qué características son más relevantes para un problema dado y cómo combinarlas de manera óptima para obtener el mejor rendimiento de un modelo. \\
+\subsection{Inspiración Metaheurística}
+Imaginemos que estamos en un campo con 3 rebaños de ovejas diferentes, cada uno con su pastor. Cada oveja tiene unas características propias que son comunes en su rebaño. En un momento dado, los pastores se despistan y las ovejas acaban mezclandose en un gran rebaño:
 
-El modelo clasificador utilizado en este problema es el 1-NN, el cual es un método de aprendizaje supervisado que clasifica una instancia basándose en la clase de su vecino más cercano en el conjunto de entrenamiento. Además, se utilizará la técnica de validación leave-one-out para evaluar el desempeño del clasificador. La función objetivo que se busca maximizar será una combinación de medidas de precisión (tasa\_clas) y complejidad del clasificador (tasa\_red), dando como resultado el fitness.\\
-
-Los conjuntos de datos utilizados en este problema son \textbf{diabetes}, \textbf{ozone-320} y \textbf{spectf-heart}. Diabetes es un conjunto de datos médicos que contiene información sobre pacientes con diabetes, como su edad, índice de masa corporal, presión arterial y resultados de pruebas de laboratorio, entre otros. Ozone-320 es un conjunto de datos de calidad del aire que contiene mediciones de ozono y otros contaminantes atmosféricos en diferentes ciudades de Estados Unidos. Spectf-heart es un conjunto de datos médicos que contiene información sobre pacientes que se sometieron a pruebas de diagnóstico por imágenes para enfermedades cardíacas. Todos los datasets tienen 2 etiquetas: negativo/positivo o 1.0/2.0 para indicar la clase del vector de características.  
-\newpage
-
-\section{Descripción de la aplicación de los algoritmos}
-Los algoritmos utilizados para resolver el problema del Aprendizaje de Pesos en Características (APC) son Metaheurísticas que buscan optimizar una función objetivo que combina la precisión y la complejidad del clasificador 1-NN diseñado utilizando un vector de pesos. En este problema, se busca encontrar el mejor subconjunto de características que permita obtener una alta tasa de clasificación y, al mismo tiempo, reducir la complejidad del modelo. \\
-
-Para aplicar estos algoritmos al problema de APC, se utilizó el esquema de representación basado en un vector de tamaño n con valores en [0, 1] que indican el peso asociado a cada característica. La función objetivo fue definida como la combinación con pesos de la tasa de acierto y la tasa de reducción de características del clasificador 1-NN diseñado empleando el vector de pesos. El objetivo es maximizar esta función, multiplicando la tasa de acierto por 0.8 y la tasa de reducción por 0.2, para dar mayor importancia a la clasificación que a la reducción de características.
-\[\text{Fit} = 0.8 \cdot \text{precision} + 0.2 \cdot \text{reduction}\]
-
-La implementación en pseudocódigo de la \textbf{función objetivo}:
-
-\begin{minted}{text}
-Input(Conjunto de Entrenamiento "Train", Conjunto de Prueba "Test", Vector de pesos W)
-Inicio
-    aciertos <- CLASIFICAR(Train, Test, W)
-    tasa_clas <- aciertos/tamaño_test
-    tasa_red <- PESOS_MENOR_UMBRAL(W, 0.1)
-    DEVOLVER(0.8·tasa_clas + 0.2·tasa_red)
-Fin
-\end{minted}
-
-Donde CLASIFICAR llama al modelo clasificador de vecinos 1-NN. El clasificador 1-NN (del inglés "Nearest Neighbor") es un algoritmo de clasificación que se basa en encontrar el vecino más cercano a un ejemplo de prueba en un conjunto de datos de entrenamiento, y asignarle la etiqueta del vecino como la etiqueta del ejemplo de prueba. En otras palabras, el algoritmo encuentra el ejemplo de entrenamiento más cercano al ejemplo de prueba en términos de \textbf{distancia}, y le asigna la etiqueta del ejemplo de entrenamiento como la etiqueta del ejemplo de prueba. La implementación en pseudocódigo del \textbf{clasificador 1NN} es:
-
-\begin{minted}{c++}
-Input(Vector características "A", Conjunto Entrenamiento "T", pesos W)
-Inicio
-    Inicializar min_distancia(INFINITY) y min_index(-1)
-    Para cada vector B en T
-        distancia <- DISTANCIA_EUCLIDEA(A,B,W)
-        Si distancia es menor que min_distancia
-            entonces min_index <- T.indice y min_distancia <- distancia
-     DEVOLVER(T.GET_ETIQUETA(min_index))
-Fin
-\end{minted}
-
-Cuando la función objetivo llama a CLASIFICAR lo que realmente hace es ejecutar el clasificador 1-NN con todo el conjunto de prueba. \\
-
-Tanto el clasificador como el algoritmo de Greedy y la Búsqueda Local requieren del cálculo de la distancia entre los ejemplos. La \textbf{distancia euclidiana} es una medida de distancia comúnmente utilizada en problemas de clasificación y agrupamiento. Esta distancia mide la distancia geométrica entre dos puntos en un espacio n-dimensional. Se calcula como la raíz cuadrada de la suma de las diferencias al cuadrado de cada coordenada:
-
-\[d(p,q) = \sqrt{(e^1_1 - e^1_2)^2 + (e^2_1 - e^2_2)^2 + ... + (e^n_1 - e^n_2)^2} =  \sqrt{\sum_{i=1}^n (e^i_1 - e^i_2)^2}\]
-
-En el contexto del clasificador 1-NN, la distancia euclidiana se utiliza para medir la similitud entre dos ejemplos, uno del conjunto de entrenamiento y otro del conjunto de prueba. La idea es comparar el ejemplo de prueba con cada uno de los ejemplos de entrenamiento, y seleccionar la etiqueta del ejemplo más cercano al de prueba.\\
-
-Los pesos w se usan para ajustar la importancia de cada atributo en el cálculo de la distancia euclidiana. Si un atributo tiene un peso alto, entonces su valor tendrá un mayor impacto en la medida de distancia. Por lo tanto, es importante elegir los pesos adecuados para obtener una buena precisión de clasificación. En algunos casos, ciertos atributos pueden ser irrelevantes o redundantes, y su peso puede establecerse en cero para ignorarlos en el cálculo de la distancia. La implementación en pseudocódigo de la \textbf{distancia euclidiana ponderada}:
-
-\begin{minted}{c++}
-Input(Vector características "A", Vector características "B", Vector de pesos "W", Umbral=0.1)
-Inicio
-    Inicializa distancia(0)
-    Para cada i en número de características
-        Si el peso wi es menor al umbral
-            salta la iteración
-        Sino
-            entonces dist <- wi + (Ai - Bi)²
-      DEVUELVE(RAIZ_CUADRADA(dist))
-Fin
-\end{minted}
-
-Y por último pero no menos el importante, la función de \textbf{leave one out}. El Leave One Out es un procedimiento para evaluar la capacidad predictiva de un modelo de clasificación utilizando todo el conjunto de datos para el entrenamiento y la validación. El proceso consiste en evaluar el modelo n veces, dejando un ejemplo fuera (leave one out) del conjunto de datos en cada iteración para su uso en la validación. El modelo se entrena con los n-1 ejemplos restantes y se utiliza para predecir el ejemplo que se dejó fuera. La precisión del modelo se mide mediante el número de predicciones correctas sobre el total de ejemplos que se dejaron fuera. La implementación en pseudocódigo del \textbf{LOO}:
-
-\begin{minted}{c++}
-Input(Conjunto de datos "C", Indice "i")
-Inicio
-    Dataset Loo <- C
-    ELIMINAR_EJEMPLO(Loo, i)
-    DEVOLVER(Loo)
-Fin
-\end{minted}
-
-
-\section{Estructuras de datos y algoritmos}
-\subsection{Estructura de Datos en C++}
-En primer lugar, mencionar que se ha elegido el lenguaje de programación C++. Se han definido principalmente dos Estructuras que forman la base del programa:
-\begin{itemize}
-	\item Struct Ejemplo: contiene un vector de características y un string de etiqueta. Representa a cada individuo en los conjuntos de datos.
-	\item Class Dataset: contiene un vector de Ejemplos y vector de etiquetas. Representa a todo el conjunto de datos, puede ser train o test según la lectura de los datos.
+\begin{minipage}[t]{0.5\textwidth}
+	\centering
+	\includegraphics[width=\linewidth]{rebaño1.png}
+	\label{fig:rebaño-inicial}
+	\captionof{figure}{Las ovejas pastan con su rebaño}
+\end{minipage}
+\hfill
+\vline
+\begin{minipage}[t]{0.5\textwidth}
+	\centering
+	\includegraphics[width=\linewidth]{rebaño2.png}
+	\label{fig:rebaño-mezclado}
 	
-	\item Class Poblacion: contiene una matriz de poblacion donde cada fila representa un individuo de la misma, un vector de fitness donde guarda el valor de fitness de cada individuo y varios enteros con las posiciones al peor, segundo peor y mejor fitness.
-\end{itemize}
+	\captionof{figure}{Las ovejas se mezclan}
+\end{minipage}
+\quad\\
+Cuando se dan cuenta, intentan recoger a sus ovejas pero como no son capaces de diferenciarlas acaban con los 3 rebaños de antes mezclados.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\linewidth]{rebaño3.png}
+	\label{fig:rebaño-cruzado}
+	\caption{Los pastores recogen a las ovejas y los rebaños quedan mezclados}
+\end{figure}
+Finalmente cada rebaño se reproduce o desaparece en función del fitness total del rebaño.
 
-En la lectura se aplicó el método de validación cruzada (cross-folding) para evaluar el rendimiento de los algoritmos de selección de características en el problema de Aprendizaje de Pesos en Características (APC). \\
+\subsection{Correspondencia con el algoritmo real}
+Partiendo del ejemplo anterior, vamos a relacionar cada elemento con su forma real. Viene ilustrado en la siguiente tabla:
 
-Este método consiste en dividir el conjunto de datos en $k$ particiones de igual tamaño, donde una de las particiones se utiliza como conjunto de prueba y las $k-1$ particiones restantes se utilizan como conjunto de entrenamiento. Este proceso se repite $k$ veces, de tal manera que cada partición se utiliza exactamente una vez como conjunto de prueba. De esta forma, se obtiene una medida más robusta del rendimiento del algoritmo, ya que se evalúa el rendimiento sobre datos que no han sido utilizados para entrenar el modelo. \\
+\input{tabla}
 
-En nuestro problema se utilizó la validación cruzada con $k=5$, lo que significa que se dividieron los datos en 5 particiones de igual tamaño y se realizaron 5 iteraciones del proceso de entrenamiento y evaluación. Para cada iteración, se utilizó una partición diferente como conjunto de prueba y las demás particiones como conjunto de entrenamiento. Se promedió el rendimiento obtenido en las 5 iteraciones para obtener una medida general del rendimiento de cada algoritmo. \\
+En esta metaheurística, cada posible solución se representa como una cadena, donde cada gen de la cadena corresponde a una parte específica de la solución. Esto se asemeja al comportamiento natural de un rebaño de ovejas, donde el rebaño se considera la cadena completa y cada oveja representa un gen o una subcadena. La evolución natural del rebaño se traduce en la operación genética multi-etapa en el algoritmo propuesto.\\
 
-Para ayudar a la reproducibilidad y verificación de los algoritmos, se nos ha proporcionado los ficheros de datos ya divididos así que el método de lectura se limita a leerlos y aplicar la validación cruzada. La implementación en pseudocódigo del \textbf{método de lectura}:
+La operación genética multi-etapa consta de dos fases. En la primera fase, se realiza un cruce de cromosomas, donde se seleccionan aleatoriamente dos cromosomas y se intercambian secciones específicas a partir de una posición determinada. Esta fase combina las características de los cromosomas para explorar diferentes soluciones potenciales.\\
 
-\begin{minted}{c++}
-Input(Una cadena "nombre", Conjunto de Datos "Train", Conjunto de Datos "Test", Indice de test "k")
-Inicio
-    Si nombre no es igual a "diabetes", "ozone-320" o "spectf-heart"
-        entonces DEVOLVER(error)
-    Sino
-        inicializa train, test
-        Para cada i hasta k
-            f <- nombre + i
-            Si i == k
-                 entonces READ(test, f)
-            en otro caso
-                 READ(train, f)
-     DEVOLVER(sucess)
-Fin
-\end{minted}
+En la segunda fase, se realiza un cruce de genes, donde se seleccionan aleatoriamente dos genes de los cromosomas intercambiados en la fase anterior y se intercambian entre sí a partir de una posición aleatoria. Este proceso de cruce de genes permite explorar y explotar soluciones a un nivel más detallado.\\
 
-La función READ de cada conjunto de datos se encarga de leer el fichero $f$ e integrarlo en la estructura. Se ignoran todos los comentarios y se leen los datos como una matriz de Ejemplos.\\
+Para lograr un equilibrio entre la exploración y la explotación, se utiliza un cruce denominado SPX (Single Point Crossover). El cruce SPX toma una posición aleatoria en dos genes o cromosomas y los intercambia a partir de esa posición. Esta técnica ayuda a diversificar las soluciones exploradas y a aprovechar las soluciones prometedoras encontradas.
 
-\subsection{Algoritmos de Búsqueda}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\linewidth]{cruceImagen.png}
+	\label{fig:cruce-cromosoma}
+\end{figure}
 
-Para la aplicación de los algoritmos al problema de APC, se utilizó el algoritmo Greedy RELIEF y la Búsqueda Local Primer Mejor. A continuación, se describirán brevemente cada uno de estos algoritmos y su aplicación al problema.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\linewidth]{cruceImagen2.png}
+	\label{fig:cruce-gen}
+\end{figure}
+
+
+Esto da como resultado un buen equilibrio entre exploración y explotación. Además, para aumentar aún más la exploración, se introduce la heurística R-R (Robust Replace). La heurística R-R asigna un coeficiente de robustez a cada cromosoma. Si el coeficiente cae por debajo de un umbral predefinido, el cromosoma completo se reemplaza por uno nuevo generado aleatoriamente. Esta estrategia permite descartar soluciones de baja calidad y continuar probando nuevas soluciones en busca de mejores resultados.
+
+\subsection{Fortalezas y debilidades}
+El nuevo algoritmo presenta diversas fortalezas y debilidades. Una de sus principales fortalezas es su capacidad para lograr un equilibrio adecuado entre la exploración y la explotación, dando prioridad a la exploración. Esto se logra mediante la incorporación de nuevos operadores y una heurística de exploración al algoritmo genético básico. Además, su implementación resulta sencilla debido a su base en un algoritmo genético simple.\\
+
+Sin embargo, es importante tener en cuenta que existen áreas de mejora en cuanto a su capacidad de explotación. Sería beneficioso incorporar técnicas de Búsqueda Local o Enfriamiento Simulado para mejorar aún más los resultados obtenidos. Otro aspecto que se puede considerar como una debilidad es que el algoritmo tiende a ser más lento en comparación con los algoritmos genéticos convencionales. Esto se debe a la inclusión de la operación de cruce de genes y la heurística de reemplazo R-R.\\
+
+En conclusión, este algoritmo ofrece una alta diversidad de soluciones, lo cual es beneficioso en términos de exploración. No obstante, esto se logra a expensas de una convergencia más lenta y un mayor costo computacional. Para mejorar su rendimiento, sería recomendable considerar la incorporación de técnicas de explotación adicionales y optimizar los aspectos computacionales.
+
+\section{Adaptación al problema de Prácticas APC}
+La adaptación del algoritmo Sheep Flock Heredity Model (SFHM) al problema de Prácticas de Aprendizaje de Pesos en Características (APC) tiene como objetivo utilizar las capacidades de optimización del algoritmo genético para encontrar una combinación óptima de pesos de características.\\
+
+En el contexto de las Prácticas APC, el objetivo principal es encontrar una configuración de pesos que maximice la capacidad discriminativa de un clasificador, al tiempo que minimiza la redundancia y el ruido introducido por características irrelevantes.\\
+
+Para adaptar el algoritmo SFHM al problema de APC, se deben realizar las siguientes modificaciones:
 
 \begin{itemize}
-	\item El algoritmo Greedy RELIEF genera un vector de pesos basado en las distancias de cada ejemplo a su amigo más cercano y a su enemigo más cercano, con el objetivo de incrementar el peso en aquellas características que mejor separan a ejemplos que son enemigos entre sí, y reducir el peso en aquellas características que separan ejemplos que son amigos entre sí. 
-	
-	\item Por otro lado, el algoritmo BL utiliza una representación real basada en un vector de pesos que indica la importancia de cada característica. La función objetivo combina medidas de precisión y complejidad del clasificador 1-NN diseñado con el vector de pesos, y el objetivo es maximizar esta función mediante la exploración de vecindarios generados mediante movimientos de cambio por mutación normal.
+	\item Representación de la solución: En el algoritmo SFHM, cada oveja representa una solución en el espacio de búsqueda. En el contexto de las Prácticas APC, la solución debe ser una combinación de pesos para cada característica. Por lo tanto, se debe definir una representación adecuada que permita codificar los pesos de manera eficiente. Por ejemplo, se puede utilizar un vector de valores reales donde cada elemento representa el peso correspondiente a una característica.
+	\item Función de evaluación: En las Prácticas APC, la función de evaluación debe medir la calidad de una configuración de pesos en términos de precisión, exactitud o alguna otra métrica de rendimiento del clasificador. Por lo tanto, se debe definir una función de evaluación adecuada que utilice un clasificador entrenado con la configuración de pesos actual para calcular la métrica de rendimiento deseada.
+	\item Operadores genéticos: El algoritmo SFHM utiliza operadores genéticos como la reproducción, el cruce y la mutación para evolucionar y mejorar las soluciones. Estos operadores deben ser adaptados para trabajar con la representación de pesos de características. Por ejemplo, el cruce puede combinar los pesos de características de dos padres mediante una técnica como el cruce de un punto o el cruce uniforme. La mutación puede modificar los pesos de características mediante operaciones como el cambio aleatorio de peso o la mutación local basada en vecindarios de características.
+	\item Parámetros del algoritmo: Los parámetros del algoritmo, como la probabilidad de mutación y cruce, el tamaño de la población y el número máximo de iteraciones, deben ser ajustados de acuerdo con las características del problema de APC. Estos parámetros afectarán la exploración y explotación del espacio de búsqueda y pueden influir en la calidad de las soluciones encontradas.
+	\item Integración de Búsqueda Local: Como se mencionó anteriormente, se puede considerar la hibridación del SFHM con la Búsqueda Local para mejorar la capacidad de explotación del algoritmo. La Búsqueda Local se aplicaría en intervalos regulares para refinar las soluciones encontradas y mejorar aún más su rendimiento.
 \end{itemize}
 
-\subsubsection{Algoritmo Greedy}
+\subsection{Operadores APC}
 
-En el caso del algoritmo \textbf{Greedy}, se utilizó una variante llamada \textbf{RELIEF}, que es una versión mejorada del algoritmo original. RELIEF utiliza pesos adaptativos para cada característica, y se calcula la importancia de cada característica en base a la contribución que hace a la selección correcta de vecinos. La vecindad se define como el conjunto de instancias más cercanas en cada clase, y se utiliza una función de distancia euclidiana para medir la similitud entre instancias. La implementación en pseudocódigo del \textbf{algoritmo Greedy}:
-\begin{minted}{c++}
-Input(Dataset "D")
-Inicio
-    Inicializar pesos(0, N_CARACTERISTICAS(D))
-    Para cada Ejemplo "E" en D
-        ACTUALIZAR_PESOS(E, LEAVE_ONE_OUT(D, POS(E)), W)
-    pesos <- NORMALIZAR(W)
-    DEVOLVER(pesos)
-Fin
-\end{minted}
-No debemos olvidar que estamos en la representación [0,1] así que es necesario normalizar los pesos antes de terminar. Se truncan los pesos negativos a 0 y se dividen el resto de pesos entre el peso máximo.
+\textbf{Operador de selección}: se seleccionan de forma aleatoria y sin repetición los individuos de la población
 
-Importante notar además que al actualizar los pesos estamos aplicando el LEAVE\_ONE\_OUT para evitar compararse consigo mismo. El método ACTUALIZAR\_PESOS se encarga de encontrar el \code{amigo} y el \code{enemigo} de cada ejemplo del conjunto de datos y actualizar los pesos en consecuencia. Su funcionamiento es el siguiente:
+\textbf{Operador de Cruce}: es un algoritmo por el cual 2 individuos ''padres'' de la poblacion son mezclados entre sí para generar 2 ''hijos''. Para nuestro problema se ha utilizado el operador de cruce SPX. El proceso de cruce SPX se lleva a cabo de la siguiente manera:
 
-\begin{minted}{c++}
-Input(Ejemplo "inst", Conjunto de Datos "D", Vector de pesos "W")
-Inicio
-    Inicializar adist, edist <- 0
-    Para cada ejemplo "E" del conjunto "D"
-         dist <- DISTANCIA_EUCLIDEA(E, inst, W)
-         Si E.etiqueta == inst.etiqueta
-             entonces si dist es menor que adist
-             	adist <- dist
-             	aindice <- D.indice
-         sino E.etiqueta != inst.etiqueta
-             entonces si dist es menor que edist
-                 edist <- dist
-                 eindice <- D.indice
-     Para cada peso wi en W
-          wi = wi + |inst[i] - D[eindice, i]| - |inst[i] - D[aindice, i]|
-          
-     DEVOLVER(W)
-Fin
-\end{minted}
-
-\subsubsection{Algoritmo de Búsqueda Local}
-
-En el algoritmo de \textbf{búsqueda local} la solución inicial se generó de forma aleatoria utilizando una distribución uniforme en [0, 1], y el movimiento de cambio por mutación normal Mov(W,s) se utilizó como esquema de generación de vecinos en la Búsqueda Local. En cada iteración de la Búsqueda Local, se mutó una componente i del vector de pesos en un orden aleatorio distinto para cada solución, hasta que se alcanzó una solución mejor o se modificaron todas las posiciones una vez sin conseguir una mejora. Se implementa de la siguiente forma:
-\begin{minted}{text}
-Input(Conjunto de datos "Train")
-Inicio
-    GENERAR_SOLUCION_INICIAL(Wact, Train.NUMERO_CARACTERÍSTICAS)
-    objetivoActual <- FUN_OBJETIVO(Train, Wact)
-    Inicializar iteraciones, iter_vecinos = 0, W = Wact
-    Mientras que iter_vecinos < 20*Sact.SIZE y iteraciones menor que 15,000
-        Vec_indices <- GENERAR_VECINDARIO(W.SIZE)
-        Inicializar bool mejora <- false
-        Para cada i en Vec_indices y mientras no haya mejora
-            GENERAR_VECINO(W, i, 0.8)
-            objetivo <- FUN_OBJETIVO(Train, W)
-            Si el objetivo es mayor que el actual
-                Inicializar iter_vecinos = 0
-                objetivoActual <- objetivo
-                Wact = W
-                mejora = true
-            iter_vecinos+1
-        iter+1
-    	
-    DEVOLVER(Wact)
-\end{minted}
-A continuación se describe con detalle los esquemas:
 \begin{itemize}
-	\item Generación de la solución inicial: usamos la librería \code{random.hpp} proporcionada, concretamente Random::get<std::vector>(0.0, 1.0, numCaracteristicas) que genera un vector aleatorio de números reales entre 0 y 1 de tamaño numCaracterísticas.
-	\item Generación de vecindario: usamos la librería \code{random.hpp} para hacer un shuffle a los índices de pesos.
-	\item Generación de vecinos: esta vez hay que tener más cuidado pues hay que sumar un vector Z con distribución normal y respetar la representación de los pesos [0,1]. Una implementación sencilla en pseudocódigo es la siguiente:
-	\begin{minted}{c++}
-Input(Pesos "W", indice "i", valor de "media" = 0, valor de" varianza" = 0.8)
-Inicio
-     z <- DISTRIBUCION_NORMAL(0, SQRT(varianza))
-     Si Wi + z es mayor a 1
-          TRUNCAR(Wi, 1)
-     Si Wi + z es menor a 0
-          TRUNCAR(Wi, 0)
-     Si no
-          Wi <- Wi + z
-     DEVOLVER(W)
-	\end{minted}
-
-\item Criterio de aceptación: se cumple cuando el objetivo del vecino generado es mayor que el actual, lo controlamos con el valor de mejora.
+	\item Selección de padres: Se seleccionan dos cromosomas (o subcromosomas) de la población actual como padres para el cruce.
+	\item Selección del punto de cruce: Se elige aleatoriamente un punto de corte en el cromosoma. Este punto de corte divide los cromosomas en dos partes, una antes del punto de corte y otra después del punto de corte.
+	\item Intercambio de información genética: A partir del punto de corte seleccionado, se intercambian las porciones correspondientes entre los dos padres para generar la descendencia. Es decir, los genes que se encuentran antes del punto de corte en un padre se copian en la descendencia desde el primer padre, mientras que los genes que se encuentran después del punto de corte se copian desde el segundo padre.
+	\item Creación de descendientes: La descendencia generada mediante el intercambio de información genética se convierte en nuevos individuos que formarán parte de la siguiente generación. Puede haber uno o más descendientes generados en cada operación de cruce, dependiendo de la implementación específica del algoritmo genético.
 \end{itemize}
 
-\subsection{Algoritmos genéticos}
-Para la segunda parte de la práctica se han utilizado los algoritmos Genéticos (Generacional y Estacionario) y los algoritmos Meméticos. 
-
-Los algoritmos genéticos tienen un enfoque de optimización que se inspira en la evolución biológica para resolver problemas complejos. Estos algoritmos se basan en una población de individuos que representan las posibles soluciones a nuestro problema. A través de iteraciones sucesivas, los individuos evolucionan y se mejoran mediante la aplicación de operadores genéticos como la selección, el cruce y la mutación:\\
-
-\textbf{Operador de selección}: ambos algoritmos utilizan el Torneo Binario como procedimiento de selección. Dicho torneo consiste en elegir aleatoriamente 2 individuos de la población y devolver el mejor de los dos (el que tenga mayor valor de fitness). Su codificación general es:
-	
-	\begin{algorithm}[H]
-	\SetKwFunction{Selection}{TorneoBinario}
-	\SetKwInOut{Input}{Entrada}
-	\SetKwInOut{Output}{Salida}
-	
-	\Input{población}
-	\Output{individuo seleccionado}
-	
-	\BlankLine
-	\Selection{población}:
-	\BlankLine
-	seleccionado1 = elegir individuo aleatorio de la población;
-	seleccionado2 = elegir individuo aleatorio de la población;
-	
-	\BlankLine
-	\If{fitness(seleccionado[0]) > fitness(seleccionado[1])}{
-		mejorIndividuo = seleccionado[0];
-	}
-	\Else{
-		mejorIndividuo = seleccionado[1];
-	}
-	\BlankLine
-	\Return mejorIndividuo;
-\end{algorithm}
-\quad\\\quad\\
-	\textbf{Operador de Cruce}: es un algoritmo por el cual 2 individuos ''padres'' de la poblacion son mezclados entre sí para generar 2 ''hijos''. Para nuestro problema se han utilizado 2 operadores de cruce distintos:
-	
-	\begin{itemize}
-	\item \textbf{Operador Aritmétrico Aleatorio}: es un operador que combina dos individuos seleccionados utilizando una combinación lineal ponderada. En lugar de utilizar un parametro $\alpha$ fijo, este operador asigna un $\alpha$ aleatorio en cada ejecución y realiza una combinación lineal ponderada con dicho parámetro de ambos padres para generar un nuevo individuo. Su codificación general es:
-	\end{itemize}
+Este proceso se repite para un número determinado de veces, produciendo así una nueva generación de individuos que combina características de los padres originales. El objetivo del cruce es explorar y explotar el espacio de búsqueda de soluciones, permitiendo la creación de nuevas soluciones potencialmente mejores a través de la combinación de características prometedoras de los padres.
 
 
 \begin{algorithm}[H]
-	\SetKwFunction{CruceAritmeticoAleatorio}{CruceAritmeticoAleatorio}
+	\caption{Cruce de un punto}
 	\SetKwInOut{Input}{Entrada}
 	\SetKwInOut{Output}{Salida}
 	
-	\Input{padre1, padre2, factor $\alpha$ de cruce}
+	\Input{padre1, padre2, punto de cruce}
 	\Output{hijo1, hijo2}
 	
 	\BlankLine
-	\CruceAritmeticoAleatorio{padre1, padre2}:
 	\BlankLine
-	\For{i = 1 to numero total de caracteristicas}{
-		factor de cruce $\alpha$ = generar numero aleatorio en rango [0.0, 1.0];\\
-		peso1 = $\alpha \cdot$ padre1[i] + ($1- \alpha \cdot$) padre2[i]; \\
-		peso2 = $\alpha \cdot$ padre2[i] + ($1- \alpha \cdot$) padre1[i]; 
-		\BlankLine
-		hijo1[i] = peso1; \\
-		hijo2[i] = peso2;
+	punto cruce = generarNumeroAleatorio(0 hasta el número total de características)\;
+	\For{i = 1 hasta el número total de características}{
+		\If{i $\leq$ punto de cruce}{
+			hijo1[i] $\leftarrow$ padre1[i]\;
+			hijo2[i] $\leftarrow$ padre2[i]\;
+		}
+		\Else{
+			hijo1[i] $\leftarrow$ padre2[i]\;
+			hijo2[i] $\leftarrow$ padre1[i];
+		}
 	}
 	\BlankLine
 	\Return hijo1, hijo2\;
+	
 \end{algorithm}
 \quad\\
-\begin{itemize}
-	\item \textbf{Operador BLX} (Blend Crossover): Este operador combina dos individuos ''padres'' utilizando una mezcla lineal ponderada, pero a diferencia del cruce aritmético aleatorio, la mezcla se realiza en un rango aleatorio específico alrededor de los valores de los padres (entre 0.0 y 1.0). Su codificación general es:
-\end{itemize}
 
+\textbf{Operador de Mutación}: se encarga de introducir cambios aleatorios en los individuos seleccionados. Es importante para mantener la diversidad genética en la población y evitar que el algoritmo se estanque en óptimos locales. Veremos 2 tipos de mutación:
+
+\begin{itemize}
+	\item \textbf{Mutación Inversa:} Dado un individuo, se invierten uno o más genes de manera aleatoria. La inversión de genes implica cambiar el orden de los genes en una parte del cromosoma. Por ejemplo, si el cromosoma es una cadena de bits ``01101001'' y se invierte la sección que va desde el índice 3 al índice 6, el resultado sería ``01010101''. Su codificación general es:\\
 \begin{algorithm}[H]
-	\SetKwFunction{CruceBLX}{CruceBLX}
+	\caption{Mutación Inversa}
+	\SetAlgoLined
 	\SetKwInOut{Input}{Entrada}
 	\SetKwInOut{Output}{Salida}
 	
-	\Input{padre1, padre2, factor $\alpha$ de cruce}
-	\Output{hijo1, hijo2}
-	
-	\BlankLine
-	\CruceBLX{padre1, padre2, factor $\alpha$ de cruce}:
-	\BlankLine
-	\For{i = 1 to numero de caracteristicas}{
-		min\_valor = min(padre1[i], padre2[i])\;
-		max\_valor = max(padre1[i], padre2[i])\;
-		\BlankLine
-		rango = factor de mezcla * (max\_valor - min\_valor)\;
-		\BlankLine
-		min\_rango = min\_valor - rango\;
-		max\_rango = max\_valor + rango\;
-		\BlankLine
-		hijo1[i] = generar número aleatorio en el rango [min\_rango, max\_rango]\;
-		hijo2[i] = generar número aleatorio en el rango [min\_rango, max\_rango]\;
-	}
-	\BlankLine
-	\Return hijo1, hijo2\;
-\end{algorithm}
-\quad\\\quad\\
-\textbf{Operador de Mutación}: se encarga de introducir cambios aleatorios en los individuos seleccionados. Es importante para mantener la diversidad genética en la población y evitar que el algoritmo se estanque en óptimos locales. Su codificación general es:\\
-\begin{algorithm}[H]
-	\SetKwFunction{Mutacion}{Mutacion}
-	\SetKwInOut{Input}{Entrada}
-	\SetKwInOut{Output}{Salida}
-	
-	\Input{individuo, posAMutar}
+	\Input{individuo, tasa de mutación}
 	\Output{individuo mutado}
 	
 	\BlankLine
-	\Mutacion{individuo, posicion a mutar}:
 	\BlankLine
-	valorAMutar = generar distribucion aleatoria (media=0, varianza=sqrt(0.8));\\
-	individuo[posAMutar] += z;\\
-	comprobarRepresentacion(0,1);\\
-	\BlankLine
-	\Return individuo mutado\;
+
+	punto de inicio $\leftarrow$ generar número aleatorio entre [0, longitud del cromosoma]\;
+	punto de fin $\leftarrow$ generar número aleatorio entre [punto de inicio, longitud del cromosoma]\;
+	\For{i $\leftarrow$ puntoInicio hasta puntoFin}{
+		swap $\leftarrow$ individuo[i]\;
+		individuo[i] $\leftarrow$ individuo[puntoFin]\;
+		individuo[puntoFin] $\leftarrow$ swap\;
+		puntoFin $\leftarrow$ puntoFin -1\;
+	}
+	
+	\Return individuo mutado;
+	
 \end{algorithm}
-\quad\\\quad\\
+
+	\item \textbf{Mutación en un punto:} En el punto de mutación seleccionado, se añade un valor aleatorio al valor del gen. Por ejemplo, si el gen es 0.45, la mutación podría consistir en agregar un valor aleatorio como puede ser 0.3 quedando 0.75 como valor del gen. Su codificación general es:\\
+	\begin{algorithm}[H]
+		\caption{Mutación en un punto}
+		\SetKwInOut{Input}{Entrada}
+		\SetKwInOut{Output}{Salida}
+		
+		\Input{individuo, posAMutar}
+		\Output{individuo mutado}
+		
+		\BlankLine
+		valorAMutar = generar distribucion aleatoria (media=0, varianza=sqrt(0.8));\\
+		individuo[posAMutar] += z\;
+		\If{individuo[posAMutar] $\le$ \ 0.1}{
+			individuo[posAMutar] $\leftarrow$ 0.1
+		}		
+		\If{individuo[posAMutar] $\ge$ \ 1.0}{
+			individuo[posAMutar] $\leftarrow$ 1.0
+		}
+		\BlankLine
+		\Return individuo mutado\;
+	\end{algorithm}
+\end{itemize}
+
+
+
 
 El operador de mutación tiene una tasa de 0.1 de mutar lo que significa que es que se ejecutará solo con el 10\% de la población aleatoriamente. En pseudocódigo se haría:\\
 \begin{algorithm}[H]
-	\SetKwFunction{aplicarMutacion}{aplicarMutacion}
+	\caption{Aplicar mutación}
 	\SetKwInOut{Input}{Entrada}
 	\SetKwInOut{Output}{Salida}
 	
@@ -377,7 +231,6 @@ El operador de mutación tiene una tasa de 0.1 de mutar lo que significa que es 
 	\Output{poblacion mutada}
 	
 	\BlankLine
-	\aplicarMutacion{poblacion, tasa de mutación}:
 	\BlankLine
 	\For{i = 1 to tamanio de poblacion * tasa de mutacion}{
 			individuoAMutar = generar numero aleatorio de rango [0, tamanio de la poblacion]; \\
@@ -390,504 +243,280 @@ El operador de mutación tiene una tasa de 0.1 de mutar lo que significa que es 
 \end{algorithm}
 \quad\\
 
-\textbf{Operador de Reemplazamiento}: determina cómo se actualiza la población en cada generación. Su función es seleccionar los individuos que formarán parte de la nueva generación, reemplazando a los individuos menos aptos de la generación anterior. Este operador es lo que diferencia PRINCIPALMENTE a los dos algoritmos genéticos: 
-\begin{itemize}
-\item Si reemplaza a toda su población en cada generación es un Algoritmo Genético Generacional (AGG). Usa Elitismo de dos para conservar al mejor individuo de la generación. Su codificación general sería:
-\end{itemize}
+\textbf{Operador de Reemplazamiento}: el principal mecanismo de reemplazamiento del algoritmo es la heurística R-R (Robust Replace). Consiste en asignar un valor de coeficiente a cada cromosoma que indique su calidad como puede ser la función de fitness. Si el fitness de ese cromosoma es inferior al fitness medio de la población, es reemplazado por un nuevo cromosoma aleatorio. \\
 
+La implementación final en pseudocódigo es:
 
 \begin{algorithm}[H]
-	\SetKwFunction{ElitismoDos}{ElitismoDos}
+	\caption{Sheep Flock Heredity Model Algorithm}
 	\SetKwInOut{Input}{Entrada}
 	\SetKwInOut{Output}{Salida}
 	
-	\Input{población actual, población nueva}
-	\Output{población actualizada}
+\Input{train, maxIters, operador}
+\Output{mejorSolucion}
+
+\BlankLine
+\BlankLine
+
+\tcp{Crear población inicial}
+Poblacion pop\;
+pop $\leftarrow$ nuevas\_soluciones(rebanios, numCaracteristicas)\;
+
+\While{iter $<$ maxIters}{
+	\tcp{Stage 1 - Operaciones subcromosoma}
 	
-	\BlankLine
-	\ElitismoDos{población actual, población nueva}:
-	\BlankLine
-	mejorFitActual = obtener mejor fitness de poblacion actual
-	mejorFitNueva = obtener mejor fitness de poblacion nueva
+	\tcp{Obtener nuevo padre sin repetición}
+	parent $\leftarrow$ getParent(pop)\;
 	
-	\If{mejorFitNueva > mejorFitActual}{
-		worst = posicion peor fitness pop nueva\;
-		individuo poblacion nueva[worst] = mejor individuo pop actual\;
-		fitness de la población nueva[worst] = mejorFitActual\;
+	\tcp{Cruce subcromosoma}
+	\If{Random::get(0.0, 1.0) $\leq$ CROSS\_PER\_CENT}{
+		hijo $\leftarrow$ cruceSPX(parent, num\_ovejas, tam\_ovejas)\;
 	}
-	\BlankLine
-	\Return población nueva\;
-\end{algorithm}
-\quad\\
+	
+	\tcp{Mutación subcromosoma}
+	\If{Random::get(0.0, 1.0) $\leq$ MUT\_PER\_CENT}{
+		inverseMov(parent)\;
+		Mov(parent, VARIANZA)\;
+	}
+	
+	\tcp{Stage 2 - Operaciones Cromosomas}
+	
+	\tcp{Seleccionar dos padres sin repetición}
+	parent1 $\leftarrow$ getParent(pop)\;
+	parent2 $\leftarrow$ getParent(pop)\;
+	
+	\tcp{Cruce cromosoma}
+	\If{Random::get(0.0, 1.0) $\leq$ pcross}{
+		hijo1, hijo2 $\leftarrow$ cruceSPX(parent2, parent3)\;
+	}
+	
+	\tcp{Mutación cromosoma}
+	\If{Random::get(0.0, 1.0) $\leq$ pmut}{
+		posi $\leftarrow$ Random::get(1, pop.numCaracteristicas());
+		inverseMov(parent2);
+		inverseMov(parent3);
+		Mov(parent2, VARIANZA);
+		Mov(parent3, VARIANZA);
+	}
 
-\begin{itemize}
-\item Si reemplaza solo a parte de la población (a los peores) estamos ante un Algoritmo Genético Estacionario (AGE).  Usa Elitismo de cuatro para conservar a los mejores individuos de la generación. Su codificación general sería:
-\end{itemize}
+	\tcp{Actualizar los individuos en la población}
+	setIndividuo(hijo, pop)\;
+	setIndividuo(hijo1, pop)\;
+	setIndividuo(hijo2, pop)\;
+
+	\BlankLine
+% Incrementar el contador de iteraciones
+iter $\leftarrow$ iter + 3\;
+}
+
+% Devolver la mejor solución encontrada
+\Return mejorIndividuo(pop)\;
+
+\end{algorithm}
+
+
+\subsection{Hibridación SFHM + BL}
+La hibridación del algoritmo SFHM con Búsqueda Local tiene como objetivo mejorar la capacidad de explotación del algoritmo base. La principal deficiencia de SFHM es su enfoque basado en la exploración global del espacio de búsqueda, lo que puede llevar a un menor rendimiento en la explotación de las soluciones encontradas. La integración de Búsqueda Local busca compensar esta deficiencia al aplicar una estrategia de refinamiento local en etapas específicas del algoritmo.\\
+
+En este enfoque híbrido, se decide aplicar la Búsqueda Local cada 10 iteraciones del algoritmo SFHM. Además, se selecciona el 10\% de los individuos con el mejor fitness de la población actual para someterlos a la Búsqueda Local. Esta estrategia es similar a la utilizada en el enfoque Memético-Best, donde se combina la exploración global con la explotación local.\\
+
+La Búsqueda Local consiste en realizar modificaciones locales en las soluciones seleccionadas, con el objetivo de mejorar su calidad. Estas modificaciones se basan en operadores específicos diseñados para el problema en cuestión. En cada iteración de la Búsqueda Local, se exploran y evalúan soluciones vecinas para determinar si mejoran el fitness de la solución actual. Si se encuentra una solución mejor, se actualiza la solución actual con la mejor solución vecina encontrada.\\
+
+La aplicación de la Búsqueda Local en el SFHM + Búsqueda Local permite refinar las soluciones obtenidas durante el proceso de evolución del algoritmo. Esto ayuda a mejorar la calidad de las soluciones finales, ya que se enfoca en la explotación de las regiones prometedoras del espacio de búsqueda.\\
+
+La implementación de la mejora sería:
+
 \begin{algorithm}[H]
-	\SetKwFunction{ElitismoCuatro}{ElitismoCuatro}
+	\caption{Hibridación SFHM + BL}
 	\SetKwInOut{Input}{Entrada}
 	\SetKwInOut{Output}{Salida}
 	
-	\Input{población actual}
-	\Output{población actualizada}
+	\Input{poblacion}
+	\Output{Mejor Solución}
 	
 	\BlankLine
-	\ElitismoCuatro{población actual, individuo1, individuo2}:
+	
+	\tcp{Ejecuta SFHM}
+	SFHM(poblacion)\;
+	
+	mejoresSoluciones = getMejores(0.10) \;
+	\For{i hasta 10\% de poblacion}{
+		mejoresSoluciones $\leftarrow$ BL(mejoresSoluciones[i])
+	}
+	
+	poblacion $\leftarrow$ actualizarPoblacion(mejoresSoluciones, poblacion)\;
+	
 	\BlankLine
-	peor = obtener posicion y peor fitness de la poblacion;\\
-	segundoPeor = obtener posicion y fitness segundo peor fitness de la poblacion;\\
-	candidato1 = obtener posicion y fitness individuo1;\\
-	candidato2 = obtener posicion y fitness individuo1;\\
-	\BlankLine
-	candidatos = \{candidato1.fitness, candidato2.fitness, peor.fitness, segundoPeor.fitness\};\\
-	ordenar candidatos de mayor a menor fitness;\\
-	\BlankLine
-	mejor = candidatos[0].posicion;\\
-	segundoMejor = candidatos[1].posicion; \\
-	\BlankLine
-	poblacion[peor.posicion] = poblacion[mejor.posicion];\\
-	poblacion[segundoPeor.posicion] = poblacion[segundoMejor.posicion]; 
-	\BlankLine
-	\Return población actualizada\;
+	\Return Mejor Solucion\;
 \end{algorithm}
-\quad \\
-A continuación, se describirán brevemente cada uno de estos algoritmos y su aplicación al problema.
 
-\subsubsection{Algoritmo Genético Generacional(AGG)}
-	El Algoritmo Genético Generacional (AGG) es un enfoque de optimización inspirado en la evolución biológica por el cual en cada iteración, todos los individuos de la población anterior son sustituidos por la actual.\\
+
+\subsection{Mejoras}
+
+Para mejorar el algoritmo SFHM, se han investigado papers más recientes que proponen diversas mejoras y adaptaciones al algoritmo original. A continuación, se presentan algunas de estas mejoras:
+
+\begin{enumerate}
+	\item Metaheurística R-R (Robust Replace): Se ha propuesto la incorporación de la heurística R-R al algoritmo SFHM \cite{rr}. Esta heurística se utiliza para reemplazar aquellos cromosomas cuyo fitness es inferior a la media de la población. Al aplicar esta estrategia de reemplazo, se busca mejorar la calidad de las soluciones seleccionadas para la reproducción y, potencialmente, acelerar la convergencia del algoritmo.
+	\item Mutación adicional: En el paper original de SFHM \cite{ori}, no se incluye la mutación inversa y la mutación en un punto. Sin embargo, en investigaciones más recientes \cite{rr}, se ha propuesto la incorporación de estas mutaciones como parte del proceso evolutivo. La mutación inversa implica invertir el orden de los genes en un cromosoma, mientras que la mutación en un punto consiste en cambiar aleatoriamente el valor de un gen en un cromosoma. Estas mutaciones adicionales aumentan la diversidad genética y la exploración del espacio de búsqueda, lo que puede mejorar la capacidad de encontrar soluciones óptimas.
+	\item Mutación pair-wise: En otro paper donde se adapta el algoritmo SFHM al problema de formación de células \cite{pr}, se introduce una mutación denominada "pair-wise mutation". Esta mutación implica realizar modificaciones en pares de genes adyacentes en un cromosoma. La mutación pair-wise se ha diseñado específicamente para el problema de formación de células, pero puede ser explorada y adaptada para otros problemas similares.
+\end{enumerate}
+
+Al implementar estas mejoras en el algoritmo SFHM, se espera obtener una mayor capacidad de exploración y explotación del espacio de búsqueda, lo que puede conducir a soluciones de mayor calidad. Además, estas mejoras han sido propuestas y evaluadas en papers científicos, lo que respalda su eficacia en diferentes contextos y problemas específicos.
+
+\section{Resultados Algoritmos Prácticas 1,2,3 y Alternativa}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\textwidth]{tablaFinal.png}
+	\caption{Resultados obtenidos de todas las prácticas y SFHMA}
+	\label{fig:final}
+\end{figure}
+
+Para analizar los resultados, se compararon los algoritmos en términos de las tasas de clasificación (\%\_clas), las tasas de reducción (\%\_red), la medida de ajuste (Agr. o Fitness) y el tiempo requerido (T[s]) para obtener los resultados. A continuación se presentan los hallazgos:
+
+\begin{enumerate}
+	\item \textbf{Clasificación}: Para el conjunto de datos ``Diabetes'', los algoritmos con las tasas de clasificación más altas son: AGG-BLX, AGG-CA, AGE-CA y AM-(10,0.1mej).
+	En el conjunto de datos ``Ozone'', el algoritmo AM-(10,0.1mej) tiene la tasa de clasificación más alta. 	Para el conjunto de datos ``Spectf-heart'', los algoritmos con las tasas de clasificación más altas son: SFHMA+BL, ILS-ES y VNS.
 	
-	El proceso evolutivo en un algoritmo genético generacional involucra los operadores genéticos previamente definidos.  A continuación, se describe brevemente el proceso del algoritmo genético generacional:
+	\item \textbf{Reducción}: En términos de reducción, los algoritmos BL, AGG-BLX, AGE-BLX y AM-(10,0.1mej) obtienen tasas de reducción del 70\% o más en los conjuntos de datos "Diabetes" y "Ozone". En el conjunto de datos ``Spectf-heart'', el algoritmo VNS tiene la tasa de reducción más alta.
+	
+	\item \textbf{Medida de Ajuste o Fitness (Agr.)}: En los conjuntos de datos ``Diabetes'' y ``Ozone'', los algoritmos SFHMA y SFHMA+BL obtienen las medidas de ajuste más altas, respectivamente. Para el conjunto de datos ``Spectf-heart'', los algoritmos ILS-ES, VNS y SFHMA+BL tienen las medidas de ajuste más altas.
+	
+	\item \textbf{Tiempo}: En términos de tiempo de ejecución, el algoritmo AM-(10,0.1mej) es el más rápido en los conjuntos de datos ``Diabetes'' y ``Ozone''. Para el conjunto de datos ``Spectf-heart'', los algoritmos AGE-BLX, ILS y ILS-ES tienen tiempos de ejecución relativamente más bajos.
+\end{enumerate}
+
+En resumen:
+
+\begin{enumerate}
+
+\item Algoritmo: Sheep Flock Heredity Model (SFHM)
+
+\begin{itemize}
+	\item SFHM es un algoritmo inspirado en el comportamiento de un rebaño de ovejas que busca soluciones óptimas en un espacio de búsqueda.
+	\item El algoritmo utiliza una combinación de operadores genéticos, como la reproducción y la mutación, para evolucionar y mejorar las soluciones a lo largo de las iteraciones.
+	\item En términos de clasificación, SFHM muestra resultados competitivos en los conjuntos de datos analizados.
+	\item En cuanto a la reducción de características, SFHM logra tasas de reducción moderadas, pero inferiores en comparación con otros algoritmos mencionados anteriormente.
+\end{itemize}
+
+\item Algoritmo: Hibridación SFHM con Búsqueda Local
+
+\begin{itemize}
+	\item La hibridación de SFHM con Búsqueda Local combina los mecanismos de exploración global de SFHM con la capacidad de refinamiento local de Búsqueda Local.
+	\item El algoritmo utiliza SFHM como enfoque principal y, posteriormente, aplica Búsqueda Local para mejorar aún más la calidad de la solución encontrada.
+	\item En términos de clasificación, SFHM + Búsqueda Local muestra resultados prometedores en los conjuntos de datos analizados.
+	\item En cuanto a la reducción de características, SFHM + Búsqueda Local logra tasas de reducción competitivas, con una reducción moderada en el número de características utilizadas para la clasificación.
+\end{itemize}
+
+	\item Algoritmo: One Nearest Neighbor (1NN)
+	
 	\begin{itemize}
-		\item La selección se realiza con Torneo Binario. Se ejecuta tantas veces como individuos haya en la población.
-		\item El cruce puede realizarse mediante CA o BLX. Se aplica con el 70\% aleatorio de la población.
-		\item La mutación se aplica con el 10\% aleatorio de los individuos y será así con todos los algoritmos.
-		\item En el reemplazamiento aplica el elitismo de dos para conservar a los mejores y no empeorar.
+		\item 1NN es un algoritmo de clasificación basado en la distancia, donde se clasifica una instancia según la clase de su vecino más cercano en el conjunto de entrenamiento.
+		\item En términos de clasificación, 1NN muestra resultados competitivos en los conjuntos de datos analizados.
+		\item En cuanto a la reducción de características, 1NN no realiza ninguna eliminación o selección de características explícita, utilizando todas las características disponibles para la clasificación.
 	\end{itemize}
 	
-	En un AGG la nueva generación reemplaza por completo a la generación anterior. Esto implica que solo los individuos de la nueva generación participarán en la siguiente iteración del algoritmo. A medida que avanza el algoritmo, la calidad promedio de los individuos en cada generación puede mejorar, ya que los mejores individuos tienen más probabilidades de ser seleccionados y transmitir sus características a las generaciones futuras.
+	\item Algoritmo: Greedy RELIEF
 	
-	Su implementación en pseudocódigo sería:\\
-	\begin{algorithm}[H]
-		\SetKwFunction{AGG}{AGG}
-		\SetKwInOut{Input}{Entrada}
-		\SetKwInOut{Output}{Salida}
-		
-		\Input{Dataset entrenamiento, maximo Iters, pmut, pcruce, operadorCruce}
-		\Output{mejor individuo}
-		
-		\BlankLine
-		\AGG{Dataset entrenamiento, maximo Iters, pmut, pcruce, operadorCruce=CA/BLX}:
-		\BlankLine
-		Poblacion pop = generar poblacion aleatoria;\\
-		funcionObjetivo(train);\\
-		iter++;\\
-		
-		\While{iter < maximoIters}{
-			\For{i=0 to tamanio de poblacion}{
-				nueva poblacion = torneoBinario(poblacion)
-			}
-			
-			\For{i=0 to tamanio poblacion * pcross}{
-				padre1 = poblacion nueva[i];\\
-				padre2 = poblacion nueva[i+1];\\
-				\BlankLine
-				hijo1,hijo2 = operadorCruce(padre1, padre2);
-				\BlankLine
-				poblacion nueva[i] = hijo1;\\
-				poblacion nueva[i+1]=hijo2;\\
-			}
-			
-			aplicarMutacion(poblacion nueva, pmut)\\
-			
-			fitness = funcionObjetivo(train);\\
-			iter++;\\
-			elitismoDos(poblacion, poblacion nueva);\\
-			
-			poblacion = nueva poblacion;
-			
-			
-		}
-		\Return mejor individuo\;
-	\end{algorithm}
+	\begin{itemize}
+		\item Greedy RELIEF es un algoritmo de selección de características que se basa en el algoritmo RELIEF, el cual estima la importancia de las características mediante el cálculo de las diferencias de características entre instancias vecinas.
+		\item En términos de clasificación, Greedy RELIEF obtiene resultados competitivos en los conjuntos de datos analizados.
+		\item En cuanto a la reducción de características, Greedy RELIEF logra tasas de reducción moderadas, pero inferiores en comparación con otros algoritmos mencionados anteriormente.
+	\end{itemize}
 	
-\subsubsection{Algoritmo Genético Estacionario(AGE)}
-El Algoritmo Genético Estacionario (AGE) es un enfoque de optimización inspirado en la evolución biológica por el cual en cada iteración, los dos mejores individuos de la poblacion anterior sustituyen a los peores de la actual hasta alcanzar el número máximo de iteraciones deseado.\\
-
-El proceso evolutivo en un algoritmo genético estacionario involucra los operadores genéticos previamente definidos.  A continuación, se describe brevemente el proceso del algoritmo:
-\begin{itemize}
-	\item La selección se realiza mediante Torneo Binario que se aplica dos veces en cada generación.
-	\item El cruce puede realizarse mediante CA o BLX. Se aplica siempre con los dos individuos obtenidos.
-	\item La mutación se aplica con el 10\% aleatorio de los individuos y será así con todos los algoritmos.
-	\item En el reemplazamiento aplica el elitismo de cuatro para conservar a los mejores y no empeorar.
-\end{itemize}
-
-En un AGE los individuos generados en el torneo binario reemplazarán a los peores de la generación anterior siempre y cuando lo mejoren. Esto implica que solo los individuos de la nueva generación participarán en la siguiente iteración del algoritmo. A medida que avanza el algoritmo, la calidad promedio de los individuos en cada generación puede mejorar, ya que los mejores individuos tienen más probabilidades de ser seleccionados y transmitir sus características a las generaciones futuras.\\
-
-Su implementación en pseudocódigo sería:\\
-\begin{algorithm}[H]
-	\SetKwFunction{AGE}{AGE}
-	\SetKwInOut{Input}{Entrada}
-	\SetKwInOut{Output}{Salida}
+	\item Algoritmo: Búsqueda Local (BL)
 	
-	\Input{Dataset entrenamiento, maximo Iters, pmut, operadorCruce}
-	\Output{mejor individuo}
+	\begin{itemize}
+		\item BL es un algoritmo de optimización que realiza movimientos locales para mejorar la calidad de una solución inicial.
+		\item En términos de clasificación, BL obtiene resultados promedio en los conjuntos de datos analizados.
+		\item En cuanto a la reducción de características, BL muestra un rendimiento competitivo, con tasas de reducción del 70\% o más en los conjuntos de datos "Diabetes" y "Ozone".
+	\end{itemize}
 	
-	\BlankLine
-	\AGE{Dataset entrenamiento, maximo Iters, pmut, operadorCruce=CA/BLX}:
-	\BlankLine
-	Poblacion pop = generar poblacion aleatoria;\\
-	funcionObjetivo(train);\\
-	iter++;\\
+	\item Busqueda Multiarranque Basica (BMB):
 	
-	\While{iter < maximoIters}{
-		individuo1 = torneoBinario(poblacion);\\
-		individuo2 = torneoBinario(poblacion);
-		\BlankLine
-		sol1,sol2 = operadorCruce(individuo1, individuo2);\\
+	\begin{itemize}
+		\item BMB es un algoritmo de búsqueda local que utiliza múltiples arranques aleatorios para explorar diferentes soluciones iniciales.
+		\item  El algoritmo se basa en la mejora iterativa de soluciones, realizando movimientos locales para mejorar la calidad de la solución.
+		\item En términos de clasificación, BMB obtiene resultados competitivos, pero ligeramente inferiores en comparación con otros algoritmos en los conjuntos de datos analizados.
+		\item La reducción de características lograda por BMB varía según el conjunto de datos, aunque en general es moderada.
+	\end{itemize}
+	
+	\item Búsqueda local iterativa (ILS):
+	\begin{itemize}
+		\item  ILS es un algoritmo que realiza una búsqueda local en una solución inicial y luego introduce perturbaciones para escapar de los óptimos locales y explorar diferentes regiones del espacio de soluciones.
+		\item  El enfoque iterativo de ILS permite refinar y mejorar gradualmente la solución a medida que avanza el algoritmo.
+		\item  ILS muestra un rendimiento sólido en términos de clasificación en los conjuntos de datos evaluados, obteniendo porcentajes altos.
+		\item En cuanto a la reducción de características, ILS también logra resultados competitivos y consistentes en los conjuntos de datos.
+	\end{itemize}
+	
+	
+	\item Búsqueda de Vecindad Variable (VNS):
+	\begin{itemize}
+		\item VNS es un algoritmo que combina movimientos locales y perturbaciones para explorar diferentes vecindarios y escapar de los óptimos locales.
+		\item Utiliza una estrategia de vecindades variables para aumentar la diversidad de las soluciones exploradas.
+		\item En términos de clasificación, VNS muestra buenos resultados, aunque puede ser ligeramente inferior a otros algoritmos en algunos conjuntos de datos.
+		\item La reducción de características alcanzada por VNS varía según el conjunto de datos, mostrando resultados inconsistentes en comparación con ILS-ES e ILS.
+	\end{itemize}
+	
+	
+	\item Enfriamiento Simulado (ES):
+	\begin{itemize}
+		\item ES es un algoritmo basado en la analogía del enfriamiento de un sistema físico para buscar soluciones óptimas en un espacio de búsqueda.
+		\item El algoritmo acepta movimientos que empeoran la solución actual con una cierta probabilidad, lo que le permite escapar de óptimos locales.
+		\item En términos de clasificación, ES tiene resultados moderados, pero generalmente muestra un rendimiento inferior en comparación con otros algoritmos.
+		\item La reducción de características lograda por ES es variable y depende del conjunto de datos.
 		
-		aplicarMutacion(poblacion, pmut)\\
-		
-		fitness = funcionObjetivo(train);\\
-		iter++;\\
-		elitismoCuatro(poblacion, sol1, sol2);\\		
-	}
-	\Return mejor individuo\;
-\end{algorithm}
-
-\newpage
-
-\subsection{Algoritmos Meméticos}
-Un algoritmo memético es una variante del algoritmo genético que combina principios de la evolución biológica con el aprendizaje cultural. Este enfoque híbrido busca aprovechar la capacidad de los algoritmos genéticos para explorar y explotar el espacio de búsqueda, al mismo tiempo que incorpora mecanismos de mejora basados en el conocimiento adquirido a lo largo de las generaciones. \\
-
-En un algoritmo memético, además de los componentes tradicionales de un algoritmo genético, se incorpora un proceso de aprendizaje o mejora local llamado operador memético. Este operador se aplica a los individuos seleccionados de la población para refinar aún más sus soluciones y aumentar su calidad.\\
-
-El operador memético que vamos a utilizar es la Búsqueda Local Primer Mejor.\\
-
-La idea principal detrás de los algoritmos meméticos es que la mejora local puede llevar a soluciones más óptimas y acelerar la convergencia del algoritmo, especialmente cuando se tienen regiones prometedoras en el espacio de búsqueda. Los operadores meméticos ayudan a explotar estas regiones y pueden adaptarse según las características específicas del problema.
-
-En resumen, un algoritmo memético combina la exploración global y la explotación local al integrar una búsqueda local en un algoritmo genético. 
-
-\subsubsection{Algoritmo Memético Todos (AM-All)}
-El Algoritmo Memético Todos(AMM-All) es un método por el cual se aplica el algoritmo genético generacional convencional y se aplica búsqueda local a toda la población cada cierto número de iteraciones.\\
-
-En un AM-All la nueva generación reemplaza por completo a la generación anterior ya que es un AGG modificado. Esto implica que solo los individuos de la nueva generación participarán en la siguiente iteración del algoritmo. A medida que avanza el algoritmo, la calidad promedio de los individuos en cada generación puede mejorar, ya que los mejores individuos tienen más probabilidades de ser seleccionados y transmitir sus características a las generaciones futuras.\\
-
-Su implementación en pseudocódigo sería:
-
-\begin{algorithm}[H]
-	\SetKwFunction{AMAll}{AM-All}
-	\SetKwInOut{Input}{Entrada}
-	\SetKwInOut{Output}{Salida}
+	\end{itemize}
 	
-	\Input{Dataset entrenamiento, maximo Iters, pmut, pcruce}
-	\Output{mejor individuo}
+	\item Hibridación ILS con ES (ILS-ES):
+	\begin{itemize}
+		\item ILS-ES combina los enfoques de ILS y ES para aprovechar las fortalezas de ambos algoritmos.
+		\item El algoritmo utiliza la estrategia de perturbación de ILS para diversificar las soluciones y la aceptación de movimientos empeorantes de ES para escapar de óptimos locales.
+		\item ILS-ES muestra resultados prometedores en términos de clasificación en los conjuntos de datos analizados, logrando los porcentajes más altos en general.
+		\item Además, ILS-ES es capaz de lograr una reducción significativa en el número de características utilizadas para la clasificación, lo que indica su capacidad para identificar un subconjunto relevante de características que influyen en el proceso de clasificación.
+		
+		\item Sin embargo, es importante destacar que ILS-ES tiende a tener tiempos de ejecución más largos en comparación con otros algoritmos, especialmente en conjuntos de datos más grandes. Esto se debe a la naturaleza iterativa y la hibridación de ILS-ES, que implica una mayor cantidad de cálculos y exploración del espacio de soluciones.
+	\end{itemize}
 	
-	\BlankLine
-	\AMAll{Dataset entrenamiento, maximo Iters, pmut, pcruce}:
-	\BlankLine
-	Poblacion pop = generar poblacion aleatoria;\\
-	funcionObjetivo(train);\\
-	iter++;\\
+	En conclusión, el Sheep Flock Heredity Model (SFHM) es un algoritmo inspirado en el comportamiento de los rebaños de ovejas que busca soluciones óptimas en un espacio de búsqueda. Utiliza operadores genéticos como la reproducción y la mutación para evolucionar y mejorar las soluciones a lo largo de las iteraciones. SFHM muestra resultados competitivos en clasificación, pero tiene tasas de reducción moderadas en comparación con otros algoritmos.
 	
-	\While{iter < maximoIters}{
-		\For{i=0 to tamanio de poblacion}{
-			nueva poblacion = torneoBinario(poblacion)
-		}
-		
-		\For{i=0 to tamanio poblacion * pcross}{
-			padre1 = poblacion nueva[i];\\
-			padre2 = poblacion nueva[i+1];\\
-			\BlankLine
-			hijo1,hijo2 = operadorBLX(padre1, padre2);
-			\BlankLine
-			poblacion nueva[i] = hijo1;\\
-			poblacion nueva[i+1]=hijo2;\\
-		}
-		
-		aplicarMutacion(poblacion nueva, pmut)\\
-		
-		fitness = funcionObjetivo(train);\\
-		iter++;\\
-		elitismoDos(poblacion, poblacion nueva);\\
-		
-		poblacion = nueva poblacion; \\
-		
-		maxBL = 2* numero de carecteristicas; \\
-		\If{generacion \%10 == 0}{
-			\For{i=0 to tamanio poblacion and iter < maxIters}{
-				fitness = busquedaLocal(train, individuo[i], it, maxBL);\\
-				iter += it;
-			}
-		}
-	}
-	\Return{mejor individuo}
-\end{algorithm}
-
-\subsubsection{Algoritmo Memético Random (AM-Rand)}
-El Algoritmo Memético Random (AMM-Rand) es un método por el cual se aplica el algoritmo genético generacional convencional y se aplica búsqueda local a un 10 \% aleatorio de individuos cierto número de iteraciones.\\
-
-En un AM-Rand la nueva generación reemplaza por completo a la generación anterior ya que es un AGG modificado. Esto implica que solo los individuos de la nueva generación participarán en la siguiente iteración del algoritmo. A medida que avanza el algoritmo, la calidad promedio de los individuos en cada generación puede mejorar, ya que los mejores individuos tienen más probabilidades de ser seleccionados y transmitir sus características a las generaciones futuras.\\
-
-Su implementación en pseudocódigo sería:
-
-\begin{algorithm}[H]
-	\SetKwFunction{AMAll}{AM-Randl}
-	\SetKwInOut{Input}{Entrada}
-	\SetKwInOut{Output}{Salida}
+	La hibridación de SFHM con Búsqueda Local combina la capacidad de exploración global de SFHM con la capacidad de refinamiento local de Búsqueda Local. Utiliza SFHM como enfoque principal y luego aplica Búsqueda Local para mejorar aún más la calidad de la solución encontrada. SFHM + Búsqueda Local muestra resultados prometedores en clasificación y logra tasas de reducción competitivas.
 	
-	\Input{Dataset entrenamiento, maximo Iters, pmut, pcruce}
-	\Output{mejor individuo}
-	
-	\BlankLine
-	\AMAll{Dataset entrenamiento, maximo Iters, pmut, pcruce}:
-	\BlankLine
-	Poblacion pop = generar poblacion aleatoria;\\
-	funcionObjetivo(train);\\
-	iter++;\\
-	
-	\While{iter < maximoIters}{
-		\For{i=0 to tamanio de poblacion}{
-			nueva poblacion = torneoBinario(poblacion)
-		}
-		
-		\For{i=0 to tamanio poblacion * pcross}{
-			padre1 = poblacion nueva[i];\\
-			padre2 = poblacion nueva[i+1];\\
-			\BlankLine
-			hijo1,hijo2 = operadorBLX(padre1, padre2);
-			\BlankLine
-			poblacion nueva[i] = hijo1;\\
-			poblacion nueva[i+1]=hijo2;\\
-		}
-		
-		aplicarMutacion(poblacion nueva, pmut)\\
-		
-		fitness = funcionObjetivo(train);\\
-		iter++;\\
-		elitismoDos(poblacion, poblacion nueva);\\
-		
-		poblacion = nueva poblacion; \\
-		
-		maxBL = 2* numero de carecteristicas; \\
-		\If{generacion \%10 == 0}{
-			\For{i=0 to tamanio poblacion * pmut and iter < maxIters}{
-				idxAleatorio = obtener numero aleatorio en el rango [0, tamanio poblacion];\\
-				fitness = busquedaLocal(train, individuo[idxAleatorio], it, maxBL);\\
-				iter += it;
-			}
-		}
-	}
-	\Return{mejor individuo}
-\end{algorithm}
+	En resumen, tanto SFHM como SFHM + Búsqueda Local son enfoques interesantes para resolver problemas de optimización y clasificación, y cada uno tiene sus propias fortalezas y áreas de aplicación.
+\end{enumerate}
 
-\subsubsection{Algoritmo Memético Mejores (AM-Best)}
-El Algoritmo Memético Mejor(AMM-Best) es un método por el cual se aplica el algoritmo genético generacional convencional y se aplica búsqueda local al 10\% mejor de la población cada cierto número de iteraciones.\\
 
-Para conseguirlo el método utilizado ha sido el de ordenar un vector de fitness de mayor a menor y extraido el primer 10\% del vector.\\
-
-En un AM-Best la nueva generación reemplaza por completo a la generación anterior ya que es un AGG modificado. Esto implica que solo los individuos de la nueva generación participarán en la siguiente iteración del algoritmo. A medida que avanza el algoritmo, la calidad promedio de los individuos en cada generación puede mejorar, ya que los mejores individuos tienen más probabilidades de ser seleccionados y transmitir sus características a las generaciones futuras.\\
-
-Su implementación en pseudocódigo sería:
-
-\begin{algorithm}[H]
-	\SetKwFunction{AMAll}{AM-All}
-	\SetKwInOut{Input}{Entrada}
-	\SetKwInOut{Output}{Salida}
-	
-	\Input{Dataset entrenamiento, maximo Iters, pmut, pcruce}
-	\Output{mejor individuo}
-	
-	\BlankLine
-	\AMAll{Dataset entrenamiento, maximo Iters, pmut, pcruce}:
-	\BlankLine
-	Poblacion pop = generar poblacion aleatoria;\\
-	funcionObjetivo(train);\\
-	iter++;\\
-	
-	\While{iter < maximoIters}{
-		\For{i=0 to tamanio de poblacion}{
-			nueva poblacion = torneoBinario(poblacion)
-		}
-		
-		\For{i=0 to tamanio poblacion * pcross}{
-			padre1 = poblacion nueva[i];\\
-			padre2 = poblacion nueva[i+1];\\
-			\BlankLine
-			hijo1,hijo2 = operadorBLX(padre1, padre2);
-			\BlankLine
-			poblacion nueva[i] = hijo1;\\
-			poblacion nueva[i+1]=hijo2;\\
-		}
-		
-		aplicarMutacion(poblacion nueva, pmut)\\
-		
-		fitness = funcionObjetivo(train);\\
-		iter++;\\
-		elitismoDos(poblacion, poblacion nueva);\\
-		
-		poblacion = nueva poblacion; \\
-		
-		maxBL = 2* numero de carecteristicas; \\
-		\If{generacion \%10 == 0}{
-			mejores = obtener (tamanio poblacion *pmut) individuos con mejor fitness
-			\For{i=0 to tamanio mejores and iter < maxIters}{
-				fitness = busquedaLocal(train, mejores[i], it, maxBL);\\
-				iter += it;
-			}
-		}
-	}
-	\Return{mejor individuo}
-\end{algorithm}
-
-\newpage
-
-\section{Procedimiento de desarrollo}
-Se ha desarrollado la práctica en C++ usando VScode.  Se usa el random.hpp y el CMakeLists.txt de prácticas, los pseudocódigos de teoría y prácticas. Lo que falta se toma de Internet, la mayoría de Stackoverflow \cite{Stackoverflow}, geekforgeeks \cite{greekforgeeks} y chatgpt \cite{chatgpt}. \\
-
-El procedimiento de desarrollo ha sido:
-\begin{itemize}
-	\item Lectura y búsqueda de información tanto en el material de teoría y prácticas como de Internet. En la figura \ref{fig:mi_imagen} se puede ver el resumen:
-	\begin{figure}[h]
-		\centering
-		\includegraphics[width=\textwidth]{resumen.png}
-		\caption{Estudio del problema}
-		\label{fig:mi_imagen}
-	\end{figure}
-
-	\item Una vez se tiene claros los conceptos, creamos un nuevo directorio practicas1 con el material de prácticas. Creamos los directorios src, headers y reusamos el CMakeLists.txt y el random.hpp de tools.zip. Creamos un fichero .cpp y .h por algoritmo (esto cambiará) y el main.cpp. Los metemos en sus respectivos directorios y abrimos VScode.
-	
-	\item Primero vamos a definir una estructura de datos que será la base de todo el funcionamiento. En mi caso se abstraen los ejemplos en un Struct y se usa una clase Dataset para integrar vectores de ejemplos. Hardcodeamos una matriz de ejemplo y probamos hasta que funcione.
-	
-	\item Con la estructura montada pasamos a leer los datos. Para ello he recurrido a una practica de Estructura de Datos donde leía matrices de ficheros y la modifiqué para ignorar los comentarios y adaptarla al dataset.
-	También he recurrido a Stackoverflow y chatgpt para las dudas. De paso configuramos el CMakeLists.txt con los ficheros de src y headers. IMPORTANTE: añadir optimización al compilador con el parámetro -02, será clave para la búsqueda local después.
-	
-	\item Llegados a este punto ya podemos empezar a implementar los métodos. Se implementarán en orden de dificultad y dependencia:
-	\begin{enumerate}
-		\item Algoritmo 1NN
-		\item Algoritmo Greedy RELIEF
-		\item Algoritmo Búsqueda Local Primer Mejor
-		\item Algoritmo Genéticos: generacional y luego estacionario
-		\item Algoritmos Meméticos: all, random y por último AM-best.
-	\end{enumerate}
-	Para verificar el correcto funcionamiento del algoritmo 1NN y la lectura de datos se ha recurrido a la  \href{https://mh2223.danimolina.net/testsol.html}{web de la asignatura} y junto a la ayuda de geeksforgeeks.org\cite{greekforgeeks}, una página muy recomendada para implementación de multitud algoritmos y problemas, se puede implementar el 1-NN sencillamente. 
-	
-	\item Una vez tenemos el clasificador pasamos a la implementación de Greedy y la BL. El pseudocódigo proporcionado de Greedy junto a la explicación del mismo en prácticas es suficiente para implementarlo aunque he consultado en la Universidad de Radboud \cite{runl} una tesis sobre la aplicación de algoritmos RELIEF en bioinformática. En cambio para la búsqueda Local, el pseudocódigo de teoría es insuficiente por lo que he recurrido nuevamente a Internet. Encontré un documento de la Universidad de la Laguna sobre sistemas Inteligentes \cite{ull}. En la página 43 encontramos un pseudocódigo más completo y del que nos basaremos para implementarlo. Para modular el código se ha utilizado los esquemas dados en el guión de prácticas.
-	
-	\item Para la implementación de los algoritmos genéticos podemos usar el repositorio de innovaMH \cite{innovaMH} proporcionado por Daniel Molina. Levantando docker localmente y observando la parte2.jl se entiende perfectamente y con gran detalle como implementar los algoritmos genéticos. 
-	
-	\item Para la implementación de los algoritmos meméticos he recurrido al seminario y guión que junto a los algoritmos genéticos ya implementados podemos completarlos sin dificultad.
-\end{itemize}
-
-\section{Experimentos}
+\section{Manual de uso}
+Ir al directorio \textbf{software/bin} y ejecutar:\\ 
+\code{cmake .. \&\& make \&\& ./practica SFHMA 1}
+\\\quad\\
 El formato de ejecución de la práctica es:\\
-\code{./practica1 <Algoritmo>  \  <Semilla(\textit{opcional})>}\\
+\code{./practica <Algoritmo>  \  <Semilla(\textit{opcional})>}\\
 
 Para los algoritmos GENÉTICOS se le añade como parámetro el operador:\\
-\code{./practica1 <Algoritmo>  \  <Operador(\textit{BLX por defecto})> \ <Semilla(\textit{opcional})>}\\
+\code{./practica <Algoritmo>  \  <Operador(\textit{BLX por defecto})> \ <Semilla(\textit{opcional})>}\\
 
 Donde:
 \begin{itemize}
-	\item \code{<Algoritmo>} puede ser: 'sin parametro/vacio', 'oneNN', 'Greedy', 'BL', 'AGG', 'AGE', 'AM-All', 'AM-Rand', 'AM-Best'.
+	\item \code{<Algoritmo>} puede ser: 'sin parametro/vacio', \textbf{'SFHMA', 'SFHMA\_hibrido'},  'oneNN', 'Greedy', 'BL', 'AGG', 'AGE', 'AM-All', 'AM-Rand', 'AM-Best'.
 	
-	\item \code{<Operador>} puede ser: 'sin parametro/vacio', 'Aritmetrico', 'BLX'.
+	\item \code{<Operador>} puede ser: 'sin parametro/vacio', 'Aritmetrico', 'BLX', \textbf{'SPX'}.
 	\item \code{<Semilla>} puede ser cualquier número.
 \end{itemize}
 
 Por ejemplo:
 \begin{itemize}
-	\item \code{./practica1 }: ejecutará la práctica con el clasificador 1-NN.
-	\item \code{./practica1 AM-Rand}: ejecutará la práctica con el clasificador 1-NN mejorado con el Algoritmo Memético Aleatorio, operador BLX y semilla aleatoria.
-	\item \code{./practica1 AGG Aritmetrico}: ejecutará la práctica con el clasificador 1-NN mejorado con el Algoritmo Genético Generacional, operador Aritmetrico y semilla aleatoria.
-	\item \code{./practica1 AGE BLX 1}: ejecutará la práctica con el clasificador 1-NN mejorado con el Algoritmo Genético Estacionario, operador BLX y semilla 1.
+	\item \code{./practica }: ejecutará la práctica con el clasificador 1-NN.
+	\item \code{./practica SFHMA}: ejecutará la práctica con el Algoritmo Genético basado en Rebaños de Ovejas, operador SPX y semilla aleatoria.
+	\item \code{./practica SFHMA\_hibrido SPX 1}: ejecutará la práctica con el Algoritmo Genético basado en Rebaños de Ovejas hibridado con Búsqueda Local, operador SPX y semilla 1.
 \end{itemize}
 
-\begin{figure}[h]
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=\textwidth]{greedy.png}
-	\caption{Ejecución de Greedy}
+	\caption{Ejecución de SFMHA}
 	\label{fig:greedy}
 \end{figure}
 Nota: Se añade la tasa\_clas de entrenamiento para comparar en la web. Se puede desactivar quitando el parámetro \code{true} en la linea 142 en main.cpp. Para la ejecución de las tablas siguientes se ha desactivado para mejorar los tiempos. \\
-
-\subsection{Resultados algoritmos de búsqueda}
-Las tablas que se presentan a continuación corresponden a resultados obtenidos por tres algoritmos (1NN, greedy y BL) aplicados al problema del Aprendizaje de Pesos en Características (APC) en tres conjuntos de datos diferentes (Diabetes, Ozone y Spectf-heart). Cada tabla muestra los porcentajes de clasificación, reducción del número de características, fitness y tiempo de ejecución para cada partición del conjunto de datos. Se busca comparar la eficacia de ambos algoritmos en términos de calidad de la solución y tiempo de ejecución.
-
-\input{tabla1nn.tex}
-
-En la tabla \ref{tab:1nn} se puede observar que los resultados de clasificación son bastante buenos con un porcentaje de clasificación correcta de hasta el 85\% en spectf-heart. El porcentaje de reducción en el número de características es del 0\% ya que no se aplica ninguna selección de características.\\
-
-Los valores de fitness oscilan entre 54,69 y 68,31, lo que indica que el algoritmo no ha encontrado necesariamente las soluciones óptimas para todos los conjuntos de datos. Por último, los tiempos de ejecución son bastante bajos, con valores inferiores a 0,01 segundos para todos los conjuntos de datos y particiones.
-
-\input{tablagreedy.tex}
-
-En la tabla \ref{tab:Greedy} se observa que la media de los fitness obtenidos para cada conjunto de datos varía entre 55.17 y 68.07, lo que indica que el algoritmo es capaz de encontrar soluciones de igual calidad que el 1NN.\\
-
-La diferencia está en que el \% de reducción en el número de características seleccionadas varía entre 0\% y 12.5\%, lo que significa que el algoritmo no siempre es capaz de reducir significativamente el número de características sin comprometer el rendimiento del modelo. Esto se debe a que Greedy maximiza la tasa\_clas, no el fitness al completo por lo que no tiende a reducir. Al igual que el 1NN, los tiempos son rápidos.
-
-\input{tablaBL.tex}
-Al analizar los resultados de la tabla \ref{tab:bl}, se observa que el algoritmo BL obtiene mejores resultados que el algoritmo Greedy y 1-NN en términos de fitness para todas las particiones y conjuntos de datos. Además, el porcentaje de reducción es significativamente mayor en promedio para el algoritmo BL, lo que sugiere que el número de características seleccionadas es menor en comparación con el algoritmo Greedy.\\
-
-Sin embargo, podemos observar el alto coste computacional que supone ejecutar la búsqueda. Los tiempos multiplican por cientos al de Greedy y 1NN.
-
-\input{tablaFinal.tex}
-
-En la tabla \ref{tab:final} se presentan los resultados globales para los tres algoritmos en los tres conjuntos de datos. En general, el \textbf{algoritmo BL} tuvo un mejor rendimiento en términos de porcentaje de reducción y agregación, aunque tuvo una reducción de dimensiones más alta. El algoritmo 1-NN es el mejor en términos de porcentaje de clasificación, pero no es capaz de reducir la dimensionalidad del conjunto de datos. Por otro lado, el algoritmo RELIEF tuvo un desempeño inferior en comparación con BL, aunque logró reducir algo la dimensionalidad del conjunto de datos.\\
-
-En cuanto a los conjuntos de datos individuales, en Diabetes, los tres algoritmos lograron un rendimiento similar en términos de porcentaje de clasificación y agregación, aunque BL tuvo la reducción de dimensionalidad más alta. En Ozone, BL tuvo un mejor rendimiento que 1-NN y RELIEF en términos de porcentaje de clasificación y agregación, pero también tuvo una reducción de dimensionalidad más alta. En Spectf-heart, BL también tuvo un mejor rendimiento en comparación con 1-NN y RELIEF, aunque tuvo una reducción de dimensionalidad más alta.\\
-
-\subsection{Resultados Algoritmos Genéticos y Meméticos}
-
-\input{tablaAGG-CA.tex}
-En la tabla \ref{tab:AGG_CA} se puede observar que los resultados de clasificación son bastante buenos con un porcentaje de clasificación correcta de hasta el 85\% en spectf-heart. El porcentaje de reducción en el número de características es del 45\% aproximadamente aunque en diabetes reduce mucho mientras que el resto se queda en 30\%.\\
-
-Los valores de fitness oscilan entre 63,52 y 74,62, lo que indica que el algoritmo no ha encontrado necesariamente las soluciones óptimas para todos los conjuntos de datos. Por último, los tiempos de ejecución son considerablemente altos en comparación a los algoritmos previos, de unos 50 segundos por partición.
-
-\input{tablaAGG-BLX.tex}
-En la tabla \ref{tab:AGG_BLX} se puede observar que los resultados de clasificación han bajado respecto antes pero ha aumentado la reducción sensiblemente. El porcentaje de reducción en el número de características es del 50\% aproximadamente aunque en diabetes reduce mucho mientras que el resto se queda en 40\%.\\
-
-Los valores de fitness oscilan entre 63,62 y 74,23, lo que indica que el operador de cruce no ha mejorado prácticamente EN MI CASO aunque debería ser algo mejor que el Aritmétrico aleatorio. Por último, los tiempos de ejecución son similares al anterior.
-
-\input{tablaAGE-CA.tex}
-En la tabla \ref{tab:AGE_CA} se puede observar que los resultados de clasificación vuelven a ser altos como en el AGG, de un 84,51\% el que más. El porcentaje de reducción en el número de características es menor, de un 20\% para ozone y heart aunque en diabetes reduce un 60\%. Considero que los porcentajes de reducción son algo más bajos de lo que esperaba realmente pues debería reducir igual o más que el AGG.
-
-Los valores de fitness oscilan entre 66,80 y 72,06, lo que indica que el algoritmo AGE no ha mejorado EN MI CASO aunque debería ser algo mejor que el AGG debido a la reducción. Por último, los tiempos de ejecución son sensiblemente más altos aunque aún asumibles de ejecutar.
-
-\input{tablaAGE-BLX.tex}
-En la tabla \ref{tab:AGE_BLX} se puede observar que los resultados de clasificación vuelven a ser altos, de un 83,95\% el que más. El porcentaje de reducción en el número de características es menor, de un 20\% para ozone aunque en diabetes reduce un 65\%. Igual que con AGG, considero que el operador BLX no mejora EN MI CASO pero debería ser igual o mejor que el CA.
-
-Los valores de fitness oscilan entre 65,81 y 72,98, lo que indica que el algoritmo AGE no ha mejorado EN MI CASO aunque debería ser algo mejor que el AGG debido a la reducción. Por último, los tiempos de ejecución son razonables, menos de un minuto.
-
-\input{tablaAM-All.tex}
-En la tabla \ref{tab:AM_ALL} se puede observar que los resultados de clasificación vuelven a ser altos, de un 83,94\% el que más. Esta vez el porcentaje de reducción es condirable para diabetes y heart aunque ozone se resiste.
-
-Los valores de fitness oscilan entre 66,64 y 79,15, lo que indica que el algoritmo AM ha mejorado respecto a todos los anteriores lo cual es lógico ya que afina los pesos mediante la búsqueda local. Por último, los tiempos de ejecución son de los más bajos de todos, unos 47 segundos.
-
-\input{tablaAM-Rand.tex}
-En la tabla \ref{tab:AM_RAND} se puede observar que los resultados de clasificación y reducción se muy similares al memético con todo. Mejora el fitness en Ozone y heart pero lo empeora en Diabetes. Por último, los tiempos de ejecución son razonables, dentro del minuto por partición.
-
-\input{tablaAM-Best.tex}
-En la tabla \ref{tab:AM_BEST} se puede observar que las mejores tasas de clasificación y reducción de todos los algoritmos vistos hasta ahora. Se llega a alcanzar una tasa de clasificación del 86,53\% y una de reducción del 64,55\% con un fitness máximo de 82,13.
-
-\input{tablaFinal2.tex}
- A continuación, se presenta un análisis exhaustivo considerando las tasas de clasificación y reducción, así como el fitness y tiempo de ejecución:\\
- 
- La tasa Agr. es un factor crucial en el análisis de los algoritmos, ya que representa el fitness o medida de calidad del desempeño de los mismos. Un alto valor de tasa Agr. indica que el algoritmo ha logrado un buen equilibrio entre la precisión de clasificación y la reducción de características, lo cual es deseable en problemas de clasificación. Al analizar las tasas Agr. en los diferentes conjuntos de datos y algoritmos, podemos observar lo siguiente:
- 
- \begin{itemize}
- 	\item Conjunto de datos Diabetes: Los algoritmos AGG-CA y AM-(10,0.1m) obtienen las tasas Agr. más altas en este conjunto de datos. Esto indica que logran un rendimiento sobresaliente al considerar tanto la precisión de clasificación como la reducción de características. Los algoritmos AGG-BLX, AGE-BLX y AGE-CA también muestran tasas Agr. competitivas.
- 	
- 	\item Conjunto de datos Ozone: Nuevamente, los algoritmos AGG-CA y AM-(10,0.1m) destacan al obtener las tasas Agr. más altas en este conjunto de datos. Esto sugiere que estos algoritmos logran un buen equilibrio entre precisión y reducción de características. Los algoritmos AGG-BLX, AGE-BLX y AGE-CA también obtienen tasas Agr. significativas.
- 	
- 	\item Conjunto de datos Spectf-heart: En este conjunto de datos, el algoritmo AM-(10,1.0) se destaca al lograr la tasa Agr. más alta. Esto implica que el algoritmos ha obtenido un buen desempeño tanto en la precisión de clasificación como en la reducción de características. Los algoritmos AGG-CA, AGG-BLX, AGE-BLX y AGE-CA también exhiben tasas Agr. notables en este conjunto de datos.
- \end{itemize}
-
-Tasa de clasificación: La tasa de clasificación indica qué tan bien los algoritmos predicen correctamente las etiquetas de clase en los conjuntos de datos. Se puede observar que los algoritmos AGG-CA y AM-(10,0.1m) obtienen las tasas de clasificación más altas en la mayoría de los conjuntos de datos, siendo especialmente buenos en el conjunto Spectf-heart. Estos algoritmos superan al clasificador 1NN, que se considera como referencia (basado en el algoritmo de clasificación one nearest neighbor). Sin embargo, se observa que algunos algoritmos, como BL y AGE-CA, también logran tasas de clasificación competitivas en ciertos conjuntos de datos.\\
-
-Tasa de reducción: La tasa de reducción muestra qué tan bien los algoritmos pueden reducir la dimensionalidad de los conjuntos de datos, eliminando características irrelevantes o redundantes. Los algoritmos AM-(10,0.1) y AM-(10,0.1m) obtienen las tasas de reducción más altas en general, lo que indica que son efectivos para reducir la dimensionalidad de los conjuntos de datos. Esto significa que pueden seleccionar características relevantes y eliminar características redundantes, lo que puede mejorar el desempeño general del clasificador.\\
-
-Tiempo de ejecución: El tiempo de ejecución es otro factor a considerar, ya que indica la eficiencia computacional de los algoritmos. Los algoritmos basados en algoritmos genéticos (AGG-BLX, AGG-CA, AGE-BLX y AGE-CA) generalmente requieren más tiempo de ejecución en comparación con otros algoritmos, debido a la naturaleza iterativa y la manipulación de poblaciones. Por otro lado, los algoritmos basados en algoritmos meméticos (AM-(10,1.0), AM-(10,0.1) y AM-(10,0.1m)) también pueden requerir un tiempo de ejecución considerable debido a la aplicación de la búsqueda local en toda la población o en una parte de ella. Los algoritmos BL y RELIEF, que se basan en la búsqueda local, también pueden tener un tiempo de ejecución significativo dependiendo del tamaño de la población.\\
-
-En resumen, los resultados muestran que los algoritmos AGG-CA y AM-(10,0.1m) logran altas tasas de clasificación en general, mientras que los algoritmos AM-(10,0.1) y AM-(10,0.1m) obtienen altas tasas de reducción. Sin embargo, es importante tener en cuenta el tiempo de ejecución, ya que los algoritmos basados en algoritmos genéticos y meméticos suelen requerir más tiempo para converger. Dependiendo de las necesidades del problema y los recursos disponibles, se puede seleccionar el algoritmo que mejor se ajuste a los requisitos de rendimiento y tiempo de ejecución.
 
 \bibliography{citas} %archivo citas.bib que contiene las entradas 
 \bibliographystyle{plain} % hay varias formas de citar
