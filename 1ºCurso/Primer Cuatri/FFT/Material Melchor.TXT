@@ -1,0 +1,286 @@
+===========================================================================
+===  En general, los vídeos, mp4, mp3, pdf, seran los del curso 2020-21 ===
+===  En este fichero se pondran las novedades o cambios                 ===
+===========================================================================
+
+https://cloud.mail.ru/public/6LGC/hxgSYkZZq
+
+>> Aviso: Este material es opcional, no es obligatorio, no tenéis por qué usarlo.
+En todos estos vídeos (y en la web) no se ha empleado ningún material de la ugr.
+Recordad lo que os he dicho varias veces: No os fiéis del material on-line,
+en cualquier momento puede desaparecer. El cloud de mail.ru, os permite ver los
+vídeos, pero también descargarlos. El total del curso ocupa menos de 80 Go.
+
+>> Aviso: Este verano, las calculadoras con números complejos de Casio (modelos
+570 y 991) han bajado unos 10 Eur de precio (la 570 por 25 Eur) pero en Septiembre,
+Casio ha sacado un nuevo modelo (totalmente blanca y con las teclas redondas), y
+la 570 nueva se vende por unos 40 Eur.
+
+
+=== Clase_0 ===   Es la clase de presentación de la asignatura
+
+	Este año, obviamente, cambian horarios, fechas de exámenes y similares.
+	IMPORTANTE:  Dos límites para hacer media cambian:
+       - Se necesita una nota mayor o igual de 4,4 en el examen final.
+       - Se necesita una nota mayor o igual de 7,2 en el examen de ejercicios.
+    Si no se cumplen con estos requisitos, no se hace media, y por tanto se
+    suspende la asignatura.
+
+
+=== Control_Cargas ===   Es la primera clase de problemas, la que se da el primer dia. 
+
+	Este año, la única novedad es que he añadido en los ccarga.zip una
+   "hoja.pdf" que contiene parte de las explicaciones que haré en la pizarra.
+
+
+
+=== Electricidad ===   La parte de Electricidad.
+
+    Hay 4 apartados:
+    -- Introducción  (E-010)
+    -- Fuerza y Energía Potencial (E-020)
+    -- Gradiente (E-030)
+    -- Teorema de Gauss  (E-040).
+    Todos con sus respectivos PDFs.
+    Hay un fichero "repetido"  E-010-02x.mp4, porque era una prueba para que los 
+    alumnos compararan la version 720 lineas, con la 1080 lineas (sufijo x).
+
+    * Tengo previsto añadir un apéndice, avisaré....
+
+
+
+=== Practica_0 ===   Explicación del Material de Laboratorio que se usará en Prácticas
+
+    Son 5 apartados:    Placa de Conexiones,   Fuente de Alimentación,  Polímetro
+                        Generador de Funciones    y   Osciloscopio
+
+=== Rename.zip ===	Macros (DOS/Linux) para cambiar los nombres de los ficheros, del
+				formato   "compacto"   a    "descriptivo".
+
+    * Si añado apéndices, cambiaría el zip, avisaré....
+
+
+
+=== Regimen_Permanente ===  (RP) Clase de Problemas de Corriente Alterna * Régimen Permanente Sinusoidal
+
+    Necesario llevar calculadora con números complejos. Ahora mismo, Alcampo y el Corte inglés, tienen
+    una rebaja de unos 5 euros respecto al año pasado.
+    RP-010-xx ---- Introducción
+    RP-020-xx ---- Herramientas matemáticas
+    RP-030-xx ---- Circuitos en C.A. Régimen Permanente Sinusoidal
+                    * Impedancia
+                    * Agrupación de Impedancias
+                    * Resolución de un Circuito. Potencia.
+
+
+=== Magnetismo ===  (M)  Magnetismo
+
+    M-010-xx    Introducción teórica
+    M-020-xx    Fuerzas creadas por Campo Magnético sobre...
+    M-030-xx    Campo Magnético creado por...
+    M-040-xx    Ley de Faraday y Ley de Lenz
+    M-050-xx    Paradoja de Feynman
+    De Magnetismo saldrán 3 ejercicios del Examen de Ejercicios.
+
+=== Diagrama de Bode ===  (BD)  Es una clase de problemas (la última)
+
+    Introducción teórica básica al Diagrama de Bode, y revisión de los bloques básicos,
+    empezando por el más simple (la constante) y terminando por el bloque de segundo grado
+    (que tiene raices complejas conjugadas).
+
+
+=== Examen de Ejercicios ===  (EEJ)  Algunos Exámenes de Ejercicios Resueltos.
+
+    Hago ejercicios de exámenes de ejercicios. Hago 4 de cada tipo:
+        - Diagrama de Bode  (Ejercicio nº 8)
+        - Agrupación de Impedancias  (Ejercicio nº 9)
+        - Circuito y potencia en C.Alterna  (Ejercicio nº 10)
+
+    En el Examen de Ejercicios de este año 2022-23, entrarán las clases de "problemas" (Control de 
+    Cargas, Régimen Permanente Sinusoidal y Diagrama de Bode) además de Electricidad y Magnetismo.
+
+
+
+
+=== PRACTICA-1 * Resistencias ===  (P1)
+
+    Apartado A * Cuestiones Teóricas.
+    Apartado B * Resistencias y medidas en continua.
+    Apartado C * Coeficiente de Temperatura
+
+
+=== PRACTICA-2 * Diagrama de Bode. Amplificador Operacional ===  (P2)
+
+    P2A-xx  Apartado A. Mediciones (Tradicional /Cursores / Automático)
+    P2B-xx  Apartado B. Amplificador Operacional. Filtro LC. Diagrama de Bode
+
+            >>> Este año (2023-24) utilizaremos un amplificador operacional, mucho mejor
+            y más rápido, el TL071. Tiene mejores características en casi todo que el uA741,
+            y por tanto, algunos problemas que podían aparecer, ya no se verán.
+            El patillaje es igual que el uA741, por tanto, ni siquiera cambiaré el Guión de Prácticas.
+
+
+=== PRACTICA-3 * Diodos ===  (P3)
+
+    P3A-xx  Apartado A. Introducción. Explicación Práctica + Medida de V-gamma. Procesado con el Ordenador
+    P3B-xx  Apartado B. Diodo como Célula Fotovoltaica.
+
+=== PRACTICA-4 * Transistor Bipolar de Unión (BJT) ===  (P4)
+
+    P4-01   Explicación
+    P4-02   Montaje del circuito.
+    P4-03 y P4-04   Medidas con el osciloscopio
+    P4-05   Procesado de los datos con el ordenador
+
+
+=== PRACTICA-5 = Familias Lógicas: CMOS. ===  (P5)
+
+    P5A-01 a P5A-04     Apartado A. Introducción Teórica, y la Explicación de la propia Práctica.
+
+    P5A-05 a P5A-09     Apartado A. Realización de la parte de Laboratorio
+
+    P5B-01 y P5A-02     Apartado B. Explicación de la práctica.
+    P5B-03              Apartado B. Realización de la parte de Laboratorio.
+
+
+=== PRACTICA-6 = Conversor Analógico Digital. ===  (P6)
+    Esta práctica se ha cambiado en el curso 2022-23. La nueva práctica es DISTINTA, parecida, pero distinta.
+    Se sigue basando en un Pic y en un conversor Analógico-Digital. En cuanto pueda, y me decida, hago videos
+    para la nueva P6, lo anunciaría...
+    P6-01a y P6-01b     Explicaciones de la práctica
+    P6-020 a P6-040     Realización de la práctica
+
+
+
+
+
+=== Familias Lógicas ===  (FL)  (Adelanto esto, pues siempre se ve a final de curso muy rápido
+y escaso de tiempo. Es simple, y no necesita de Teoría de Circuitos ni del tema de Dispositivos
+Electrónicos. Siempre pongo Familias Lógicas en el segundo problema del examen final).
+
+    FL-010-xx   Introducción. Luego se ven puertas NMOS, PMOS y CMOS, subiendo
+                de complicación. Se empieza por la más simple (NOT), luego NAND
+                y NOR, y luego otras más complicadas.
+
+    FL-020-xx   En el examen, suelo poner Puertas no Estandar, y con Memoria.
+                Este apartado FL-020 va de esas puertas, además se trata un
+                ejemplo de Puertas Programables.
+
+    FL-030-xx   En el examen, a veces, aparecen partes de puertas PTL. A veces,
+                aparece algún Diseño. Aquí se ven, y se termina con un problema
+                de examen, muy simple, pero que "asusta".
+
+
+
+
+
+====================== DISPOSITIVOS ELECTRONICOS =======================
+
+# DS = Dispositivos Electrónicos: Semiconductores
+
+        Sirve para la comprensión básica de los dispositivos basados
+        en semiconductores.
+
+        DS-010  Introducción
+        DS-020  Semiconductores
+        DS-030  Corrientes en los Semiconductores
+
+# DD = Dispositivos Electrónicos: Diodos
+
+        Muy importante:
+             los DD-020, que es la teoría básica de Diodos y Zener
+             los DD-030, que son problemas de diodos
+
+        DD-010  Unión PN
+        DD-020  Diodo y Diodo Zener
+        DD-030-xx  Problemas de Diodos:
+            xx=01 y 02      Problema 1
+            xx=03 y 04      Problema 2
+            xx=05           Problema 3
+            xx=06 y 07      Problema 4
+            xx=08           Problema 5
+            xx=09           Problema 6
+        DD-040  Opcional: Superdiodo
+
+
+
+# DQ = Dispositivos Electrónicos: Transistores Bipolares BJT
+
+        Muy importante:
+            DQ-010  Transistor Bipolar BJT  (Teoría Básica)
+            DQ-020  Problemas de BJT
+
+        DQ-020-xx   Problemas de BJT:
+            xx=01           Problema 0
+            xx=02           Problema 1
+            xx=03           Problema 2
+
+            xx=04 y 05      Problema 3
+            xx=06           Problema 4
+            xx=07 y 08      Problema 5
+
+            xx=09           Problema 6
+            xx=10 y 11      Problema 7
+            xx=12           Problema 8
+
+# DM = Dispositivos Electrónicos: Transistores MOSFET
+
+        Muy importante:
+            DM-010  Transistor MOSFET  (Teoría Básica)
+            DM-020  Problemas de MOSFET
+
+        DM-020-xx   Problemas de MOSFET:
+            xx=01           Problema 1
+            xx=02           Problema 2
+            xx=03           Problema 3
+            xx=04           Problema 4
+            xx=05           Problema 5
+            xx=06           Problema 6
+
+
+
+
+
+
+=== Amplificador Operacional ===  (AO)
+
+    Tema muy importante, pues siempre pongo un problema basado en Amplificador Operacional, que
+    suele tener una puntuación de 3,6 puntos. Es básico dominar la teoría básica, el proceso de
+    trabajo, y las ecuaciones de nodo.
+
+    AO-010-xx   Es la teoría básica para poder realizar los problemas de Amplificador
+                Operacional.
+    AO-020-xx   Ejercicios. Diez ejercicios, muchos son de exámenes antiguos. Los dos
+                últimos son problemas de examen muy completos.
+
+
+
+
+
+>>>>>>>> TABLAS RESUMEN DE LO BASICO DE LOS DISPOSITIVOS <<<<<<<<<
+	
+>>	En 2021, me pidieron hacer estas tablas. Normalmente,
+	cada año las hacen algunos alumnos, y luego las comparten
+	con el resto. Es la teoría básica para poder manejar los
+	dispositivos que aparecen en el problema 1 y 3 del Examen
+	Final:   
+			tablas.zip
+
+
+>>  Los últimos días de clase, por la escasez de tiempo, suelo
+    poner en el proyector unos pdf para las explicaciones teóricas
+    de clase: ET.ZIP
+  
+      ### Dispositivos Electrónicos ###
+           ET s .pdf	Semiconductores
+           ET pn .pdf	Unión PN
+           ET d .pdf	Diodo y Diodo Zener
+           ET q .pdf	Transistor Bipolar de Unión (BJT)
+           ET m .pdf	Mosfet (transistor de efecto campo MOS)
+      ### Familias Lógicas ###
+           ET fl .pdf	Lo más básico de Familias Lógicas NMOS PMOS y CMOS
+
+
+====>>>> 19-Noviembre-2023    He corregido cosas leves en ETq  ETm  y ETfl
+
+
