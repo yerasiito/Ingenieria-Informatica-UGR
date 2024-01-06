@@ -1,0 +1,1 @@
+El material ha sido eliminado de wuolah pero no me deja resubirlo. Así que podéis descargaros los exámenes desde aquí. La ordinaria y extraordinaria de 2023 la podéis descargar [aquí](https://wuolah.com/apuntes/logica-y-metodos-discretos/examenes-2023-resueltos-salas-ordinaria-sol-profesor-pdf-9601401)
