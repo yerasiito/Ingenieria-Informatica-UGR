@@ -1,0 +1,31 @@
+
+Reading from ./data/ECommerce41.dataset
+
+Read 30 records from file ./data/ECommerce41.dataset
+Main Index by UserID
+30 pairs 
+amount :118.05
+
+Activity found: SUNDAY(24) MONDAY(5) TUESDAY(0) WEDNESDAY(0) THURSDAY(0) FRIDAY(1) SATURDAY(0)
+
+Events/day
+        24         5         0         0         0         1         0        30
+
+    SUNDAY    MONDAY   TUESDAY WEDNESDAY  THURSDAY    FRIDAY  SATURDAY
+
+
+Type (traffic)
+        13         5         1        11        30
+
+      viewremove_fro      cart  purchase
+
+
+Type (amount)
+        48        20         1        49       118
+
+      viewremove_fro      cart  purchase
+
+
+Highest traffic choice (view) with 13 hits 
+
+Saving on ./data/ECommerce41-hit2.dataset

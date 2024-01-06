@@ -1,0 +1,31 @@
+
+Reading from ./data/ECommerce5.dataset
+
+Read 5 records from file ./data/ECommerce5.dataset
+Main Index by UserID
+5 pairs 
+amount :18.73
+
+Activity found: SUNDAY(0) MONDAY(0) TUESDAY(5) WEDNESDAY(0) THURSDAY(0) FRIDAY(0) SATURDAY(0)
+
+Events/day
+         0         0         5         0         0         0         0         5
+
+    SUNDAY    MONDAY   TUESDAY WEDNESDAY  THURSDAY    FRIDAY  SATURDAY
+
+
+DateTime (traffic)
+         5         5
+
+2019-10-01
+
+
+DateTime (amount)
+        19        19
+
+2019-10-01
+
+
+Highest traffic choice (2019-10-01 00:00:00 UTC) with 5 hits 
+
+Saving on ./data/ECommerce5-hit2.dataset

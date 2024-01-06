@@ -1,0 +1,25 @@
+
+Please type the input file name: 
+Please type the number of records to read: Please select the field to index for (UserID, Brand): 
+Please select the field to filter with (DateTime, UserID, Brand, Type): 
+Please indicate the output file (empty for no output file): 
+El numero de eventos leidos son: 0
+El numero de eventos indexados son: 0
+Sales/Day
+         0         0         0         0         0         0         0         0
+
+    SUNDAY    MONDAY   TUESDAY WEDNESDAY  THURSDAY    FRIDAY  SATURDAY
+
+UserID/Traffic
+┌┐
+│         0
+├┤
+│
+└┘
+
+UserID/Sales
+┌┐
+│      0.00
+├┤
+│
+└┘

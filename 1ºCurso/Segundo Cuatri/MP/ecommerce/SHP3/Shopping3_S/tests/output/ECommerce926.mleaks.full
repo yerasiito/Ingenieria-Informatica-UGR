@@ -1,0 +1,10 @@
+MEMORY LEAK REPORT BY Valgrind 
+
+dom 02 may 2021 15:11:11 CEST
+
+
+==68403== Memcheck, a memory error detector
+==68403== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==68403== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==68403== Command: ./dist/Debug/GNU-Linux/shopping3a -input ./data/ECommerce926.dataset -events 500 -index-by UserID -report-by Brand -output ./data/ECommerce926-hit2.dataset
+==68403== 

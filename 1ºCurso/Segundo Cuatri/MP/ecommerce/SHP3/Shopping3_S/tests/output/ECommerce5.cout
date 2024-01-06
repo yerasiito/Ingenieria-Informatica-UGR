@@ -1,0 +1,20 @@
+El numero de eventos leidos son: 5
+El numero de eventos indexados son: 5
+Sales/Day
+         0         0         5         0         0         0         0         5
+
+    SUNDAY    MONDAY   TUESDAY WEDNESDAY  THURSDAY    FRIDAY  SATURDAY
+
+UserID/Traffic
+┌──────────┐
+│         5│         5
+├──────────┤
+│2019-10-01│
+└──────────┘
+
+UserID/Sales
+┌──────────┐
+│     18.73│     18.73
+├──────────┤
+│2019-10-01│
+└──────────┘

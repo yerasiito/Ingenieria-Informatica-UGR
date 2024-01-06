@@ -1,0 +1,20 @@
+El numero de eventos leidos son: 30
+El numero de eventos indexados son: 30
+Sales/Day
+        24         5         0         0         0         1         0        30
+
+    SUNDAY    MONDAY   TUESDAY WEDNESDAY  THURSDAY    FRIDAY  SATURDAY
+
+UserID/Traffic
+┌──────────┬──────────┬──────────┬──────────┐
+│        13│         5│         1│        11│        30
+├──────────┼──────────┼──────────┼──────────┤
+│      view│remove_fro│      cart│  purchase│
+└──────────┴──────────┴──────────┴──────────┘
+
+UserID/Sales
+┌──────────┬──────────┬──────────┬──────────┐
+│     47.97│     20.13│      0.63│     49.32│    118.05
+├──────────┼──────────┼──────────┼──────────┤
+│      view│remove_fro│      cart│  purchase│
+└──────────┴──────────┴──────────┴──────────┘
