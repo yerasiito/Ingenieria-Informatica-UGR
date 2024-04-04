@@ -1,0 +1,11 @@
+Implementad, para el problema de la mochila 0/1, tres soluciones con backtracking: 
+
+-una que solamente utilice las restricciones implícitas (que no se sobrepase el peso máximo de la mochila) para podar, 
+
+-otra que además emplee el cálculo de cotas: se utiliza para el cálculo de la cota local superior la suma de la ganancia acumulada por los objetos ya incluidos en la mochila más un estimador optimista de la ganancia que se puede obtener con los objetos que aún no hemos decidido si incluir o no. Ese estimador se obtiene aplicando el algoritmo voraz de mochila fraccional a una mochila de capacidad reducida (restando el peso de los objetos ya incluidos) y donde los objetos a incluir o no son los restantes objetos,
+
+-y una tercera versión que emplee la cota (más optimista y por tanto menos precisa, pero más rápida de calcular) consistente en sumar a la ganancia obtenida de los objetos incluidos ya en la mochila, un estimador que sea el beneficio de rellenar lo que queda de mochila con una fracción del objeto más valioso que quede (el siguiente en relación beneficio/peso).
+
+-Haced un estudio empírico de la eficiencia.
+
+Todos los detalles están en la presentación del tema de exploración de grafos (parte 2).

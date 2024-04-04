@@ -1,0 +1,3 @@
+El programa en C BurbujaC.cpp y el programa en java BurbujaJava.java (disponibles en la plataforma de docencia) implementan el algoritmo de ordenación por burbuja, y lo ejecutan para diferentes tamaños del problema con los mismos vectores (ordenados al revés) calculando tiempos de ejecución.
+
+Utilizad esos programas (o algunos otros a vuestra elección) para ilustrar el cumplimiento del principio de invarianza (dos implementaciones del mismo algoritmo difieren a lo sumo en una constante multiplicativa).

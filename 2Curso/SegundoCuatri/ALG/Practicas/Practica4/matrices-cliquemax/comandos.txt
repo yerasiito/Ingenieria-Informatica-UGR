@@ -1,0 +1,6 @@
+./main cliquegrafo10ss.txt
+./main cliquegrafo15ss.txt
+./main cliquegrafo20ss.txt
+./main cliquegrafo40ss.txt
+./main cliquegrafo50ss.txt
+./main cliquegrafo100ss.txt

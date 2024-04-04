@@ -1,0 +1,2 @@
+
+Realizar un estudio empírico para determinar si es preferible utilizar la búsqueda binaria o la búsqueda "terciaria" comentada en clase (ambos algoritmos son de orden logarítmico, pero sus constantes ocultas son diferentes).

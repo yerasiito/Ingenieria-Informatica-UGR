@@ -1,0 +1,1014 @@
+\documentclass[12pt, spanish]{article}
+\usepackage[spanish]{babel}
+\selectlanguage{spanish}
+\usepackage{natbib}
+\usepackage{url}
+\usepackage[utf8x]{inputenc}
+\usepackage{graphicx}
+\graphicspath{{images/}}
+\usepackage{array}
+\usepackage{float}
+\usepackage{siunitx}
+\usepackage[table,xcdraw,dvipsnames]{xcolor}
+\usepackage{longtable}
+\usepackage{parskip}
+\usepackage{fancyhdr}
+\usepackage{vmargin}
+\usepackage{listings}
+\usepackage{adjustbox}
+\usepackage{subfig}
+\usepackage{minted}
+\usepackage[shortlabels]{enumitem}
+\setlist[enumerate]{
+labelsep=8pt,
+labelindent=0.3\parindent,
+itemindent=0pt,
+leftmargin=*,
+before=\setlength{\listparindent}{-\leftmargin},
+}
+
+\def\code#1{\texttt{#1}}
+\usepackage[default]{sourcesanspro}
+\usepackage{tcolorbox}
+\usepackage{etoolbox}
+\BeforeBeginEnvironment{minted}{\begin{tcolorbox}}%
+\AfterEndEnvironment{minted}{\end{tcolorbox}}%
+
+\setmarginsrb{2 cm}{1 cm}{2 cm}{2 cm}{1 cm}{1.5 cm}{1 cm}{1.5 cm}
+
+\title{Práctica 1: Análisis de Eficiencia de Algoritmos \hspace{0.05cm} }
+\date{}
+\author{
+Yunkai Lin Pan: 20\% \\
+Alfonso Jesús Piñera Herrera: 20\% \\
+Álvaro Hernández Coronel: 20\%  \\
+Jaime Castillo Uclés: 20\% \\
+Yeray López Ramírez: 20\% \\
+}
+
+\renewcommand*\contentsname{hola}
+
+\makeatletter
+\let\thetitle\@title
+\let\theauthor\@author
+\let\thedate\@date
+\makeatother
+
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{}
+\chead{\thedate}
+\lhead{\thetitle}
+\cfoot{\thepage}
+
+\begin{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{titlepage}
+  \centering
+  \vspace*{0.5 cm}
+  \includegraphics[scale = 0.50]{ugr.png}\\[1.0 cm]
+  %\textsc{\LARGE Universidad de Granada}\\[2.0 cm]   
+  \textsc{\huge Grado en Ingeniería Informática}\\[0.5 cm]
+  \rule{\linewidth}{0.2 mm} \\[0.4 cm]
+  { \huge \bfseries \thetitle}\\
+  \rule{\linewidth}{0.2 mm} \\[1.5 cm]
+  
+  \begin{minipage}{0.4\textwidth}
+    \begin{flushleft} \large
+        \emph{Autores:}\\
+
+        \small \theauthor
+        \end{flushleft}
+        \end{minipage}~
+        \begin{minipage}{0.4\textwidth}
+        \begin{flushright} \large
+        \emph{Curso:2ºC \\
+        Asignatura: Algorítmica \\
+        Fecha: 22 de Marzo de 2022 \\
+        Grupo de prácticas: C2 \\
+        Número de grupo: 3}
+    \end{flushright}
+\end{minipage}\\[1 cm]
+
+
+\vfill
+  
+\end{titlepage}
+
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\tableofcontents
+\pagebreak
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Descripción del problema}
+En esta práctica analizaremos de forma \textbf{empírica} e \textbf{híbrida} distintos algorítmos.
+
+\section{Algoritmos de Ordenación}
+En esta parte trataremos cuatro de los algoritmos de ordenación más conocidos. Los dividiremos en \emph{cuadráticos} y \emph{logarítmicos}:
+
+\subsection{Eficiencia n²}
+Los algoritmos a calcular su eficiencia empírica que tienen este tipo de eficiencia son el algoritmo de la \textbf{burbuja} y de la \textbf{inserción}.
+Empezamos con el algoritmo de la \emph{burbuja}.
+
+\subsubsection{Ordenación por Burbuja}
+La función proporcionada para este algoritmo es la siguiente:
+\begin{minted}{c++}
+ inline void burbuja(int T[], int num_elem)
+{
+ burbuja_lims(T, 0, num_elem);
+}
+
+static void burbuja_lims(int T[], int inicial, int final)
+{
+ int i, j;
+ int aux;
+ for (i = inicial; i < final - 1; i++)
+   for (j = final - 1; j > i; j--)
+     if (T[j] < T[j-1])
+ {
+   aux = T[j];
+   T[j] = T[j-1];
+   T[j-1] = aux;
+ }
+}
+\end{minted}
+
+\renewcommand{\arraystretch}{1.25}
+\newpage
+Al ejecutar \textcolor{BrickRed}{\code{./burbuja}} con los valores predeterminados del compilador:
+\input{burbuja_sinflag.tex}
+
+\newpage
+
+Al usar gnuplot para graficar los datos anteriores, se crea la siguiente gráfica:
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale = 0.8]{burbuja.png}
+\end{figure}
+
+La eficiencia híbrida calculada mediante gnuplot da como resultado el siguiente fichero  \textbf{\textcolor{ForestGreen}{\code{fit.log}}}:
+
+\begin{minted}{text}
+FIT:    data read from 'burbuja.dat'
+       #datapoints = 25
+function used for fitting: f(x)
+       f(x) = a0*x*x+a1*x+a2
+iter      chisq       delta/lim  lambda   a0            a1            a2
+  0 1.3460545235e+21   0.00e+00  4.24e+09    1.000000e+00   1.000000e+00
+ 13 1.6690141492e+01  -1.14e-05  4.24e-04    3.336682e-09  -3.675681e-05
+After 13 iterations the fit converged.
+Final set of parameters            Asymptotic Standard Error
+=======================            ==========================
+a0              = 3.33668e-09      +/- 1.502e-10    (4.501%)
+a1              = -3.67568e-05     +/- 2.011e-05    (54.72%)
+a2              = 0.402602         +/- 0.5674       (140.9%)
+correlation matrix of the fit parameters:
+                a0     a1     a2
+a0              1.000
+a1             -0.971  1.000
+a2              0.774 -0.884  1.000
+\end{minted}
+
+De aquí concluimos que la formula ajustada es:
+
+\[f(x)=\num{3.33668e-09}x² - \num{3.67568e-05}x + 0.402602\]
+
+Tras representar la función ajustada anterior en la gráfica de puntos podemos ver que se ajustan perfectamente:
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale = 0.8]{burbujaAjustada.png}
+\end{figure}
+
+\subsubsection{Ordenación por Inserción}
+La función del algoritmo de inserción analizado es la siguiente:
+
+\begin{minted}{c++}
+static void insercion_lims(int T[], int inicial, int final){
+  int i, j, aux;
+  for (i = inicial + 1; i < final; i++) {
+	j = i;
+	while ((T[j] < T[j-1]) && (j > 0)) {
+  	aux = T[j];
+  	T[j] = T[j-1];
+  	T[j-1] = aux;
+  	j--;
+	}
+  }
+}
+\end{minted}
+
+\newpage
+
+La tabla de datos resultante en el PC de nuestro compañero Álvaro es:
+\input{insercionAlvaro.tex}
+\begin{center}
+Como podemos entrever, hay algunos picos inesperados para ciertos tamaños.
+
+\newpage
+
+Al graficar la tabla de datos, efectivamente vemos los picos más claramente:
+\end{center}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale = 0.7]{insercionAlvaro.png}
+  \caption{Algoritmo de Inserción en el PC de Álvaro}
+\end{figure}
+
+Desconocemos el porqué de este resultado errático, también sucede en el ordenador personal del compañero Yeray:
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale = 0.7]{insercionYeray.png}
+\end{figure}
+
+
+Al intentar ajustar los datos de antes vemos que el porcentaje de error es inusualmente alto:
+\begin{minted}{text}
+ **********************************************************************
+Mon Mar 21 16:02:10 2022
+
+
+FIT:	data read from "insercion.dat"
+    	format = z
+    	#datapoints = 25
+    	residuals are weighted equally (unit weight)
+
+function used for fitting: f(x)
+    f(x) = a0*x*x+a1*x+a2
+fitted parameters initialized with current variable values
+
+iter  	chisq   delta/lim  lambda   a0        	a1
+   0 1.3460545288e+21   0.00e+00  4.24e+09	1.000000e+00
+  13 3.6180941721e+01  -5.50e-05  4.24e-04	6.294092e-10
+
+After 13 iterations the fit converged.
+final sum of squares of residuals : 36.1809
+rel. change during last iteration : -5.50109e-10
+
+degrees of freedom	(FIT_NDF)                    	: 22
+rms of residuals  	(FIT_STDFIT) = sqrt(WSSR/ndf)	: 1.28242
+variance of residuals (reduced chisquare) = WSSR/ndf   : 1.64459
+
+Final set of parameters        	Asymptotic Standard Error
+=======================        	==========================
+a0          	= 6.29409e-10  	+/- 2.211e-10	(35.13%)
+a1          	= 5.46974e-05  	+/- 2.961e-05	(54.14%)
+a2          	= -0.933148    	+/- 0.8354   	(89.52%)
+
+correlation matrix of the fit parameters:
+                a0     a1     a2
+a0              1.000
+a1             -0.971  1.000
+a2              0.774 -0.884  1.000
+\end{minted}
+
+La función ajustada que nos genera es:
+
+\[f(x)=\num{6.29409e-10}x² + \num{5.46974e-05}x - 0.933148\]
+
+\newpage
+
+Al ajustarla vemos que la función pasa por el medio de los puntos:
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale = 0.8]{AjusteAlvaro.png}
+  \caption{Ajuste en el PC de Álvaro}
+\end{figure}
+
+
+Sin embargo, tras ejecutar exactamente el mismo fichero fuente del algoritmo en el ordenador de Jaime obtenemos una tabla sin sorpresas:
+\input{insercionJaime.tex}
+
+Efectivamente al graficarla ésta se ajusta a una función cuadrática convencional a excepción de la última ejecución que sufre una bajada de medio segundo respecto a la anterior ejecución:
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale = 0.8]{insercionJaime.png}
+  \caption{Algoritmo de Inserción en el PC de Jaime}
+\end{figure}
+
+El ajuste queda finalmente:
+
+\begin{minted}{text}
+************************************************************************
+Mon Mar 21 16:14:53 2022
+
+
+FIT:	data read from "insercion2.dat"
+    	format = z
+    	#datapoints = 25
+    	residuals are weighted equally (unit weight)
+
+function used for fitting: f(x)
+    f(x) = a0*x*x+a1*x+a2
+fitted parameters initialized with current variable values
+
+iter  	chisq          delta/lim  lambda    a0
+   0 1.1054819544e+02   0.00e+00  3.59e+00	6.294092e-10
+   4 1.4550871377e+00  -1.09e-03  3.59e-04	8.460509e-10
+
+After 4 iterations the fit converged.
+final sum of squares of residuals : 1.45509
+rel. change during last iteration : -1.08883e-08
+
+degrees of freedom	(FIT_NDF)                    	: 22
+rms of residuals  	(FIT_STDFIT) = sqrt(WSSR/ndf)	: 0.257178
+variance of residuals (reduced chisquare) = WSSR/ndf   : 0.0661403
+
+Final set of parameters        	Asymptotic Standard Error
+=======================        	==========================
+a0          	= 8.46051e-10  	+/- 4.434e-11	(5.241%)
+a1          	= -6.43769e-06 	+/- 5.938e-06	(92.24%)
+a2          	= 0.144484     	+/- 0.1675   	(116%)
+
+correlation matrix of the fit parameters:
+            	a0   a1 	a2
+a0          	1.000
+a1         	-0.971  1.000
+a2          	0.774 -0.884  1.000
+\end{minted}
+
+La función resultante del ajuste es similar a la anterior:
+
+\[f(x) = \num{8.46051e-10}x² - \num{6.43769e-06}x + 0.144484\]
+
+\newpage
+
+Sin embargo, esta vez si pasa por los puntos de forma correcta:
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale = 1]{AjusteJaime.png}
+  \caption{Ajuste del algoritmo de Inserción en el PC de Jaime}
+\end{figure}
+
+
+\subsection{Eficiencia n log(n)}
+Los algoritmos de orden $n\;log(n)$ son el algoritmo de \textbf{mergesort} y el \textbf{quicksort} que son algoritmos de ordenación de vectores. Los explicamos a continuación:
+
+\subsubsection{Ordenación por Mergesort}
+Es uno de los algoritmos más eficientes de la práctica junto al Quicksort. Como veremos después, el set de datos no pasa del segundo.
+
+\newpage
+
+El código utlizado para el algoritmo Mergesort es:
+\begin{minted}{c++}
+const int UMBRAL_MS = 100;
+
+void mergesort(int T[], int num_elem)
+{
+  mergesort_lims(T, 0, num_elem);
+}
+
+static void mergesort_lims(int T[], int inicial, int final)
+{
+  if (final - inicial < UMBRAL_MS)
+	{
+  	insercion_lims(T, inicial, final);
+	} else {
+  	int k = (final - inicial)/2;
+
+  	int * U = new int [k - inicial + 1];
+  	assert(U);
+  	int l, l2;
+  	for (l = 0, l2 = inicial; l < k; l++, l2++)
+    U[l] = T[l2];
+  	U[l] = INT_MAX;
+
+  	int * V = new int [final - k + 1];
+  	assert(V);
+  	for (l = 0, l2 = k; l < final - k; l++, l2++)
+    V[l] = T[l2];
+  	V[l] = INT_MAX;
+
+  	mergesort_lims(U, 0, k);
+  	mergesort_lims(V, 0, final - k);
+  	fusion(T, inicial, final, U, V);
+  	delete [] U;
+  	delete [] V;
+	};
+}
+\end{minted}
+
+\newpage
+
+La tabla de datos obtenida es:
+\input{mergesort.tex}
+
+\newpage
+
+La gráfica resultante de la tabla calculada antes es:
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale = 0.8]{mergesort.png}
+\end{figure}
+
+Al calcular la eficiencia híbrida de Mergesort en gnuplot, obtenemos:
+\begin{minted}{text}
+Ajustada a la fórmula a0*x*log(x) + a1
+iter  	chisq   	delta/lim  lambda   a0
+   0 2.6033979525e+15   0.00e+00  1.02e+07	1.000000e+00
+   * 9.3808481861e-04   5.78e-11  1.02e+04	1.418029e-08
+iter  	chisq   	delta/lim  lambda   a0
+
+After 5 iterations the fit converged.
+final sum of squares of residuals : 0.000938085
+rel. change during last iteration : -5.77881e-16
+
+degrees of freedom	(FIT_NDF)                       : 24
+rms of residuals  	(FIT_STDFIT) = sqrt(WSSR/ndf)   : 0.00625195
+variance of residuals (reduced chisquare) = WSSR/ndf   : 3.90869e-05
+
+Final set of parameters        	Asymptotic Standard Error
+=======================        	==========================
+a0          	= 1.41803e-08  	+/- 1.225e-10	(0.8641%)
+a1               = 0.001932       +/- 0.0006271    (32.68%)
+\end{minted}
+
+La función ajustada al algoritmo Mergesort para esta ejecución es:
+
+\[\num{1.41803e-08}n\log(n) + 0.001932\]
+
+La gráfica del ajuste queda:
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale = 1]{AjusteMergesort.png}
+  \caption{Ajuste de Mergesort}
+\end{figure}
+
+
+\subsubsection{Ordenación por Quicksort}
+Junto a MergeSort, es el algoritmo más rápido de los 8 que hemos visto.
+
+\newpage
+La función utilizada es la siguiente:
+
+\begin{minted}{c++}
+inline void quicksort(int T[], int num_elem)
+static void quicksort_lims(int T[], int inicial, int final)
+{
+  int k;
+  if (final - inicial < UMBRAL_QS) {
+    insercion_lims(T, inicial, final);
+  } else {
+    dividir_qs(T, inicial, final, k);
+    quicksort_lims(T, inicial, k);
+    quicksort_lims(T, k + 1, final);
+  };
+}
+\end{minted}
+
+Tras compilar y ejecutar \textcolor{ForestGreen}{\textbf{\code{./quicksort}}}:
+
+\input{quicksort.tex}
+
+Al graficar los datos vemos lo siguiente:
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale = 0.9]{quicksort.jpeg}
+  \caption{Eficiencia Algoritmo QuickSort}
+\end{figure}
+
+\newpage
+
+A pesar de parecer lineal, en realidad es logaritmica pues lo vamos a comprobar ahora mismo:
+\begin{minted}{text}
+
+FIT:    data read from 'quicksort.dat'
+        format = z
+        #datapoints = 25
+        residuals are weighted equally (unit weight)
+
+function used for fitting: f(x)
+	f(x) = a*x*log(x) + b
+fitted parameters initialized with current variable values
+
+iter      chisq       delta/lim  lambda   a             b
+   0 6.6724879056e-05   0.00e+00  1.96e-01    2.710439e-08   2.021386e-03
+   1 6.6724879056e-05   0.00e+00  1.96e+00    2.710439e-08   2.021386e-03
+
+After 1 iterations the fit converged.
+final sum of squares of residuals : 6.67249e-05
+rel. change during last iteration : 0
+
+Final set of parameters            Asymptotic Standard Error
+=======================            ==========================
+a               = 2.71044e-08      +/- 6.623e-11    (0.2444%)
+b               = 0.00202139       +/- 0.0006759    (33.44%)
+
+correlation matrix of the fit parameters:
+                a      b
+a               1.000
+b              -0.864  1.000
+\end{minted}
+
+Quedando la fórmula ajustada como:
+ \[ \num{2.71044e-08}\,n\log(n)+0.00202139 \]
+
+La gráfica ajustada resultante es:
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale = 0.9]{AjusteQuicksort.jpeg}
+  \caption{Ajuste de Quicksort}
+\end{figure}
+
+\section{Otros Algoritmos}
+
+\subsection{Eficiencia n³}
+
+\subsubsection{Algoritmo de Floyd}
+A continuación, a vemos un algoritmo que tiene la finalidad de calcular el costo del mínimo camino de un grafo dirigido.
+
+Para calcularlo siguiendo las instrucciones del guión hemos ejecutado el algoritmo con la macro del guión, variando su tamaño de 50 a 50 hasta 1250. Mostramos la siguiente tabla con los datos del archivo generado \code{.dat}.
+
+\newpage
+
+El código de Floyd utilizado es:
+
+\begin{minted}{c++}
+void Floyd(int **M, int dim)
+{
+	for (int k = 0; k < dim; k++)
+	  for (int i = 0; i < dim;i++)
+	    for (int j = 0; j < dim;j++)
+	      {
+		int sum = M[i][k] + M[k][j];
+	    	M[i][j] = (M[i][j] > sum) ? sum : M[i][j];
+	      }
+}
+\end{minted}
+
+
+La tabla de datos del floyd es:
+\input{floyd.tex}
+
+Tras modificar el código fuente y compilar, obtenemos los siguientes datos del \code{.dat}:
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale = 1]{floyd.png}
+  \caption{Algoritmo Floyd}
+\end{figure}
+
+\newpage
+
+El ajuste/búsqueda de variables ocultas genera el siguiente log:
+
+\begin{minted}{text}
+************************************************************************
+Mon Mar 21 15:30:04 2022
+
+
+FIT:	data read from "floyd.dat"
+    	format = z
+    	#datapoints = 25
+    	residuals are weighted equally (unit weight)
+
+function used for fitting: f(x)
+    f(x) = a0*x*x*x+a1*x*x+a2*x+a3
+fitted parameters initialized with current variable values
+
+iter  	chisq   	delta/lim  lambda   a0
+   0 1.5636145726e+19   0.00e+00  3.95e+08	1.000000e+00
+  12 1.3210841975e-01  -1.85e-02  3.95e-04	5.093144e-09
+
+After 12 iterations the fit converged.
+final sum of squares of residuals : 0.132108
+rel. change during last iteration : -1.85173e-07
+
+degrees of freedom	(FIT_NDF)                    	: 21
+rms of residuals  	(FIT_STDFIT) = sqrt(WSSR/ndf)	: 0.079315
+variance of residuals (reduced chisquare) = WSSR/ndf   : 0.00629088
+
+Final set of parameters        	Asymptotic Standard Error
+=======================        	==========================
+a0          	= 5.09314e-09  	+/- 4.346e-10	(8.534%)
+a1          	= 9.66697e-07  	+/- 8.585e-07	(88.81%)
+a2          	= -0.000409019 	+/- 0.0004853	(118.6%)
+a3          	= 0.0393051    	+/- 0.0743   	(189%)
+
+correlation matrix of the fit parameters:
+            	a0     a1      a2      a3
+a0          	1.000
+a1         	-0.987  1.000
+a2          	0.926 -0.973  1.000
+a3         	-0.719  0.795 -0.898  1.000
+\end{minted}
+
+\newpage
+
+La función resultado del ajuste:
+
+\[f(x)=\num{5.09314e-09}\;x³ + \num{9.66697e-07}\;x² - 0.000409019x + 0.0393051\]
+
+La gráfica ajustada queda:
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale = 0.9]{AjusteFloyd.png}
+  \caption{Floyd Ajustado}
+\end{figure}
+
+\subsubsection{Algoritmo de dijkstra}
+A continuación, vemos el algoritmo recursivo de Dijkstra un algoritmo que tiene el mismo fin pero utiliza un procedimiento recursivo.
+
+\newpage
+
+El código utilizado es el siguiente:
+
+\begin{minted}{c++}
+ void Dijkstra(int **M, int **Sal, int dim, int src) // adjacency matrix
+{
+	int dist[dim]; // integer array to calculate minimum distance
+	bool Tset[dim];// boolean array to mark visted/unvisted
+
+	// set the nodes with infinity distance
+	for(int i = 0; i<dim; i++)
+	{
+		dist[i] = INT_MAX;
+		Tset[i] = false;
+	}
+
+	dist[src] = 0;   // Source vertex distance is set to zero.
+
+	for(int k = 0; k<dim; k++)
+	{
+		int m=minimumDist(dist,Tset,dim);
+		Tset[m]=true;// m with minimum distance included in Tset.
+		for(int i = 0; i<dim; i++)
+		{
+			// Updating the minimum distance
+			if(!Tset[i] && dist[m]!=INT_MAX
+              && dist[m]+M[m][i]<dist[i])
+				dist[i]=dist[m]+M[m][i];
+		}
+	}
+	for(int i = 0; i<dim; i++)
+	   Sal[src][i]=dist[i];
+}
+\end{minted}
+
+La tabla de datos de dijkstra:
+
+\input{dijkstra.tex}
+
+Cuya gráfica asociada es:
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale = 0.7]{dijkstra.png}
+\end{figure}
+
+Calculamos el ajuste con gnuplot:
+\begin{minted}{text}
+*************************************************************************
+Mon Mar 21 15:20:52 2022
+
+
+FIT:    data read from 'dijkstra.dat'
+        format = z
+        #datapoints = 25
+        residuals are weighted equally (unit weight)
+
+function used for fitting: f(x)
+	f(x)=a3*x*x*x+a2*x*x+a1*x+a0
+fitted parameters initialized with current variable values
+
+iter      chisq       delta/lim  lambda       a3             a2
+   0 1.5636145755e+19   0.00e+00  3.95e+08    1.000000e+00   1.000000e+00
+  12 4.3580634335e-01  -6.12e-03  3.95e-04    4.705614e-09  -1.473596e-07
+
+After 12 iterations the fit converged.
+final sum of squares of residuals : 0.435806
+rel. change during last iteration : -6.11875e-08
+
+degrees of freedom    (FIT_NDF)                        : 21
+rms of residuals      (FIT_STDFIT) = sqrt(WSSR/ndf)    : 0.144058
+variance of residuals (reduced chisquare) = WSSR/ndf   : 0.0207527
+
+Final set of parameters            Asymptotic Standard Error
+=======================            ==========================
+a3              = 4.70561e-09      +/- 7.894e-10    (16.78%)
+a2              = -1.4736e-07      +/- 1.559e-06    (1058%)
+a1              = 0.000192697      +/- 0.0008814    (457.4%)
+a0              = -0.00275768      +/- 0.135        (4894%)
+
+correlation matrix of the fit parameters:
+                a3     a2     a1     a0
+a3              1.000
+a2             -0.987  1.000
+a1              0.926 -0.973  1.000
+a0             -0.719  0.795 -0.898  1.000
+\end{minted}
+
+\newpage
+
+La formula ajustada es:
+\[f(x)= \num{4.70561e-09}x³ - \num{1.4736e-07}x² + 0.000192697x - 0.00275768\]
+
+La gráfica con el ajuste queda:
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale = 0.7]{AjusteDijkstra.png}
+\end{figure}
+
+A continuación, vamos a probar otros ajustes que no son buenos para el algoritmo de Dijkstra. Probamos un ajuste lineal.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale = 0.7]{AjusteLinealDijkstra.png}
+\end{figure}
+
+Como podemos observar el ajuste es completamente malo, no es para nada la función real. Probamos con un ajuste con n⁴:
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale = 0.7]{AjusteCuartaDijkstra.png}
+  \caption{Ajuste n⁴ de Dijkstra}
+\end{figure}
+
+Podemos observar que en ciertos tamaños pequeños del algoritmo de Dijkstra, con un ajuste superior al suyo propio, el ajuste queda bien.
+
+\subsection{Eficiencia aⁿ}
+Los algoritmos de orden aⁿ son el algoritmo de hanoi y el algoritmo recursivo de fibonacci que se utilizan respectivamente para resolver el famoso problema de las torres de Hanoi y calcular los números de la sucesión de Fibonacci.
+
+\subsubsection{Algoritmo de fibonacci}
+
+El algoritmo de fibonacci es un clásico de la programación y de las matemáticas. Su código recursivo es bastante simple:
+
+\begin{minted}{c++}
+int fibo(int n)
+{
+  if (n < 2)
+    return 1;
+  else
+    return fibo(n-1) + fibo(n-2);
+}
+\end{minted}
+
+Con unos datos suficientemente altos podemos obtener su eficiencia, obteniendo la tabla:
+
+\input{fibonacci.tex}
+
+\newpage
+
+La gráfica queda:
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale = 1]{fibonacci.png}
+  \caption{Algoritmo de Fibonacci}
+\end{figure}
+
+\newpage
+
+El ajuste del algoritmo en gnuplot es el siguiente:
+
+\begin{minted}{text}
+
+*************************************************************************
+Sun Mar 20 21:44:24 2022
+
+
+FIT:    data read from 'fibonacci.dat'
+        format = z
+        #datapoints = 25
+        residuals are weighted equally (unit weight)
+
+function used for fitting: f(x)
+	f(x) = a*1.618**x + b
+fitted parameters initialized with current variable values
+
+iter      chisq       delta/lim  lambda   a             b
+   0 9.2543992530e+20   0.00e+00  4.30e+09    1.000000e+00   1.000000e+00
+   5 2.1871058673e+01  -2.44e-05  4.30e+04    9.139440e-09   1.000000e+00
+
+After 5 iterations the fit converged.
+final sum of squares of residuals : 21.8711
+rel. change during last iteration : -2.44244e-10
+
+degrees of freedom    (FIT_NDF)                        : 23
+rms of residuals      (FIT_STDFIT) = sqrt(WSSR/ndf)    : 0.975149
+variance of residuals (reduced chisquare) = WSSR/ndf   : 0.950916
+
+Final set of parameters            Asymptotic Standard Error
+=======================            ==========================
+a               = 9.13944e-09      +/- 3.359e-11    (0.3676%)
+b               = 1                +/- 0.2044       (20.44%)
+
+correlation matrix of the fit parameters:
+                a      b
+a               1.000
+b              -0.299  1.000
+\end{minted}
+
+La función ajuste obtenida:
+
+\[f(x)=\num{9.13944e-09}\left(\frac{1+\sqrt{5}}{2}\right)^n + 1\]
+
+\newpage
+
+La gráfica ajustada es:
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale = 0.9]{AjusteFibonacci.png}
+  \caption{Ajuste de Fibonacci}
+\end{figure}
+
+\subsubsection{Algoritmo de hanoi}
+
+El código utilizado para el algoritmo de hanoi es:
+\begin{minted}{c++}
+void hanoi (int M, int i, int j)
+{
+  if (M > 0)
+	{
+  	hanoi(M-1, i, 6-i-j);
+  	cout << i << " -> " << j << endl;
+  	hanoi (M-1, 6-i-j, j);
+  }
+}
+\end{minted}
+
+\newpage
+
+La tabla de datos resultante de este algoritmo es la siguiente:
+
+\input{hanoi.tex}
+
+\newpage
+
+Quedando la siguiente gráfica:
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale = 0.7]{hanoi.png}
+  \caption{Algoritmo de hanoi}
+\end{figure}
+
+El ajuste y búsqueda de constantes ocultas en gnuplot queda:
+
+\begin{minted}{text}
+Ajustada a la fórmula a0*2x
+iter  	chisq   	delta/lim  lambda   a0
+   0 9.3672982738e+03   0.00e+00  2.53e+01	1.418029e-08
+   4 4.5210289275e-04  -2.18e-09  2.53e-03	4.422579e-09
+iter  	chisq   	delta/lim  lambda   a0
+
+After 4 iterations the fit converged.
+final sum of squares of residuals : 0.000452103
+rel. change during last iteration : -2.1823e-14
+
+degrees of freedom	(FIT_NDF)                    	: 30
+rms of residuals  	(FIT_STDFIT) = sqrt(WSSR/ndf)	: 0.00388202
+variance of residuals (reduced chisquare) = WSSR/ndf   : 1.50701e-05
+
+Final set of parameters        	Asymptotic Standard Error
+=======================        	==========================
+a0          	= 4.42258e-09  	+/- 3.914e-13	(0.00885%)
+\end{minted}
+
+\newpage
+La función ajustada que se obtiene es la siguiente:
+
+\[ f(x)= \num{4.42258e-09} \times 2^x \]
+
+
+La gráfica resultante del ajuste es:
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale = 0.9]{AjusteHanoi.png}
+  \caption{Ajuste Hanoi}
+\end{figure}
+
+
+\section{Variación de la eficiencia empírica por factores externos}
+Hemos elegido el algoritmo de burbuja para ver como se comporta con diferentes grados de optimización, distintos SO e incluso modos de rendimiento en el mismo ordenador.
+
+\subsection{Flags de Optimización}
+\begin{table}
+\parbox{.45\linewidth}{
+\centering
+\input{burbuja_ofast.tex}
+\caption{-Ofast}
+}
+\hfill
+\parbox{.45\linewidth}{
+\centering
+\input{burbuja_Os.tex}
+\caption{-Os}
+}
+\end{table}
+
+\newpage
+
+\begin{table}[H]
+\parbox{.3\linewidth}{
+\centering
+\input{burbuja_O1.tex}
+\caption{-O1}
+}
+\quad
+\parbox{.3\linewidth}{
+\centering
+\input{burbuja_O2.tex}
+\caption{-O2}
+}
+\quad
+\parbox{.3\linewidth}{
+\centering
+\input{burbuja_O3.tex}
+\caption{-O3}
+}
+\end{table}
+
+\newpage
+
+La grafica comparativa resultante es:
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale = 0.7]{allBurbujas.png}
+\end{figure}
+
+\subsection{Distintos Sistemas Operativos}
+Además hemos probado el algoritmo de Burbuja en distinos Sistemas operativos como Windows 10 y MacOS:
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale = 0.7]{burbujaWindows.png}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale = 0.7]{burbujaMacOS.png}
+\end{figure}
+
+Tras la comparativa final, sorprendentemente en windows tarda menos:
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale = 0.8]{burbujaOS.png}
+  \caption{Comparación entre SO}
+\end{figure}
+
+\section{Los tiempos de todos los algoritmos}
+En esta sección compararemos todos los algoritmos en la misma gráfica y veremos la diferencia de eficiencia entre los distintos órdenes de algoritmos que hemos medido.
+
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale = 1]{TodosAlgoritmos.png}
+  \caption{La eficiencia de todos los algoritmos}
+\end{figure}
+
+
+Ahora obtendremos específicamente podemos ver la diferencia en la gráfica de los algoritmos de ordenación.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale = 0.7]{AlgoritmosOrdenacion.png}
+  \caption{La eficiencia de los algorítmos de ordenación}
+\end{figure}
+
+Las gráficas por eficiencia de algoritmos son:
+
+\begin{itemize}
+ \item Eficiencia n²:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[scale = 0.5]{BurbujaInsercion.png}
+    \caption{La eficiencia de los algorítmos n²}
+  \end{figure}
+
+ \item Eficiencia nlog(n)
+   \begin{figure}[H]
+    \centering
+    \includegraphics[scale = 0.7]{QuicksortMergesort.png}
+  \end{figure}
+
+  \item Eficiencia n³
+    \begin{figure}[H]
+    \centering
+    \includegraphics[scale = 0.7]{FloydDijkstra.png}
+    \caption{La eficiencia de los algorítmos n³}
+  \end{figure}
+
+  \item Eficiencia aⁿ
+    \begin{figure}[H]
+    \centering
+    \includegraphics[scale = 0.7]{FibonacciHanoi.png}
+    \caption{La eficiencia de los algorítmos aⁿ}
+  \end{figure}
+
+\end{itemize}
+
+\vspace{5cm}
+ \bibliographystyle{plain}
+ \bibliography{biblist}
+
+
+\end{document}

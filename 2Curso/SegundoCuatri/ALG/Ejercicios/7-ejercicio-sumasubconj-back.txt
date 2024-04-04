@@ -1,0 +1,3 @@
+Implementad, para el problema de la suma de subconjuntos, una solución fuerza bruta y dos soluciones con backtracking: una que no guarde datos adicionales (y tarde O(n) en chequear la factibilidad) y otra que guarde más datos y consiga chequear la factibilidad en tiempo O(1). Ambas están explicadas en el tema. Seguid el esquema general planteado en la presentación del tema. Haced un estudio empírico de la eficiencia.
+
+Para hacer pruebas podéis utilizar como vector de números por ejemplo todos los números enteros desde 1 hasta n en orden creciente, y usar un valor M mayor que n (por ejemplo con n=50 y M=75, se generan 47684 soluciones distintas).

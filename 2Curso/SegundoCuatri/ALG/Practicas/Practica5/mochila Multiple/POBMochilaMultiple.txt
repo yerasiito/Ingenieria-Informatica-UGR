@@ -1,0 +1,45 @@
+-- DEMOSTRACIÓN DE QUE SE CUMPLE EL PRINCIPIO DE OPTIMALIDAD DE BELLMAN EN EL PROBLEMA MOCHILA 0/1 CON MÚLTIPLES COPIAS DE OBJETOS --
+
+Aviso: Esta demostración no permite decir que el algoritmo da el óptimo, solo sirve para decir que el principio de Optimalidad se cumple en este problema y se puede usar un algoritmo de PD.
+
+
+Llamamos X1...Xn al conjunto de decisiones coger/no coger objetos en la mochila.
+Llamamos B(n, W) a la abstracción de la mochila, donde n es el número de objetos que hay dentro de la mochila y W la capacidad máxima de la mochila.
+Llamamos SC(n) al conjunto de todos los conjuntos los objetos que pueden ser elegidos para una B(n, W) que no tiene copias de múltiples objetos.
+Llamamos C(n) al conjunto de todos los conjuntos de objetos que pueden ser elegidos para una B(n,W) que tiene copias de múltiples objetos.
+
+-- Declaración del POB y representación del problema previó a la demostración --
+Dado el principio de Optimalidad de Bellman. 
+
+	"Dada una solución optimal a un problema original de tamaño N, cada una de las partes F de la solución optimal de ese problema también son óptimas para cada un subproblema N/F sub_i del problema original"
+	
+Debe existir una forma de representar los subproblemas del problema, en nuestro problema.
+ 
+En nuestro caso, representamos los subproblemas del problema de esta forma:
+Si B(n, W) es la mochila que contiene el conjunto X1..Xn de objetos que resuelven el problema. Existen n-1 subproblemas que serán resueltos por n-1 conjuntos de decisiones en n-1 submochilas. 
+
+--- DEMOSTRACIÓN POR DEDUCCIÓN DE QUE SC(n) = C(n) ---
+1. SC(n) = {SCo...Scn-1} donde n-1 es +infinito y C(n) = { Co...Cn-1} 
+2. Si existe SCi(n) un conjunto de objetos que pueden ser elegidos en la mochila donde cada objeto O tiene un peso P donde P es cualquier número natural N y un beneficio B donde B es cualquier número natural N, y si existe Ci(n) > SCi(n) donde se cumple lo mismo y además está compuesto por todos los Oi objetos repetidos N veces siendo N el tamaño de la mochila, entonces SCi(n) pertenece a Ci(n). 
+
+Si SCi(n) pertenece a Ci(n) y premisa 1 ,y por tanto, existe un Sci+x(n) que es igual Ci(n) y por ser infinito el conjunto de los N esto se cumple siempre, entonces siempre existirá una igualdad donde un Sci+x(n) = Ci(n). 
+
+A partir de esto, como existen infinitos conjuntos, SC(n) = C(n).
+
+--- DEMOSTRACIÓN DEL POB CUMPLIENDOSE SC(n) = C(n) ---
+
+Premisa 1: X1...Xn es óptima para B(n, W)
+
+-- Aplicamos el principio de Optimalidad, a partir de nuestra representación. Y llegamos a esta sentencia.
+
+Si se cumple la premisa 1, entonces X1...Xn-1 es óptima para B(n-1, W) si (de la premisa 1) Xn=0.
+
+Llamamos a la claúsula derecha de la sentencia, aplicarPOB.
+
+-- Demostración por reducción al absurdo --
+
+Negamos aplicarPOB, entonces debe existir un conjunto Y1...Yn-1 tal que sum_1^{n-1} Yi*bi > sum_1^{n-1}Xi*bi y sum_1^{n-1}Yi*Wi<=W.
+
+Si Yn=Xn=0, entonces sum_1^{n}Yi*Wi <= W por tanto Y1...Yn es una solución para B(n, w), como sum_1^{n}Yi*bi > sum_1{n}Xi*bi por tanto X1...Xn no sería óptima. Se incumple la premisa 1.
+
+Solo nos queda aceptar que aplicar POB es verdadero, demostrando así que el POB se puede aplicar a este problema con esta representación.

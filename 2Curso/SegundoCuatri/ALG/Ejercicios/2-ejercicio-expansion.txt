@@ -1,0 +1,4 @@
+Resolved por el método de expansión las dos siguientes recurrencias: 
+
+-T(n)=2T(n/2)+1, con T(1)=1.
+-T(n)=2T(n/2)+n, con T(1)=1.

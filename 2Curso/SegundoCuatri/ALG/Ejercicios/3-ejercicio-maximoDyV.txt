@@ -1,0 +1,2 @@
+
+Implementar un algoritmo sencillo para calcular el valor máximo de un vector y otro basado en divide y vencerás. Realizar un estudio empírico e híbrido de su eficiencia.

@@ -1,0 +1,55 @@
+
+
+*******************************************************************************
+Tue Apr  5 19:23:05 2022
+
+
+FIT:    data read from 'compraventatrivial.dat'
+        format = z
+        #datapoints = 25
+        residuals are weighted equally (unit weight)
+
+function used for fitting: f(x)
+	f(x)=a2*x*x+a1*x+a2
+fitted parameters initialized with current variable values
+
+iter      chisq       delta/lim  lambda   a2            a1            a0           
+   0 1.3460545255e+21   0.00e+00  4.24e+09    1.000000e+00   1.000000e+00   1.000000e+00
+BREAK: Singular matrix in Invert_RtR
+
+*******************************************************************************
+Tue Apr  5 19:24:21 2022
+
+
+FIT:    data read from 'compraventatrivial.dat'
+        format = z
+        #datapoints = 25
+        residuals are weighted equally (unit weight)
+
+function used for fitting: f(x)
+	f(x)=a0*x*x+a1*x+a2
+fitted parameters initialized with current variable values
+
+iter      chisq       delta/lim  lambda   a2            a1            a0           
+   0 1.3487215210e+21   0.00e+00  4.24e+09    2.330664e-09  -4.438380e-06   1.001000e+00
+   5 6.9420451076e-01  -4.96e-10  4.24e+04    2.330664e-09  -4.438380e-06   2.330664e-09
+
+After 5 iterations the fit converged.
+final sum of squares of residuals : 0.694205
+rel. change during last iteration : -4.95775e-15
+
+degrees of freedom    (FIT_NDF)                        : 22
+rms of residuals      (FIT_STDFIT) = sqrt(WSSR/ndf)    : 0.177637
+variance of residuals (reduced chisquare) = WSSR/ndf   : 0.0315548
+
+Final set of parameters            Asymptotic Standard Error
+=======================            ==========================
+a2              = 2.33066e-09      +/- 0.1157       (4.965e+09%)
+a1              = -4.43838e-06     +/- 4.102e-06    (92.41%)
+a0              = 2.33066e-09      +/- 3.063e-11    (1.314%)
+
+correlation matrix of the fit parameters:
+                a2     a1     a0     
+a2              1.000 
+a1             -0.884  1.000 
+a0              0.774 -0.971  1.000 

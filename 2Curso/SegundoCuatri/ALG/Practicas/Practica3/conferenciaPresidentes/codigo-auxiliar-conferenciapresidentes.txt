@@ -1,0 +1,49 @@
+
+double uniforme() 
+{
+ int t = rand();
+ double f = ((double)RAND_MAX+1.0);
+ return (double)t/f;
+}
+
+void generaconveniencias() {
+ srand(time(0));
+ for (int i = 0; i < n-1; i++)
+   for (int j = i+1; j < n; j++) {
+        double u=uniforme();
+        c[i][j]=(int)(u*101);
+        c[j][i]=c[i][j];
+     }
+ for (int i = 0; i < n; i++) c[i][i]=0;
+}
+
+int calculaconveniencia() {
+
+int suma=0;
+for (int i=1; i<n-1; i++)
+   suma+=c[a[i]][a[i-1]]+c[a[i]][a[i+1]]; // desde 1 hasta n-2
+suma+=c[a[0]][a[n-1]]+c[a[0]][a[1]]; //se añade los que están al lado de 0
+suma+=c[a[n-1]][a[n-2]]+c[a[n-1]][a[0]]; //se añade los que están al lado de n-1
+return suma;
+}
+
+
+void generapermutaciones(int m, int * a) {
+    if (m==1) {
+        for (int i=0; i < n; i++) cout <<a[i]<<" ";
+        //sustituir la escritura de la permutacion por la evaluacion de la misma
+        //e ir guardando la que vaya dando mejor conveniencia
+    }
+    else
+        for (int i= 0; i < m; i++) {
+            generapermutaciones(m-1, a);
+            if (m%2==0) swap(a[i],a[m-1]);
+            else
+                swap(a[0],a[m-1]);
+            }
+}
+
+//antes de llamar a generapermutaciones
+for (int i=0; i<n; i++)
+    a[i]=i;
+generapermutaciones(n,a);

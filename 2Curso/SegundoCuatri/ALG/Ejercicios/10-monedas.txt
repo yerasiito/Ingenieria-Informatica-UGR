@@ -1,0 +1,1 @@
+Estudiad cómo habría que modificar el planteamiento del problema de dar cambio cuando no hay límite de monedas, resuelto por programación dinámica, para el caso en que el número de monedas de cada tipo no sea ilimitado. Plantead el problema, dad la formulación recursiva y el algoritmo.
