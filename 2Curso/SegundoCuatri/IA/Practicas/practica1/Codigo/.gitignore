@@ -1,0 +1,9 @@
+practica1
+practica1SG
+lib
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+.DS_Store
+/build/
+/dist/

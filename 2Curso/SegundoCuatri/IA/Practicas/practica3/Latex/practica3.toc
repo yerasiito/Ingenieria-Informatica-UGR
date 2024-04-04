@@ -1,0 +1,12 @@
+\babel@toc {spanish}{}\relax 
+\babel@toc {spanish}{}\relax 
+\contentsline {section}{\numberline {1}Introducci\IeC {\'o}n}{2}{}%
+\contentsline {section}{\numberline {2}Desarrollo}{2}{}%
+\contentsline {subsection}{\numberline {2.1}Estrategia MiniMax}{2}{}%
+\contentsline {subsection}{\numberline {2.2}Estrategia Poda Alfa-Beta}{3}{}%
+\contentsline {subsection}{\numberline {2.3}Heur\IeC {\'\i }sticas}{4}{}%
+\contentsline {subsubsection}{\numberline {2.3.1}Comportamiento general}{4}{}%
+\contentsline {subsubsection}{\numberline {2.3.2}Heuristicas: ganaJ1}{5}{}%
+\contentsline {subsubsection}{\numberline {2.3.3}Heuristicas: ganaJ2}{5}{}%
+\contentsline {subsubsection}{\numberline {2.3.4}Heuristicas: valoracionDefinitiva}{5}{}%
+\contentsline {section}{\numberline {3}Conclusiones}{6}{}%

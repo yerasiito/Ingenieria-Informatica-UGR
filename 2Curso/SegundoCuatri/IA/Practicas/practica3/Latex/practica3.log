@@ -1,0 +1,970 @@
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022/Arch Linux) (preloaded format=pdflatex 2022.4.30)  6 JUN 2022 23:42
+entering extended mode
+ \write18 enabled.
+ %&-line parsing enabled.
+**practica3.tex
+(./practica3.tex
+LaTeX2e <2021-11-15> patch level 1
+L3 programming layer <2022-04-10>
+(/usr/share/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2021/10/04 v1.4n Standard LaTeX document class
+(/usr/share/texmf-dist/tex/latex/base/size12.clo
+File: size12.clo 2021/10/04 v1.4n Standard LaTeX file (size option)
+)
+\c@part=\count185
+\c@section=\count186
+\c@subsection=\count187
+\c@subsubsection=\count188
+\c@paragraph=\count189
+\c@subparagraph=\count190
+\c@figure=\count191
+\c@table=\count192
+\abovecaptionskip=\skip47
+\belowcaptionskip=\skip48
+\bibindent=\dimen138
+)
+(/usr/share/texmf-dist/tex/generic/babel/babel.sty
+Package: babel 2022/02/26 3.73 The Babel package
+\babel@savecnt=\count193
+\U@D=\dimen139
+\l@unhyphenated=\language87
+
+(/usr/share/texmf-dist/tex/generic/babel/txtbabel.def)
+\bbl@readstream=\read2
+\bbl@dirlevel=\count194
+
+(/usr/share/texmf-dist/tex/generic/babel-spanish/spanish.ldf
+Language: spanish.ldf 2021/05/27 v5.0q Spanish support from the babel system
+\es@quottoks=\toks16
+\es@quotdepth=\count195
+Package babel Info: Making " an active character on input line 570.
+Package babel Info: Making . an active character on input line 675.
+Package babel Info: Making < an active character on input line 722.
+Package babel Info: Making > an active character on input line 722.
+))
+LaTeX Info: Redefining \. on input line 3.
+LaTeX Info: Redefining \% on input line 3.
+
+(/usr/share/texmf-dist/tex/latex/natbib/natbib.sty
+Package: natbib 2010/09/13 8.31b (PWD, AO)
+\bibhang=\skip49
+\bibsep=\skip50
+LaTeX Info: Redefining \cite on input line 694.
+\c@NAT@ctr=\count196
+)
+(/usr/share/texmf-dist/tex/latex/url/url.sty
+\Urlmuskip=\muskip16
+Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
+)
+(/usr/share/texmf-dist/tex/latex/base/inputenc.sty
+Package: inputenc 2021/02/14 v1.3d Input encoding file
+\inpenc@prehook=\toks17
+\inpenc@posthook=\toks18
+
+(/usr/share/texmf-dist/tex/latex/ucs/utf8x.def
+File: utf8x.def 2004/10/17 UCS: Input encoding UTF-8
+))
+(/usr/share/texmf-dist/tex/latex/ucs/ucs.sty
+Package: ucs 2013/05/11 v2.2 UCS: Unicode input support
+
+(/usr/share/texmf-dist/tex/latex/ucs/data/uni-global.def
+File: uni-global.def 2013/05/13 UCS: Unicode global data
+)
+\uc@secondtry=\count197
+\uc@combtoks=\toks19
+\uc@combtoksb=\toks20
+\uc@temptokena=\toks21
+)
+(/usr/share/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 2021/09/16 v1.2d Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/share/texmf-dist/tex/latex/graphics/keyval.sty
+Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
+\KV@toks@=\toks22
+)
+(/usr/share/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2021/03/04 v1.4d Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/share/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 2021/08/11 v1.11 sin cos tan (DPC)
+)
+(/usr/share/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: pdftex.def on input line 107.
+
+(/usr/share/texmf-dist/tex/latex/graphics-def/pdftex.def
+File: pdftex.def 2020/10/05 v1.2a Graphics/color driver for pdftex
+))
+\Gin@req@height=\dimen140
+\Gin@req@width=\dimen141
+)
+(/usr/share/texmf-dist/tex/latex/tools/array.sty
+Package: array 2021/10/04 v2.5f Tabular extension package (FMi)
+\col@sep=\dimen142
+\ar@mcellbox=\box50
+\extrarowheight=\dimen143
+\NC@list=\toks23
+\extratabsurround=\skip51
+\backup@length=\skip52
+\ar@cellbox=\box51
+)
+(/usr/share/texmf-dist/tex/latex/float/float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count198
+\float@exts=\toks24
+\float@box=\box52
+\@float@everytoks=\toks25
+\@floatcapt=\box53
+)
+(/usr/share/texmf-dist/tex/latex/siunitx/siunitx.sty
+Package: siunitx 2022-04-04 v3.0.50 A comprehensive (SI) units package
+\l__siunitx_angle_tmp_dim=\dimen144
+\l__siunitx_angle_marker_box=\box54
+\l__siunitx_angle_unit_box=\box55
+\l__siunitx_compound_count_int=\count199
+
+(/usr/share/texmf-dist/tex/latex/translations/translations.sty
+Package: translations 2022/02/05 v1.12 internationalization of LaTeX2e packages
+ (CN)
+
+(/usr/share/texmf-dist/tex/latex/etoolbox/etoolbox.sty
+Package: etoolbox 2020/10/05 v2.5k e-TeX tools for LaTeX (JAW)
+\etb@tempcnta=\count266
+)
+(/usr/share/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
+Package: pdftexcmds 2020-06-27 v0.33 Utility functions of pdfTeX for LuaTeX (HO
+)
+
+(/usr/share/texmf-dist/tex/generic/infwarerr/infwarerr.sty
+Package: infwarerr 2019/12/03 v1.5 Providing info/warning/error messages (HO)
+)
+(/usr/share/texmf-dist/tex/generic/iftex/iftex.sty
+Package: iftex 2022/02/03 v1.0f TeX engine tests
+)
+(/usr/share/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty
+Package: ltxcmds 2020-05-10 v1.25 LaTeX kernel commands for general use (HO)
+)
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+))
+\l__siunitx_number_exponent_fixed_int=\count267
+\l__siunitx_number_min_decimal_int=\count268
+\l__siunitx_number_min_integer_int=\count269
+\l__siunitx_number_round_precision_int=\count270
+\l__siunitx_number_group_minimum_int=\count271
+
+(/usr/share/texmf-dist/tex/latex/amsmath/amstext.sty
+Package: amstext 2021/08/26 v2.01 AMS text
+
+(/usr/share/texmf-dist/tex/latex/amsmath/amsgen.sty
+File: amsgen.sty 1999/11/30 v2.0 generic functions
+\@emptytoks=\toks26
+\ex@=\dimen145
+))
+\l__siunitx_table_tmp_box=\box56
+\l__siunitx_table_tmp_dim=\dimen146
+\l__siunitx_table_column_width_dim=\dimen147
+\l__siunitx_table_integer_box=\box57
+\l__siunitx_table_decimal_box=\box58
+\l__siunitx_table_before_box=\box59
+\l__siunitx_table_after_box=\box60
+\l__siunitx_table_before_dim=\dimen148
+\l__siunitx_table_carry_dim=\dimen149
+\l__siunitx_unit_tmp_int=\count272
+\l__siunitx_unit_position_int=\count273
+\l__siunitx_unit_total_int=\count274
+
+(/usr/share/texmf-dist/tex/latex/l3packages/l3keys2e/l3keys2e.sty
+(/usr/share/texmf-dist/tex/latex/l3kernel/expl3.sty
+Package: expl3 2022-04-10 L3 programming layer (loader) 
+
+(/usr/share/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
+File: l3backend-pdftex.def 2022-04-14 L3 backend support: PDF output (pdfTeX)
+\l__color_backend_stack_int=\count275
+\l__pdf_internal_box=\box61
+))
+Package: l3keys2e 2022-01-12 LaTeX2e option processing using LaTeX3 keys
+))
+(/usr/share/texmf-dist/tex/latex/xcolor/xcolor.sty
+Package: xcolor 2021/10/31 v2.13 LaTeX color extensions (UK)
+
+(/usr/share/texmf-dist/tex/latex/graphics-cfg/color.cfg
+File: color.cfg 2016/01/02 v1.6 sample color configuration
+)
+Package xcolor Info: Driver file: pdftex.def on input line 227.
+
+(/usr/share/texmf-dist/tex/latex/colortbl/colortbl.sty
+Package: colortbl 2020/01/04 v1.0e Color table columns (DPC)
+\everycr=\toks27
+\minrowclearance=\skip53
+)
+\rownum=\count276
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1352.
+Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1356.
+Package xcolor Info: Model `RGB' extended on input line 1368.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1370.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1371.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1372.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1373.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1374.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1375.
+
+(/usr/share/texmf-dist/tex/latex/graphics/dvipsnam.def
+File: dvipsnam.def 2016/06/17 v3.0m Driver-dependent file (DPC,SPQR)
+))
+(/usr/share/texmf-dist/tex/latex/tools/longtable.sty
+Package: longtable 2021-09-01 v4.17 Multi-page Table package (DPC)
+\LTleft=\skip54
+\LTright=\skip55
+\LTpre=\skip56
+\LTpost=\skip57
+\LTchunksize=\count277
+\LTcapwidth=\dimen150
+\LT@head=\box62
+\LT@firsthead=\box63
+\LT@foot=\box64
+\LT@lastfoot=\box65
+\LT@gbox=\box66
+\LT@cols=\count278
+\LT@rows=\count279
+\c@LT@tables=\count280
+\c@LT@chunks=\count281
+\LT@p@ftn=\toks28
+)
+(/usr/share/texmf-dist/tex/latex/parskip/parskip.sty
+Package: parskip 2021-03-14 v2.0h non-zero parskip adjustments
+
+(/usr/share/texmf-dist/tex/latex/kvoptions/kvoptions.sty
+Package: kvoptions 2020-10-07 v3.14 Key value format for package options (HO)
+
+(/usr/share/texmf-dist/tex/generic/kvsetkeys/kvsetkeys.sty
+Package: kvsetkeys 2019/12/15 v1.18 Key value parser (HO)
+)))
+(/usr/share/texmf-dist/tex/latex/fancyhdr/fancyhdr.sty
+Package: fancyhdr 2021/01/28 v4.0.1 Extensive control of page headers and foote
+rs
+\f@nch@headwidth=\skip58
+\f@nch@O@elh=\skip59
+\f@nch@O@erh=\skip60
+\f@nch@O@olh=\skip61
+\f@nch@O@orh=\skip62
+\f@nch@O@elf=\skip63
+\f@nch@O@erf=\skip64
+\f@nch@O@olf=\skip65
+\f@nch@O@orf=\skip66
+)
+(/usr/share/texmf-dist/tex/latex/vmargin/vmargin.sty
+Package: vmargin 2004/07/15 V2.5 set document margins (VK)
+
+Package: vmargin 2004/07/15 V2.5 set document margins (VK)
+\PaperWidth=\dimen151
+\PaperHeight=\dimen152
+) (/usr/share/texmf-dist/tex/latex/listings/listings.sty
+\lst@mode=\count282
+\lst@gtempboxa=\box67
+\lst@token=\toks29
+\lst@length=\count283
+\lst@currlwidth=\dimen153
+\lst@column=\count284
+\lst@pos=\count285
+\lst@lostspace=\dimen154
+\lst@width=\dimen155
+\lst@newlines=\count286
+\lst@lineno=\count287
+\lst@maxwidth=\dimen156
+
+(/usr/share/texmf-dist/tex/latex/listings/lstmisc.sty
+File: lstmisc.sty 2020/03/24 1.8d (Carsten Heinz)
+\c@lstnumber=\count288
+\lst@skipnumbers=\count289
+\lst@framebox=\box68
+)
+(/usr/share/texmf-dist/tex/latex/listings/listings.cfg
+File: listings.cfg 2020/03/24 1.8d listings configuration
+))
+Package: listings 2020/03/24 1.8d (Carsten Heinz)
+
+(/usr/share/texmf-dist/tex/latex/adjustbox/adjustbox.sty
+Package: adjustbox 2020/08/19 v1.3 Adjusting TeX boxes (trim, clip, ...)
+
+(/usr/share/texmf-dist/tex/latex/xkeyval/xkeyval.sty
+Package: xkeyval 2020/11/20 v2.8 package option processing (HA)
+
+(/usr/share/texmf-dist/tex/generic/xkeyval/xkeyval.tex
+(/usr/share/texmf-dist/tex/generic/xkeyval/xkvutils.tex
+\XKV@toks=\toks30
+\XKV@tempa@toks=\toks31
+)
+\XKV@depth=\count290
+File: xkeyval.tex 2014/12/03 v2.7a key=value parser (HA)
+))
+(/usr/share/texmf-dist/tex/latex/adjustbox/adjcalc.sty
+Package: adjcalc 2012/05/16 v1.1 Provides advanced setlength with multiple back
+-ends (calc, etex, pgfmath)
+)
+(/usr/share/texmf-dist/tex/latex/adjustbox/trimclip.sty
+Package: trimclip 2020/08/19 v1.2 Trim and clip general TeX material
+
+(/usr/share/texmf-dist/tex/latex/collectbox/collectbox.sty
+Package: collectbox 2012/05/17 v0.4b Collect macro arguments as boxes
+\collectedbox=\box69
+)
+\tc@llx=\dimen157
+\tc@lly=\dimen158
+\tc@urx=\dimen159
+\tc@ury=\dimen160
+Package trimclip Info: Using driver 'tc-pdftex.def'.
+
+(/usr/share/texmf-dist/tex/latex/adjustbox/tc-pdftex.def
+File: tc-pdftex.def 2019/01/04 v2.2 Clipping driver for pdftex
+))
+\adjbox@Width=\dimen161
+\adjbox@Height=\dimen162
+\adjbox@Depth=\dimen163
+\adjbox@Totalheight=\dimen164
+\adjbox@pwidth=\dimen165
+\adjbox@pheight=\dimen166
+\adjbox@pdepth=\dimen167
+\adjbox@ptotalheight=\dimen168
+
+(/usr/share/texmf-dist/tex/latex/ifoddpage/ifoddpage.sty
+Package: ifoddpage 2016/04/23 v1.1 Conditionals for odd/even page detection
+\c@checkoddpage=\count291
+)
+(/usr/share/texmf-dist/tex/latex/varwidth/varwidth.sty
+Package: varwidth 2009/03/30 ver 0.92;  Variable-width minipages
+\@vwid@box=\box70
+\sift@deathcycles=\count292
+\@vwid@loff=\dimen169
+\@vwid@roff=\dimen170
+))
+(/usr/share/texmf-dist/tex/latex/subfig/subfig.sty
+Package: subfig 2005/06/28 ver: 1.3 subfig package
+
+(/usr/share/texmf-dist/tex/latex/caption/caption.sty
+Package: caption 2022/03/01 v3.6b Customizing captions (AR)
+
+(/usr/share/texmf-dist/tex/latex/caption/caption3.sty
+Package: caption3 2022/03/17 v2.3b caption3 kernel (AR)
+\caption@tempdima=\dimen171
+\captionmargin=\dimen172
+\caption@leftmargin=\dimen173
+\caption@rightmargin=\dimen174
+\caption@width=\dimen175
+\caption@indent=\dimen176
+\caption@parindent=\dimen177
+\caption@hangindent=\dimen178
+Package caption Info: Standard document class detected.
+)
+\c@caption@flags=\count293
+\c@continuedfloat=\count294
+Package caption Info: float package is loaded.
+Package caption Info: listings package is loaded.
+Package caption Info: longtable package is loaded.
+
+(/usr/share/texmf-dist/tex/latex/caption/ltcaption.sty
+Package: ltcaption 2021/01/08 v1.4c longtable captions (AR)
+))
+\c@KVtest=\count295
+\sf@farskip=\skip67
+\sf@captopadj=\dimen179
+\sf@capskip=\skip68
+\sf@nearskip=\skip69
+\c@subfigure=\count296
+\c@subfigure@save=\count297
+\c@lofdepth=\count298
+\c@subtable=\count299
+\c@subtable@save=\count300
+\c@lotdepth=\count301
+\sf@top=\skip70
+\sf@bottom=\skip71
+)
+(/usr/share/texmf/tex/latex/minted/minted.sty
+Package: minted 2021/12/24 v2.6 Yet another Pygments shim for LaTeX
+
+(/usr/share/texmf/tex/latex/fvextra/fvextra.sty
+Package: fvextra 2019/02/04 v1.4 fvextra - extensions and patches for fancyvrb
+
+(/usr/share/texmf-dist/tex/latex/base/ifthen.sty
+Package: ifthen 2020/11/24 v1.1c Standard LaTeX ifthen package (DPC)
+)
+(/usr/share/texmf-dist/tex/latex/fancyvrb/fancyvrb.sty
+Package: fancyvrb 2022/04/12 4.2 verbatim text (tvz,hv)
+\FV@CodeLineNo=\count302
+\FV@InFile=\read3
+\FV@TabBox=\box71
+\c@FancyVerbLine=\count303
+\FV@StepNumber=\count304
+\FV@OutFile=\write3
+)
+(/usr/share/texmf-dist/tex/latex/upquote/upquote.sty
+Package: upquote 2012/04/19 v1.3 upright-quote and grave-accent glyphs in verba
+tim
+)
+(/usr/share/texmf-dist/tex/latex/lineno/lineno.sty
+Package: lineno 2005/11/02 line numbers on paragraphs v4.41
+\linenopenalty=\count305
+\output=\toks32
+\linenoprevgraf=\count306
+\linenumbersep=\dimen180
+\linenumberwidth=\dimen181
+\c@linenumber=\count307
+\c@pagewiselinenumber=\count308
+\c@LN@truepage=\count309
+\c@internallinenumber=\count310
+\c@internallinenumbers=\count311
+\quotelinenumbersep=\dimen182
+\bframerule=\dimen183
+\bframesep=\dimen184
+\bframebox=\box72
+LaTeX Info: Redefining \\ on input line 3056.
+)
+\c@FV@TrueTabGroupLevel=\count312
+\c@FV@TrueTabCounter=\count313
+\FV@TabBox@Group=\box73
+\FV@TmpLength=\skip72
+\c@FV@HighlightLinesStart=\count314
+\c@FV@HighlightLinesStop=\count315
+\FV@LoopCount=\count316
+\FV@NCharsBox=\box74
+\FV@BreakIndent=\dimen185
+\FV@BreakIndentNChars=\count317
+\FV@BreakSymbolSepLeft=\dimen186
+\FV@BreakSymbolSepLeftNChars=\count318
+\FV@BreakSymbolSepRight=\dimen187
+\FV@BreakSymbolSepRightNChars=\count319
+\FV@BreakSymbolIndentLeft=\dimen188
+\FV@BreakSymbolIndentLeftNChars=\count320
+\FV@BreakSymbolIndentRight=\dimen189
+\FV@BreakSymbolIndentRightNChars=\count321
+\c@FancyVerbLineBreakLast=\count322
+\FV@LineBox=\box75
+\FV@LineIndentBox=\box76
+\FV@LineWidth=\dimen190
+)
+(/usr/share/texmf-dist/tex/latex/tools/calc.sty
+Package: calc 2017/05/25 v4.3 Infix arithmetic (KKT,FJ)
+\calc@Acount=\count323
+\calc@Bcount=\count324
+\calc@Adimen=\dimen191
+\calc@Bdimen=\dimen192
+\calc@Askip=\skip73
+\calc@Bskip=\skip74
+LaTeX Info: Redefining \setlength on input line 80.
+LaTeX Info: Redefining \addtolength on input line 81.
+\calc@Ccount=\count325
+\calc@Cskip=\skip75
+)
+(/usr/share/texmf-dist/tex/latex/tools/shellesc.sty
+Package: shellesc 2019/11/08 v1.0c unified shell escape interface for LaTeX
+Package shellesc Info: Unrestricted shell escape enabled on input line 75.
+)
+(/usr/share/texmf-dist/tex/latex/ifplatform/ifplatform.sty
+Package: ifplatform 2017/10/13 v0.4a Testing for the operating system
+
+(/usr/share/texmf-dist/tex/generic/catchfile/catchfile.sty
+Package: catchfile 2019/12/09 v1.8 Catch the contents of a file (HO)
+
+(/usr/share/texmf-dist/tex/generic/etexcmds/etexcmds.sty
+Package: etexcmds 2019/12/15 v1.7 Avoid name clashes with e-TeX commands (HO)
+))
+(/usr/share/texmf-dist/tex/generic/iftex/ifluatex.sty
+Package: ifluatex 2019/10/25 v1.5 ifluatex legacy package. Use iftex instead.
+)
+runsystem(uname -s > "practica3.w18")...executed.
+
+ (./practica3.w18)
+runsystem(rm -- "practica3.w18")...executed.
+
+)
+(/usr/share/texmf-dist/tex/generic/xstring/xstring.sty
+(/usr/share/texmf-dist/tex/generic/xstring/xstring.tex
+\integerpart=\count326
+\decimalpart=\count327
+)
+Package: xstring 2021/07/21 v1.84 String manipulations (CT)
+)
+(/usr/share/texmf-dist/tex/latex/framed/framed.sty
+Package: framed 2011/10/22 v 0.96: framed or shaded text with page breaks
+\OuterFrameSep=\skip76
+\fb@frw=\dimen193
+\fb@frh=\dimen194
+\FrameRule=\dimen195
+\FrameSep=\dimen196
+)
+\minted@appexistsfile=\read4
+\minted@bgbox=\box77
+\minted@code=\write4
+\c@minted@FancyVerbLineTemp=\count328
+\c@minted@pygmentizecounter=\count329
+\@float@every@listing=\toks33
+\c@listing=\count330
+)
+runsystem(mkdir -p _minted-practica3)...executed.
+
+
+(/usr/share/texmf-dist/tex/latex/enumitem/enumitem.sty
+Package: enumitem 2019/06/20 v3.9 Customized lists
+\labelindent=\skip77
+\enit@outerparindent=\dimen197
+\enit@toks=\toks34
+\enit@inbox=\box78
+\enit@count@id=\count331
+\enitdp@description=\count332
+)
+(/usr/share/texmf-dist/tex/latex/sourcesanspro/sourcesanspro.sty
+Package: sourcesanspro 2018/05/19 v2.7 Adobe's Source Sans Pro typeface
+
+(/usr/share/texmf-dist/tex/generic/iftex/ifxetex.sty
+Package: ifxetex 2019/10/25 v0.7 ifxetex legacy package. Use iftex instead.
+)
+(/usr/share/texmf-dist/tex/latex/base/fontenc.sty
+Package: fontenc 2021/04/29 v2.0v Standard LaTeX package
+
+(/usr/share/texmf-dist/tex/latex/ly1/ly1enc.def
+File: ly1enc.def 2009/07/22 v0.7 TeX 'n ANSI encoding (DPC/KB)
+)))
+(/usr/share/texmf-dist/tex/latex/tcolorbox/tcolorbox.sty
+Package: tcolorbox 2022/01/07 version 5.0.2 text color boxes
+
+(/usr/share/texmf-dist/tex/latex/pgf/basiclayer/pgf.sty
+(/usr/share/texmf-dist/tex/latex/pgf/utilities/pgfrcs.sty
+(/usr/share/texmf-dist/tex/generic/pgf/utilities/pgfutil-common.tex
+\pgfutil@everybye=\toks35
+\pgfutil@tempdima=\dimen198
+\pgfutil@tempdimb=\dimen199
+
+(/usr/share/texmf-dist/tex/generic/pgf/utilities/pgfutil-common-lists.tex))
+(/usr/share/texmf-dist/tex/generic/pgf/utilities/pgfutil-latex.def
+\pgfutil@abb=\box79
+)
+(/usr/share/texmf-dist/tex/generic/pgf/utilities/pgfrcs.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/pgf.revision.tex)
+Package: pgfrcs 2021/05/15 v3.1.9a (3.1.9a)
+))
+Package: pgf 2021/05/15 v3.1.9a (3.1.9a)
+
+(/usr/share/texmf-dist/tex/latex/pgf/basiclayer/pgfcore.sty
+(/usr/share/texmf-dist/tex/latex/pgf/systemlayer/pgfsys.sty
+(/usr/share/texmf-dist/tex/generic/pgf/systemlayer/pgfsys.code.tex
+Package: pgfsys 2021/05/15 v3.1.9a (3.1.9a)
+
+(/usr/share/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex
+\pgfkeys@pathtoks=\toks36
+\pgfkeys@temptoks=\toks37
+
+(/usr/share/texmf-dist/tex/generic/pgf/utilities/pgfkeysfiltered.code.tex
+\pgfkeys@tmptoks=\toks38
+))
+\pgf@x=\dimen256
+\pgf@y=\dimen257
+\pgf@xa=\dimen258
+\pgf@ya=\dimen259
+\pgf@xb=\dimen260
+\pgf@yb=\dimen261
+\pgf@xc=\dimen262
+\pgf@yc=\dimen263
+\pgf@xd=\dimen264
+\pgf@yd=\dimen265
+\w@pgf@writea=\write5
+\r@pgf@reada=\read5
+\c@pgf@counta=\count333
+\c@pgf@countb=\count334
+\c@pgf@countc=\count335
+\c@pgf@countd=\count336
+\t@pgf@toka=\toks39
+\t@pgf@tokb=\toks40
+\t@pgf@tokc=\toks41
+\pgf@sys@id@count=\count337
+
+(/usr/share/texmf-dist/tex/generic/pgf/systemlayer/pgf.cfg
+File: pgf.cfg 2021/05/15 v3.1.9a (3.1.9a)
+)
+Driver file for pgf: pgfsys-pdftex.def
+
+(/usr/share/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-pdftex.def
+File: pgfsys-pdftex.def 2021/05/15 v3.1.9a (3.1.9a)
+
+(/usr/share/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-common-pdf.def
+File: pgfsys-common-pdf.def 2021/05/15 v3.1.9a (3.1.9a)
+)))
+(/usr/share/texmf-dist/tex/generic/pgf/systemlayer/pgfsyssoftpath.code.tex
+File: pgfsyssoftpath.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+\pgfsyssoftpath@smallbuffer@items=\count338
+\pgfsyssoftpath@bigbuffer@items=\count339
+)
+(/usr/share/texmf-dist/tex/generic/pgf/systemlayer/pgfsysprotocol.code.tex
+File: pgfsysprotocol.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+))
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcore.code.tex
+Package: pgfcore 2021/05/15 v3.1.9a (3.1.9a)
+
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathcalc.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathutil.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathparser.code.tex
+\pgfmath@dimen=\dimen266
+\pgfmath@count=\count340
+\pgfmath@box=\box80
+\pgfmath@toks=\toks42
+\pgfmath@stack@operand=\toks43
+\pgfmath@stack@operation=\toks44
+)
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.basic.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.trigonometric.code
+.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.random.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.comparison.code.te
+x) (/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.base.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.round.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.misc.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.integerarithmetics
+.code.tex))) (/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathfloat.code.tex
+\c@pgfmathroundto@lastzeros=\count341
+)) (/usr/share/texmf-dist/tex/generic/pgf/math/pgfint.code.tex)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepoints.code.tex
+File: pgfcorepoints.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+\pgf@picminx=\dimen267
+\pgf@picmaxx=\dimen268
+\pgf@picminy=\dimen269
+\pgf@picmaxy=\dimen270
+\pgf@pathminx=\dimen271
+\pgf@pathmaxx=\dimen272
+\pgf@pathminy=\dimen273
+\pgf@pathmaxy=\dimen274
+\pgf@xx=\dimen275
+\pgf@xy=\dimen276
+\pgf@yx=\dimen277
+\pgf@yy=\dimen278
+\pgf@zx=\dimen279
+\pgf@zy=\dimen280
+)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathconstruct.code.tex
+File: pgfcorepathconstruct.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+\pgf@path@lastx=\dimen281
+\pgf@path@lasty=\dimen282
+) (/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathusage.code.tex
+File: pgfcorepathusage.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+\pgf@shorten@end@additional=\dimen283
+\pgf@shorten@start@additional=\dimen284
+)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorescopes.code.tex
+File: pgfcorescopes.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+\pgfpic=\box81
+\pgf@hbox=\box82
+\pgf@layerbox@main=\box83
+\pgf@picture@serial@count=\count342
+)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcoregraphicstate.code.tex
+File: pgfcoregraphicstate.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+\pgflinewidth=\dimen285
+)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransformations.code.t
+ex
+File: pgfcoretransformations.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+\pgf@pt@x=\dimen286
+\pgf@pt@y=\dimen287
+\pgf@pt@temp=\dimen288
+) (/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorequick.code.tex
+File: pgfcorequick.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreobjects.code.tex
+File: pgfcoreobjects.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathprocessing.code.te
+x
+File: pgfcorepathprocessing.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+) (/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorearrows.code.tex
+File: pgfcorearrows.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+\pgfarrowsep=\dimen289
+)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreshade.code.tex
+File: pgfcoreshade.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+\pgf@max=\dimen290
+\pgf@sys@shading@range@num=\count343
+\pgf@shadingcount=\count344
+)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreimage.code.tex
+File: pgfcoreimage.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreexternal.code.tex
+File: pgfcoreexternal.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+\pgfexternal@startupbox=\box84
+))
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorelayers.code.tex
+File: pgfcorelayers.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransparency.code.tex
+File: pgfcoretransparency.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+) (/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepatterns.code.tex
+File: pgfcorepatterns.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorerdf.code.tex
+File: pgfcorerdf.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+)))
+(/usr/share/texmf-dist/tex/generic/pgf/modules/pgfmoduleshapes.code.tex
+File: pgfmoduleshapes.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+\pgfnodeparttextbox=\box85
+)
+(/usr/share/texmf-dist/tex/generic/pgf/modules/pgfmoduleplot.code.tex
+File: pgfmoduleplot.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+)
+(/usr/share/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version-0-65.sty
+Package: pgfcomp-version-0-65 2021/05/15 v3.1.9a (3.1.9a)
+\pgf@nodesepstart=\dimen291
+\pgf@nodesepend=\dimen292
+)
+(/usr/share/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version-1-18.sty
+Package: pgfcomp-version-1-18 2021/05/15 v3.1.9a (3.1.9a)
+))
+(/usr/share/texmf-dist/tex/latex/tools/verbatim.sty
+Package: verbatim 2020-07-07 v1.5u LaTeX2e package for verbatim enhancements
+\every@verbatim=\toks45
+\verbatim@line=\toks46
+\verbatim@in@stream=\read6
+)
+(/usr/share/texmf-dist/tex/latex/environ/environ.sty
+Package: environ 2014/05/04 v0.3 A new way to define environments
+
+(/usr/share/texmf-dist/tex/latex/trimspaces/trimspaces.sty
+Package: trimspaces 2009/09/17 v1.1 Trim spaces around a token list
+)
+\@envbody=\toks47
+)
+\tcb@titlebox=\box86
+\tcb@upperbox=\box87
+\tcb@lowerbox=\box88
+\tcb@phantombox=\box89
+\c@tcbbreakpart=\count345
+\c@tcblayer=\count346
+\c@tcolorbox@number=\count347
+\tcb@temp=\box90
+\tcb@temp=\box91
+\tcb@temp=\box92
+\tcb@temp=\box93
+)
+(/usr/share/texmf-dist/tex/latex/base/textcomp.sty
+Package: textcomp 2020/02/02 v2.0n Standard LaTeX package
+)
+runsystem(which pygmentize && touch practica3.aex)...executed.
+
+runsystem(rm practica3.aex)...executed.
+
+LaTeX Font Info:    Trying to load font information for T1+SourceSansPro-TLF on
+ input line 61.
+
+(/usr/share/texmf-dist/tex/latex/sourcesanspro/T1SourceSansPro-TLF.fd
+File: T1SourceSansPro-TLF.fd 2020/01/19 (autoinst) Font definitions for T1/Sour
+ceSansPro-TLF.
+)
+LaTeX Font Info:    Font shape `T1/SourceSansPro-TLF/m/n' aliased to
+(Font)              `T1/SourceSansPro-TLF/regular/n' on input line 61.
+LaTeX Font Info:    Font shape `T1/SourceSansPro-TLF/regular/n' will be
+(Font)              scaled to size 12.0pt on input line 61.
+
+(./practica3.aux
+LaTeX Info: Redefining \. on input line 8.
+LaTeX Info: Redefining \% on input line 8.
+LaTeX Info: Redefining \. on input line 10.
+LaTeX Info: Redefining \% on input line 10.
+)
+\openout1 = `practica3.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 61.
+LaTeX Font Info:    ... okay on input line 61.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 61.
+LaTeX Font Info:    ... okay on input line 61.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 61.
+LaTeX Font Info:    ... okay on input line 61.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 61.
+LaTeX Font Info:    ... okay on input line 61.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 61.
+LaTeX Font Info:    ... okay on input line 61.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 61.
+LaTeX Font Info:    ... okay on input line 61.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 61.
+LaTeX Font Info:    ... okay on input line 61.
+LaTeX Font Info:    Checking defaults for LY1/ptm/m/n on input line 61.
+LaTeX Font Info:    Trying to load font information for LY1+ptm on input line 6
+1.
+ (/usr/share/texmf-dist/tex/latex/ly1/ly1ptm.fd
+File: ly1ptm.fd 2001/02/01 font definitions for LY1/ptm using Berry names.
+)
+LaTeX Font Info:    ... okay on input line 61.
+LaTeX Info: Redefining \. on input line 61.
+LaTeX Info: Redefining \% on input line 61.
+
+(/usr/share/texmf-dist/tex/latex/ucs/ucsencs.def
+File: ucsencs.def 2011/01/21 Fixes to fontencodings LGR, T3
+)
+(/usr/share/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count348
+\scratchdimen=\dimen293
+\scratchbox=\box94
+\nofMPsegments=\count349
+\nofMParguments=\count350
+\everyMPshowfont=\toks48
+\MPscratchCnt=\count351
+\MPscratchDim=\dimen294
+\MPnumerator=\count352
+\makeMPintoPDFobject=\count353
+\everyMPtoPDFconversion=\toks49
+) (/usr/share/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
+Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
+85.
+
+(/usr/share/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
+e
+))
+(/usr/share/texmf-dist/tex/latex/translations/translations-basic-dictionary-spa
+nish.trsl
+File: translations-basic-dictionary-spanish.trsl (spanish translation file `tra
+nslations-basic-dictionary')
+)
+Package translations Info: loading dictionary `translations-basic-dictionary' f
+or `spanish'. on input line 61.
+\c@lstlisting=\count354
+Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: subfig package v1.3 is loaded.
+Package caption Info: End \AtBeginDocument code.
+<images//ugr.png, id=4, 508.17854pt x 508.17854pt>
+File: images//ugr.png Graphic file (type png)
+<use images//ugr.png>
+Package pdftex.def Info: images//ugr.png  used on input line 66.
+(pdftex.def)             Requested size: 254.08865pt x 254.08865pt.
+LaTeX Font Info:    Font shape `T1/SourceSansPro-TLF/m/sc' aliased to
+(Font)              `T1/SourceSansPro-TLF/regular/sc' on input line 68.
+LaTeX Font Info:    Font shape `T1/SourceSansPro-TLF/regular/sc' will be
+(Font)              scaled to size 12.0pt on input line 68.
+LaTeX Font Info:    Font shape `T1/SourceSansPro-TLF/m/sc' aliased to
+(Font)              `T1/SourceSansPro-TLF/regular/sc' on input line 68.
+LaTeX Font Info:    Font shape `T1/SourceSansPro-TLF/regular/sc' will be
+(Font)              scaled to size 24.88pt on input line 68.
+ (/usr/share/texmf-dist/tex/latex/ucs/data/uni-0.def
+File: uni-0.def 2013/05/13 UCS: Unicode data U+0000..U+00FF
+)
+LaTeX Font Info:    Font shape `T1/SourceSansPro-TLF/m/n' aliased to
+(Font)              `T1/SourceSansPro-TLF/regular/n' on input line 70.
+LaTeX Font Info:    Font shape `T1/SourceSansPro-TLF/regular/n' will be
+(Font)              scaled to size 24.88pt on input line 70.
+LaTeX Font Info:    Font shape `T1/SourceSansPro-TLF/b/n' aliased to
+(Font)              `T1/SourceSansPro-TLF/bold/n' on input line 70.
+LaTeX Font Info:    Font shape `T1/SourceSansPro-TLF/bold/n' will be
+(Font)              scaled to size 24.88pt on input line 70.
+LaTeX Font Info:    Font shape `T1/SourceSansPro-TLF/m/n' aliased to
+(Font)              `T1/SourceSansPro-TLF/regular/n' on input line 74.
+LaTeX Font Info:    Font shape `T1/SourceSansPro-TLF/regular/n' will be
+(Font)              scaled to size 14.4pt on input line 74.
+LaTeX Font Info:    Font shape `T1/SourceSansPro-TLF/m/it' aliased to
+(Font)              `T1/SourceSansPro-TLF/regular/it' on input line 75.
+LaTeX Font Info:    Font shape `T1/SourceSansPro-TLF/regular/it' will be
+(Font)              scaled to size 14.4pt on input line 75.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <12> on input line 79.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 79.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 79.
+LaTeX Font Info:    Trying to load font information for TS1+SourceSansPro-TLF o
+n input line 85.
+
+(/usr/share/texmf-dist/tex/latex/sourcesanspro/TS1SourceSansPro-TLF.fd
+File: TS1SourceSansPro-TLF.fd 2020/01/19 (autoinst) Font definitions for TS1/So
+urceSansPro-TLF.
+)
+LaTeX Font Info:    Font shape `TS1/SourceSansPro-TLF/m/it' aliased to
+(Font)              `TS1/SourceSansPro-TLF/regular/it' on input line 85.
+LaTeX Font Info:    Font shape `TS1/SourceSansPro-TLF/regular/it' will be
+(Font)              scaled to size 14.4pt on input line 85.
+
+[1
+
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./images//ugr.png>]
+LaTeX Font Info:    Font shape `T1/SourceSansPro-TLF/m/n' aliased to
+(Font)              `T1/SourceSansPro-TLF/regular/n' on input line 99.
+LaTeX Font Info:    Font shape `T1/SourceSansPro-TLF/regular/n' will be
+(Font)              scaled to size 17.28pt on input line 99.
+LaTeX Font Info:    Font shape `T1/SourceSansPro-TLF/b/n' aliased to
+(Font)              `T1/SourceSansPro-TLF/bold/n' on input line 99.
+LaTeX Font Info:    Font shape `T1/SourceSansPro-TLF/bold/n' will be
+(Font)              scaled to size 17.28pt on input line 99.
+
+(./practica3.toc
+LaTeX Info: Redefining \. on input line 1.
+LaTeX Info: Redefining \% on input line 1.
+LaTeX Info: Redefining \. on input line 2.
+LaTeX Info: Redefining \% on input line 2.
+LaTeX Font Info:    Font shape `T1/SourceSansPro-TLF/b/n' aliased to
+(Font)              `T1/SourceSansPro-TLF/bold/n' on input line 3.
+LaTeX Font Info:    Font shape `T1/SourceSansPro-TLF/bold/n' will be
+(Font)              scaled to size 12.0pt on input line 3.
+)
+\tf@toc=\write6
+\openout6 = `practica3.toc'.
+
+ [1]
+LaTeX Font Info:    Font shape `T1/SourceSansPro-TLF/b/n' aliased to
+(Font)              `T1/SourceSansPro-TLF/bold/n' on input line 118.
+LaTeX Font Info:    Font shape `T1/SourceSansPro-TLF/bold/n' will be
+(Font)              scaled to size 14.4pt on input line 118.
+<images//minimax.png, id=19, 875.52094pt x 580.41844pt>
+File: images//minimax.png Graphic file (type png)
+<use images//minimax.png>
+Package pdftex.def Info: images//minimax.png  used on input line 142.
+(pdftex.def)             Requested size: 481.53801pt x 319.23112pt.
+ [2]
+<images//podaAlfaBeta.png, id=23, 813.0375pt x 641.39626pt>
+File: images//podaAlfaBeta.png Graphic file (type png)
+<use images//podaAlfaBeta.png>
+Package pdftex.def Info: images//podaAlfaBeta.png  used on input line 160.
+(pdftex.def)             Requested size: 487.82626pt x 384.84071pt.
+
+Overfull \hbox (3.48921pt too wide) in paragraph at lines 160--160
+ [][] 
+ []
+
+[3 <./images//minimax.png (PNG copy)>]
+LaTeX Font Info:    Font shape `T1/SourceSansPro-TLF/m/it' aliased to
+(Font)              `T1/SourceSansPro-TLF/regular/it' on input line 170.
+LaTeX Font Info:    Font shape `T1/SourceSansPro-TLF/regular/it' will be
+(Font)              scaled to size 12.0pt on input line 170.
+ [4 <./images//podaAlfaBeta.png (PNG copy)>] [5]
+LaTeX Font Info:    Font shape `TS1/SourceSansPro-TLF/m/n' aliased to
+(Font)              `TS1/SourceSansPro-TLF/regular/n' on input line 206.
+LaTeX Font Info:    Font shape `TS1/SourceSansPro-TLF/regular/n' will be
+(Font)              scaled to size 12.0pt on input line 206.
+ (./practica3.bbl) [6] (./practica3.aux
+LaTeX Info: Redefining \. on input line 8.
+LaTeX Info: Redefining \% on input line 8.
+LaTeX Info: Redefining \. on input line 10.
+LaTeX Info: Redefining \% on input line 10.
+) ) 
+Here is how much of TeX's memory you used:
+ 26560 strings out of 478238
+ 554622 string characters out of 5850456
+ 852643 words of memory out of 5000000
+ 44350 multiletter control sequences out of 15000+600000
+ 587603 words of font info for 63 fonts, out of 8000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 85i,11n,133p,523b,591s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/share/texmf-dist/fonts/enc/dvips/sourcesanspro/a_5ponh6.enc}{/usr/shar
+e/texmf-dist/fonts/enc/dvips/sourcesanspro/a_emkxm5.enc}{/usr/share/texmf-dist/
+fonts/enc/dvips/sourcesanspro/a_4jropk.enc}</usr/share/texmf-dist/fonts/type1/a
+dobe/sourcesanspro/SourceSansPro-Bold.pfb></usr/share/texmf-dist/fonts/type1/ad
+obe/sourcesanspro/SourceSansPro-It.pfb></usr/share/texmf-dist/fonts/type1/adobe
+/sourcesanspro/SourceSansPro-Regular.pfb></usr/share/texmf-dist/fonts/type1/pub
+lic/amsfonts/cm/cmr12.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm
+/cmsy10.pfb>
+Output written on practica3.pdf (7 pages, 621767 bytes).
+PDF statistics:
+ 72 PDF objects out of 1000 (max. 8388607)
+ 45 compressed objects within 1 object stream
+ 0 named destinations out of 1000 (max. 500000)
+ 28 words of extra memory for PDF output out of 10000 (max. 10000000)
+

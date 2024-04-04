@@ -1,0 +1,164 @@
+\documentclass[12pt, spanish]{article}
+\usepackage[spanish]{babel}
+\selectlanguage{spanish}
+\usepackage{natbib}
+\usepackage{url}
+\usepackage[utf8x]{inputenc}
+\usepackage{graphicx}
+\graphicspath{{images/}}
+\usepackage{array}
+\usepackage{float}
+\usepackage{siunitx}
+\usepackage[table,xcdraw,dvipsnames]{xcolor}
+\usepackage{longtable}
+\usepackage{parskip}
+\usepackage{fancyhdr}
+\usepackage{vmargin}
+\usepackage{listings}
+\usepackage{adjustbox}
+\usepackage{subfig}
+\usepackage{minted}
+\usepackage[shortlabels]{enumitem}
+\setlist[enumerate]{
+labelsep=8pt,
+labelindent=0.3\parindent,
+itemindent=0pt,
+leftmargin=*,
+before=\setlength{\listparindent}{-\leftmargin},
+}
+
+\def\code#1{\texttt{#1}}
+\usepackage[default]{sourcesanspro}
+\usepackage{tcolorbox}
+\usepackage{etoolbox}
+\BeforeBeginEnvironment{minted}{\begin{tcolorbox}}%
+\AfterEndEnvironment{minted}{\end{tcolorbox}}%
+
+\setmarginsrb{2 cm}{1 cm}{2 cm}{2 cm}{1 cm}{1.5 cm}{1 cm}{1.5 cm}
+
+\title{Práctica 1: Agente Reactivo \hspace{0.05cm} }
+\date{}
+\author{
+Yeray López Ramírez \\
+}
+
+\renewcommand*\contentsname{hola}
+
+\makeatletter
+\let\thetitle\@title
+\let\theauthor\@author
+\let\thedate\@date
+\makeatother
+
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{}
+\chead{\thedate}
+\lhead{\thetitle}
+\cfoot{\thepage}
+
+\begin{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{titlepage}
+  \centering
+  \vspace*{0.5 cm}
+  \includegraphics[scale = 0.50]{ugr.png}\\[1.0 cm]
+  %\textsc{\LARGE Universidad de Granada}\\[2.0 cm]   
+  \textsc{\huge Grado en Ingeniería Informática}\\[0.5 cm]
+  \rule{\linewidth}{0.2 mm} \\[0.4 cm]
+  { \huge \bfseries \thetitle}\\
+  \rule{\linewidth}{0.2 mm} \\[1.5 cm]
+  
+  \begin{minipage}{0.4\textwidth}
+    \begin{flushleft} \large
+        \emph{Autor:}\\
+
+        \theauthor
+        \end{flushleft}
+        \end{minipage}~
+        \begin{minipage}{0.4\textwidth}
+        \begin{flushright} \large
+        \emph{Curso:2ºC \\
+        Asignatura: Inteligencia Artificial \\
+        Fecha: 06 de Abril de 2022
+        }
+    \end{flushright}
+\end{minipage}\\[1 cm]
+
+
+\vfill
+  
+\end{titlepage}
+
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\tableofcontents
+\pagebreak
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Objetivo de la Práctica}
+En esta práctica se nos presenta a un jugador que se sitúa en un mundo de BelKan con 5 niveles diferentes. Mi objetivo principal es conseguir que el jugador descubra el máximo mapa posible antes de agotar los ciclos con la restricción de que su comportmiento sea esencialmente reactivo. Por ello describiré el comportamiento general de mi jugador y lo desarrollaré después.
+
+\section{Comportamiento general}
+El jugador que he diseñado consta de 4 fases: Preparar, Decidir, Ejecutar y Actualizar. Se explica detalladamente en los siguientes párrafos:
+\begin{enumerate}
+ \item En su primera fase comprueba su estado previo y actual. Apartir de esa información actualiza el mapa, su posición y orientación. Siempre entra en esta fase.
+
+ \item En su segunda fase toma una decisión. Entrará en esta fase siempre que no tenga nada decidido, en este caso, que la cola ``ejecutor'' esté vacía. Las decisiones las toma entrando a las diferentes funciones que dotan de inteligencia al jugador. Su preferencia es:
+  \begin{itemize}
+    \item Primero de todo busca una entrada, que viene a ser un hueco entre 2 casillas impenetrables (Muro o Precipicio) y transitable (S,T,A+bikini,B+zapatilla, etc). Con esto consigue entrar en ``edificios'', o pasar tramos de muros con facilidad.
+
+    \item En caso de tener poca batería (por debajo de 1000), irá a por la casilla de recarga siempre y cuando la haya visto alguna vez.
+
+    \item Si se encuentra en la casilla de recarga, espera recargando.
+
+    \item Si sigue sin decidirse entonces busca una casilla de Interés. Esa casilla puede ser G,K,D,X pero debe respetar las condiciones de si tiene el objeto, está bien posicionado o le falta batería para así evitar que vaya a por ellas innecesariamente.
+
+    \item En caso de llegar al final y no tener decidido nada entonces procede a ponerse en modo Exploración. En este modo el jugador hará lo siguiente:
+      \begin{itemize}
+      \item El jugador irá hacia delante cuando no haya obstaculos y cuando se ``aburra''. El jugador se ``aburre'' cuando avanza adelante sin ver cambios en el mapa y entoces gira aleatoriamente. El sistema de ``aburrimiento'' le dota de un comportamiento aleatorio.
+
+      \item En caso de que haya obstaculos girará hacia un lateral que esté libre. Elige aleatoriamente si puede girar a ambos lados.
+      \end{itemize}
+
+  \end{itemize}
+
+  \item En su tercera fase ejecuta las acciones guardadas en la cola de ejecución. Se introduce el frente de la pila en la variable de Accion y se elimina de la cola para pasar a la siguiente orden. Siempre que la cola NO esté vacía, ignorará la fase 2 y entrará directamente en esta fase hasta finalizarla.
+
+  \item En su cuarta fase actualiza las variables de aburrimiento, ultimaAccion y recuerda el terreno a su alrededor para el ciclo posterior. También imprime el estado del jugador antes de finalizar.
+
+\end{enumerate}
+
+
+\section{Resumen de ejecuciones}
+He implementado y modificado una macro que permite ejecutar todos los mapas para testear la calidad del comportamiento del jugador:
+
+\inputminted{sh}{testsIA.sh}
+
+Tal y como está el código, arroja el siguiente resultado:
+
+\inputminted{text}{resultados-7.dat}
+
+
+\section{Observaciones}
+Principalmente lo que he visto es que hay una diferencia entre ejecutar la practica en modo gráfico(./practica) y en modo terminal (./practicaSG).
+
+Como se puede comprobar en los datos arrojados anteriormente, en el mapa100 los porcentajes caen en picado en los niveles bajos mientras que se inflan en el nivel 3 y 4.
+
+Sin embargo al ejecutar exactamente lo mismo en el modo grafico se obtiene al rededor del 62\% en todos los niveles del mapa100. Espero que se tenga en cuenta eso.
+
+También quisiera puntualizar que hay quizás cierto comportamiento No Reactivo ya que la función de busca batería no la consideraría como tal aunque se ha dado el visto bueno.
+
+Por último, quedaría considerar que el código actual tiene bastante potencial de ampliación. Una mejor planificación por mi parte hubiera resultado en una mayor puntuación pero estoy satisfecho con el resultado.
+
+
+\vspace{5cm}
+ \bibliographystyle{plain}
+ \bibliography{biblist}
+
+
+\end{document}

@@ -1,0 +1,14 @@
+{
+    "tasks": [
+       {
+            "label": "Compilar",
+            "command": "make",
+            "args": [],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "detail": "Compilar con make."
+       } 
+    ],
+    "version": "2.0.0"
+}

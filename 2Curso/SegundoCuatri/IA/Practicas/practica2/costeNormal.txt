@@ -1,0 +1,145 @@
+bool ComportamientoJugador::pathFinding_CostoUniforme(const estado &origen, const estado &destino, list<Action> &plan) {
+	//Borro la lista
+	plan.clear();
+	set<estado,ComparaEstados> explorados; // Lista de Cerrados
+	map<estado, int, ComparaEstados> frontera;
+	priority_queue<nodo> abiertos;											// Lista de Abiertos
+
+	nodo current;
+	current.st = origen;
+	current.secuencia.empty();
+	current.coste = 1;
+
+	abiertos.push(current);
+	frontera[current.st] = current.coste;
+
+	while (!abiertos.empty() and (current.st.fila!=destino.fila or current.st.columna != destino.columna)){
+
+		abiertos.pop();
+		explorados.insert(current.st);
+
+		// Generar descendiente de girar a la derecha
+		nodo hijoTurnR = current;
+		hijoTurnR.st.orientacion = (hijoTurnR.st.orientacion+2) % 8;
+		hijoTurnR.coste += calcularCoste(hijoTurnR.st, actTURN_R);
+		if (explorados.find(hijoTurnR.st) == explorados.end())
+		{
+			if (frontera.find(hijoTurnR.st) == frontera.end())
+			{
+				hijoTurnR.secuencia.push_back(actTURN_R);
+				abiertos.push(hijoTurnR);
+				frontera[hijoTurnR.st] = hijoTurnR.coste;
+			}
+			else if (hijoTurnR.coste < frontera[hijoTurnR.st]) {
+                                hijoTurnR.secuencia.push_back(actTURN_R);
+                                abiertos.push(hijoTurnR);
+                                frontera[hijoTurnR.st] = hijoTurnR.coste;
+                        }
+		}
+
+		// Generar descendiente de girar a la derecha 45 grados
+		nodo hijoSEMITurnR = current;
+		hijoSEMITurnR.st.orientacion = (hijoSEMITurnR.st.orientacion + 1) % 8;
+		hijoSEMITurnR.coste += calcularCoste(hijoSEMITurnR.st, actSEMITURN_R);
+		if (explorados.find(hijoSEMITurnR.st) == explorados.end())
+		{
+			if (frontera.find(hijoSEMITurnR.st) == frontera.end())
+			{
+				hijoSEMITurnR.secuencia.push_back(actSEMITURN_R);
+				abiertos.push(hijoSEMITurnR);
+				frontera[hijoSEMITurnR.st] = hijoSEMITurnR.coste;
+			}
+			else if (hijoSEMITurnR.coste < frontera[hijoSEMITurnR.st])
+                        {
+                                hijoSEMITurnR.secuencia.push_back(actSEMITURN_R);
+                                abiertos.push(hijoSEMITurnR);
+                                frontera[hijoSEMITurnR.st] = hijoSEMITurnR.coste;
+			}
+		}
+
+		// Generar descendiente de girar a la izquierda
+		nodo hijoTurnL = current;
+		hijoTurnL.coste += calcularCoste(hijoTurnL.st, actTURN_L);
+		hijoTurnL.st.orientacion = (hijoTurnL.st.orientacion+6)%8;
+		if (explorados.find(hijoTurnL.st) == explorados.end())
+		{
+			if (frontera.find(hijoTurnL.st) == frontera.end())
+			{
+				hijoTurnL.secuencia.push_back(actTURN_L);
+				abiertos.push(hijoTurnL);
+				frontera[hijoTurnL.st] = hijoTurnL.coste;
+			}
+			else if (hijoTurnL.coste < frontera[hijoTurnL.st])
+			{
+                                hijoTurnL.secuencia.push_back(actTURN_L);
+                                abiertos.push(hijoTurnL);
+                                frontera[hijoTurnL.st] = hijoTurnL.coste;
+			}
+		}
+
+		// Generar descendiente de girar a la izquierda 45 grados
+		nodo hijoSEMITurnL = current;
+		hijoSEMITurnL.st.orientacion = (hijoSEMITurnL.st.orientacion + 7) % 8;
+		hijoSEMITurnL.coste += calcularCoste(hijoSEMITurnL.st, actSEMITURN_L);;
+		if (explorados.find(hijoSEMITurnL.st) == explorados.end())
+		{
+			if (frontera.find(hijoSEMITurnL.st) == frontera.end())
+			{
+				hijoSEMITurnL.secuencia.push_back(actSEMITURN_L);
+				abiertos.push(hijoSEMITurnL);
+				frontera[hijoSEMITurnL.st] = hijoSEMITurnL.coste;
+			}
+			else if (hijoSEMITurnL.coste < frontera[hijoSEMITurnL.st])
+			{
+                                hijoSEMITurnL.secuencia.push_back(actSEMITURN_L);
+                                abiertos.push(hijoSEMITurnL);
+                                frontera[hijoSEMITurnL.st] = hijoSEMITurnL.coste;
+			}
+		}
+
+		// Generar descendiente de avanzar
+		nodo hijoForward = current;
+		if (!HayObstaculoDelante(hijoForward.st)){
+			hijoForward.coste += calcularCoste(hijoForward.st, actFORWARD);
+			if (explorados.find(hijoForward.st) == explorados.end())
+			{
+				if (frontera.find(hijoForward.st) == frontera.end())
+				{
+					hijoForward.secuencia.push_back(actFORWARD);
+					abiertos.push(hijoForward);
+					frontera[hijoForward.st] = hijoForward.coste;
+				}
+				else if (hijoForward.coste < frontera[hijoForward.st])
+				{
+                                        hijoForward.secuencia.push_back(actFORWARD);
+                                        abiertos.push(hijoForward);
+                                        frontera[hijoForward.st] = hijoForward.coste;
+				}
+			}
+		}
+
+		// Tomo el siguiente valor de la abiertos
+		if (!abiertos.empty()){
+			current = abiertos.top();
+		}
+	}
+
+//	cout << "Terminada la busqueda\n";
+
+	if (current.st.fila == destino.fila and current.st.columna == destino.columna){
+//		cout << "Cargando el plan\n";
+		plan = current.secuencia;
+                cout << "Plan: ";
+		PintaPlan(plan);
+		cout << " (longitud " << plan.size() << ")" << endl;
+		// ver el plan en el mapa
+		VisualizaPlan(origen, plan);
+		return true;
+	}
+	else {
+		cout << "No encontrado plan\n";
+	}
+
+
+	return false;
+}
