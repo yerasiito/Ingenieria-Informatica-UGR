@@ -1,0 +1,174 @@
+\documentclass[12pt, spanish]{article}
+\usepackage[spanish]{babel}
+\selectlanguage{spanish}
+\usepackage{natbib}
+\usepackage{url}
+\usepackage[utf8x]{inputenc}
+\usepackage{graphicx}
+\graphicspath{{images/}}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{parskip}
+\usepackage{fancyhdr}
+\usepackage{vmargin}
+\usepackage{listings}
+\usepackage{adjustbox}
+\usepackage[shortlabels]{enumitem}
+
+\setlist[enumerate]{
+labelsep=8pt,
+labelindent=0.3\parindent,
+itemindent=0pt,
+leftmargin=*,
+before=\setlength{\listparindent}{-\leftmargin},
+}
+
+\usepackage[default]{sourcesanspro}
+
+\setmarginsrb{2 cm}{1 cm}{2 cm}{2 cm}{1 cm}{1.5 cm}{1 cm}{1.5 cm}
+
+\title{Fundamentos de Ingeniería del Software:\\
+Práctica 2  \hspace{0.05cm} }
+\date{}
+\author{
+\begin{center}
+Martina Álvarez Lorenzo  \\
+Pablo Ariza García  \\
+David Gutiérrez Pérez  \\
+Yeray López Ramírez \\
+\end{center}
+}
+
+\renewcommand*\contentsname{hola}
+
+\makeatletter
+\let\thetitle\@title
+\let\theauthor\@author
+\let\thedate\@date
+\makeatother
+
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{}
+\chead{\thedate}
+\lhead{\thetitle}
+\cfoot{\thepage}
+
+\begin{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{titlepage}
+  \centering
+  \vspace*{0.5 cm}
+  \includegraphics[scale = 0.20]{logoUGR.png}\\[1.0 cm]
+  %\textsc{\LARGE Universidad de Granada}\\[2.0 cm]   
+  \textsc{\large 2ºD}\\[0.5 cm]
+  \textsc{\large Grado en Ingeniería Informática}\\[0.5 cm]              
+  \rule{\linewidth}{0.2 mm} \\[0.4 cm]
+  { \huge \bfseries \thetitle}\\
+  \rule{\linewidth}{0.2 mm} \\[1.5 cm]
+  
+      
+  \theauthor
+
+  \vfill
+  
+\end{titlepage}
+
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\tableofcontents
+\pagebreak
+\section{Descripción de actores y sus objetivos}
+Los actores de los cuales se va a proceder a mostrar su descripción y objetivos son:
+\begin{itemize}
+    \setlength\itemsep{0.1em}
+    \item \textbf{Personal sanitario}
+    \item \textbf{Usuario no identificado}
+    \item \textbf{Socio}
+    \item \textbf{Administrador}
+    \item \textbf{Proveedor} 
+    \item \textbf{Administrativo}
+    \item \textbf{Sistema} \\
+       
+\end{itemize}
+
+
+\begin{centering}\includegraphics[scale = 0.65]{Actores/Actor1.png}\\[1.0 cm]\end{centering}
+\begin{centering}\includegraphics[scale = 0.65]{Actores/Actor2.png}\\[1.0 cm]\end{centering}
+\begin{centering}\includegraphics[scale = 0.65]{Actores/Actor3.png}\\[1.0 cm]\end{centering}
+\begin{centering}\includegraphics[scale = 0.65]{Actores/Actor4.png}\\[1.0 cm]\end{centering}
+\begin{centering}\includegraphics[scale = 0.65]{Actores/Actor5.png}\\[1.0 cm]\end{centering}
+\begin{centering}\includegraphics[scale = 0.65]{Actores/Actor6.png}\\[1.0 cm]\end{centering}
+\begin{centering}\includegraphics[scale = 0.65]{Actores/Actor7.png}\\[1.0 cm]\end{centering}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Diagramas del modelo de casos de uso}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Diagramas de casos de uso}
+
+\subsubsection*{Gestión de Personal}
+\begin{centering}\includegraphics[scale = 0.50]{diagramas_cu/1.png}\\[1.0 cm]\end{centering}
+\subsubsection*{Gestión de Socios}
+\begin{centering}\includegraphics[scale = 0.50]{diagramas_cu/2.png}\\[1.0 cm]\end{centering}
+\begin{centering}\includegraphics[scale = 0.50]{diagramas_cu/3.png}\\[1.0 cm]\end{centering}
+\subsubsection*{Gestión de Material y Pedidos}
+\begin{centering}\includegraphics[scale = 0.50]{diagramas_cu/4.png}\\[1.0 cm]\end{centering}
+
+%%%%%%%%
+
+\subsection{Diagrama de paquetes}
+
+\begin{centering}\includegraphics[scale = 0.70]{paquetes.png}\\[1.0 cm]\end{centering}
+
+%%%%%%
+
+\section{Descripción breve de los casos de uso}
+
+\begin{centering}\includegraphics[scale = 0.70]{casos_de_uso/1.png}\\[1.0 cm]\end{centering}
+\begin{centering}\includegraphics[scale = 0.70]{casos_de_uso/2.png}\\[1.0 cm]\end{centering}
+\begin{centering}\includegraphics[scale = 0.70]{casos_de_uso/3.png}\\[1.0 cm]\end{centering}
+\begin{centering}\includegraphics[scale = 0.70]{casos_de_uso/4.png}\\[1.0 cm]\end{centering}
+\begin{centering}\includegraphics[scale = 0.70]{casos_de_uso/5.png}\\[1.0 cm]\end{centering}
+\begin{centering}\includegraphics[scale = 0.70]{casos_de_uso/6.png}\\[1.0 cm]\end{centering}
+\begin{centering}\includegraphics[scale = 0.70]{casos_de_uso/7.png}\\[1.0 cm]\end{centering}
+\begin{centering}\includegraphics[scale = 0.70]{casos_de_uso/8.png}\\[1.0 cm]\end{centering}
+\begin{centering}\includegraphics[scale = 0.70]{casos_de_uso/9.png}\\[1.0 cm]\end{centering}
+\begin{centering}\includegraphics[scale = 0.70]{casos_de_uso/10.png}\\[1.0 cm]\end{centering}
+\begin{centering}\includegraphics[scale = 0.70]{casos_de_uso/11.png}\\[1.0 cm]\end{centering}
+\begin{centering}\includegraphics[scale = 0.70]{casos_de_uso/12.png}\\[1.0 cm]\end{centering}
+\begin{centering}\includegraphics[scale = 0.62]{casos_de_uso/13.png}\\[1.0 cm]\end{centering}
+\begin{centering}\includegraphics[scale = 0.70]{casos_de_uso/14.png}\\[1.0 cm]\end{centering}
+\begin{centering}\includegraphics[scale = 0.70]{casos_de_uso/15.png}\\[1.0 cm]\end{centering}
+\begin{centering}\includegraphics[scale = 0.70]{casos_de_uso/16.png}\\[1.0 cm]\end{centering}
+\begin{centering}\includegraphics[scale = 0.70]{casos_de_uso/17.png}\\[1.0 cm]\end{centering}
+\begin{centering}\includegraphics[scale = 0.70]{casos_de_uso/18.png}\\[1.0 cm]\end{centering}
+\begin{centering}\includegraphics[scale = 0.70]{casos_de_uso/19.png}\\[1.0 cm]\end{centering}
+\begin{centering}\includegraphics[scale = 0.70]{casos_de_uso/20.png}\\[1.0 cm]\end{centering}
+\begin{centering}\includegraphics[scale = 0.70]{casos_de_uso/21.png}\\[1.0 cm]\end{centering}
+\begin{centering}\includegraphics[scale = 0.70]{casos_de_uso/22.png}\\[1.0 cm]\end{centering}
+\begin{centering}\includegraphics[scale = 0.70]{casos_de_uso/23.png}\\[1.0 cm]\end{centering}
+\begin{centering}\includegraphics[scale = 0.70]{casos_de_uso/24.png}\\[1.0 cm]\end{centering}
+\begin{centering}\includegraphics[scale = 0.70]{casos_de_uso/25.png}\\[1.0 cm]\end{centering}
+\begin{centering}\includegraphics[scale = 0.70]{casos_de_uso/26.png}\\[1.0 cm]\end{centering}
+\begin{centering}\includegraphics[scale = 0.70]{casos_de_uso/27.png}\\[1.0 cm]\end{centering}
+\begin{centering}\includegraphics[scale = 0.62]{casos_de_uso/28.png}\\[1.0 cm]\end{centering}
+\begin{centering}\includegraphics[scale = 0.70]{casos_de_uso/29.png}\\[1.0 cm]\end{centering}
+\begin{centering}\includegraphics[scale = 0.62]{casos_de_uso/30.png}\\[1.0 cm]\end{centering}
+\begin{centering}\includegraphics[scale = 0.70]{casos_de_uso/31.png}\\[1.0 cm]\end{centering}
+\begin{centering}\includegraphics[scale = 0.62]{casos_de_uso/32.png}\\[1.0 cm]\end{centering}
+\begin{centering}\includegraphics[scale = 0.62]{casos_de_uso/33.png}\\[1.0 cm]\end{centering}
+\begin{centering}\includegraphics[scale = 0.62]{casos_de_uso/34.png}\\[1.0 cm]\end{centering}
+\begin{centering}\includegraphics[scale = 0.70]{casos_de_uso/35.png}\\[1.0 cm]\end{centering}
+\begin{centering}\includegraphics[scale = 0.70]{casos_de_uso/36.png}\\[1.0 cm]\end{centering}
+\begin{centering}\includegraphics[scale = 0.70]{casos_de_uso/37.png}\\[1.0 cm]\end{centering}
+\begin{centering}\includegraphics[scale = 0.70]{casos_de_uso/38.png}\\[1.0 cm]\end{centering}
+
+
+\end{document}

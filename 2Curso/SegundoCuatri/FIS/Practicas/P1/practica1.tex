@@ -1,0 +1,449 @@
+\documentclass[12pt, spanish]{article}
+\usepackage[spanish]{babel}
+\selectlanguage{spanish}
+\usepackage{natbib}
+\usepackage{url}
+\usepackage[utf8x]{inputenc}
+\usepackage{graphicx}
+\graphicspath{{images/}}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{parskip}
+\usepackage{fancyhdr}
+\usepackage{vmargin}
+\usepackage{listings}
+\usepackage{adjustbox}
+\usepackage[shortlabels]{enumitem}
+
+\setlist[enumerate]{
+labelsep=8pt,
+labelindent=0.3\parindent,
+itemindent=0pt,
+leftmargin=*,
+before=\setlength{\listparindent}{-\leftmargin},
+}
+
+\usepackage[default]{sourcesanspro}
+
+\setmarginsrb{2 cm}{1 cm}{2 cm}{2 cm}{1 cm}{1.5 cm}{1 cm}{1.5 cm}
+
+\title{Fundamentos de Ingeniería del Software:\\
+Práctica 1  \hspace{0.05cm} }
+\date{}
+\author{
+\begin{center}
+Martina Álvarez Lorenzo  \\
+Pablo Ariza García  \\
+David Gutiérrez Pérez  \\
+Yeray López Ramírez \\
+\end{center}
+}
+
+\renewcommand*\contentsname{hola}
+
+\makeatletter
+\let\thetitle\@title
+\let\theauthor\@author
+\let\thedate\@date
+\makeatother
+
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{}
+\chead{\thedate}
+\lhead{\thetitle}
+\cfoot{\thepage}
+
+\begin{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{titlepage}
+  \centering
+  \vspace*{0.5 cm}
+  \includegraphics[scale = 0.50]{ugr.png}\\[1.0 cm]
+  %\textsc{\LARGE Universidad de Granada}\\[2.0 cm]   
+  \textsc{\large 2ºD}\\[0.5 cm]
+  \textsc{\large Grado en Ingeniería Informática}\\[0.5 cm]              
+  \rule{\linewidth}{0.2 mm} \\[0.4 cm]
+  { \huge \bfseries \thetitle}\\
+  \rule{\linewidth}{0.2 mm} \\[1.5 cm]
+  
+      
+  \theauthor
+
+  \vfill
+  
+\end{titlepage}
+
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\tableofcontents
+\pagebreak
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Objetivos}
+
+El sistema estará encargado de realizar la gestión de un centro médico privado, cuya tarea es proporcionar distintos servicios médicos a sus socios, ya sea una atención básica del paciente, servicios especializados o urgencias.
+
+El sistema deberá gestionar los pacientes, profesionales de la salud e instalaciones existentes en el centro médico privado. Deberá almacenar la información relativa a los pacientes atendidos, el horario de los profesionales, citas, pruebas médicas, instalaciones y tratamientos disponibles.
+
+De manera concisa, los objetivos a realizar son:
+\begin{enumerate}[start=1,label={\bfseries OBJ-\arabic*.}, leftmargin=2cm,listparindent=-\leftmargin]
+  \item Gestión de la Información: Se deben tratar los datos de los pacientes internados, personal médico y material e instalaciones disponibles.
+  \item Control de citas: Administrar y asignar citas entre pacientes y profesionales.
+  
+  \item Asignación de pruebas médicas a pacientes en las instalaciones disponibles.
+  
+  \item Administración de material e instalaciones médicas disponibles o requeridas.
+  
+  \item Gestión administrativa del personal.
+  
+\end{enumerate}
+
+
+\section{Descripción de los implicados y usuarios finales}
+
+\textbf{Entorno de usuario}
+
+Los usuarios directos del sistema que vamos a desarrollar son dos, el médico y el paciente. Su nivel cultural es bajo-medio. Ambos tienen experiencia previa con aplicaciones informáticas pero no se desenvuelven con soltura, no saben reaccionar en caso de que el sistema falle. \\
+
+%Tabla del personal
+\begin{longtable}{|p{.2\linewidth}|p{.25\linewidth}|c|p{.25\linewidth}|}
+  \caption{Jerarquía del personal} \\
+  \hline
+  \centering{\textbf{Nombre}}  & \centering{\textbf{Descripción}} & \centering{\textbf{Tipo}} & \centering{\textbf{Responsabilidad}}
+  \endhead
+  \hline
+  \centering Médico & Representa el principal trabajador del sistema sanitario & Usuario Producto & Responsabilidad máxima en el trato de la salud del paciente.\\
+  \hline
+  \centering Enfermero & Representa a un trabajador del sistema sanitario. Se encuentra bajo el mando del médico supervisor del paciente. & Usuario producto & Responsabilidad secundaria en el trato del paciente.\\
+  \hline
+  \centering Camillero & Representa un auxiliar de enfermería & Usuario producto & Se encarga del mantenimiento de las camas de los pacientes. \\
+  \hline
+  \centering Paciente & Representa el usuario de los servicios & Usuario sistema & Seguir las indicaciones del personal sanitario. \\
+  \hline
+  \centering Celador & Representa el personal encargado de realizar distintas acciones dentro del hospital, encargándose de que todo esté en orden & Usuario producto & Se encarga de trasladar a pacientes e instrumental a diferentes lugares del hospital. \\
+  \hline
+  \centering\arraybackslash Atención al cliente & Representa al encargado de atender a clientes en recepción, ya sea en persona o por teléfono. & Usuario producto & Atender las preguntas, dudas, solicitudes del cliente. Se encargan de que los pacientes e instrumental se encuentren en el lugar adecuado en el momento adecuado. \\
+  \hline
+  \centering\arraybackslash Director del centro & Es el máximo responsable del centro. Es el principal representante de la institución. & Usuario producto & Llevar a cabo las principales tareas de gestión del centro. \\
+  \hline
+  \centering\arraybackslash Proveedor de material médico & Representa un proveedor & Usuario sistema & Suministrar material médico al hospital \\
+  \hline
+\end{longtable}
+
+\renewcommand{\arraystretch}{1.5}
+%Resto de tablas
+\begin{longtable}{|c|p{.65\linewidth}|}
+   \caption{Médico} \\
+   \hline
+   Representante & José Luis Zamorano \\
+   \hline
+   Descripción & Médico \\
+   \hline
+   Tipo & Experto \\
+   \hline
+   Responsabilidades & Revisión, indagación, trato y mejora de la salud del paciente. Dirección de los enfermeros asignados a los pacientes que trate. Investigación, estudio y/o aplicación de nuevos o mejores tratamientos. \\
+   \hline
+   Criterios de éxito & Baja tasa de mortalidad. Tratamientos innovadores. Tasa de curación o mejora de la salud del paciente. \\
+   \hline
+   Implicación & Es el principal encargado de la salud y vida del paciente. \\
+   \hline
+   Comentarios/Cuestiones & Está familiarizado con los principales campos de la medicina y especializado en uno de ellos. \\
+   \hline
+\end{longtable}
+
+
+\begin{longtable}{|c|p{.65\linewidth}|}
+   \caption{Enfermero} \\
+   \hline
+   Representante & Florence Nightingale \\
+   \hline
+   Descripción & Enfermero \\
+   \hline
+   Tipo & Representa a un trabajador del sistema sanitario. Se encuentra bajo el mando del médico supervisor del paciente. \\
+   \hline
+   Responsabilidades & Atención óptima, atención oportuna y contínua, atención cuidadosa, acatamiento de instrucciones del médico tratante, consentimiento escrito previo explicación para procedimientos riesgosos. \\
+   \hline
+   Criterios de éxito & Hay éxito si consiguen cumplir cada una de sus tareas de forma efectiva. \\
+   \hline
+   Implicación & Es el encargado de atender a los pacientes en determinados escenarios por ejemplo, un paciente con una herida, el enfermero o enfermera se encargará de limpiar la herida con suero y aplicarle en la zona una gasa para proteger. \\
+   \hline
+   Comentarios/Cuestiones & Está en constante contacto con los pacientes y sus familiares. \\
+   \hline
+\end{longtable}
+
+
+\begin{longtable}{|c|p{.65\linewidth}|}
+   \caption{Camillero} \\
+   \hline
+   Representante & Juán Gómez\\
+   \hline
+   Descripción & Encargado \\
+   \hline
+   Tipo & Camillero \\
+   \hline
+   Responsabilidades & Trasladar pacientes con diferentes patologías, tanto para la silla de ruedas como en camilla (llevar a una persona desde una habitación hasta el quirófano), poniendo en práctica las normas de seguridad. \\
+   \hline
+   Criterios de éxito & Hay éxito si cumplen cada una de sus tareas en un tiempo determinado. \\
+   \hline
+   Implicación & Es el responsable del mantenimiento y asignación de camas a los distintos pacientes del sistema. \\
+   \hline
+   Comentarios/Cuestiones & \\
+   \hline
+\end{longtable}
+
+
+\begin{longtable}{|c|p{.65\linewidth}|}
+   \caption{Paciente} \\
+   \hline
+   Representante & Alberto Alcántara\\
+   \hline
+   Descripción & Paciente \\
+   \hline
+   Tipo & No utiliza el sistema de forma directa sino que desencadena que otros usuarios hagan uso del mismo, además será un usuario casual. \\
+   \hline
+   Responsabilidades & Seguir las indicaciones del personal médico.  \\
+   \hline
+   Criterios de éxito & Que pueda consultar y pedir cita con facilidad. Además de ofrecer una atención personalizada. \\
+   \hline
+   Implicación & Utilizará el sistema cada vez que necesite atención médica o revisión. \\
+   \hline
+   Comentarios/Cuestiones & \\
+   \hline
+\end{longtable}
+
+
+\begin{longtable}{|c|p{.65\linewidth}|}
+   \caption{Celador} \\
+   \hline
+   Representante & Ana Maria Muñoz\\
+   \hline
+   Descripción & Asistente médico \\
+   \hline
+   Tipo & Representa al personal del equipo médico.  \\
+   \hline
+   Responsabilidades & Se encarga de trasladar a pacientes e instrumental a diferentes lugares del hospital.  \\
+   \hline
+   Criterios de éxito & Trato adecuado del paciente hasta ser tratado por enfermeros o médicos. \\
+   \hline
+   Implicación & Realiza el primer contacto del paciente al acceder al servicio sanitario. \\
+   \hline
+   Comentarios/Cuestiones & \\
+   \hline
+\end{longtable}
+
+
+\begin{longtable}{|c|p{.65\linewidth}|}
+   \caption{Atención al Cliente/Paciente} \\
+   \hline
+   Representante & Rosa García\\
+   \hline
+   Descripción & Atender al cliente con problemas técnicos o administrativos. \\
+   \hline
+   Tipo & Representa al encargado de atender a los pacientes en recepción, ya sea en persona o por teléfono.  \\
+   \hline
+   Responsabilidades & Gestión de las citas y los documentos requeridos por los pacientes y los médicos. Además de resolver las dudas que puedan surgir a los pacientes. \\
+   \hline
+   Criterios de éxito & Resolver el problema, duda o solicitud que tiene el cliente o usuario. \\
+   \hline
+   Implicación & Encargada de atender a pacientes, de forma de consulta (acerca de citas como por ejemplo, planta de la consulta médica y hora). \\
+   \hline
+   Comentarios/Cuestiones & \\
+   \hline
+\end{longtable}
+
+\begin{longtable}{|c|p{.65\linewidth}|}
+   \caption{Director del Centro} \\
+   \hline
+   Representante & Jose María Camara\\
+   \hline
+   Descripción & Máximo representante del centro.\\
+   \hline
+   Tipo & Administrador.  \\
+   \hline
+   Responsabilidades & Gestión de las principales áreas médicas y del presupuesto. Además, es la cara visible del centro. \\
+   \hline
+   Criterios de éxito & Una buena gestión presupuestaria.
+
+   Conseguir en general un trato correcto al paciente.
+
+   Disponer de un personal médico de excelencia.
+
+   Tener una baja tasa de mortalidad.
+
+   Disponer de tratamientos innovadores. \\
+   \hline
+   Implicación & Indirecta, como supervisor del sistema y del personal sanitario \\
+   \hline
+   Comentarios/Cuestiones & \\
+   \hline
+\end{longtable}
+
+
+\begin{longtable}{|c|p{.65\linewidth}|}
+   \caption{Proveedor del material médico} \\
+   \hline
+   Representante & Raúl Pérez\\
+   \hline
+   Descripción & Proveedor. \\
+   \hline
+   Tipo & No utiliza el sistema de forma directa sino que desencadena que otros usuarios hagan uso del mismo.  \\
+   \hline
+   Responsabilidades & Suministrar material médico al hospital. \\
+   \hline
+   Criterios de éxito & Que el sistema le permita realizar sus actividades de la forma más sencilla posible. \\
+   \hline
+   Implicación & Indirecta, como suministrador de información para el sistema \\
+   \hline
+   Comentarios/Cuestiones & \\
+   \hline
+\end{longtable}
+
+
+\begin{longtable}{|p{.15\linewidth}|c|p{.2\linewidth}|p{.2\linewidth}|p{.25\linewidth}|}
+  \caption{Necesidades de los implicados} \\
+  \hline
+  \centering{\textbf{Necesidad}}  & \centering{\textbf{Prioridad}} & \centering{\textbf{Problema}} &  \centering{\textbf{Solución actual}} & \centering{\textbf{Solución propuesta}}
+  \endhead
+  \hline
+  \centering Operación & Alta & El cirujano no sabe que parte del paciente debe operar & El cirujano pregunta al paciente & Registrar en el sistema la operación a realizar\\
+  \hline
+  \centering Cita médica & Media & Cómo sabe el médico a que hora le corresponde a cada paciente & Los horarios de las citas no se respetan. El que antes llegue, se atiende & Se lleva un histórico de las citas del día \\
+  \hline
+  \centering Recursos Médicos & Alta & No se sabe de qué material se dispone, sobran y faltan materiales médicos & Se hace una lista a papel de las herramientas y materiales que faltan & Se crea un catálogo con todos los materiales de los que dispone el centro en tiempo real \\
+  \hline
+  \centering Jornadas de vacunación & Media & No hay forma de contactar con los pacientes que deben ser vacunados & Se distribuyen carteles por el centro y por zonas estratégicas de la ciudad/pueblo & Se avisa por e-mail o sms a los pacientes a los que se destina la vacuna \\
+  \hline
+  \centering Recordatorios de cita & Baja & Los pacientes olvidan sus citas con frecuencia & Se manda un correo al paciente & El sistema le mandará una notificación vía sms o app \\
+  \hline
+\end{longtable}
+
+\clearpage
+\section{Requisitos funcionales}
+
+\begin{enumerate}[start = 1, label={\bfseries RF-\arabic*.}]
+  \item Gestión de la Información \\
+  El sistema deberá gestionar los datos de los pacientes internados, personal médico y material e instalaciones disponibles.
+  \begin{enumerate}[label*={\bfseries \arabic*.}]
+    \item Se llevará un control de los datos de cada uno de los pacientes incluyendo su estado e historial médico.
+    \item El sistema nos permitirá llevar un control de las ofertas de los proveedores y de los pedidos que se realicen.
+    \begin{enumerate}[label*={\bfseries \arabic*.}]
+      \item Necesitamos mantener una lista con los distintos proveedores que contenga información sobre su contacto. Pudiendo actualizar, añadir y consultar esa lista en cualquier momento.
+      \item Guardar los datos de un pedido realizado por un proveedor
+      \item Añadir información sobre nuevos materiales sanitarios del centro médico.
+    \end{enumerate}
+    \item Ver el estado en el que se encuentran los pedidos
+    \item Añadir la información de pacientes para solicitar citas a través de aplicaciones móviles.
+  \end{enumerate}
+  \item Control de citas: Administrar y asignar citas entre pacientes y profesionales.
+  \begin{enumerate}[label*={\bfseries \arabic*.}]
+    \item Añadir y consultar citas de un determinado paciente
+    \item Obtener información sobre una cita en concreto o ver el informe de una cita pasada.
+    \begin{enumerate}[label*={\bfseries \arabic*.}]
+      \item  Ver la fecha de la cita
+      \item  Ver informe de la cita
+      \item  Modificar la fecha de una cita por incompatibilidad por parte del paciente
+      \item  Pago de las citas
+      \begin{enumerate}[label*={\bfseries \arabic*.}]
+        \item Llevar un listado de las citas de cada paciente y la gestión de pago
+      \end{enumerate}
+    \end{enumerate}
+  \end{enumerate}
+\end{enumerate}
+
+\clearpage
+\section{Requisitos no funcionales}
+
+\paragraph{Usabilidad}
+Esta sección lista todos los requisitos relativos a la usabilidad del sistema.
+\begin{enumerate}[start =1, label={\bfseries RN-\arabic*.}]
+  \item Debe proporcionarse ayuda en línea con instrucciones paso a paso para guiçar al médico y/o paciente en la información que deba consultar.
+  \item Se deben comunicar avisos y señales visuales y/o con sonidos, por ejemplo, para avisar de que acaba de entrar o salir un paciente al centro ya que el recepcionista no está continuamente en la sala de entrada.
+  \item Se usarán asistentes que guíen en los procedimientos de vacunación o solicitud de cita a los pacientes mayores o con desconocimiento de la informática.
+\end{enumerate}
+
+\paragraph{Fiabilidad}
+\begin{enumerate}[resume*]
+  \item Mantener el acceso de los pacientes controlado asignando un usuario y contraseña para acceder a sus datos privados. 
+  \item Para prever caídas del sistema se harán back-ups y se contratará una protección contra DDOS.
+  \item Se empleará el protocolo HTTPS.
+  \item Se mantendrán partes del sistema manual actual junto con el sistema propuesto, en caso de que el sistema fallara o se produjera un corte de conexión.
+\end{enumerate}
+
+\paragraph{Rendimiento}
+\begin{enumerate}[resume*]
+  \item Se usarán dos terminales distintas: una para el médico y otra para el paciente, mejorando así la velocidad del sistema y su seguridad.
+  \item Las peticiones de cita se generarán automáticamente para acelerar el proceso de asignación e información del paciente y del médico
+  \item El sistema proporcionará acceso rápido al calendario de citas y vacunación de la base de datos, no tardando más de 5 segundos. Se calcula que el sistema debe manejar un volumen de datos de 2.000 pacientes y 50 médicos.
+\end{enumerate} 
+
+\paragraph{Soporte}
+\begin{enumerate}[resume*]
+  \item Los datos que reciben los proveedores deben ser adaptados para que sean compatibles con la base de datos del centro.
+\end{enumerate}
+
+\paragraph{Restricciones de implementación}
+\begin{enumerate}[resume*]
+  \item Se debe usar el lenguaje C++ compatible con c++11 y cmake 2.8
+\end{enumerate}
+
+\paragraph{Restricciones de interfaz}
+\begin{enumerate}[resume*]
+  \item  El sistema debe interactuar y recoger datos de los pacientes vía Intranet, conectándose a la base de datos del centro.
+\end{enumerate}
+
+\paragraph{Requisitos físicos}
+\begin{enumerate}[resume*]
+  \item Los medicamentos de prescripción médica deben ser recetados mediante un documento físico firmado y sellado por el médico para que el paciente los recoja en la farmacia oportuna. Suelen incluir un QR o un código de barras con el medicamento prescrito.
+\end{enumerate}
+
+\section{Requisitos de información}
+
+\begin{enumerate}[start =1, label={\bfseries RI-\arabic*.}]
+  \item Pacientes internados. 
+  \\ Información sobre el enfermo que se encuentra en tratamiento. 
+  \\ \textbf{Contenido:} Datos personales, DNI, historial médico, diagnóstico, posible fecha de alta médica
+  \\ \textbf{Requisitos relacionados:} RI-2
+  \item Socios 
+  \\ Información sobre el socio adscrito al servicio.
+  \\ \textbf{Contenido:} Número de socio, datos personales, DNI, historial médico, pagos realizados y pendientes, fecha de alta como socio, nivel de seguro contratado.
+  \\ \textbf{Requisitos relacionados:} RI-1
+  \item Profesionales sanitarios 
+  \\ Información sobre el profesional sanitario que realiza los servicios.
+  \\ \textbf{Contenido:} Datos personales, DNI, número seguridad social, horarios, cargo y especialización.
+  \\ \textbf{Requisitos relacionados:} RI-4
+  \item Instalaciones 
+  \\ Información sobre las instalaciones médicas disponibles en el centro y los procesos que se realizan en ellas 
+  \\ \textbf{Contenido:} Nombre, localización (Planta y Habitación), pruebas diagnósticas asociadas y personal encargado.
+  \\ \textbf{Requisitos relacionados:} RI-2, RI-5
+  \item Pruebas diagnosticas 
+  \\ Información sobre las diferentes pruebas que se encuentran disponibles y dónde se realizan.
+  \\ \textbf{Contenido:} Nombre, descripción, instalación asociada y material requerido.
+  \\ \textbf{Requisitos relacionados:} RI-4, RI-6
+  \item Material médico 
+  \\ Descripción del material médico necesario para los servicios y su disponibilidad. 
+  \\ \textbf{Contenido:} Nombre, existencias
+  \\ \textbf{Requisitos relacionados:} RI-5, RI-6, RI-7
+  \item Proveedores  
+  \\ Información sobre los proveedores que suministran los materiales y equipamiento necesarios.
+  \\ \textbf{Contenido:} Nombre, información de contacto, historial de pedidos, material que suministran.
+  \\ \textbf{Requisitos relacionados:} RI-6, RI-8
+  \item Pedidos  
+  \\ Pedidos de material o aparatos que se encuentran en reparto. 
+  \\ \textbf{Contenido:} Contenido del pedido, localizador de paquete, contacto de mensajería, proveedor “solicitado”, fecha de realización del pedido, fecha de entrega del pedido.
+  \\ \textbf{Requisitos relacionados:} RI-5, RI-6
+\end{enumerate}
+
+
+\vspace{5cm}
+
+\bibliographystyle{plain}
+\bibliography{biblist}
+
+
+\end{document}
