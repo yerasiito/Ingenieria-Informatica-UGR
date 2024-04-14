@@ -1,0 +1,4 @@
+Test está modificado y ejecuta todos los algoritmos sin modo grafico al estilo ejercicio 4
+Hay que meterlo en SinglePlayer o copiarlo en el mismo fichero
+
+Puedes utilizar el codigo para el resto de compañeros si te viene bien.

@@ -1,0 +1,14 @@
+**/CMakeFiles/
+**/Examen*
+**/Teoria/
+**/pdfs/
+**/pdf/
+**/build/
+**.vscode/
+*.zip
+*.pdf
+*.cmake
+*.idea
+*.vscode
+**/CMakeCache.txt
+**/cmake-build-debug

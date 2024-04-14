@@ -1,0 +1,22 @@
+% Please add the following required packages to your document preamble:
+% \usepackage{graphicx}
+% \usepackage[table,xcdraw]{xcolor}
+% If you use beamer only pass "xcolor=table" option, i.e. \documentclass[xcolor=table]{beamer}
+\begin{table}[H]
+	\centering
+	\caption{Construcción de la casa con 3 trabajadores}
+	\label{tab:tabla4}
+	\resizebox{0.6\textwidth}{!}{%
+		\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+			\hline
+			\rowcolor[HTML]{EFEFEF} 
+			\cellcolor[HTML]{656565}{\color[HTML]{FFFFFF} Tarea} & A & B & C  & D  & E  & F  & G  & H  & I  & J                                  \\ \hline
+			\rowcolor[HTML]{FFFFFF} 
+			\cellcolor[HTML]{FFFC9E}Inicio                       & 1 & 6 & 9  & 9  & 11 & 14 & 12 & 11 & 15 & {\color[HTML]{FE0000} \textbf{17}}          \\ \hline
+			\rowcolor[HTML]{FFFFFF} 
+			\cellcolor[HTML]{FFFC9E}Fin                          & 5 & 8 & 10 & 10 & 13 & 14 & 13 & 11 & 16 & {\color[HTML]{FE0000} \textbf{17}} \\ \hline
+			\rowcolor[HTML]{FFCCC9} 
+			\cellcolor[HTML]{FFFC9E}Trabajador & 1 & 1 & \cellcolor[HTML]{9AFF99}2 & 1 & \cellcolor[HTML]{9AFF99}2 & \cellcolor[HTML]{96FFFB}3 & 1 & 1 & 1 & \cellcolor[HTML]{96FFFB}3 \\ \hline
+		\end{tabular}%
+	}
+\end{table}

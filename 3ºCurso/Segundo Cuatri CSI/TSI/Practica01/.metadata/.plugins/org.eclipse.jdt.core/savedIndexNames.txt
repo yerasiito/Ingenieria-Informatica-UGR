@@ -1,0 +1,7 @@
+INDEX VERSION 1.132+/datos/Todo/Universidad/3ºCurso/Segundo Cuatri/TSI/P1/.metadata/.plugins/org.eclipse.jdt.core
+972945907.index
+72649000.index
+3560752185.index
+4269152552.index
+699990644.index
+1865797976.index

@@ -1,0 +1,28 @@
+% Please add the following required packages to your document preamble:
+% \usepackage{graphicx}
+% \usepackage[table,xcdraw]{xcolor}
+% If you use beamer only pass "xcolor=table" option, i.e. \documentclass[xcolor=table]{beamer}
+\begin{table}[H]
+	\centering
+	\caption{Conjunto mínimo con la media de 3 ejecuciones. Semillas 0,33,42}
+	\label{tab:tablagrafos}
+	\resizebox{0.8\textwidth}{!}{%
+		\begin{tabular}{|c|l|l|}
+			\hline
+			\rowcolor[HTML]{EFEFEF} 
+			Nº de nodos & \multicolumn{1}{c|}{\cellcolor[HTML]{EFEFEF}Mínimo número de nodos en el conjunto} & \multicolumn{1}{c|}{\cellcolor[HTML]{EFEFEF}Runtime (en milisegundos)} \\ \hline
+			\rowcolor[HTML]{ECF4FF} 
+			\cellcolor[HTML]{FFFC9E}10 & 2                                  & 165msec                   \\ \hline
+			\rowcolor[HTML]{DAE8FC} 
+			\cellcolor[HTML]{FFFC9E}20 & 3.33 (dos con 3 nodos y uno con 4) & 160msec                   \\ \hline
+			\rowcolor[HTML]{ECF4FF} 
+			\cellcolor[HTML]{FFFC9E}30 & 4,33 (dos con 4 nodos y uno con 5) & 175msec                   \\ \hline
+			\rowcolor[HTML]{DAE8FC} 
+			\cellcolor[HTML]{FFFC9E}40 & 6                                  & 385msec                   \\ \hline
+			\rowcolor[HTML]{ECF4FF} 
+			\cellcolor[HTML]{FFFC9E}50 & 8                                  & 10s 426msec (1 ejec a 2s) \\ \hline
+			\rowcolor[HTML]{DAE8FC} 
+			\cellcolor[HTML]{FFFC9E}60 & 9                                  & 2m 39s                    \\ \hline
+		\end{tabular}%
+	}
+\end{table}

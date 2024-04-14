@@ -1,0 +1,344 @@
+\input{preambulo.tex}
+%----------------------------------------------------------------------------------------
+%	TÍTULO Y DATOS DEL ALUMNO
+%----------------------------------------------------------------------------------------
+
+\title{
+	Práctica 1.b \\\vspace{1cm}
+	Técnicas de Búsqueda Local y Algoritmos Greedy
+	para el Problema del Aprendizaje de Pesos en
+	Características \vspace{1cm} \\
+	El problema del Aprendizaje de Pesos en Características (APC)	\vspace{1cm} \\
+	Algoritmo Greedy RELIEF \\
+	Búsqueda Local \hspace{1cm} 
+ }   
+
+\author{Yeray López Ramírez	}                             
+
+\renewcommand*\contentsname{hola}
+
+\makeatletter
+\let\thetitle\@title
+\let\theauthor\@author
+\let\thedate\@date
+\makeatother
+
+%----------------------------------------------------------------------------------------
+% DOCUMENTO
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+\input{portada.tex}
+
+\newpage %inserta un salto de página
+\newcommand{\code}[1]{\colorbox{light-gray}{\textcolor{alizarin}{\texttt{#1}}}}
+\newcommand{\high}[1]{\colorbox{light-gray}{\textcolor{nyellow}{\texttt{#1}}}}
+
+\tableofcontents % para generar el índice de contenidos
+
+\listoffigures
+
+\listoftables
+
+\newpage
+
+%----------------------------------------------------------------------------------------
+%	Cuestión 1
+%----------------------------------------------------------------------------------------
+
+\section{Descripción del problema}
+El problema del Aprendizaje de Pesos en Características (APC) consiste en encontrar una combinación ponderada de un conjunto de características que maximice la precisión de un clasificador y minimice su complejidad. En este problema, se busca determinar la importancia relativa de cada característica para mejorar la eficiencia computacional y la precisión del modelo. El objetivo es encontrar un vector de pesos que asigne valores más altos a las características más importantes y valores más bajos a las características menos relevantes, y que permita eliminar aquellas características que no aporten información relevante para la tarea de clasificación. \\
+
+En otras palabras, el APC busca determinar qué características son más relevantes para un problema dado y cómo combinarlas de manera óptima para obtener el mejor rendimiento de un modelo. \\
+
+El modelo clasificador utilizado en este problema es el 1-NN, el cual es un método de aprendizaje supervisado que clasifica una instancia basándose en la clase de su vecino más cercano en el conjunto de entrenamiento. Además, se utilizará la técnica de validación leave-one-out para evaluar el desempeño del clasificador. La función objetivo que se busca maximizar será una combinación de medidas de precisión (tasa\_clas) y complejidad del clasificador (tasa\_red), dando como resultado el fitness.\\
+
+Los conjuntos de datos utilizados en este problema son \textbf{diabetes}, \textbf{ozone-320} y \textbf{spectf-heart}. Diabetes es un conjunto de datos médicos que contiene información sobre pacientes con diabetes, como su edad, índice de masa corporal, presión arterial y resultados de pruebas de laboratorio, entre otros. Ozone-320 es un conjunto de datos de calidad del aire que contiene mediciones de ozono y otros contaminantes atmosféricos en diferentes ciudades de Estados Unidos. Spectf-heart es un conjunto de datos médicos que contiene información sobre pacientes que se sometieron a pruebas de diagnóstico por imágenes para enfermedades cardíacas. Todos los datasets tienen 2 etiquetas: negativo/positivo o 1.0/2.0 para indicar la clase del vector de características.  
+\newpage
+
+\section{Descripción de la aplicación de los algoritmos}
+Los algoritmos utilizados para resolver el problema del Aprendizaje de Pesos en Características (APC) son Metaheurísticas que buscan optimizar una función objetivo que combina la precisión y la complejidad del clasificador 1-NN diseñado utilizando un vector de pesos. En este problema, se busca encontrar el mejor subconjunto de características que permita obtener una alta tasa de clasificación y, al mismo tiempo, reducir la complejidad del modelo. \\
+
+Para aplicar estos algoritmos al problema de APC, se utilizó el esquema de representación basado en un vector de tamaño n con valores en [0, 1] que indican el peso asociado a cada característica. La función objetivo fue definida como la combinación con pesos de la tasa de acierto y la tasa de reducción de características del clasificador 1-NN diseñado empleando el vector de pesos. El objetivo es maximizar esta función, multiplicando la tasa de acierto por 0.8 y la tasa de reducción por 0.2, para dar mayor importancia a la clasificación que a la reducción de características.
+\[\text{Fit} = 0.8 \cdot \text{precision} + 0.2 \cdot \text{reduction}\]
+
+La implementación en pseudocódigo de la \textbf{función objetivo}:
+
+\begin{minted}{text}
+Input(Conjunto de Entrenamiento "Train", Conjunto de Prueba "Test", Vector de pesos W)
+Inicio
+    aciertos <- CLASIFICAR(Train, Test, W)
+    tasa_clas <- aciertos/tamaño_test
+    tasa_red <- PESOS_MENOR_UMBRAL(W, 0.1)
+    DEVOLVER(0.8·tasa_clas + 0.2·tasa_red)
+Fin
+\end{minted}
+
+Donde CLASIFICAR llama al modelo clasificador de vecinos 1-NN. El clasificador 1-NN (del inglés "Nearest Neighbor") es un algoritmo de clasificación que se basa en encontrar el vecino más cercano a un ejemplo de prueba en un conjunto de datos de entrenamiento, y asignarle la etiqueta del vecino como la etiqueta del ejemplo de prueba. En otras palabras, el algoritmo encuentra el ejemplo de entrenamiento más cercano al ejemplo de prueba en términos de \textbf{distancia}, y le asigna la etiqueta del ejemplo de entrenamiento como la etiqueta del ejemplo de prueba. La implementación en pseudocódigo del \textbf{clasificador 1NN} es:
+
+\begin{minted}{c++}
+Input(Vector características "A", Conjunto Entrenamiento "T", pesos W)
+Inicio
+    Inicializar min_distancia(INFINITY) y min_index(-1)
+    Para cada vector B en T
+        distancia <- DISTANCIA_EUCLIDEA(A,B,W)
+        Si distancia es menor que min_distancia
+            entonces min_index <- T.indice y min_distancia <- distancia
+     DEVOLVER(T.GET_ETIQUETA(min_index))
+Fin
+\end{minted}
+
+Cuando la función objetivo llama a CLASIFICAR lo que realmente hace es ejecutar el clasificador 1-NN con todo el conjunto de prueba. \\
+
+Tanto el clasificador como el algoritmo de Greedy y la Búsqueda Local requieren del cálculo de la distancia entre los ejemplos. La \textbf{distancia euclidiana} es una medida de distancia comúnmente utilizada en problemas de clasificación y agrupamiento. Esta distancia mide la distancia geométrica entre dos puntos en un espacio n-dimensional. Se calcula como la raíz cuadrada de la suma de las diferencias al cuadrado de cada coordenada:
+
+\[d(p,q) = \sqrt{(e^1_1 - e^1_2)^2 + (e^2_1 - e^2_2)^2 + ... + (e^n_1 - e^n_2)^2} =  \sqrt{\sum_{i=1}^n (e^i_1 - e^i_2)^2}\]
+
+En el contexto del clasificador 1-NN, la distancia euclidiana se utiliza para medir la similitud entre dos ejemplos, uno del conjunto de entrenamiento y otro del conjunto de prueba. La idea es comparar el ejemplo de prueba con cada uno de los ejemplos de entrenamiento, y seleccionar la etiqueta del ejemplo más cercano al de prueba.\\
+
+Los pesos w se usan para ajustar la importancia de cada atributo en el cálculo de la distancia euclidiana. Si un atributo tiene un peso alto, entonces su valor tendrá un mayor impacto en la medida de distancia. Por lo tanto, es importante elegir los pesos adecuados para obtener una buena precisión de clasificación. En algunos casos, ciertos atributos pueden ser irrelevantes o redundantes, y su peso puede establecerse en cero para ignorarlos en el cálculo de la distancia. La implementación en pseudocódigo de la \textbf{distancia euclidiana ponderada}:
+
+\begin{minted}{c++}
+Input(Vector características "A", Vector características "B", Vector de pesos "W", Umbral=0.1)
+Inicio
+    Inicializa distancia(0)
+    Para cada i en número de características
+        Si el peso wi es menor al umbral
+            salta la iteración
+        Sino
+            entonces dist <- wi + (Ai - Bi)²
+      DEVUELVE(RAIZ_CUADRADA(dist))
+Fin
+\end{minted}
+
+Y por último pero no menos el importante, la función de \textbf{leave one out}. El Leave One Out es un procedimiento para evaluar la capacidad predictiva de un modelo de clasificación utilizando todo el conjunto de datos para el entrenamiento y la validación. El proceso consiste en evaluar el modelo n veces, dejando un ejemplo fuera (leave one out) del conjunto de datos en cada iteración para su uso en la validación. El modelo se entrena con los n-1 ejemplos restantes y se utiliza para predecir el ejemplo que se dejó fuera. La precisión del modelo se mide mediante el número de predicciones correctas sobre el total de ejemplos que se dejaron fuera. La implementación en pseudocódigo del \textbf{LOO}:
+
+\begin{minted}{c++}
+Input(Conjunto de datos "C", Indice "i")
+Inicio
+    Dataset Loo <- C
+    ELIMINAR_EJEMPLO(Loo, i)
+    DEVOLVER(Loo)
+Fin
+\end{minted}
+
+
+\section{Estructuras de datos y algoritmos}
+\subsection{Estructura de Datos en C++}
+En primer lugar, mencionar que se ha elegido el lenguaje de programación C++. Se han definido principalmente dos Estructuras que forman la base del programa:
+\begin{itemize}
+	\item Struct Ejemplo: contiene un vector de características y un string de etiqueta. Representa a cada individuo en los conjuntos de datos.
+	\item Class Dataset: contiene un vector de Ejemplos y vector de etiquetas. Representa a todo el conjunto de datos, puede ser train o test según la lectura de los datos.
+\end{itemize}
+
+En la lectura se aplicó el método de validación cruzada (cross-folding) para evaluar el rendimiento de los algoritmos de selección de características en el problema de Aprendizaje de Pesos en Características (APC). \\
+
+Este método consiste en dividir el conjunto de datos en $k$ particiones de igual tamaño, donde una de las particiones se utiliza como conjunto de prueba y las $k-1$ particiones restantes se utilizan como conjunto de entrenamiento. Este proceso se repite $k$ veces, de tal manera que cada partición se utiliza exactamente una vez como conjunto de prueba. De esta forma, se obtiene una medida más robusta del rendimiento del algoritmo, ya que se evalúa el rendimiento sobre datos que no han sido utilizados para entrenar el modelo. \\
+
+En nuestro problema se utilizó la validación cruzada con $k=5$, lo que significa que se dividieron los datos en 5 particiones de igual tamaño y se realizaron 5 iteraciones del proceso de entrenamiento y evaluación. Para cada iteración, se utilizó una partición diferente como conjunto de prueba y las demás particiones como conjunto de entrenamiento. Se promedió el rendimiento obtenido en las 5 iteraciones para obtener una medida general del rendimiento de cada algoritmo. \\
+
+Para ayudar a la reproducibilidad y verificación de los algoritmos, se nos ha proporcionado los ficheros de datos ya divididos así que el método de lectura se limita a leerlos y aplicar la validación cruzada. La implementación en pseudocódigo del \textbf{método de lectura}:
+
+\begin{minted}{c++}
+Input(Una cadena "nombre", Conjunto de Datos "Train", Conjunto de Datos "Test", Indice de test "k")
+Inicio
+    Si nombre no es igual a "diabetes", "ozone-320" o "spectf-heart"
+        entonces DEVOLVER(error)
+    Sino
+        inicializa train, test
+        Para cada i hasta k
+            f <- nombre + i
+            Si i == k
+                 entonces READ(test, f)
+            en otro caso
+                 READ(train, f)
+     DEVOLVER(sucess)
+Fin
+\end{minted}
+
+La función READ de cada conjunto de datos se encarga de leer el fichero $f$ e integrarlo en la estructura. Se ignoran todos los comentarios y se leen los datos como una matriz de Ejemplos.\\
+
+\subsection{Algoritmos de Búsqueda}
+
+Para la aplicación de los algoritmos al problema de APC, se utilizó el algoritmo Greedy RELIEF y la Búsqueda Local Primer Mejor. A continuación, se describirán brevemente cada uno de estos algoritmos y su aplicación al problema.
+
+\begin{itemize}
+	\item El algoritmo Greedy RELIEF genera un vector de pesos basado en las distancias de cada ejemplo a su amigo más cercano y a su enemigo más cercano, con el objetivo de incrementar el peso en aquellas características que mejor separan a ejemplos que son enemigos entre sí, y reducir el peso en aquellas características que separan ejemplos que son amigos entre sí. 
+	
+	\item Por otro lado, el algoritmo BL utiliza una representación real basada en un vector de pesos que indica la importancia de cada característica. La función objetivo combina medidas de precisión y complejidad del clasificador 1-NN diseñado con el vector de pesos, y el objetivo es maximizar esta función mediante la exploración de vecindarios generados mediante movimientos de cambio por mutación normal.
+\end{itemize}
+
+\subsubsection{Algoritmo Greedy}
+
+En el caso del algoritmo \textbf{Greedy}, se utilizó una variante llamada \textbf{RELIEF}, que es una versión mejorada del algoritmo original. RELIEF utiliza pesos adaptativos para cada característica, y se calcula la importancia de cada característica en base a la contribución que hace a la selección correcta de vecinos. La vecindad se define como el conjunto de instancias más cercanas en cada clase, y se utiliza una función de distancia euclidiana para medir la similitud entre instancias. La implementación en pseudocódigo del \textbf{algoritmo Greedy}:
+\begin{minted}{c++}
+Input(Dataset "D")
+Inicio
+    Inicializar pesos(0, N_CARACTERISTICAS(D))
+    Para cada Ejemplo "E" en D
+        ACTUALIZAR_PESOS(E, LEAVE_ONE_OUT(D, POS(E)), W)
+    pesos <- NORMALIZAR(W)
+    DEVOLVER(pesos)
+Fin
+\end{minted}
+No debemos olvidar que estamos en la representación [0,1] así que es necesario normalizar los pesos antes de terminar. Se truncan los pesos negativos a 0 y se dividen el resto de pesos entre el peso máximo.
+
+Importante notar además que al actualizar los pesos estamos aplicando el LEAVE\_ONE\_OUT para evitar compararse consigo mismo. El método ACTUALIZAR\_PESOS se encarga de encontrar el \code{amigo} y el \code{enemigo} de cada ejemplo del conjunto de datos y actualizar los pesos en consecuencia. Su funcionamiento es el siguiente:
+
+\begin{minted}{c++}
+Input(Ejemplo "inst", Conjunto de Datos "D", Vector de pesos "W")
+Inicio
+    Inicializar adist, edist <- 0
+    Para cada ejemplo "E" del conjunto "D"
+         dist <- DISTANCIA_EUCLIDEA(E, inst, W)
+         Si E.etiqueta == inst.etiqueta
+             entonces si dist es menor que adist
+             	adist <- dist
+             	aindice <- D.indice
+         sino E.etiqueta != inst.etiqueta
+             entonces si dist es menor que edist
+                 edist <- dist
+                 eindice <- D.indice
+     Para cada peso wi en W
+          wi = wi + |inst[i] - D[eindice, i]| - |inst[i] - D[aindice, i]|
+          
+     DEVOLVER(W)
+Fin
+\end{minted}
+
+\subsubsection{Algoritmo de Búsqueda Local}
+
+En el algoritmo de \textbf{búsqueda local} la solución inicial se generó de forma aleatoria utilizando una distribución uniforme en [0, 1], y el movimiento de cambio por mutación normal Mov(W,s) se utilizó como esquema de generación de vecinos en la Búsqueda Local. En cada iteración de la Búsqueda Local, se mutó una componente i del vector de pesos en un orden aleatorio distinto para cada solución, hasta que se alcanzó una solución mejor o se modificaron todas las posiciones una vez sin conseguir una mejora. Se implementa de la siguiente forma:
+\begin{minted}{text}
+Input(Conjunto de datos "Train")
+Inicio
+    GENERAR_SOLUCION_INICIAL(Wact, Train.NUMERO_CARACTERÍSTICAS)
+    objetivoActual <- FUN_OBJETIVO(Train, Wact)
+    Inicializar iteraciones, iter_vecinos = 0, W = Wact
+    Mientras que iter_vecinos < 20*Sact.SIZE y iteraciones menor que 15,000
+        Vec_indices <- GENERAR_VECINDARIO(W.SIZE)
+        Inicializar bool mejora <- false
+        Para cada i en Vec_indices y mientras no haya mejora
+            GENERAR_VECINO(W, i, 0.8)
+            objetivo <- FUN_OBJETIVO(Train, W)
+            Si el objetivo es mayor que el actual
+                Inicializar iter_vecinos = 0
+                objetivoActual <- objetivo
+                Wact = W
+                mejora = true
+            iter_vecinos+1
+        iter+1
+    	
+    DEVOLVER(Wact)
+\end{minted}
+A continuación se describe con detalle los esquemas:
+\begin{itemize}
+	\item Generación de la solución inicial: usamos la librería \code{random.hpp} proporcionada, concretamente Random::get<std::vector>(0.0, 1.0, numCaracteristicas) que genera un vector aleatorio de números reales entre 0 y 1 de tamaño numCaracterísticas.
+	\item Generación de vecindario: usamos la librería \code{random.hpp} para hacer un shuffle a los índices de pesos.
+	\item Generación de vecinos: esta vez hay que tener más cuidado pues hay que sumar un vector Z con distribución normal y respetar la representación de los pesos [0,1]. Una implementación sencilla en pseudocódigo es la siguiente:
+	\begin{minted}{c++}
+Input(Pesos "W", indice "i", valor de "media" = 0, valor de" varianza" = 0.8)
+Inicio
+     z <- DISTRIBUCION_NORMAL(0, SQRT(varianza))
+     Si Wi + z es mayor a 1
+          TRUNCAR(Wi, 1)
+     Si Wi + z es menor a 0
+          TRUNCAR(Wi, 0)
+     Si no
+          Wi <- Wi + z
+     DEVOLVER(W)
+	\end{minted}
+
+\item Criterio de aceptación: se cumple cuando el objetivo del vecino generado es mayor que el actual, lo controlamos con el valor de mejora.
+\end{itemize}
+
+En resumen, ambos algoritmos se aplicaron al problema de APC utilizando el mismo esquema de representación y la misma función objetivo. La Búsqueda Local se enfocó en la exploración del espacio de soluciones vecinas, mientras que el algoritmo Greedy RELIEF se enfocó en incrementar el peso en aquellas características que mejor separan a ejemplos que son enemigos entre sí, y reducir el peso en aquellas características que separan ejemplos que son amigos entre sí. 
+
+\section{Procedimiento de desarrollo}
+Se ha desarrollado la práctica en C++ usando VScode.  Se usa el random.hpp y el CMakeLists.txt de prácticas, los pseudocódigos de teoría y prácticas. Lo que falta se toma de Internet, la mayoría de Stackoverflow \cite{Stackoverflow}, geekforgeeks \cite{greekforgeeks} y chatgpt \cite{chatgpt}. \\
+
+El procedimiento de desarrollo ha sido:
+\begin{itemize}
+	\item Lectura y búsqueda de información tanto en el material de teoría y prácticas como de Internet. En la figura \ref{fig:mi_imagen} se puede ver el resumen:
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=\textwidth]{resumen.png}
+		\caption{Estudio del problema}
+		\label{fig:mi_imagen}
+	\end{figure}
+
+	\item Una vez se tiene claros los conceptos, creamos un nuevo directorio practicas1 con el material de prácticas. Creamos los directorios src, headers y reusamos el CMakeLists.txt y el random.hpp de tools.zip. Creamos un fichero .cpp y .h por algoritmo (esto cambiará) y el main.cpp. Los metemos en sus respectivos directorios y abrimos VScode.
+	
+	\item Primero vamos a definir una estructura de datos que será la base de todo el funcionamiento. En mi caso se abstraen los ejemplos en un Struct y se usa una clase Dataset para integrar vectores de ejemplos. Hardcodeamos una matriz de ejemplo y probamos hasta que funcione.
+	
+	\item Con la estructura montada pasamos a leer los datos. Para ello he recurrido a una practica de Estructura de Datos donde leía matrices de ficheros y la modifiqué para ignorar los comentarios y adaptarla al dataset.
+	También he recurrido a Stackoverflow y chatgpt para las dudas. De paso configuramos el CMakeLists.txt con los ficheros de src y headers. IMPORTANTE: añadir optimización al compilador con el parámetro -02, será clave para la búsqueda local después.
+	
+	\item Llegados a este punto ya podemos empezar a implementar los métodos. Se implementarán en orden de dificultad y dependencia:
+	\begin{enumerate}
+		\item Algoritmo 1NN
+		\item Algoritmo Greedy RELIEF
+		\item Algoritmo Búsqueda Local Primer Mejor
+	\end{enumerate}
+	Para verificar el correcto funcionamiento del algoritmo 1NN y la lectura de datos se ha recurrido a la  \href{https://mh2223.danimolina.net/testsol.html}{web de la asignatura} y junto a la ayuda de geeksforgeeks.org\cite{greekforgeeks}, una página muy recomendada para implementación de multitud algoritmos y problemas, se puede implementar el 1-NN sencillamente. 
+	
+	\item Una vez tenemos el clasificador pasamos a la implementación de Greedy y la BL. El pseudocódigo proporcionado de Greedy junto a la explicación del mismo en prácticas es suficiente para implementarlo aunque he consultado en la Universidad de Radboud \cite{runl} una tesis sobre la aplicación de algoritmos RELIEF en bioinformática. En cambio para la búsqueda Local, el pseudocódigo de teoría es insuficiente por lo que he recurrido nuevamente a Internet. Encontré un documento de la Universidad de la Laguna sobre sistemas Inteligentes \cite{ull}. En la página 43 encontramos un pseudocódigo más completo y del que nos basaremos para implementarlo. Para modular el código se ha utilizado los esquemas dados en el guión de prácticas.
+\end{itemize}
+
+\section{Experimentos}
+Para la ejecución de la práctica se pueden usar los siguientes comandos:
+\begin{itemize}
+	\item \code{./practica1 }: ejecutará la práctica con el clasificador 1-NN.
+	\item \code{./practica1 greedy}: ejecutará la práctica con el clasificador 1-NN mejorado con Greedy RELIEF.
+	\item \code{./practica1 bl}: ejecutará la práctica con el clasificador 1-NN mejorado con Búsqueda Local y semilla aleatoria.
+	\item \code{./practica1 bl 1}: ejecutará la práctica con el clasificador 1-NN mejorado con Búsqueda Local y semilla 1. Puede ser cualquier número.
+\end{itemize}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\textwidth]{greedy.png}
+	\caption{Ejecución de Greedy}
+	\label{fig:greedy}
+\end{figure}
+Nota: Se añade la tasa\_clas de entrenamiento para comparar en la web. Se puede desactivar quitando el parámetro \code{true} en la linea 71 en main.cpp. Para la ejecución de las tablas siguientes se ha desactivado para mejorar los tiempos. \\
+
+\subsection{Resultados}
+Las tablas que se presentan a continuación corresponden a resultados obtenidos por tres algoritmos (1NN, greedy y BL) aplicados al problema del Aprendizaje de Pesos en Características (APC) en tres conjuntos de datos diferentes (Diabetes, Ozone y Spectf-heart). Cada tabla muestra los porcentajes de clasificación, reducción del número de características, fitness y tiempo de ejecución para cada partición del conjunto de datos. Se busca comparar la eficacia de ambos algoritmos en términos de calidad de la solución y tiempo de ejecución.
+
+\input{tabla1nn.tex}
+
+En la tabla \ref{tab:1nn} se puede observar que los resultados de clasificación no son malos con un porcentaje de clasificación correcta superior al 66\% y una media del 68,36\%. El porcentaje de reducción en el número de características es del 0\% ya que no se aplica ninguna selección de características.\\
+
+Los valores de fitness oscilan entre 53,51 y 73,14, lo que indica que el algoritmo no ha encontrado necesariamente las soluciones óptimas para todos los conjuntos de datos. Por último, los tiempos de ejecución son bastante bajos, con valores inferiores a 0,01 segundos para todos los conjuntos de datos y particiones.
+
+\input{tablagreedy.tex}
+
+En la tabla \ref{tab:Greedy} se observa que la media de los fitness obtenidos para cada conjunto de datos varía entre 55.17 y 68.07, lo que indica que el algoritmo es capaz de encontrar soluciones de igual calidad que el 1NN.\\
+
+La diferencia está en que el \% de reducción en el número de características seleccionadas varía entre 0\% y 12.5\%, lo que significa que el algoritmo no siempre es capaz de reducir significativamente el número de características sin comprometer el rendimiento del modelo. Esto se debe a que Greedy maximiza la tasa\_clas, no el fitness al completo por lo que no tiende a reducir. Al igual que el 1NN, los tiempos son rápidos.
+
+\input{tablaBL.tex}
+Al analizar los resultados de la tabla \ref{tab:bl}, se observa que el algoritmo BL obtiene mejores resultados que el algoritmo Greedy y 1-NN en términos de fitness para todas las particiones y conjuntos de datos. Además, el porcentaje de reducción es significativamente mayor en promedio para el algoritmo BL, lo que sugiere que el número de características seleccionadas es menor en comparación con el algoritmo Greedy.\\
+
+Sin embargo, podemos observar el alto coste computacional que supone ejecutar la búsqueda. Los tiempos multiplican por cientos al de Greedy y 1NN.
+
+\input{tablaFinal.tex}
+
+En la tabla \ref{tab:final} se presentan los resultados globales para los tres algoritmos en los tres conjuntos de datos. En general, el \textbf{algoritmo BL} tuvo un mejor rendimiento en términos de porcentaje de clasificación y agregación, aunque tuvo una reducción de dimensiones más alta. El algoritmo 1-NN tuvo un desempeño aceptable en términos de porcentaje de clasificación, pero no es capaz de reducir la dimensionalidad del conjunto de datos. Por otro lado, el algoritmo RELIEF tuvo un desempeño inferior en comparación con BL, aunque logró reducir algo la dimensionalidad del conjunto de datos.\\
+
+En cuanto a los conjuntos de datos individuales, en Diabetes, los tres algoritmos lograron un rendimiento similar en términos de porcentaje de clasificación y agregación, aunque BL tuvo la reducción de dimensionalidad más alta. En Ozone, BL tuvo un mejor rendimiento que 1-NN y RELIEF en términos de porcentaje de clasificación y agregación, pero también tuvo una reducción de dimensionalidad más alta. En Spectf-heart, BL también tuvo un mejor rendimiento en comparación con 1-NN y RELIEF, aunque tuvo una reducción de dimensionalidad más alta.\\
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\textwidth]{1nn.png}
+	\includegraphics[width=0.6\textwidth]{greedyG.png}
+	\includegraphics[width=0.6\textwidth]{bl.png}
+	\includegraphics[width=0.6\textwidth]{comparativa.png}
+\end{figure}
+
+En conclusión, el algoritmo BL demostró ser el más efectivo en términos de porcentaje de clasificación y agregación en los tres conjuntos de datos, aunque también tuvo la reducción de dimensionalidad más alta. Por lo tanto, dependiendo del conjunto de datos y del énfasis dado a la reducción de dimensionalidad versus el rendimiento de clasificación, se podría elegir entre el algoritmo BL y el algoritmo 1-NN o RELIEF.
+
+\bibliography{citas} %archivo citas.bib que contiene las entradas 
+\bibliographystyle{plain} % hay varias formas de citar
+
+\end{document}

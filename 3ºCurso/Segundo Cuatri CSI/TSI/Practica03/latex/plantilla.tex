@@ -1,0 +1,170 @@
+\input{preambulo.tex}
+%----------------------------------------------------------------------------------------
+%	TÍTULO Y DATOS DEL ALUMNO
+%----------------------------------------------------------------------------------------
+
+\title{
+	Práctica 3 \\\vspace{1cm}
+	Técnicas de Sistemas Inteligentes \vspace{1cm} \\
+	Planificación Clásica (PDDL) \vspace{1cm} \\
+ }   
+
+\author{Yeray López Ramírez	}                             
+
+\renewcommand*\contentsname{hola}
+
+\makeatletter
+\let\thetitle\@title
+\let\theauthor\@author
+\let\thedate\@date
+\makeatother
+
+%----------------------------------------------------------------------------------------
+% DOCUMENTO
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+\input{portada.tex}
+
+\newpage %inserta un salto de página
+\newcommand{\code}[1]{\colorbox{light-gray}{\textcolor{alizarin}{\texttt{#1}}}}
+\newcommand{\high}[1]{\colorbox{light-gray}{\textcolor{nyellow}{\texttt{#1}}}}
+
+\tableofcontents % para generar el índice de contenidos
+
+\listoftables
+
+\newpage
+
+%----------------------------------------------------------------------------------------
+%	Cuestión 1
+%----------------------------------------------------------------------------------------
+
+\section{Tabla de resultados}
+\subsection{Ejercicio 1}
+\noindent\fbox{%
+	\parbox{0.3\textwidth}{\textbf{Objetivo:}
+producir minerales.
+	}%
+}
+
+\input{ejer1.tex}
+Número de acciones: 4 de navegar y 1 de asignar.\\
+Tiempo: El plan resultante es sencillo de calcular por lo que es instantáneo.
+
+\subsection{Ejercicio 2}
+\noindent\fbox{%
+	\parbox{0.3\textwidth}{\textbf{Objetivo:}
+		producir gas vespeno.
+	}%
+}
+\input{ejer2.tex}
+
+Número de acciones: 10 de navegar, 2 de asignar y 1 de construir.\\
+Tiempo: El plan resultante es sencillo de calcular por lo que es instantáneo de nuevo.
+
+\subsection{Ejercicio 3}
+\noindent\fbox{%
+	\parbox{0.57\textwidth}{\textbf{Objetivo:}
+		construir barracones en una localización concreta.
+	}%
+}
+\input{ejer3.tex}
+
+Número de acciones: 17 de navegar, 2 de asignar y 2 de construir.\\
+Tiempo: El plan resultante empieza a tener cierta complejidad. Sigue siendo milisegundos.
+
+\subsection{Ejercicio 4}
+\noindent\fbox{%
+	\parbox{0.8\textwidth}{\textbf{Objetivo:}
+		reclutar 2 marines y 1 soldado. Enviarlos a localizaciones concretas.
+	}%
+}
+
+\input{ejer4.tex}
+
+Número de acciones: 21 de navegar, 5 de reclutar (2 VCEs + objetivo), 2 de construir y 2 de asignar.\\
+Tiempo: El plan resultante vuelve a ser casi instantáneo tras añadir reglas redundantes.
+
+\subsection{Ejercicio 5}
+\noindent\fbox{%
+	\parbox{0.8\textwidth}{\textbf{Objetivo:}
+		reclutar 2 marines y 1 soldado. Soldado requiere investigar spartan.
+	}%
+}
+
+\input{ejer5.tex}
+
+Nº de acciones: 21 de navegar, 5 de reclutar, 3 de construir, 2 de asignar y 1 de investigar. No es óptimo.\\
+Tiempo: El plan resultante vuelve a ser casi instantáneo tras añadir reglas redundantes.
+
+\subsection{Ejercicio 6}
+\noindent\fbox{%
+	\parbox{0.6\textwidth}{\textbf{Objetivo:}
+		mismo que ejercicio 5. Restringir número de acciones.
+	}%
+}
+
+\input{ejer6.tex}
+
+Nº de acciones: 
+\begin{itemize}
+	\item Sin restringir: 21 de navegar, 5 de reclutar, 3 de construir, 2 de asignar y 1 de investigar. No es óptimo.
+	\item Restringido: 17 de navegar, 5 de reclutar, 3 de construir, 2 de asignar y 1 de investigar. Es óptimo.
+\end{itemize}
+
+Tiempo: esta vez al restringir el tiempo aumenta por encima del segundo. Tarda 5 veces más en probar que no se puede realizar en menos acciones.
+
+\subsection{Ejercicio 7}
+\noindent\fbox{%
+	\parbox{0.6\textwidth}{\textbf{Objetivo:}
+		mismo que ejercicio 4. Ahora con recursos limitados.
+	}%
+}
+
+\input{ejer7.tex}
+Nº de acciones: 
+\begin{itemize}
+	\item Sin restringir: 26 de recolectar, 25 de navegar, 5 de reclutar, 3 de construir y 2 de asignar. No es óptimo.
+	\item Restringido: 25 de recolectar, 23 de navegar, 5 de reclutar, 3 de construir y 2 de asignar. Es óptimo.
+\end{itemize}
+
+Tiempo: esta vez al restringir el tiempo aumenta por encima de los 2 segundos. Tarda casi 6 minutos en obtener una solución con menor número de pasos. Se prueba 'unsolvable' tras pasar 30 minutos esperando por debajo de 58 acciones.
+
+%\input{resultados.tex}
+
+
+\section{Pregunta \#1 }
+\noindent\fbox{%
+	\parbox{\textwidth}{\textbf{Enunciado:}
+En las distintas llamadas a MetricFF necesarias para resolver el Ejercicio 6 (o cualquier otro en donde se busque optimizar de modo efectivo el tamaño del plan o algún otro criterio), ¿MetricFF suele tardar aproximadamente el mismo tiempo en todas ellas? ¿A qué cree que se debe este fenómeno? Razone su respuesta. 
+	}%
+}
+\quad\\
+Tanto en el ejercicio 6 como en el 7 observamos que al restringir más y más la solución, el planificador le cuesta más hallar una solución válida. Esto se debe a:
+\begin{itemize}
+	\item \textbf{Un espacio de búsqueda más reducido:} Al restringir la solución, se restringe el espacio de búsqueda y se reducen las posibilidades de encontrar una secuencia de acciones que cumpla con los objetivos y restricciones impuestas. Esto hace que sea más difícil para el planificador encontrar una solución factible dentro de ese espacio de búsqueda más restringido.
+	
+	\item \textbf{Una mayor complejidad del problema:} Al restringir la solución, se estén imponiendo restricciones que aumentan la complejidad del problema (aumenta el árbol de búsqueda). Por ejemplo, al agregar restricciones acciones o tiempo. Esto puede hacer que la búsqueda sea más complicada y necesite más tiempo para encontrar una solución factible.
+\end{itemize}
+
+\section{Pregunta \#2}
+\noindent\fbox{%
+	\parbox{\textwidth}{\textbf{Enunciado:}
+En base a los tiempos de ejecución obtenidos, al comportamiento general observado en los distintos ejercicios, y teniendo en cuenta que el dominio de planificación planteado en esta práctica es de dificultad baja o moderada, ¿cuáles considera que pueden ser las principales limitaciones de la planificación automática en otros dominios? ¿Cómo considera que escalaría la resolución de los problemas si incorporásemos muchas más acciones, objetos y nodos del mapa?
+	}%
+}
+\quad\\
+
+La planificación automática tiene varias limitaciones. Algunas de las principales son: 
+\begin{itemize}
+	\item \textbf{Espacio de búsqueda y complejidad:} A medida que se incrementa el número de acciones, objetos y nodos en el mapa, el espacio de búsqueda aumenta exponencialmente. Esto hace que la planificación automática sea computacionalmente muy costosa.
+	
+	\item \textbf{Representación del conocimiento: } La planificación automática depende de una representación precisa del conocimiento del dominio y las reglas de acción. En el mundo real la representación es incompleta o imprecisa por lo que hay dificultades para generar planes efectivos. 
+	
+	\item \textbf{Incertidumbre y cambios en el entorno: } La planificación automática puede enfrentar dificultades cuando hay incertidumbre en el entorno o cuando el entorno cambia dinámicamente. La incertidumbre puede surgir de la falta de información completa sobre el estado actual del mundo o de la imposibilidad de predecir completamente las consecuencias de las acciones.
+\end{itemize}
+
+Como bien se menciona en la lista previa, una de las mayores limitaciones es la escalabilidad. Si incorporásemos muchas más acciones, objetos y nodos en el mapa llegaría un punto que la planificación se volvería inmanejable. Para poder escalar los problemas de planificación se necesitaría mejorar el algoritmo de búsqueda, la heurística o paralelizar la ejecución.
+
+\end{document}

@@ -1,0 +1,27 @@
+% Please add the following required packages to your document preamble:
+% \usepackage{graphicx}
+% \usepackage[table,xcdraw]{xcolor}
+% If you use beamer only pass "xcolor=table" option, i.e. \documentclass[xcolor=table]{beamer}
+\begin{table}[H]
+	\centering
+	\caption{Resultados de los ejercicios 1 al 7}
+	\label{tab:resultados}
+	\resizebox{0.6\textwidth}{!}{%
+		\begin{tabular}{|
+				>{\columncolor[HTML]{DAE8FC}}c |c|c|}
+			\hline
+			\cellcolor[HTML]{EFEFEF}\textbf{ejercicio} & \cellcolor[HTML]{EFEFEF}\textbf{Nºacciones} & \cellcolor[HTML]{EFEFEF}\textbf{Tiempo(s)} \\ \hline
+			\textbf{1}                     & 5                                 & 0.00   \\ \hline
+			\textbf{2}                     & 13                                & 0.00   \\ \hline
+			\textbf{3}                     & 21                                & 0.07   \\ \hline
+			\textbf{4}                     & 30                                & 0.01   \\ \hline
+			\textbf{5}                     & 32                                & 0.04   \\ \hline
+			\textbf{6 (sin restringir)}    & 32                                & 0.07   \\ \hline
+			\textbf{6 (restringido <= 28)} & 28                                & 1.23   \\ \hline
+			\textbf{6 (proven unsolvable)} & {\color[HTML]{FE0000} unsolvable} & 5.61   \\ \hline
+			\textbf{7 (sin restringir)}    & 61                                & 2.70   \\ \hline
+			\textbf{7 (restringido <= 28)} & 58                                & 298.56 \\ \hline
+			\textbf{7 (proven unsolvable)} & {\color[HTML]{FE0000} unsolvable} & $\infty$\\ \hline
+		\end{tabular}%
+	}
+\end{table}

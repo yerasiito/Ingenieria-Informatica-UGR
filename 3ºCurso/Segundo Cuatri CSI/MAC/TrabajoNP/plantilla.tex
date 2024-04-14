@@ -1,0 +1,94 @@
+\input{preambulo.tex}
+%----------------------------------------------------------------------------------------
+%	TÍTULO Y DATOS DEL ALUMNO
+%----------------------------------------------------------------------------------------
+
+\title{
+	Trabajo NP-completo \\\vspace{1cm}
+	Ejercicio 10-n 
+	Problema del Agrupamiento
+	(Low-Diameter-Clustering)
+ }   
+
+\author{Yeray López Ramírez	}                             
+
+
+\renewcommand*\contentsname{hola}
+
+\makeatletter
+\let\thetitle\@title
+\let\theauthor\@author
+\let\thedate\@date
+\makeatother
+
+%----------------------------------------------------------------------------------------
+% DOCUMENTO
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+\input{portada.tex}
+
+\newpage %inserta un salto de página
+\newcommand{\code}[1]{\colorbox{light-gray}{\textcolor{alizarin}{\texttt{#1}}}}
+\newcommand{\high}[1]{\colorbox{light-gray}{\textcolor{nyellow}{\texttt{#1}}}}
+
+\tableofcontents % para generar el índice de contenidos
+
+\newpage
+
+%----------------------------------------------------------------------------------------
+%	Cuestión 1
+%----------------------------------------------------------------------------------------
+
+\section{Enunciado}
+Supongamos que tenemos $n$ objetos $U = \ \{p_1, \ldots, p_n\}$, una función de distancia simétrica $d(p_i, p_j) \in \mathbb{N}$ tal que $d(p_i, p_i) = 0$, un entero $K$ y un umbral $B$, determinar si $U$ se puede partir en $K$ partes $U_1, \ldots, U_K$ de tal forma que en cada cluster la distancia entre cada dos objetos pertenecientes a él es menor o igual a $B$ (para cada $p_i, p_j \in U_k$, se cumpla $d(p_i, p_j) \leq B$). DEMOSTRAR QUE ES NP-COMPLETO.
+\\ \quad \\
+\textit{La clase NP se refiere a un conjunto de problemas de decisión que pueden ser verificados en tiempo polinómico por una máquina de Turing no determinista. Esto significa que si se proporciona una solución candidata para un problema en NP, se puede verificar su validez en tiempo polinómico. Por otro lado, NP-completo es una clase especial dentro de NP que contiene los problemas más difíciles en NP, ya que todos los problemas en NP se pueden reducir en tiempo polinómico a un problema NP-completo. Esto significa que si se encuentra un algoritmo eficiente para resolver un problema NP-completo, se puede utilizar para resolver todos los problemas en NP en tiempo polinómico.
+}
+
+\section{Planteamiento}
+Para demostrar que el problema Low-Diameter-Clustering \cite{perlindstrand} es NP-Completo, se utilizará la idea de reducción desde el problema k-Colores. Dada la definición del problema Low-Diameter-Clustering, donde se busca dividir un conjunto de objetos en K partes, cada una con una distancia máxima entre cualquier par de objetos menor o igual a B, se puede considerar que este problema es NP-Completo en una dimensión igual a 2.\\
+
+Se puede verificar en tiempo polinómico si una solución propuesta $S$ para el problema Low-Diameter-Clustering es válida. Además, la verificación de que la distancia entre dos objetos en un mismo cluster sea menor o igual a $B$ se puede realizar en tiempo polinómico. Ya que en el peor caso se deben comparar todos los objetos entre sí, lo que implica $\frac{n(n–1)}{2}$ comparaciones, si todos los objetos están en el mismo cluster. Esto se traduce a una complejidad de ejecución $\mathcal O(n^2)$.\\
+
+Para establecer la reducción, consideraremos una reducción del problema k-Colores al problema de agrupamiento. Asociaremos un grafo $G = (V, E)$ al problema, donde $V$ representa los vértices del grafo y $E$ las aristas entre ellos. La pregunta a responder será: ¿es posible colorear todos los vértices $v(n)$ utilizando a lo sumo $k$ colores, de modo que dos vértices $u$ y $w$ no compartan el mismo color si $(u, w) \in E$?\\
+
+Con esta idea, se puede identificar cada vértice de $v \in V$ como cada objeto $p_v$. La función de distancia $d(p_i, p_j)$ se podría definir como:\\
+
+\begin{equation}
+	d(p_v, p_w) =
+	\begin{cases}
+		cB & \text{si } (u,v) \in E \\
+		B/c & \text{si } (u,v) \notin E \\
+		0 & \text{si } u=v
+	\end{cases}
+	\quad 
+	\noindent\fbox{%
+		\parbox{0.25\textwidth}{
+			[c sería una constante \ >\ 1 \\ para cualquier B\ >\ 0]
+		}%
+	}
+\end{equation}
+
+\newpage
+
+\section{Demostración}
+Para demostrar la NP-Completitud del problema de k-Colores $\leq$ Agrupamiento, debemos mostrar que si existe una solución para el problema de k-Colores, entonces también existe una solución para el problema del Agrupamiento.
+
+Supongamos que tenemos una solución $S$ para el problema de k-Colores, donde cada vértice $v$ está coloreado con un color $C(v)$. Podemos utilizar esta solución para construir una solución para el problema del Agrupamiento de la siguiente manera:
+\begin{itemize}
+\item Para cada color $C(v)$ en $S$, creamos un grupo $U_i$ en el problema del Agrupamiento. Todos los vértices $v$ con $C(v) = C(u_i)$ se asignan al grupo $U_i$.
+
+\item Por la naturaleza de la coloración en el problema de k-Colores, todos los vértices en el mismo grupo $U_i$ tendrán diferentes colores. Por lo tanto, no habrá aristas entre los vértices del mismo grupo en el problema del Agrupamiento, ya que $(u, w) \notin E$ si $V(u) = V(w)$.
+
+\item Del mismo modo, si $(u, w) \in E$, entonces $V(u) \neq V(w)$ y, por lo tanto, los vértices $u$ y $w$ no estarán en el mismo grupo $U_i$ en el problema del Agrupamiento.
+\end{itemize}
+
+De esta manera, hemos demostrado que si existe una solución para el problema de k-Colores, también existe una solución para el problema del Agrupamiento. Por lo tanto, hemos establecido la reducción del problema de k-Colores al problema del Agrupamiento, lo que implica que el problema del Agrupamiento es NP-Completo.
+
+\newpage
+\nocite{parsimonious}
+\bibliography{citas} %archivo citas.bib que contiene las entradas 
+\bibliographystyle{plain} % hay varias formas de citar
+
+\end{document}

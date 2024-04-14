@@ -1,0 +1,6 @@
+La carpeta matrices contiene las matrices de adyacencia necesarias para el problema 5 de grafos.
+No tienes que tocar nada de ahí.
+
+Al ejecutar el problema 5, comenta y descomenta el fichero a usar. La semilla se indica en ejercicio5.mzn
+
+El ejercicio 3 no se ha realizado (se ha intentado)

@@ -1,0 +1,9 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+Input(Conjunto de Entrenamiento \PYGZdq{}Train\PYGZdq{}, Conjunto de Prueba \PYGZdq{}Test\PYGZdq{}, Vector de pesos W)
+Inicio
+    aciertos \PYGZlt{}\PYGZhy{} CLASIFICAR(Train, Test, W)
+    tasa\PYGZus{}clas \PYGZlt{}\PYGZhy{} aciertos/tamaño\PYGZus{}test
+    tasa\PYGZus{}red \PYGZlt{}\PYGZhy{} PESOS\PYGZus{}MENOR\PYGZus{}UMBRAL(W, 0.1)
+    DEVOLVER(0.8·tasa\PYGZus{}clas + 0.2·tasa\PYGZus{}red)
+Fin
+\end{Verbatim}
