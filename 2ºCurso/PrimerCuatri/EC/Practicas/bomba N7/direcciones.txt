@@ -1,0 +1,39 @@
+//Contraseña
+Entrada codificada en cesar. Estan desplazados +2 veces(Ej. Hola\n+2 = Jqnc\p
+contraseña? -> vFjckMiw
+Invertida? -> wiMkcjFv
+Desplazada -2 -> ugKiahDt <- Contraseña
+
+//Pin
+84611 //equisde que sea 11(que -2 es 9)
+Desplazado -2 -> 6249 <- pin
+
+p(char *)(0x400aa0+N)
+p*(int *)(0x400a80+N)
+
+//Contra modificada : yerasito
+Invertida y Desplazada-> "qvkuctg{"
+
+//set {char[2]}(0x400aa0+n) = "_"
+/*
+set {char[2]}(0x400aa0) = "q"
+set {char[2]}(0x400aa0+4) = "v"
+set {char[2]}(0x400aa0+8) = "k"
+set {char[2]}(0x400aa0+12) = "u"
+set {char[2]}(0x400aa0+16) = "c"
+set {char[2]}(0x400aa0+20) = "t"
+set {char[2]}(0x400aa0+24) = "g"
+set {char[2]}(0x400aa0+28) = "{"
+*/
+p(char*)(0x400aa0+n) //Comprobar
+
+//Pin modificado : 7777
+
+set {int}(0x400a80+n) = 9 //9-2=7 y n cada 4
+/*
+set {int}(0x400a80)=9
+set {int}(0x400a80+4)=9
+set {int}(0x400a80+8)=9
+set {int}(0x400a80+12)=9
+*/
+p(char*)0x400a80

@@ -1,0 +1,11 @@
+contraseña -> cAqYexQi
+pin -> 3786
+
+yerasito
+7777
+
+Como modificar bombas:
+1-Saber donde se encuentran las instrucciones
+2-Hacer objdump -d bomba y buscar la instruccion en hexadecimal
+3-Usar el ghex y modificar el numero que quieras a partir de la instruccion en hexadecimal del objdump
+4-Disfruta xD

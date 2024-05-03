@@ -1,0 +1,10 @@
+# Originalmente
+password -> 0x6030b0
+password "fnJnNnvq\n"
+password "qwertyui\n"
+pin -> 0x6030ac
+pin "3941"
+
+# Tras modificar
+password -> qwertyui
+pin -> el mismo
