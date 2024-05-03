@@ -1,0 +1,70 @@
+10
+hola
+3
+1. interj. U. como salutación familiar.
+2. interj. p. us. U. para denotar extrañeza, placentera o desagradable. U. t. repetida.
+3. interj. desus. Era u. para llamar a los inferiores.
+adios
+7
+1. interj. U. para despedirse.
+2. interj. U. para saludarse dos personas que se encuentran y no se detienen a hablar.
+3. interj. coloq. U. para expresar decepción, contrariedad o sorpresa. ¡Adiós, lo que se nos viene encima!
+4. interj. coloq. p. us. U. para saludar el que llega a un lugar a los que están ya allí o viceversa.
+5. m. Despedida al término de una conversación, misiva, etc.
+6. loc. verb. despedirse. Al salir de casa me dijo adiós. Dile adiós a la novela que le has prestado.
+7. expr. coloq. U. para indicar que algo ha concluido o se ha rechazado.
+informático
+3
+1. adj. Perteneciente o relativo a la informática.
+2. adj. Que trabaja o investiga en informática. Apl. a pers., u. t. c. s.
+3. f. Conjunto de conocimientos científicos y técnicas que hacen posible el tratamiento automático de la información por medio de computadoras.
+facultad
+11
+1. f. Aptitud, potencia física o moral. U. m. en pl.
+2. f. Poder o derecho para hacer algo.
+3. f. Cada una de las divisiones académicas de una universidad, en la que se agrupan los estudios de una carrera determinada.
+4. f. Local o conjunto de locales en que funciona una facultad universitaria.
+5. f. En las universidades, cuerpo de doctores o maestros de una ciencia.
+6. f. Conjunto de personas que conforman una facultad universitaria. La facultad en pleno se sumó al homenaje
+7. f. facultad real.
+8. f. licencia (‖ permiso).
+9. f. Biol. Fuerza, resistencia. El estómago no tiene facultad para digerir el alimento.
+10. f. desus. caudal (‖ hacienda). Era u. m. en pl.
+11. f. desus. Conjunto de los médicos, cirujanos y boticarios de la cámara del rey.
+diccionario
+2
+1. m. Repertorio en forma de libro o en soporte electrónico en el que se recogen las palabras o expresiones de una o más lenguas.
+2. m. Catálogo de noticias o datos de un mismo género, ordenado alfabéticamente. Diccionario bibliográfico, biográfico, geográfico.
+código
+6
+1. m. Conjunto de normas legales sistemáticas que regulan unitariamente una materia determinada.
+2. m. Recopilación sistemática de diversas leyes.
+3. m. Combinación de letras, números u otros caracteres que tiene un determinado valor dentro de un sistema establecido. El código de una tarjeta de crédito.
+4. m. Sistema de signos y de reglas que permite formular y comprender mensajes secretos.
+5. m. Conjunto de reglas o preceptos sobre cualquier materia.
+6. m. desus. Libro manuscrito de cierta antigüedad.
+Estructura
+4
+1. f. Disposición o modo de estar relacionadas las distintas partes de un conjunto.
+2. f. Distribución y orden de las partes importantes de un edificio
+3. f. Distribución y orden con que está compuesta una obra de ingenio, como un poema, una historia, etc.
+4. f. Armadura, generalmente de acero u hormigón armado, que, fija al suelo, sirve de sustentación a un edificio.
+de
+2
+1. prep. Denota posesión o pertenencia. La casa de mi padre. La paciencia de Job.
+2. prep. U. para crear diversas locuciones adverbiales de modo. Almorzó de pie. Le dieron de puñaladas. Se viste de prestado. Lo conozco de vista.
+datos
+3
+1. m. Información sobre algo concreto que permite su conocimiento exacto o sirve para deducir las consecuencias derivadas de un hecho. A este problema le faltan datos numéricos.
+2. m. Documento, testimonio, fundamento.
+3. m. Inform. Información dispuesta de manera adecuada para su tratamiento por una computadora.
+fundamentos
+5
+1. m. Principio y cimiento en que estriba y sobre el que se apoya un edificio u otra cosa.
+2. m. Seriedad, formalidad de una persona. Este niño no tiene fundamento.
+3. m. Razón principal o motivo con que se pretende afianzar y asegurar algo.
+4. m. Raíz, principio y origen en que estriba y tiene su mayor fuerza algo no material.
+5. m. Fondo o trama de los tejidos.
+0
+fundamentos
+Estructura datos

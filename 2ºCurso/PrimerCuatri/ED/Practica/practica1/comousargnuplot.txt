@@ -1,0 +1,8 @@
+Ir a la terminal y escribir gnuplot
+plot "unarchivo.txt"
+f(x)=a*x**2+b*x+c #cuadratica
+g(x)=a*x +b #lineal
+h(x)=a*x*log(x)+b #logaritmica
+k(x)=a**2*x+b #exponencial
+fit f(x) "efic.txt" via a,b,c
+plot f(x), "efic.txt"

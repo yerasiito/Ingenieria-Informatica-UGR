@@ -1,0 +1,16 @@
+3
+Sentencia
+2
+f. Frase o dicho que implica un juicio,una enseñanza
+Dictamen o resolución de un juez,un tribunal o un jurado.
+Compilador
+1
+Programa que traduce a lenguaje binario un lenguaje fuente o de alto nivel.
+Programa
+3
+m. Plan,proyecto o declaracion de lo que se piensa realizar.
+Sistema de distribucion de las materias de un curso o asignatura.
+Anuncio de las partes,reparto y cuadro técnico de ciertos actos o espectáculos.
+0
+Programa
+Sentencia Sentencia
