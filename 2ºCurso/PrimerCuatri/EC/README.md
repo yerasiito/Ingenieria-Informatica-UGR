@@ -9,4 +9,4 @@
 1. [TestsTeoria](https://wuolah.com/apuntes/estructura-de-computadores/tests-ec-testsecteoria-pdf-5396112)
 \ [TestsPracticas](https://wuolah.com/apuntes/estructura-de-computadores/tests-ec-testsecpracticas-pdf-5396111)
 
-1. [Examenes](https://wuolah.com/apuntes/estructura-de-computadores/todos-los-examenes-resueltos-examenes-ec-2016-to-2020-unidos-respuestas-subraya-4517487)
+1. [Examenes](https://wuolah.com/apuntes/estructura-de-computadores/todos-los-examenes-resueltos-examenes-ec-2016-to-2020-unidos-respuestas-subraya-4517487) \ [Ejercicios](https://wuolah.com/apuntes/estructura-de-computadores/ejercicios-resueltos-pdf-1392216)

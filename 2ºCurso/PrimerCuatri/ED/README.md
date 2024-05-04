@@ -8,4 +8,4 @@
 1. [ddd](https://www.gnu.org/software/ddd/manual/html_mono/ddd.html)
 
 ### Wuolah
-1. [Apuntes](https://wuolah.com/apuntes/estructura-de-datos/apuntes-ed-apuntesed-pdf-28363) / [Retos](https://wuolah.com/apuntes/estructura-de-datos/retos-resueltos-reto2resuelto-pdf-2104518) / [Practicas](https://wuolah.com/apuntes/estructura-de-datos/practicas-ed-ed-p1-pdf-3220802?utm_source=wuolah&utm_medium=referral&utm_campaign=file-openfile)
+1. [Apuntes](https://wuolah.com/apuntes/estructura-de-datos/apuntes-ed-apuntesed-pdf-28363) / [Retos](https://wuolah.com/apuntes/estructura-de-datos/retos-resueltos-reto2resuelto-pdf-2104518) / [Prácticas](https://wuolah.com/apuntes/estructura-de-datos?communityId=10573&f_course=2&f_community=10573&user=713314&referral=Dnreo1)
