@@ -1,0 +1,108 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Short Sectioned Assignment LaTeX Template Version 1.0 (5/5/12)
+% This template has been downloaded from: http://www.LaTeXTemplates.com
+% Original author:  Frits Wenneker (http://www.howtotex.com)
+% License: CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[paper=a4, fontsize=11pt]{scrartcl} % A4 paper and 11pt font size
+% ---- Entrada y salida de texto -----
+
+\usepackage[T1]{fontenc} % Use 8-bit encoding that has 256 glyphs
+\usepackage[utf8]{inputenc}
+%\usepackage[default]{sourcesanspro}
+\usepackage{fourier} % Use the Adobe Utopia font for the document - comment this line to return to the LaTeX default
+% ---- Idioma --------
+
+\usepackage[spanish, es-tabla]{babel} % Selecciona el español para palabras introducidas automáticamente, p.ej. "septiembre" en la fecha y especifica que se use la palabra Tabla en vez de Cuadro
+
+% ---- Code insertion ----
+\usepackage{minted}
+\usepackage[breakable]{tcolorbox} %Genera boxes, lo usamos para el codigo
+\BeforeBeginEnvironment{minted}{\begin{tcolorbox}[breakable]}%
+	\AfterEndEnvironment{minted}{\end{tcolorbox}}%
+\BeforeBeginEnvironment{inputminted}{\begin{tcolorbox}[breakable]}%
+	\AfterEndEnvironment{inputminted}{\end{tcolorbox}}%
+
+\usepackage{xpatch} %permite abrir environments al ejecutar ciertos comandos
+
+\xpretocmd{\inputminted}{\begin{tcolorbox}}{}{}%
+	\xapptocmd{\inputminted}{\end{tcolorbox}}{}{}%
+
+\setminted{
+fontsize=\small,
+breaklines,
+breaksymbolleft=
+}
+% ---- Otros paquetes ----
+\usepackage{dirtree}
+\usepackage{vmargin}
+
+\usepackage{url} % ,href} %para incluir URLs e hipervínculos dentro del texto (aunque hay que instalar href)
+\usepackage{hyperref} % ,href} %para incluir URLs e hipervínculos dentro del texto (aunque hay que instalar href)
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue,
+	filecolor=magenta,      
+	urlcolor=blue,
+}
+
+\usepackage{xcolor}
+\definecolor{light-gray}{gray}{0.95}
+\definecolor{alizarin}{rgb}{0.82, 0.1, 0.26}
+\definecolor{nyellow}{rgb}{0.91, 0.656, 0.0}
+%\definecolor{indigo}{rgb}{0.29, 0.0, 0.51}
+%	\textcolor{red}{p}
+%	\textcolor{orange}{r}
+%	\textcolor{yellow}{a}
+%	\textcolor{green}{c}
+%	\textcolor{blue}{t}
+%	\textcolor{indigo}{i}
+%	\textcolor{violet}{c}
+%	\textcolor{red}{a}
+%	\textcolor{orange}{s}
+%	\textcolor{yellow}{,}
+%	\textcolor{green}{I}
+%	\textcolor{blue}{S}
+%	\textcolor{indigo}{E}
+
+\usepackage{amsmath,amsfonts,amsthm} % Math packages
+%\usepackage{graphics,graphicx, floatrow} %para incluir imágenes y notas en las imágenes
+\usepackage{graphics,graphicx, float} %para incluir imágenes y colocarlas
+\usepackage[export]{adjustbox}
+\graphicspath{{imagenes/}}
+
+% Para hacer tablas comlejas
+%\usepackage{multirow}
+%\usepackage{threeparttable}
+
+%\usepackage{sectsty} % Allows customizing section commands
+%\allsectionsfont{\centering \normalfont\scshape} % Make all sections centered, the default font and small caps
+
+%Remove warnings
+\usepackage{silence}
+\WarningFilter{scrartcl}{Usage of package `fancyhdr'}
+
+\usepackage{fancyhdr} % Custom headers and footers
+\pagestyle{fancyplain} % Makes all pages in the document conform to the custom headers and footers
+\fancyhead{} % No page header - if you want one, create it in the same way as the footers below
+\fancyfoot[L]{} % Empty left footer
+\fancyfoot[C]{} % Empty center footer
+\fancyfoot[R]{\thepage} % Page numbering for right footer
+\renewcommand{\headrulewidth}{0pt} % Remove header underlines
+\renewcommand{\footrulewidth}{0pt} % Remove footer underlines
+\setlength{\headheight}{13.6pt} % Customize the height of the header
+
+\numberwithin{equation}{section} % Number equations within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+\numberwithin{figure}{section} % Number figures within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+\numberwithin{table}{section} % Number tables within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+
+\setlength\parindent{0pt} % Removes all indentation from paragraphs - comment this line for an assignment with lots of text
+
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}} % Create horizontal rule command with 1 argument of height
+
+\setmarginsrb{2 cm}{1 cm}{2 cm}{2 cm}{1 cm}{1.5 cm}{1 cm}{1.5 cm} %Aumenta los márgenes
