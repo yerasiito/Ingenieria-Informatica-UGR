@@ -1,0 +1,125 @@
+fcntl : llamada file control, es una función multipropósito que permite  consultar o ajustar las banderas de control de acceso de un descriptor, es decir, de un archivo abierto.
+	Permite realizar la duplicación de descriptores de archivo y bloqueo de un archivo para acceso exclusivo.
+		int fcntl (int fd, int orden, /* argumento_orden */);
+
+		orden : admite un rango muy diferente de operaciones a realizar sobre el descriptor de archivo que se especifica en fd.
+		El tercer argumento (opcional) depende de la orden indicada. Éstas son las órdenes admitidas:
+			- F_GETFL : retorna las banderas de control de acceso asociadas al descriptor de archivo.
+			- F_SETFL : ajusta o limpia las banderas de acceso que se especifican como tercer argumento.
+			- F_GETFD : devuelve la bandera "close-on-exec" del archivo indicado. Si devuelve 0, la bandera está desactivada, en caso contrario devuelve distinto de 0.
+			- F_SETFD : activa o desactiva la bandera "close-on-exec" del descriptor especificado. El tercer argumento es un valor entero, 0 para limpiar la bandera y 1 para activarlo.
+			- F_DUPFD : duplica el descriptor de archivo especificado por fd en otro descriptor. 
+				El tercer argumento es un valor entero que especifica que el descriptor duplicado debe ser mayor o igual que dicho valor.
+				nuevoFD = fcntl(viejoFD, F_DUPFD, inicialFD);
+			- F_SETLK : establece un cerrojo sobre un archivo. No bloquea si no tiene éxito inmediatamente.
+			- F_SETLKW : establece un cerrojo y bloquea al proceso llamador hasta qeu se adquiere el cerrojo.
+			- F_GETLK : consulta si existe un bloqueo sobre una región del archivo.
+
+
+2.1 Banderas de estado de un archivo abierto
+
+Para recuperar los valores de las banderas de un archivO:
+	int banderas; banderas = fcntl(fd, F_GETFL);
+
+Podemos hacer comprobaciones como si el archivo fue abierto para escrituras sincronizadas
+	if (banderas & O_SYNC)
+
+Comprobar el modo de acceso es más complicado, las constantes O_RDONLY, O_WRONLY y O_RDWR no se corresponden con un único bit de bandera de estado.
+Usando la máscara O_ACCMODE:
+	modoacceso = banderas & O_ACCMODE;
+	if (modoacceso == O_WRONLY) ...
+
+Podemos usar la orden F_SETFL para modificar algunas de las banderas de estado del archivo abierto.
+Estas banderas son O_APPEND, O_NONBLOCK, O_NOATIME, O_ASYNC y O_DIRECT.
+
+Es útil modificar banderas con fcntl cuando:
+	- El archivo no fue abierto por el programa llamador, no hay control sobre las banderas utilizadas por open.
+	- Se obtuvo el descriptor del archivo a través de una llamada que no es open (ejemplo pipe o socket).
+
+Para modificar las banderas primero invocamos a fcntl para obtener una copia de la existente.
+Después modificamos el bit correspondiente, y finalmente, hacemos una nueva invocación de fcntl para modificarla.
+
+Ejemplo: modificar la bandera O_APPEND
+	int bandera;
+	bandera = fcntl(fd, F_GETFL);
+	if (bandera == -1)
+		perror("fcntl);
+	bandera = bandera | O_APPEND;
+	if (fcntl(fd, F_SETFL, bandera) == -1)
+		perror("fcntl");
+
+
+2.2 Función fcntl utilizada para duplicar descriptores de archivos
+
+La orden F_DUPFD de fcntl permite duplicar un descriptor.
+Cuando tiene éxito, tendremos dos descriptores apuntando al mismo archivo abierto con el mismo modo de acceso y compartiendo el mismo puntero de lectura/escritura.
+
+Ejemplo que permite redireccionar la salida estándar de un proceso hacia un archivo (como con dup y dup2):
+	int fd = open("temporal", O_WRONLY);		// abre el archivo que queremos redireccionar a salida estándar
+	close(1);									// cierra la salida estándar asignada al proceso llamador (nos aseguramos que el descriptor a duplicar está libre)
+	if (fcntl(fd, F_DUPFD, 1) == -1)			// duplica fd en el descriptor
+		perror("Fallo en fcntl");
+	char bufer[256];				
+	int cont = write(1, bufer, 256);
+
+
+2.3 La función fcntl() y el bloqueo de archivos
+
+El acceso de varios procesos a un archivo para leer/escribir puede producir condiciones de carrera.
+Para evitarlas debemos sincronizar las acciones de éstos.
+Lo más corriente es el uso de cerrojos debido a que el kernel asocia automáticamente los cerrojos con archivos.
+
+	flock() utiliza un cerrojo para bloquear el archivo completo
+	fcntl() utiliza cerrojos para bloquear regiones de un archivo
+
+Método para utilizar cerrojos:
+1) Posicionar un cerrojo sobre el archivo
+2) Realizar las entradas/salidas sobre el archivo
+3) Desbloquear el archivo de forma que otro proceso pueda bloquearlo
+
+Debemos tener cuidado al mezclar funciones de stdio con estas técnicas. 
+El búfer de entrada puede llenarse antes de situar un cerrojo, o el búfer de salida limpiarse después de eliminar un cerrojo.
+Esto se puede solucionar:
+	- Usando read() y write() y llamadas relacionadas en lugar de stdio
+	- Limpiar el flujo (stream) inmediatamente después de situar un cerrojo sobre un archivo, y limpiarlo una vez más inmediatamente antes de liberar el cerrojo.
+	- Deshabilitar el búfering de stdio con setbuf() --- (Coste de eficiencia)
+
+2 tipos de bloqueo de archivos:
+	- Consultivo (por defecto): un proceso puede ignorar un cerrojo situado por otro proceso. Para que funcione, cada proceso que accede debe cooperar situando un cerrojo antes de realizar una operación de E/S.
+	- Obligatorio: fuerza que un proceso que realiza E/S respeta el cerrojo impuesto por otro proceso.
+
+
+2.3.1 Bloqueo de registros con fcntl
+
+Para utilizar fcntl en bloqueo de archivos, debemos usar una estructura flock que define el cerrojo que deseamos adquirir o liberar.
+	struct flock{
+		short l_type; 	// tipo de cerrojo F_RDLCK lectura, F_WRLCK escritura, F_UNLCK elimina un cerrojo
+		sort l_whence;	// interpretar l_start: SEEK_SET, SEEK_CURR, SEEK_END
+		off_t l_start;  // desplazamiento donde se inicia el bloqueo
+		off_t l_len;	// nº bytes bloqueados: 0 significa hasta EOF
+		pid_t l_pid;	// proceso que previene nuestro bloqueo
+	}
+
+Si queremos situar un cerrojo de lectura en un archivo, el archivo debe abrirse en modo lectura.
+Si queremos situar un cerrojo de escritura en un archivo, el archivo debe abrirse en modo escritura.
+Para ambos, el archivo debe abrirse en modo lectura-escritura (O_RDWR).
+
+l_whence, l_start y l_len especifican el rango de bytes a bloquear.
+l_start especifica desplazamiento dentro del archivo relativo a valor l_whence.
+l_len es un entero que especifica el nº bytes a bloquear a partir de la posición definida por los dos campos anteriores.
+
+El valor 0 de l_len tiene un significado especial (bloquear todos los bytes del archivo, desde l_start hasta EOF).
+Para bloquear el archivo completo podemos especificar l_whence como SEEK_SET y l_start y l_len a 0.
+
+Órdenes de fcntl para bloquear:
+	- F_SETLK : adquiere o libera un cerrojo sobre los bytes especificados por flockstr.
+	- F_SETLKW : igual que la anterior pero si otro proceso mantiene un cerrojo incompatible sobre una parte de la región a bloquear, el llamador se bloqueará hasta que su bloqueo tenga éxito.
+	- F_GETLK : comprueba si es posible adquirir un cerrojo especificado en flockstr, pero realmente no lo adquiere. Si el bloqueo se permite, l_type contiene F_UNLCK.
+
+- Desbloquear una región siempre tiene éxito.
+- En cualquier instante, un proceso solo puede tener un tipo de cerrojo sobre una región concreta de un archivo.
+- Un proceso nunca puede bloquearse él mismo en una región de archivo.
+
+pg 146
+	
+

@@ -1,0 +1,144 @@
+Señales
+
+Mecanismo básico de sincronización que utiliza el núcleo de Linux para indicar a los procesos la ocurrencia de determinados eventos síncronos/asíncronos con su ejecución.
+Los procesos pueden enviarse señales para la notificación de cierto evento y pueden determinar qué acción realizarán como respuesta a una señal determinada.
+
+Manejador de señal: función definida en el programa que se invoca cuando se entrega una señal al proceso.
+La invocación del manejador de señal puede interrumpir el flujo de control del proceso en cualquier instante.
+Cuando se entrega la señal, el kernel invoca al manejador. Cuando el manejador retorna, la ejecución del proceso sigue por donde fue interrumpida.
+
+Se dice que una señal es depositada cuando el proceso inicia una acción en base a ella.
+Se dice que una señal está pendiente si ha sido generada pero todavía no depositada.
+Un proceso puede bloquear la recepción de una o varias señales.
+
+Las señales bloqueadas de un proceso se almacenan en un conjunto de señales llamado máscara de bloqueo de señales.
+Señal ignorada: desechada por el proceso
+Señal bloqueada: permanece pendiente y será depositada cuando el proceso la desbloquee.
+
+Si se recibe una misma señal varias veces mientras está bloqueada, actúa como si hubiera recibido solo una.
+
+Cada señal posee un nombre que comienza por SIG. Cada una lleva asociada un entero positivo, que se entrega al proceso cuando recibe la señal.
+
+SIGHUP -> Term -> Desconexión del terminal. También sirve para reanudar los demonios init, httpd e inetd.
+SIGINT -> Term -> Interrupción procedente del teclado (Ctrl + C)
+SIGQUIT -> Core -> Terminación procedente del teclado
+SIGILL -> Core -> Excepción producida por la ejecución de una instrucción ilegal
+SIGABRT -> Core -> Señal de aborto procedente de la llamada al sistema abort
+SIGFPE -> Core -> Excepción de coma flotante
+SIGKILL -> Term -> Señal para terminar un proceso
+SIGSEGV -> Core -> Referencia inválida a memoria
+SIGPIPE -> Term -> Tubería rota: escritura sin lectores
+SIGALRM -> Term -> Señal de alarma procedente de la llamada al sistema alarm
+SIGTERM -> Term -> Señal de terminación
+SIGUSR1 -> Term -> Señal definida por el usuario
+SIGUSR2 -> Term -> Señal definida por el usuario
+SIGCHLD -> Ign -> Proceso hijo terminado o parado
+SIGCONT -> Cont -> Reanudar el proceso si estaba parado
+SIGSTOP -> Stop -> Parar proceso (no se puede ignorar ni manejar)
+SIGTSTP -> Stop -> Parar la escritura en la tty
+SIGTTIN -> Stop -> Entrada de la tty para un proceso de fondo
+SIGTTOU -> Stop -> Salida a la tty para un proceso de fondo
+
+Term -> acción por defecto terminar proceso
+Ign -> acción por defecto ignorar señal
+Core -> acción por defecto terminar el proceso y realizar un volcado de memoria
+Stop -> acción por defecto detener el proceso
+Cont -> acción por defecto reanudar el proceso si está parado
+
+
+2.1 La llamada kill
+Permite enviar una señal a un proceso o conjunto de procesos.
+	int kill(pid_t pid, int sig);
+
+Argumentos:
+- Si pid es positivo, envía la señal sig al proceso con identificador igual a pid. Devuelve 0 si éxito o valor negativo si error.
+- Si pid es 0, entonces sig se envía a cada proceso en el grupo de procesos del proceso actual.
+- Si pid es -1, envía la señal sig a cada proceso excepto al primero.
+- Si pid es menor que -1, se envía sig a cada proceso en el grupo -pid
+- Si sig es 0, no se envía ninguna señal pero sí realiza la comprobación de errores.
+
+
+2.2 La llamada sigaction
+Permite establecer la acción que realizará un proceso como respuesta a la recepción de una señal.
+	int sigaction (int signum, const struct sigaction *act, struct sigaction *oldact);
+
+Argumentos:
+- signum: especifica la señal y puede ser cualquier señal válida salvo SIGKILL y SIGSTOP (éstas no se pueden modificar)
+- Si act no es null, la nueva acción para la señal signum se instala como act.
+- Si oldact no es NULL, la acción anterior se guarda en oldact.
+
+Return: 0 si éxito, -1 si error.
+
+Estructura sigaction:
+	struct sigaction{
+		void (*sa_handler) (int);
+		void (*sa_sigaction) (int, siginfo_t *, void *);
+		sigset_t sa_mask;
+		int sa_flags;
+		void (*sa_restorer) (void);
+	}
+
+	- sa_handler : especifica la acción que se va a asociar con la señal signum, pudiendo ser:
+		SIG_DFL para la acción predeterminada
+		SIG_IGN para ignorar la señal
+		o un puntero a una función manejadora para la señal
+
+	- sa_mask : permite establecer una máscara de señales que deberían bloquearse durante la ejecución del manejador de la señal.
+	La señal que lance el manejador será bloqueada a menos que se activen las opciones SA_NODEFER o SA_NOMASK
+	Para asignar valores a sa_mask:
+		int sigemptyset (sigset_t *set); 					inicializa a vacío un conjunto de señales
+		int sigfillset (sigset_t *set);						inicializa un conjunto con todas las señales
+		int sigismember (const sigset_t *set, int senyal)	determina si senyal pertenece al conjunto set 
+		int sigaddset (sigset_t *set, int signo);			añade una señal al conjunto de señales set previamente inicializado
+		int sigdelset (sigset_t *set, int signo);			elimina una señal signo de un conjunto de señales set 
+
+	- sa_flags : especifica un conjunto de opciones que modifican el comportamiento del proceso de manejo de señales.
+	Se forma por la aplicación del operador OR a cero o más de las siguientes constantes:
+		SA_NOCLDSTOP : si signum es SIGCHLD, indica al núcleo que el proceso no desea recibir notificación cuando los hijos se paren (reciban SIGTSTP, SIGTTIN o SIGTTOU)
+		SA_ONESHOT o SA_RESETHAND : indica al núcleo que restaure la acción para la señal al estado predeterminado una vez que el manejador haya sido llamado.
+		SA_RESTART : Proporciona un comportamiento compatible con la semántica de señales de BSD haciendo que ciertas llamadas al sistema reinicien su ejecución cuando son interrumpìdas por la recepción de una señal.
+		SA_NOMASK o SA_NODEFER : se pide al núcleo que no impida la recepción de la señal desde el propio manejador de la señal
+		SA_SIGINFO : el manejador de la señal toma 3 argumentos, no uno.
+
+	
+2.3 La llamada sigprocmask
+cambiar la lista de señales bloqueadas actualmente, es decir, la máscara de señales.
+	int sigprocmask (int how, const sigset_t *set, sigset_t *oldset);
+
+	Argumentos:
+	- how : indica el tipo de cambio. Puede tomar los siguientes valores:
+		SIG_BLOCK: el conjunto de señales bloqueadas es la unión del conjunto actual y el argumento set
+		SIG_UNBLOCK: las señales que hay en set se eliminan del conjunto actual de señales bloqueadas.
+		SIG_SETMASK: el conjunto de señales bloqueadas se pone según el argumento set.
+
+	- set : representa el puntero al nuevo conjunto de señales enmascaradas.
+		Si es diferente de NULL,  apunta a un conjunto de señales.
+		Si es NULL, utiliza sigprocmask como consulta.
+
+	- oldset : representa el conjunto anterior de señales enmascaradas.
+		Si no es NULL, guarda el anterior valor de la máscara de señal en oldset
+		Si es NULL, no se retorna la máscara anterior
+
+	Return 0 si éxito, -1 si error
+
+
+2.4 La llamada sigpending
+permite examinar las señales pendientes
+	int sigpending (sigset_t *set)
+
+	set : representa un puntero al conjunto de señales pendientes
+	Return 0 si éxito, -1 si error
+
+
+2.5 La llamada sigsuspend
+Reemplaza temporalmente la máscara de señal para el proceso con la dada por el argumento mask y luego suspende el proceso hasta que se recibe una señal.
+	int sigsuspend (const sigset_t *mask);
+
+	mask : representa el puntero al nuevo conjunto de señales enmascaradas
+	Return -1 si sigsuspend es interrumpida por una señal capturada
+
+
+Notas finales:
+- No se puede bloquear SIGKILL ni SIGSTOP con una llamada a sigprocmask.
+- El comportamiento de un proceso está indefinido después de que no haga caso de una señal SIGFPE, SIGILL o SIGSEGV, que no haya sido generada por las llamadas kill o raise.
+- sigaction puede llamarse con un segundo argumento nulo para conocer el manejador de señal en curso.

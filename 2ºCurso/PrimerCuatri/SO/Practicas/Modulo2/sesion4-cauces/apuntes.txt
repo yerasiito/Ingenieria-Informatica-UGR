@@ -1,0 +1,130 @@
+Cauce: mecanismo para la comunicación de información y sincronización entre procesos.
+	Los datos pueden ser enviados (escritos) por varios procesos al cauce, y a su vez,
+	recibidos (leídos) por otros procesos desde dicho cauce.
+
+	Sigue el paradigma productor/consumidor, dos tipos de procesos que se comunican 
+	mediante un buffer. Se tratan en orden FIFO.
+	La lectura de un dato produce su eliminación del cauce, sólo se consumen 1 vez.
+	Un proceso que intenta leer del cauce, se bloquea si no hay datos disponibles para leer.
+	Es un método de comunicación entre procesos en un sólo sentido (unidireccional).
+
+	Hay 2 tipos de cauces en UNIX, sin y con nombre.
+	Ejemplo de pipeline (cauce sin nombre): ls | sort | lp
+
+	Los cauces sin nombres:
+		- No tienen un archivo asociado en el sistema de archivos,
+		es un archivo temporal en memoria principal.
+
+		- Al crearse con la llamada al sistema pipe, devuelven dos descriptores,
+		uno de lectura y otro de escritura, para trabajar con el cauce.
+		(No es necesario usar open)
+
+		- Sólo pueden utilizarse como mecanismo de comunicación entre el proceso que
+		lo crea y sus procesos descendientes.
+
+		- Se cierra y elimina automáticamente por el núcleo cuando ningún productor ni
+		consumidor lo está usando.
+
+	Los cauces con nombre (o archivo FIFO):
+		- Se crean (llamadas mknod y mkfifo) en el sistema de archivos como un archivo especial.
+		Consta de un nombre que lo distingue como un archivo más y aparecen asociados de forma
+		permanente al directorio donde se crearon.
+
+		- Los procesos abren y cierran un archivo FIFO usando su nombre mediante las llamadas
+		open y close.
+
+		- Varios procesos pueden compartir datos utilizando las llamadas read y write sobre
+		este cauce. (Permiten comunicar a procesos sin un antecesor común).
+
+		- El archivo FIFO permanece en el SA hasta que se borre explícitamente (llamada unlink)
+
+
+3. Cauces con nombre
+3.1 Creación de archivos FIFO
+
+llamada mknod -> int mknod (const char *FILENAME, mode_t MODE, dev_t DEV)
+Crea un archivo especial de nombre FILENAME.
+MODE especifica los valores que serán almacenados en el campo st_mode del i-nodo correspondiente al archivo especial:
+	- S_IFCHR: valor del código de tipo de archivo para un archivo de dispositivo orientado a caracteres
+	- S_IFBLK: valor del código de tipo de archivo para un archivo de dispositivo orientado a bloques.
+	- S_IFSOCK: valor del código de tipo de archivo para un socket
+	- S_IFIFO: valor del código de tipo de archivo para un FIFO
+
+DEV especifica a qué dispositivo se refiere el archivo especial. 
+Su interpretación depende del tipo de archivo especial a crear.
+Para un cauce FIFO el valor de este argumento será 0.
+
+mknod("/tmp/FIFO", S_IFIFO|0666, 0);
+Los permisos que el sistema otorga al archivo son MODE & ~umaskInicial
+umaskInicial es la máscara de permisos que el SA almacena para ese proceso.
+
+int mkfifo (const char *FILENAME, mode_t MODE)
+Variante de mknod sólo para archivos FIFO.
+
+
+3.2 Utilización de un cauce FIFO
+
+Mismas operaciones de E/S que sobre archivos regulares salvo que no se puede usar lseek.
+- read es bloqueante para los procesos consumidores cuando no hay datos que leer.
+- read desbloquea devolviendo 0 cuando todos los procesos productores han terminado.
+
+
+4. Cauces sin nombre
+4.1 Esquema de funcionamiento
+
+Al crear un enlace sin nombre con la llamada pipe, el núcleo automáticamente
+instala dos descriptores de archivo para que los use dicho cauce.
+
+Un descriptor se usa para permitir un camino de envío de datos (write) al cauce,
+el otro para obtener los datos (read) de él.
+
+El proceso puede usar los descriptores para enviar datos (write) y leerlos desde éste con read.
+Este esquema se puede ampliar ya que la idea es comunicar dos o más procesos que no comparten memoria.
+No tiene sentido que un mismo proceso actúe como productor y consumidor al mismo tiempo, no necesita cauce.
+
+Los datos que viajan por el cauce se mueven a nivel de núcleo.
+En UNIX, los cauces se representan internamente por medio de un i-nodo válido
+	(entrada en la tabla de i-nodos en memoria principal)
+
+Los dos procesos deben tomar la decisión de enviar de hijo a padre o de padre a hijo, sólo
+se puede en una dirección, se cierran los extremos no necesarios.
+
+
+4.2 Creación de cauces
+
+Se usa la llamada pipe, que toma como argumento un vector de dos enteros (int fd[2])
+Si la llamada tiene éxito, el vector contendrá dos nuevos descriptores de archivo con los que manejar el nuevo cauce.
+	fd[0] -> descriptor para solo lectura
+	fd[1] -> descriptor para escritura
+
+Una vez creado el cauce, creamos un proceso hijo (heredará los descriptores del padre) y
+establecemos el sentido del flujo de datos (hijo->padre o padre->hijo).
+
+Hay que asegurarse siempre de cerrar con close() el extremo del cauce que no nos interese.
+
+Si el padre quiere recibir datos del hijo, dede cerrar fd[1] y el hijo cerrar fd[0].
+El el padre quiere enviar datos al hijo, debe cerrar fd[0] y el hijo cerrar fd[1]
+
+La llamada dup se encarga de duplicar el descriptor indicado como parámetro de entrada en la
+primera entrada libre de la tabla de descriptores de archivo usada por el proceso.
+
+Puede interesar ejecutar close justo antes de dup para dejar la entrada deseada libre.
+El descriptor 0 (STDIN_FILENO) de cualquier proceso UNIX direcciona la entrada estándar (stdin) - por defecto teclado
+El descriptor 1 (STDOUT_FILENO) la salida estándar (stdout) - por defecto consola
+
+La llamada al sistema dup2 permite una atomicidad en las operaciones sobre duplicación de descriptores
+de archivos que no proporciona dup. Dispone en una sóla llamada de las operaciones relativas a cerrar descriptor
+antiguo y duplicar descriptor. 
+Al ser atómica, si llega una señal al proceso, toda la operación transcurrirá antes de devolverle el control al núcleo.
+
+
+4.3 Notas finales sobre cauces con/sin nombre
+
+- Se puede crear un método de comunicación dúplex entre dos procesos abriendo dos cauces.
+- La llamada pipe debe realizarse siempre antes que fork.
+- Un cauce sin nombre o un archivo FIFO tienen que estar abiertos simultáneamente por ambos extremos
+para permitir la lectura/escritura. Al utilizar un cauce puede pasar lo siguiente:
+	- open() bloquea al lector hasta que algún escritor abra el cauce.
+	- open() no bloquea al escritor pero cada vez que se escribe sin que hayan lectores,
+	el sistema envía al escritor una señal SIGPIPE. El escritor debe manejar la señal si no quiere finalizar.
+
