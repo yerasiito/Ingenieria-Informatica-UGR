@@ -1,0 +1,5 @@
+- A. Requisitos
+- Mapa mental
+- Requisitos funcionales (historias de Usuarios)
+- Datos
+- Restricciones semánticas

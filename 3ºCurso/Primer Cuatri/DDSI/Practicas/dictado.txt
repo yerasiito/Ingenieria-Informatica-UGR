@@ -1,0 +1,120 @@
+Sistema a elaborar
+
+Sistema para manejar las elecciones de un torneo de padel.
+COD_TORNEO --> Código 3 dígitos / Fecha ini / Fecha fin / Nombre (40 caracteres)
+|-> Es lo mismo que n# edición
+1. JUGADORES / ENTRENADORES
+	1.1. RF - Registrar jugador (DNI(8+1) + Nombre (50) + Apellidos (100) + Fecha nacimiento + sexo).
+	1.2. RF - Registrar entrenador (DNI(8+1) + Nombre (50) + Apellidos (100) + Fecha nacimiento (fecha) + sexo).
+	1.3. RF - Inscribir pareja jugadores en edición (DNI1 + DNI2 + COD_TORNEO)
+	1.4. RF - Asignar entrenador a pareja (DNI_ent + DNI1 + DNI2 + COD_TORNEO)
+	1.5. RF - Asignar puntuación a pareja (DNI1 + DNI2 + Puntuación)
+Ninguno tiene requisitos de salida.
+	1.6. RF - Consultar datos parejas en un torneo que entrena un entrenador. (DNI_ent + COD_TORNEO)
+	DEVUELVE: DNI(8+1) + Nombre (50) + Apellidos (100) de cada jugador que lo cumpla
+	1.7. RF - Consultar los datos de los jugadores que no están inscritos en una edición (COD_TORNEO)
+	DEVUELVE: DNI(8+1) + Nombre (50) + Apellidos (100)
+	1.8. RF - Consultar las parejas en una edición que están inscritos en una edición (COD_TORNEO)
+	DEVUELVE: DNI(8+1) + Nombre (50) + Apellidos (100) + puntuación <- Ordenadas por puntuacion de mayor a menor
+	1.9. RF - Borrar pareja en edición (DNI1 + DNI2 + COD_TORNEO)
+	+ RESTRICCIONES
+	1. Una pareja solo tiene un entrenador en cierta edición.
+	2. Una pareja solo puede estar formada por jugadores del mismo sexo.
+	3. No se puede borrar pareja si ya han jugado un partido.
+	4. No pueden haber dos parejas con la misma puntuación en el mismo torneo.
+	
+2. ESPECTADORES / ENTRADAS
+	2.1. RF - Registrar espectador (DNI + NOMBRE + APELLIDOS + CORREO ELECTR (80 caracteres con una @)+ CONTRASEÑA(30))
+	2.2. RF - Registrar tipo de entrada (Tipo (50) + CODIGO (2))
+	2.3. RF - Registrar cantidad de cierto tipo de entradas en una edición (NUM() + COD_TORNEO + COD_ENTRADA)
+	2.4. RF - Registrar precio de cierto tipo de entradas en una edición (PRECIO() + COD_TORNEO + COD_ENTRADA)
+	2.5. RF - Iniciar compra (DNI + COD_TORNEO + FECHA INICIO "COMPLETA") -> Devuelve: COD_COMPRA
+	2.6. RF - Añadir entradas a una compra (COD_COMPRA + COD_ENTRADA + CANTIDAD) 
+	2.7. RF - Finalizar una compra (COD_COMPRA + FECHA FIN) Devuelve: COD_COMPRA_FINALIZADA + TIPO ENTRADAS COMPRADAS + CANTIDAD DE CADA TIPO
+	2.8. RF - Pagar compra (COD_COMPRA_FINALIZADA + FECHA PAGO) Devuelve: COD_COMPRA_PAGADA + PRECIO TOTAL
+	2.9. RF - Consultar dinero obtenido en una edición (COD_EDICION) Devuelve: DE CADA TIPO DE ENTRADA -> TOTAL_RECAUDADO
+	2.10. RF - Mostrar compras pagadas por un espectador (COD_EDICION, DNI_ESP) Devuelve: DE TODAS LAS COMPRAS QUE PAGÓ (FECHA INI, FECHA FIN, FECHA PAGO, TIPOS ENTRADAS -> CANTIDAD DE CADA UNA)
+	+ RESTRICCIONES
+	1. Un espectador solo puede pagar una compra por día.
+	2. Un espectador no puede iniciar una compra si tiene una pendiente (no finalizada).
+	
+3. ÁRBITROS / CONTRATACIÓN
+	3.1. RF - Guardar árbitro. (DNI(8+1) + Nombre (50) + Apellidos (100) + Fecha nacimiento + sexo).
+	3.2. RF - Realizar oferta a árbitro (DNI + COD_TORNEO + DINERO) Guardar info con (fecha + codigo asociado a oferta). Devuelve: Dinero ofrecido.
+	3.3. RF - Aceptar oferta (arbitro). (COD_OFERTA) Guarda + FECHA Devuelve: "El arbitro aceptó la oferta".
+	3.4. RF - Rechazar oferta (arbitro). (COD_OFERTA) Guarda + FECHA Devuelve: "El arbitro rechazó la oferta".
+	3.5. RF - Realizar contraoferta (arbitro) (COD_OFERTA + DINERO). Guarda + FECHA + COD_CONTRAOFERTA. Devuelve: Dinero pedido.
+	3.6. RF - Aceptar contraoferta (COD_CONTRAOFERTA) Guarda + FECHA Devuelve: "El torneo aceptó la contraoferta".
+	3.7. RF - Rechazar contraoferta (COD_CONTRAOFERTA) Guarda + FECHA Devuelve: "El torneo rechazó la contraoferta". 
+	3.8. RF - Retirar oferta (COD_OFERTA).
+	3.9. RF - Mostrar ofertas aceptadas en edición (COD_TORNEO).
+	Devuelve (FECHA OFERTA + FECHA ACEPTA + CANTIDAD + DNI + NOMBRE + APELLIDOS).
+	+ RESTRICCIONES
+	1. No puede hacer una oferta a un arbitro en una edición si el arbitro ya ha aceptado / rechazado alguna para dicha edición.
+	2. No se puede eliminar oferta si la oferta ha sido respondida (aceptada/rechazada/contraoferta).
+	3. Solo puede hacerse una nueva oferta si no me responde o si todas las ofertas realizadas tienen contraofertas.
+	4. No puede realizarse nueva contraoferta si se ha respondido a esta (acepta/rechaza).
+	
+4. PISTAS / PARTIDOS
+	1. RF - Guardar pista (N_PISTA (2) + NOMBRE(30) + CAPACIDAD(4)) 
+	2. RF - Guardar partido (DNI1 + DNI2 + DNI3 + DNI4 + DNI_ARBITRO + COD_TORNEO + N_PISTA + FECHA) Guarda: COD_PARTIDO
+	3. RF - Mostrar los partidos que se juegan en fecha (FECHA) Devuelve De cada partido -> DNI de todos + N_PISTA + COD_PISTA
+	4. RF - Mostrar los partidos que se juegan en pista (COD_PISTA + COD_TORNEO). Devuelve De cada partido -> DNI de todos + FECHA
+	5. RF - Modificar arbitro de partido (COD_PARTIDO, DNI_ARBITRO)
+	6. RF - Mostrar los partidos que tiene un arbitro en una edicion (COD_ARBITRO + COD_PARTIDO) Devuelve datos partido - los del arbitro.
+	7. RF - Mostrar los datos de las pistas sin partido asignado en edicion (COD_EDICION) Devuelve: De cada pista su info (N_PISTA, NOMBRE_P, CAPACIDAD)
+	8. RF - Modificar la pista de un partido (COD_PARTIDO, N_PISTA). Devuelve: datos de partido - datos de la pista.
+	+ RESTRICCIONES
+	1. No se pueden solapar partidos en misma pista con <3 horas diferencia.
+	2. La misma pista solo puede jugarse 2 partidos / dia.
+	3. Solo pueden asignarse arbitros que hayan aceptado oferta en edicion.
+	4. Un arbitro solo puede arbitrar un partido / día.
+	
+5. PERSONAL / HORARIOS
+	1. RF - Guardar personal (DNI(8+1) + Nombre (50) + Apellidos (100) + Fecha nacimiento + sexo).
+	2. RF - Asignar como trabajador en edición (DNI, COD_EDICION, SALARIO/HORA)
+	3. RF - Asignar horario a trabajador (DNI, FECHA INI, FECHA FIN, N_PISTA). Salida: FECHA_INI, FECHA_FIN, N_PISTA a trabajador.
+	4. RF - Mostrar trabajadores libres en fecha (FECHA) Devuelve trabajadores sin horario ese dia (DNI + NOMBRE + APELLIDOS)
+	5. RF - Mostrar horario trabajador en una edición (DNI, EDICION).
+	6. RF - Modificar salario trabajador (DNI, NUEVO SALARIO).
+	7. RF - Mostrar personal que no estan asignados a una edicion (COD_TORNEO) Salida: todos los datos de personal.
+	8. RF - Mostrar total salarios pagados en edición(COD_TORNEO) Salida: dinero total gastado en personal.
+	9. RF - Mostrar datos de trabajadores de edicion (COD_TORNEO) Salida: trabajadores ordenados por NUM_HORAS_TRABAJADAS, DNI, NOMBRE, APELLIDOS, SALARIO/HORA, SALARIO TOTAL.
+	+ RESTRICCIONES
+	1. No se pueden solapar horarios de trabajador con <3 horas diferencia. 
+	2. No se puede asignar trabajador la misma pista más de una vez al día.
+	3. No puede trabajar +8 horas el mismo día.
+	4. No puedo modificar el salario/hora de trabajador si ya ha realizado trabajo.
+
+6. PATROCINADORES
+	1. RF - Guardar empresa (CIF (1L+7N+1L/N) + NOMBRE(50) + PERSONA DE CONTACTO(100) + CORREO ELECTRONICO(80 + @) + TLF (12N (excepto primero, que puede ser "+"))).
+	2. RF - Registrar empresa como colaboradora en edición (CIF, COD_TORNEO, CANTIDAD).
+	3. RF - Registrar empresa como patrocinadora en edición (CIF, COD_TORNEO, CANTIDAD).
+	4. RF - Mostrar empresas que no colaboran/patrocinan en edición(COD_TORNEO). Salida: info empresas. 
+	5. RF - Obtener dinero aportado en edición (COD_TORNEO). Salida: dinero total.
+	6. RF - Modificar dinero aportado por colaborador (CIF, COD_TORNEO, CANTIDAD).
+	7. RF - Modificar dinero aportado por patrocinador (CIF, COD_TORNEO, CANTIDAD).
+	8. RF - Mostrar empresas por dinero aportado en diferentes ediciones.
+	Salida: datos empresas ordenadas por dinero aportado.
+	9. RF - Eliminar colaborador de edición (CIF, COD_TORNEO).
+	10. RF - Eliminar patrocinador de edición (CIF, COD_TORNEO).
+	+ RESTRICCIONES
+	1. Una empresa no puede ser patrocinadora/colaboradora en la misma edición.
+	2. No se puede modificar dinero aportado por / eliminar colaborador/patrocinador si ya ha comenzado el torneo.
+	3 y 4. Contenidos antes
+	
+7. MATERIALES/PEDIDOS
+	1. RF - Insertar o registrar material en edición (COD_TORNEO, COD_MATERIAL (4), NOMBRE(50), CANTIDAD(3), CIF_PATROCINADOR).
+	2. RF - Realizar pedido (varios COD_MATERIAL(4), varios CANTIDAD(3)). Guardar COD_PEDIDO. Salida: COD_PEDIDO + CIF_PATROCINADOR + NOMBRES Y CANTIDAD materiales.
+	3. RF - Asignar pedido a trabajador (COD_PEDIDO, DNI, FECHA, N_PISTA) Salida: COD_PEDIDO, FECHA, N_PISTA. 
+	4. RF - Consultar trabajadores con pedidos asignados en un día (FECHA) Devuelve: NOMBRE + APELLIDOS + DNI + COD_PEDIDO + N_PISTA + HORA.
+	5. RF - Cancelar asignación de un pedido (COD_PEDIDO, DNI) Salida: mensaje a trabajador "Pedido cancelado".
+	6. RF - Mostrar pedidos en una pista (N_PISTA, EDICION) Salida: COD_PEDIDO, NOMBRE + CANTIDAD MATERIALES, CIF + NOMBRE, DATOS TRABAJADOR.
+	7. RF - Mostrar trabajador (COD_TORNEO) Salida: Trabajadores ordenados por número de pedidos de los que se encargan (DNI + NOMBRE + APELLIDOS + PEDIDOS)
+	8. RF - Mostrar pedidos hechos a patrocinador (COD_TORNEO, CIF) SALIDA: Lista de pedidos -> COD_PEDIDO, LISTA MATERIALES (NOMBRE) + CANTIDAD.
+	+ RESTRICCIONES
+	1. Un pedido solo puede contener materiales del mismo patrocinador.
+	2. Un pedido no puede contener una cantidad mayor a lo aportado por el patrocinador.
+	3. No se puede asignar un pedido a un trabajador que no esta trabajando a esa hora en esa pista.
+	4. No se puede cancelar la asignación de un pedido el mismo dia de la entrega.
+	5. No se puede asignar un pedido a un trabajador con menos de 2 horas de diferencia de otro pedido que tenga.

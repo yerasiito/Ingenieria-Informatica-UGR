@@ -1,0 +1,20 @@
+create or replace trigger "PROFESORES-CARGO_T2"
+BEFORE
+insert or update or delete on "PROFESORES-CARGO"
+for each row
+BEGIN
+  IF INSERTING THEN
+      UPDATE Profesores
+      SET horas_de_docencia = horas_de_docencia - (SELECT descuento 
+      FROM Cargos WHERE Cargos.id = :NEW.id_pc)
+      WHERE Profesores.nrp = :NEW.nrp_pc;
+  END IF;
+  
+  IF DELETING THEN
+      UPDATE Profesores
+      SET horas_de_docencia = horas_de_docencia + (SELECT descuento 
+      FROM Cargos WHERE Cargos.id = :OLD.id_pc)
+      WHERE Profesores.nrp = :OLD.nrp_pc;
+  END IF;
+END;
+

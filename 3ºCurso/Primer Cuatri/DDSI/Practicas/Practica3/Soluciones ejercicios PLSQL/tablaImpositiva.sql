@@ -1,0 +1,20 @@
+create table tabla_impositiva (base_hasta number, cuota number, resto_hasta number, tipo_aplicable number(4,1));
+
+insert into tabla_impositiva values (0,0,2584.35,0.0);
+insert into tabla_impositiva values (2584.35,0,3858.5,20.0);
+insert into tabla_impositiva values (6442.85,771.7,3666.17,22.0);
+insert into tabla_impositiva values (10109.02,1578.26,3666.17,24.5);
+insert into tabla_impositiva values (13775.2,2476.47,3666.17,27.0);
+insert into tabla_impositiva values (17441.37,3466.34,3666.17,30.0);
+insert into tabla_impositiva values (21107.55,4566.19,3666.17,32.0);
+insert into tabla_impositiva values (24773.72,5739.37,3666.17,34.0);
+insert into tabla_impositiva values (28439.89,6985.86,3666.17,36.0);
+insert into tabla_impositiva values (32106.07,8305.69,3666.17,38.0);
+insert into tabla_impositiva values (35772.24,9698.83,3666.17,40.0);
+insert into tabla_impositiva values (39438.41,11165.3,3666.17,42.5);
+insert into tabla_impositiva values (43104.59,12723.43,3666.17,45.0);
+insert into tabla_impositiva values (46770.76,14373.2,3666.17,47.0);
+insert into tabla_impositiva values (50436.94,16096.31,3666.17,49.0);
+insert into tabla_impositiva values (54103.11,17892.73,3666.17,51.0);
+insert into tabla_impositiva values (57769.28,19762.48,3666.17,53.5);
+insert into tabla_impositiva values (61435.46,21723.88,0,56.0);

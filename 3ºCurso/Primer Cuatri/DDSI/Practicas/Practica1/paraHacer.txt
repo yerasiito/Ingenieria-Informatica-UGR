@@ -1,0 +1,5 @@
+-Mapa mental (individual y una del equipo)
+-Req. funcional->Historias de usuarios
+-Req. datos
+-Restricciones semánticas
+-Tabla
