@@ -1,0 +1,62 @@
+\begin{thebibliography}{1}
+
+\bibitem{mdadm}
+Linux~Die net.
+\newblock Documentacion mdadm.
+\newblock \url {https://linux.die.net/man/8/mdadm}, consultado el 21 de
+  Noviembre de 2022.
+
+\bibitem{mdstat}
+Kernel org.
+\newblock Documentacion mdstat.
+\newblock \url {https://raid.wiki.kernel.org/index.php/Mdstat}, consultado el
+  21 de Noviembre de 2022.
+
+\bibitem{ansibleguide}
+Ansible project contributors.
+\newblock Instalación de ansible.
+\newblock \url {https://docs.ansible.com/ansible/latest/user_guide/index.html},
+  consultado el 21 de Noviembre de 2022.
+
+\bibitem{ansibleinstall}
+Ansible project contributors.
+\newblock Instalación de ansible.
+\newblock \url
+  {https://docs.ansible.com/ansible/latest/installation_guide/installation_distros.html},
+  consultado el 21 de Noviembre de 2022.
+
+\bibitem{ansiblebuiltin}
+Ansible project contributors.
+\newblock Modulos builtin.
+\newblock \url
+  {https://docs.ansible.com/ansible/latest/collections/ansible/builtin/index.html},
+  consultado el 21 de Noviembre de 2022.
+
+\bibitem{zabbixUbuntu}
+Zabbix SIA.
+\newblock Elige tu plataforma ubuntu.
+\newblock \url
+  {https://www.zabbix.com/la/download?zabbix=5.0&os_distribution=ubuntu&os_version=20.04&components=server_frontend_agent&db=mysql&ws=apache},
+  consultado el 18 de Noviembre de 2022.
+
+\bibitem{guiaInstalacion}
+Zabbix SIA.
+\newblock Elige tu plataforma.
+\newblock \url {https://www.zabbix.com/la/download}, consultado el 19 de
+  Noviembre de 2022.
+
+\bibitem{zabbixRocky}
+Zabbix SIA.
+\newblock Elige tu plataforma rocky.
+\newblock \url
+  {https://www.zabbix.com/la/download?zabbix=5.0&os_distribution=rocky_linux&os_version=9&components=agent&db=&ws=},
+  consultado el 19 de Noviembre de 2022.
+
+\bibitem{zabbixKeys}
+Zabbix SIA.
+\newblock Guia de item keys.
+\newblock \url
+  {https://www.zabbix.com/documentation/5.0/en/manual/config/items/itemtypes/zabbix_agent},
+  consultado el 20 de Noviembre de 2022.
+
+\end{thebibliography}

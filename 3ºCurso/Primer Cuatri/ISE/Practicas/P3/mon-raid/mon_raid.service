@@ -1,0 +1,6 @@
+[Unit]
+Description=Monitor RAID status
+
+[Service]
+Type=simple
+ExecStart=/home/gabrieljp/mon-raid.py

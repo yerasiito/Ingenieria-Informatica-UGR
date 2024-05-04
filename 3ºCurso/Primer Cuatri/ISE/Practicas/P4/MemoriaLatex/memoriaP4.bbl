@@ -1,0 +1,94 @@
+\begin{thebibliography}{10}
+
+\bibitem{smallpt}
+Kevin Beason.
+\newblock Documentacion smallpt.
+\newblock \url {http://kevinbeason.com/smallpt/}, consultado el 16 de Diciembre
+  de 2022.
+
+\bibitem{jmeterWeb}
+Apache HTTP.
+\newblock Web oficial de apache jmeter.
+\newblock \url {https://jmeter.apache.org/download_jmeter.cgi}, consultado el
+  13 de Diciembre de 2022.
+
+\bibitem{anfitrionPHP}
+Yeray L.
+\newblock Resultado php en el anfitrion.
+\newblock \url {https://openbenchmarking.org/result/2212184-NE-PHPTEST6145},
+  realizado el 18 de Diciembre de 2022.
+
+\bibitem{rockyPHP}
+Yeray L.
+\newblock Resultado php en rocky linux 9.
+\newblock \url {https://openbenchmarking.org/result/2212186-NE-PHPTEST6957},
+  realizado el 18 de Diciembre de 2022.
+
+\bibitem{ubuntuPHPoc}
+Yeray L.
+\newblock Resultado php optimizado en ubuntu.
+\newblock \url {https://openbenchmarking.org/result/2212181-NE-PHPOCACCE69},
+  realizado el 18 de Diciembre de 2022.
+
+\bibitem{ubuntuSmallpt}
+Yeray L.
+\newblock Resultado smallpt en ubuntu con 2 núcleos.
+\newblock \url {https://openbenchmarking.org/result/2212200-NE-SMALLPTTE44},
+  realizado el 20 de Diciembre de 2022.
+
+\bibitem{anfitrionStream}
+Yeray L.
+\newblock Resultado stream en el anfitrion con 10gb de ram.
+\newblock \url {https://openbenchmarking.org/result/2212191-NE-RAMTEST3802},
+  realizado el 20 de Diciembre de 2022.
+
+\bibitem{ubuntuStream}
+Yeray L.
+\newblock Resultado stream en ubuntu con 4gb de ram.
+\newblock \url {https://openbenchmarking.org/result/2212193-NE-A1098051761},
+  realizado el 20 de Diciembre de 2022.
+
+\bibitem{streamWeb}
+John~D. McCalpin.
+\newblock Página oficial de stream.
+\newblock \url {https://www.cs.virginia.edu/stream/}, consultado el 17 de
+  Diciembre de 2022.
+
+\bibitem{rephoronix}
+Phoronix Media.
+\newblock Repositorio oficial de phoronix.
+\newblock \url {https://github.com/phoronix-test-suite/phoronix-test-suite},
+  consultado el 12 de Diciembre de 2022.
+
+\bibitem{openbenchmark}
+Phoronix Media.
+\newblock Pagina de benchmarking.
+\newblock \url {https://openbenchmarking.org/}, consultado el 18 de Diciembre
+  de 2022.
+
+\bibitem{repoISE}
+David Palomar.
+\newblock Repo de la aplicación de la p4.
+\newblock \url {https://github.com/davidPalomar-ugr/iseP4JMeter}, consultado el
+  11 de Diciembre de 2022.
+
+\bibitem{phpBench}
+php.net.
+\newblock Fichero php de test zend.
+\newblock \url {https://github.com/php/php-src/blob/master/Zend/bench.php},
+  consultado el 18 de Diciembre de 2022.
+
+\bibitem{phpMicroBench}
+php.net.
+\newblock Fichero php de test zend.
+\newblock \url
+  {https://github.com/php/php-src/blob/master/Zend/micro_bench.php}, consultado
+  el 18 de Diciembre de 2022.
+
+\bibitem{webphoronix}
+Phoronix SIA.
+\newblock Repositorio oficial de phoronix.
+\newblock \url {https://www.phoronix-test-suite.com/?k=downloads}, consultado
+  el 12 de Diciembre de 2022.
+
+\end{thebibliography}
