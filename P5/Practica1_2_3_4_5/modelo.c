@@ -45,13 +45,13 @@ typedef enum
 } accionesMenu;
 
 // Global variables
-float default_size = 2;
+float default_size = 1;
 int modo = GL_FILL;
 int sombreado1 = GL_SMOOTH, sombreado2 = GL_FLAT;
 bool luz = true, luz0 = true, modoTextura = true;
 int roty = 0, accionActual = NONE;
 float r = 0, g = 0;
-char numPractica = '6', Letra;
+char numPractica = '9', Letra;
 GLfloat seleccionado[4] = {1, 0, 1, 1}, aseleccionado[4];
 void setModo(int M)
 {
@@ -66,7 +66,7 @@ void setLetra(char k)
 
 void setNumPractica()
 {
-  if (Letra == '1' or Letra == '2' or Letra == '3' or Letra == '4' or Letra == '5' or Letra == '6')
+  if (Letra == '1' or Letra == '2' or Letra == '3' or Letra == '4' or Letra == '5' or Letra == '6' or Letra == '7' or Letra == '8' or Letra == '9')
     numPractica = Letra;
 }
 
@@ -246,7 +246,7 @@ void controlLuz()
   }
   else
   {
-    glDisable(GL_LIGHTING);
+    // glDisable(GL_LIGHTING);
   }
 }
 
@@ -322,15 +322,98 @@ GLfloat lataColor[4] = {0.96f, 0.96f, 0.96f, 1.0f};
 GLfloat dadoColor[4] = {0.81f, 0.81f, 0.81f, 1.0f};
 
 GLfloat light_red[4] = {0.8f, 0.2f, 0.2f, 1.0f};
-GLfloat light_blue[4] = {0.2f, 0.2f, 0.8f, 1.0f};
+GLfloat light_blue[4] = {0.0f, 1.0f, 1.0f, 1.0f};
 GLfloat light_green[4] = {0.2f, 0.8f, 0.2f, 1.0f};
+GLfloat light_yellow[4] = {0.8f, 0.8f, 0.2f, 1.0f};
 GLfloat light_greenPeon[4] = {0.21f, 0.81f, 0.21f, 1.0f};
 float black[4] = {0.1f, 0.1f, 0.1f, 1.0f};
 
-static int ejex = 0, ejey = 0;
+float ejex = 0, ejey = 0; //Molino
+//Elevador
+int colsigno = 1, rsopsigno = 1, ysopsigno = 1;
+float xcolumna = 0, rsoporte = 20, ysoporte = 0;
+//Escalera
+int rotaz = -45, rotazsigno = 1, rotazDsigno = -1, desplazaysigno = 1;
+float rotazD = 0, desplazay = 0;
+
+
+//Codigo de elevador
+//Dibuja 3 columnas en forma de U y sus 2 soportes(cilindros)
+void columnasysoportes(){
+  glPushMatrix();
+    glTranslatef(xcolumna,0,0); //Movimiento columna Talfa
+    ortoedro(0.5,0,1,0.5,10,1,1,2); //B (Columna frontal) Equivale a un cubo unidad escalado 1x10x2
+
+    glPushMatrix();
+      materialOrtoedro(light_yellow);
+      glTranslatef(0,ysoporte,0); //Movimiento soportes en y (Tbeta)
+      glTranslatef(1,5,0.75); //T3
+      glRotatef(-90,0,0,1); //R1
+      glPushMatrix();
+        glRotatef(-20,1,0,0); //R2
+        glRotatef(rsoporte,1,0,0); //Rotacion soporte
+        cilindro(0.25,0,0.25,0.25,5,0.25,0.5,0.5); //C(soporte izquierdo) Equivale a un cilindro unidad escalado 0.5x5x0.5
+      glPopMatrix();
+      glPushMatrix();
+        glRotatef(20,1,0,0); //R3
+        glRotatef(-rsoporte,1,0,0); //Rotacion soporte
+        cilindro(0.25,0,0.25,0.25,5,0.25,0.5,0.5); //C(soporte derecho) Equivale a un cilindro unidad escalado 0.5x5x0.5
+      glPopMatrix();
+      materialOrtoedro(light_blue);
+    glPopMatrix();
+
+    glRotatef(90,0,1,0); //R4
+    ortoedro(0.5,0,1,0.5,10,1,1,2); //B(columna lateral 1) Equivale a un cubo unidad escalado 1x10x2
+    glTranslatef(-3,0,0); //T4
+    ortoedro(0.5,0,1,0.5,10,1,1,2); //B(columna lateral 2) Equivale a un cubo unidad escalado 1x10x2
+  glPopMatrix();
+}
+
+
+//Codigo de escalera
+void escalera(){
+  glPushMatrix();
+    //Primer soporte vertical
+    glPushMatrix();
+      glTranslatef(-0.5,0,-0.5);
+      glScalef(1,12,1); //E1
+      cubo.draw(); //Cubo
+    glPopMatrix();
+
+    //Segundo soporte vertical
+    glTranslatef(0,0,6); //T4
+    glPushMatrix();
+      glTranslatef(-0.5,0,-0.5); //Centra el cubo en el eje
+      glScalef(1,12,1); //E2
+      cubo.draw(); //Genera el cubo con coordenadas de base 0,0,0 | 0,0,1 | 1,0,1 | 1,0,0
+    glPopMatrix();
+
+    //Primer escalon
+    glTranslatef(0,1.5,-0.5); //T5
+    glRotatef(-90,1,0,0); //R2
+    glPushMatrix();
+      glTranslatef(-0.5,0,-0.5); //Centra el cubo en el eje
+      glScalef(1,5,1); //E2
+      cubo.draw(); //Genera el cubo con coordenadas de base 0,0,0 | 0,0,1 | 1,0,1 | 1,0,0
+    glPopMatrix();   
+
+    for(int i = 0; i < 3; i++){ //3 escalones mas
+      glTranslatef(0,0,3); //T6
+      glPushMatrix();
+        glTranslatef(-0.5,0,-0.5); //Centra el cubo en el eje
+        glScalef(1,5,1); //E2
+        cubo.draw(); //Genera el cubo con coordenadas de base 0,0,0 | 0,0,1 | 1,0,1 | 1,0,0
+      glPopMatrix();   
+    }
+
+  glPopMatrix();
+
+
+
+}
+
 void dibujoEscena()
 {
-  controlLuz();
   glClearColor(0.0, 0.0, 0.0, 1.0);                   // Fija el color de fondo a negro
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Inicializa el buffer de color y el Z-Buffer
 
@@ -347,6 +430,7 @@ void dibujoEscena()
   float cuboC[4] = {0.5, 0.0, 1, 1};
   float p1Color3[4] = {1.0, 0.0, 0, 1};
   float p1Color4[4] = {0.0, 1.0, 0.0, 1};
+  controlLuz();
 
   setNumPractica();
   switch (numPractica)
@@ -563,30 +647,94 @@ void dibujoEscena()
   case '6':
     materialOrtoedro(light_green);
     ortoedro(1,0,1,1,10,1,2,0); //A
-    glTranslatef(1,11,1); //T1
-    // glRotatef(ejey, 0,1,0); //Ra
+    glTranslatef(1,10,1); //T1
+    glRotatef(ejey, 0,1,0); //Ra
     glPushMatrix();
-      glTranslatef(-3,1,-1); //T3
-      // glRotatef(-90,0,0,1); //R1
+      glTranslatef(-3,2,-1); //T3
+      glRotatef(-90,0,0,1); //R1
       materialOrtoedro(light_red);
       ortoedro(1,0,1,1,6,1,2,0); //B
     glPopMatrix();
-    // glTranslatef(3.5,0,0); //T2
-    //     glRotatef(ejex, 1,0,0); //Rb
-    // glRotatef(-20,0,1,0); //R2
-    // materialOrtoedro(light_blue);
-    // glPushMatrix();
-    //   glRotatef(90,0,1,0); //R4
-    //   glTranslatef(-0.5,0,-1); //T5
-    //   ortoedro(0.5,0,0.5,0.5,6,0.5,1,0); //C
-    // glPopMatrix();
-    // glRotatef(40,0,1,0); //R3
-    // glTranslatef(0,-6,0); //T4
-    // glPushMatrix();
-    //   glRotatef(90,0,1,0); //R4
-    //   glTranslatef(-0.5,0,-1); //T5
-    //   ortoedro(0.5,0,0.5,0.5,6,0.5,1,0); //C
-    // glPopMatrix();
+    glTranslatef(3.5,1,0); //T2
+    glRotatef(ejex,1,0,0); //Rb
+    glRotatef(-20,0,1,0); //R2
+    materialOrtoedro(light_blue);
+    glPushMatrix();
+      glRotatef(90,0,1,0); //R4
+      glTranslatef(-0.5,0,-1); //T5
+      ortoedro(0.5,0,0.5,0.5,6,0.5,1,0); //C
+    glPopMatrix();
+    glRotatef(40,0,1,0); //R3
+    glTranslatef(0,-6,0); //T4
+    glPushMatrix();
+      glRotatef(90,0,1,0); //R4
+      glTranslatef(-0.5,0,-1); //T5
+      ortoedro(0.5,0,0.5,0.5,6,0.5,1,0); //C
+    glPopMatrix();
+    break;
+    case '7':
+    materialOrtoedro(light_blue);
+    glPushMatrix();
+      glRotatef(-90,0,0,1); //R1
+      glTranslatef(-1,-6.5,0); //T1
+      ortoedro(0.5,0,1,0.5,13,1,1,2); //A(Base) Equivale a un cubo unidad escalado 1x13x2
+    glPopMatrix();
+
+    glTranslatef(-7.5,0,0); //T2
+    columnasysoportes();
+
+    glTranslatef(15,0,2); //T5
+    glRotatef(180,0,1,0); //R5
+    columnasysoportes();
+
+    break;
+
+    case '8':
+      glPushMatrix();
+        glTranslatef(-0.5,0,-0.5); //T1
+        ortoedro(0.5,0,0.5,0.5,10,0.5,1,0); //A
+      glPopMatrix();
+      
+      glRotatef(ejey,0,1,0); //Ry alfa
+     
+      glTranslatef(-5,11,-0.5); //T2
+      glRotatef(-90,0,0,1); //R1
+      ortoedro(0.5,0,0.5,0.5,10,0.5,1,0); //B
+
+      glTranslatef(1,0,0.5);
+      glRotatef(ejex,0,1,0); //Rx alfa
+      glTranslatef(-1,0,-0.5);
+      
+      glTranslatef(1,-1,5.5); //T3
+      glRotatef(-90,1,0,0); //R2
+      ortoedro(0.5,0,0.5,0.5,10,0.5,1,0); //D
+      glTranslatef(0,0,10); //T4      
+      ortoedro(0.5,0,0.5,0.5,10,0.5,1,0); //C 
+    break;
+
+    case '9':
+      materialOrtoedro(white); //Material de la escalera
+      glRotatef(rotaz,0,0,1); //Rzalfa
+      glTranslatef(0,12,0); //T1
+      //A
+      glPushMatrix();
+        glRotatef(-90,0,0,1); //R1
+        glRotatef(rotazD,0,0,1); //Rzbeta
+        escalera();
+      glPopMatrix();
+      //D
+      glPushMatrix();
+        glRotatef(-180,0,0,1); //2*R1
+        escalera();
+      glPopMatrix();
+
+      //B y C
+      glTranslatef(-1,-12,0); //T2
+      glTranslatef(0,desplazay,0); //Talfa
+      escalera();
+      glTranslatef(-1,0,0); //T3
+      glTranslatef(0,desplazay,0); //Talfa
+      escalera();      
 
     break;
   }
@@ -601,8 +749,55 @@ Procedimiento de fondo. Es llamado por glut cuando no hay eventos pendientes.
 **/
 void idle(int v)
 {
+
+  //Escalera
+  rotaz += 1*rotazsigno;
+  if(rotaz >= 0){
+    rotazsigno = -1;
+  }
+  else if(rotaz <= -45){
+    rotazsigno = 1;
+  }
+
+  rotazD += (80.0f/45.0f)*rotazDsigno;
+  if(rotazD > -1){
+    rotazDsigno = -1;
+  }
+  else if(rotazD <= -80){
+    rotazDsigno = 1;
+  }
+
+  desplazay += (10.0f/45.0f)*desplazaysigno;
+  if(desplazay >= 10)
+    desplazaysigno = -1;
+  else if(desplazay < 0.1)
+    desplazaysigno = 1;
+
+
+  //Molino
   ejex +=1;
   ejey +=1;
+
+  //elevador
+  xcolumna += 0.01*colsigno;
+  if(xcolumna > 1.5)
+    colsigno = -1;
+  else if(xcolumna < 0)
+    colsigno = 1;
+
+  ysoporte += 0.1*ysopsigno;
+  if(ysoporte > 5)
+    ysopsigno = -1;
+  else if(ysoporte < -3.5)
+    ysopsigno = 1;
+
+  rsoporte += 0.5*rsopsigno;
+  if(rsoporte > 15)
+    rsopsigno = -1;
+  else if(rsoporte < 0)
+    rsopsigno = 1;
+
+
   // Animacion bici
   if (animacion)
   {

@@ -75,18 +75,18 @@ void Piramide::draw( )
   glBegin (GL_TRIANGLE_STRIP);
   {
     // Trasera
-    // glNormal3f (0, Ny, -Nx);
-    // glVertex3f (lado, 0, 0);
-    // glVertex3f (0, 0, 0);
-    // glVertex3f (lado/2, alto, lado/2);
+    glNormal3f (0, Ny, -Nx);
+    glVertex3f (lado, 0, 0);
+    glVertex3f (0, 0, 0);
+    glVertex3f (lado/2, alto, lado/2);
 
     //Lateral izquierdo
     glNormal3f (-Nx, Ny, 0);
     glVertex3f (0, 0, lado);
     
     //Frontal
-    // glNormal3f (0, Ny, Nx);
-    // glVertex3f (lado, 0, lado);
+    glNormal3f (0, Ny, Nx);
+    glVertex3f (lado, 0, lado);
 
     //Lateral derecho
     glNormal3f (Nx, Ny, 0);

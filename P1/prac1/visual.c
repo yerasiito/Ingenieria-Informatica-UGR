@@ -34,6 +34,7 @@ modulo visual.c
 #include <stdlib.h>
 #include <math.h>
 #include <GL/glut.h>		// Libreria de utilidades de OpenGL
+#include <iostream>
 #include "practicasIG.h"
 
 
@@ -96,10 +97,12 @@ view_roty;
 **/
 void transformacionVisualizacion ()
 {
+  std::cout << D << "\n";
   glTranslatef (0, 0, -D);
   glRotatef (view_rotx, 1.0, 0.0, 0.0);
   glRotatef (view_roty, 0.0, 1.0, 0.0);
 
+  // fijaProyeccion();
   // glTranslatef(-x_camara,-y_camara,-z_camara);
 }
 
@@ -117,7 +120,8 @@ void fijaProyeccion ()
   else
     calto = 1;
 
-  glFrustum (-1, 1, -calto, calto, 1.5, 1500);
+  glOrtho(-20, 20, -calto*20, calto*20, 1.5, 1500);
+  // glFrustum (-1, 1, -calto, calto, 1.5, 1500);
 
   glMatrixMode (GL_MODELVIEW);
 // A partir de este momento las transformaciones son de modelado.       
@@ -141,7 +145,7 @@ void inicializaVentana (GLsizei ancho, GLsizei alto)
 
   glMatrixMode (GL_PROJECTION);
   glLoadIdentity ();
-
+  
   fijaProyeccion ();		// Cargamos la transformacion de proyeccion
 
 }

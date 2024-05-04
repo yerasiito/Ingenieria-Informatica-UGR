@@ -36,7 +36,7 @@ class Cubo:Objeto3D
 {
    private:
       float l;
-      float  color[4] = { 0.5, 0.0, 1, 1 };
+      float  color[4] = { 0.5, 0.1, 1, 1 };
    public:
       Cubo(float lado=1);
 

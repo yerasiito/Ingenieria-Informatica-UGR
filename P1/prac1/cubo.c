@@ -62,16 +62,16 @@ void Cubo::draw( )
   glEnd ();
   glBegin (GL_QUADS);
   {				/* Costados */
-    // glNormal3f (1.0, 0.0, 0.0);
-    // glVertex3f (l, 0, 0);
-    // glVertex3f (l, l, 0);
-    // glVertex3f (l, l, l);
-    // glVertex3f (l, 0, l);
-    // glNormal3f (-1.0, 0.0, 0.0);
-    // glVertex3f (0, 0, 0);
-    // glVertex3f (0, 0, l);
-    // glVertex3f (0, l, l);
-    // glVertex3f (0, l, 0);
+    glNormal3f (1.0, 0.0, 0.0);
+    glVertex3f (l, 0, 0);
+    glVertex3f (l, l, 0);
+    glVertex3f (l, l, l);
+    glVertex3f (l, 0, l);
+    glNormal3f (-1.0, 0.0, 0.0);
+    glVertex3f (0, 0, 0);
+    glVertex3f (0, 0, l);
+    glVertex3f (0, l, l);
+    glVertex3f (0, l, 0);
   }
   glEnd ();
 }

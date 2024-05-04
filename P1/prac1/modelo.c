@@ -97,7 +97,7 @@ PrismaHexagonal prisma(default_size/2, default_size);
 /**	void Dibuja( void )
 Procedimiento de dibujo del modelo. Es llamado por glut cada vez que se debe redibujar.
 **/
-
+static int r=0;
 void Dibuja (void)
 {
   glShadeModel(GL_FLAT);
@@ -131,11 +131,18 @@ void Dibuja (void)
 
   // Dibuja el modelo (A rellenar en prácticas 1,2 y 3)          
   // Dibuja el cubo
-  cubo.draw();                
 
+  glPushMatrix();
+  glScalef(2,2,2);
+  glTranslatef(5,5,0);
+  cubo.draw();
+  glPopMatrix();
+
+  glTranslatef(5,5,0);
+  cubo.draw();
   // Dibuja la pirámide
-  glTranslatef(default_size*1.5, 0, 0);
-  piramide.draw();
+  // glTranslatef(default_size*1.5, 0, 0);
+  // piramide.draw();
 
   // //Figura extra 1 (toroide)
   // glTranslatef(default_size*3, 0, default_size/2);
@@ -173,6 +180,7 @@ Procedimiento de fondo. Es llamado por glut cuando no hay eventos pendientes.
 **/
 void idle (int v)
 {
+  r+=1;
   glutPostRedisplay ();		// Redibuja
   glutTimerFunc (30, idle, 0);	// Vuelve a activarse dentro de 30 ms
 }
