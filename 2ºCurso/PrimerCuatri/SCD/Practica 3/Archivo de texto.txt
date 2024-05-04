@@ -1,0 +1,5 @@
+//El problema del bloqueo es el numero de items
+El tamaño del vector es igual al de procesos
+Para 3,4 es num_items=12;
+Para 4,5 es num_items=20;
+Para 3,2 es num_items=XX;
