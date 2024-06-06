@@ -1,6 +1,9 @@
-Comunitario:
-- [Alem](https://drive.google.com/drive/folders/1yOiWjIuOJFc8RlUUNeU4NA1pucfgzblK?usp=drive_link) (go.ugr required)
+Comunitario (solo go.ugr):
+- [Alem](https://drive.google.com/drive/folders/1yOiWjIuOJFc8RlUUNeU4NA1pucfgzblK?usp=drive_link)
 - [LMD](https://drive.google.com/drive/folders/1BMT5ffRHwCvbNK91CFpsWNxwGKH4XpFt?usp=drive_link)
+- [SO](https://drive.google.com/drive/folders/1nxqtTjpsmSNUs0iqEm_AkKrFo_t3xM8Q?usp=sharing)
+- [2ºSegundo cuatri](https://drive.google.com/drive/folders/1P5DExx891Cqo1il0PHI8pULuTugFdMcm?usp=drive_link)
+- [TSI](https://drive.google.com/drive/folders/1k1cHmbr0z6sWaCTRdt4dLvzuO-XUri5g?usp=sharing)
 
 Miranda:
 - [Alem privado](https://drive.google.com/drive/folders/1c2XgLypGDDI_qY49hZ1fI9oSCaP2MMyL?usp=drive_link)
